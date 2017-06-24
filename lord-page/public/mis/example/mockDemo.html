@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>mockjs</title>
+</head>
+<body>
+
+<h1>mockjs</h1>
+<p id="showView"></p>
+
+<script src="/res/js/jquery-2.1.4.min.js"></script>
+
+<script src="/res/js/mockjs/mock-min.js"></script>
+<script type="text/javascript">
+    Mock.mock('http://g.cn', {
+        "code":1,
+        "msg":'@csentence(5)',
+        "success":true,
+        'data|1-10': [{
+            // 属性 id 是一个自增数，起始值为 1，每次增 1
+            'id|+1': 1,
+            "name" : "@csentence(4)",
+            "code" : "@word(5)",
+            "subs" : [{
+                'id|+1': 20,
+                "name" : "@csentence(4)",
+                "code" : "@word(5)"
+            }]
+        }]
+    });
+
+    $.ajax({
+        url: 'http://g.cn',
+    }).done(function(data, status, xhr){
+        console.log(data);
+        $("#showView").html(data);
+    })
+</script>
+
+</body>
+</html>

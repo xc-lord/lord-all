@@ -1,0 +1,144 @@
+<!-- 
+	Desc: 	系统菜单的编辑界面
+	Author: xiaocheng
+	Date: 	2017年05月10日 15:51:31
+-->
+
+<!-- UI界面 start -->
+<div id="misMenuEditView">
+    <el-row>
+        <h3><i class="el-icon-edit"></i> <a href="#/misMenu">系统菜单管理</a> / 编辑</h3>
+    </el-row>
+    <!--编辑界面-->
+    <el-row type="flex" justify="center">
+        <el-col :span="22">
+            <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
+				<el-form-item label="ID" prop="id">
+                    <el-input v-model="editForm.id" auto-complete="off" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="名称" prop="name">
+                    <el-input v-model="editForm.name" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="拼音" prop="letter">
+                    <el-input v-model="editForm.letter" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="菜单图标" prop="icon">
+                    <el-select v-model="editForm.icon" placeholder="请选择">
+                        <el-option
+                                v-for="item in icons"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            <i :class="item.value"></i> {{ item.label }}
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="排序">
+                    <el-input-number v-model="editForm.orderValue" :min="0"></el-input-number>
+                </el-form-item>
+                <el-form-item label="菜单链接" prop="url">
+                    <el-input v-model="editForm.url" auto-complete="off"></el-input>
+                </el-form-item>
+				<el-form-item label="等级">
+                    <el-input-number v-model="editForm.level" :disabled="true" :min="1"></el-input-number>
+                </el-form-item>
+				<el-form-item label="父节点Id">
+                    <el-input-number v-model="editForm.parentId" :disabled="true" :min="0"></el-input-number>
+                </el-form-item>
+                <el-form-item label="父节点名称" prop="parentName">
+                    <el-input v-model="editForm.parentName" :disabled="true" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="所有父节点Id" prop="parentIds">
+                    <el-input v-model="editForm.parentIds" :disabled="true" auto-complete="off"></el-input>
+                </el-form-item>
+				<el-form-item label="是否叶子节点">
+                    <el-radio-group v-model="editForm.leaf" :disabled="true">
+                        <el-radio class="radio" :label="true">是</el-radio>
+                        <el-radio class="radio" :label="false">否</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="所有子节点Id" prop="childrenIds">
+                    <el-input v-model="editForm.childrenIds" :disabled="true" auto-complete="off"></el-input>
+                </el-form-item>
+				<el-form-item label="创建时间">
+                    <el-date-picker type="datetime" 
+									placeholder="选择日期和时间"
+									:disabled="true"
+                                    v-model="editForm.createTime">
+					</el-date-picker>
+                </el-form-item>
+				<el-form-item label="更新时间">
+                    <el-date-picker type="datetime" 
+									placeholder="选择日期和时间"
+									:disabled="true"
+                                    v-model="editForm.updateTime">
+					</el-date-picker>
+                </el-form-item>
+                <!--TODO:待修改-->
+				<!--<el-form-item label="状态">
+                    <el-select v-model="editForm.status" placeholder="请选择">
+                        <el-option
+                                v-for="item in misMenuStatus"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>-->
+            </el-form>
+        </el-col>
+    </el-row>
+
+    <el-row type="flex" justify="center">
+        <el-col :span="6">
+            <el-button @click="editFormCancel">取消</el-button>
+            <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading">提交</el-button>
+        </el-col>
+    </el-row>
+
+</div>
+<!-- UI界面 end -->
+
+<script type="text/javascript">
+    $.getScript('/res/js/mis/misMenu/misMenuForm.js', function () {
+        var misMenuEditView = new Vue({
+            el: '#misMenuEditView',
+            data: MisMenuFromCommon.data,
+            //数据初始化
+            created: function () {
+                var _self = this;
+                //获取下拉框选项
+                MisMenuFromCommon.loadSelect(_self);
+                //根据Id,获取编辑的对象
+                $.ajax({
+                    async: true,
+                    url: '/api/admin/mis/misMenu/' + pageParam.id + ".do",
+                    dataType: "json"
+                }).done(function (res) {
+                    if (res.success) {
+                        _self.editForm = res.data;
+                    } else {
+                        _self.$message.error(res.msg);//提示错误
+                    }
+                });
+            },
+            methods: {
+                //保存事件
+                editSubmit: function (formName) {
+                    var _self = this;
+                    _self.$refs[formName].validate(function(valid){
+                        if (valid) {
+                            MisMenuFromCommon.saveAction(_self);
+                        } else{
+                            _self.$message.error("请正确填写表单！");
+                        }
+                    });
+                },
+                //取消事件
+                editFormCancel: function () {
+                    MisMenuFromCommon.cancelAction();
+                }
+            }
+        });
+    });
+</script>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片选择器</title>
+    <link rel="stylesheet" href="/res/css/mis/vue-main.css">
+</head>
+<body>
+
+<div id="example-image-picker">
+    <select multiple="multiple" class="image-picker show-labels show-html">
+        <option data-img-src="http://placekitten.com/220/200" value="1">Cute Kitten 1</option>
+        <option data-img-src="http://placekitten.com/180/200" value="2">Cute Kitten 2</option>
+        <option data-img-src="http://placekitten.com/130/200" value="3">Cute Kitten 3</option>
+        <option data-img-src="http://placekitten.com/270/200" value="4">Cute Kitten 4</option>
+        <option data-img-src="http://www.17sucai.com/preview/1/2013-07-23/jiaoben1069/img/13.jpg" value="5">Cute Kitten 5</option>
+    </select>
+    <br>
+    <span>Selected: {{ selected }}</span>
+</div>
+
+<script src="/res/js/vue/vue-2.2.0.js"></script>
+<script src="/res/js/jquery-2.1.4.min.js"></script>
+<script src="/res/js/utils/image-picker.min.js"></script>
+
+<script>
+
+    var vm = new Vue({
+        el: '#example-image-picker',
+        data: {
+            selected: []
+        }
+    });
+
+    $(function () {
+        $(".image-picker").imagepicker({
+            show_label: true,//显示文字
+            limit: 2,//最多选择的数量
+            //选择变化
+            changed:function(select, newValues, oldValues, event) {
+                console.info("新属性" + newValues);
+                vm.selected = newValues;
+            },
+            //选择超过limit数量
+            limit_reached:function(){
+                console.info('超过可以选中的数量');
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

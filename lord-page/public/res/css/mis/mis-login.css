@@ -1,0 +1,116 @@
+/**
+ * log in css
+ */
+html {
+    width:100%;
+    height:100%;
+}
+body {
+    width:100%;
+    height:100%;
+}
+.log {
+    width:100%;
+    height:100%;
+    background:url(../../img/mis-login.jpg) #000 no-repeat;
+    background-size:100% 100%;
+    color:#ffffff;
+}
+@media only screen and (max-width:640px) {
+    .log {
+        background-size:180% 100%;
+        background-position:top right;
+    }
+    .log-title {
+        display:none;
+    }
+}
+.log-title {
+    font-size:4rem;
+}
+.log-content {
+    margin-top:15%;
+    text-align:center;
+}
+.log-button {
+    background-color:transparent;
+    border-radius:8px;
+    border:2px solid #ffffff;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #2f6627;
+}
+.log-button:hover {
+    background-color:#0e90d2;
+    border:2px solid #0e90d2;
+    color:#ffffff;
+}
+.log-button:active {
+    position:relative;
+    top:1px;
+}
+.log-header,.log-re {
+    background-color:transparent;
+    position:absolute;
+    top:0;
+    color:#ffffff;
+}
+.log-header {
+    display: block;
+    height: 50px;
+    width: 165px;
+    margin-left:10%;
+    text-indent: -9999px;
+    background: url(http://s.amazeui.org/media/i/brand/amazeui-w.png) left center no-repeat;
+    background-size: 125px 24px;
+}
+.log-header:hover {
+    height: 50px;
+    width: 165px;
+    margin-left:10%;
+    text-indent: -9999px;
+    background: url(http://s.amazeui.org/media/i/brand/amazeui-cw.png) left center no-repeat;
+    background-size:125px 24px;
+}
+.log a {
+    color:#fff;
+}
+.log-re {
+    right:10%;
+    top:1%;
+}
+.log-icon {
+    background-color:transparent;
+    color:#ffffff;
+}
+.log-animation-delay {
+    -webkit-animation-delay: 200ms;
+    animation-delay: 200ms;
+}
+.log-animation-delay-a {
+    -webkit-animation-delay: 300ms;
+    animation-delay: 300ms;
+}
+.log-animation-delay-b {
+    -webkit-animation-delay: 500ms;
+    animation-delay: 500ms;
+}
+.log-alert {
+    clear:both;
+    width:100%;
+    height:28px;
+    line-height:28px;
+    padding-top:0;
+    position:absolute;
+    top:20px;
+    left:0;
+    display:block;
+}
+.log-footer {
+    position:absolute;
+    bottom:10px;
+    width:100%;
+    text-align:center;
+}

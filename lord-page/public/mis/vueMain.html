@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>管理后台</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="/res/css/vue/element-ui-1.2.8.css">
+    <link rel="stylesheet" href="/res/css/mis/vue-main.css">
+</head>
+<body>
+
+<div id="mainView">
+    <div class="mainHeader">
+        <el-row>
+            <el-col :span="3">
+                <span class="logo">
+                    <img src="/res/img/mis/mis-logo.png" alt=""/>
+                </span>
+            </el-col>
+            <el-col :span="18">
+                <el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
+                         @select="handleSelect">
+                    <el-menu-item :index="menu.letter" v-for="menu in menus" :key="menu.letter">{{menu.name}}</el-menu-item>
+                </el-menu>
+            </el-col>
+            <el-col :span="3">
+                <el-dropdown>
+                      <span class="el-dropdown-link right-menu">
+                        欢迎你，admin&nbsp;<i class="el-icon-setting"></i> 设置 <i
+                              class="el-icon-caret-bottom el-icon--right"></i>
+                      </span>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item>黄金糕</el-dropdown-item>
+                        <el-dropdown-item>狮子头</el-dropdown-item>
+                        <el-dropdown-item>螺蛳粉</el-dropdown-item>
+                        <el-dropdown-item disabled>双皮奶</el-dropdown-item>
+                        <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+            </el-col>
+        </el-row>
+    </div>
+
+    <el-row>
+        <el-col :span="3">
+            <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
+                     @select="handleMenuSelect">
+                <el-menu-item index="misUser"><i class="el-icon-setting"></i>后台用户管理</el-menu-item>
+                <el-menu-item index="misRole"><i class="el-icon-setting"></i>用户角色</el-menu-item>
+                <el-menu-item index="misMenu"><i class="el-icon-setting"></i>系统菜单</el-menu-item>
+                <template v-for="subMenu in subMenus">
+                    <template v-if="!subMenu.children">
+                        <!--没有子菜单-->
+                        <el-menu-item :index="subMenu.letter"><i :class="subMenu.icon"></i>{{subMenu.name}}</el-menu-item>
+                    </template>
+                    <template v-else>
+                        <!--存在3级菜单-->
+                        <el-submenu :index="subMenu.code">
+                            <template slot="title"><i class="el-icon-menu"></i>{{subMenu.name}}</template>
+                            <el-menu-item :index="thirdMenu.letter" v-for="thirdMenu in subMenu.children"
+                                          :key="thirdMenu.letter"><i :class="thirdMenu.icon"></i>{{thirdMenu.name}}
+                            </el-menu-item>
+                        </el-submenu>
+                    </template>
+                </template>
+            </el-menu>
+        </el-col>
+        <el-col :span="21">
+            <el-row id="showView">
+                欢迎您，{{userName}}超级管理员！
+            </el-row>
+        </el-col>
+    </el-row>
+</div>
+
+<script src="/res/js/vue/vue-2.2.0.js"></script>
+<script src="/res/js/vue/element-ui-1.2.8.js"></script>
+<script src="/res/js/director.min.js"></script>
+<script src="/res/js/jquery-2.1.4.min.js"></script>
+<script src="/res/js/utils/moment.min.js"></script>
+<script src="/res/js/vue/vueFilter.js"></script>
+<script src="/res/js/mis/mis-common.js"></script>
+<script src="/res/js/mis/mis-route.js"></script>
+
+<script src="/res/js/mockjs/mock-min.js"></script>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#mainView',
+        data: {
+            userName: 'xiaocheng',
+            activeIndex: '1',
+            activeIndex2: '1',
+            items: [
+                {message: 'Foo'},
+                {message: 'Bar'}
+            ],
+            //一级菜单
+            menus: [],
+            //二级菜单
+            subMenus: []
+        },
+        created: function () {
+            var _self = this;
+            //获取树的数据
+            $.ajax({
+                async: true,
+                url: '/api/admin/mis/misMenu/getTree.do',
+                dataType: "json"
+            }).done(function (res) {
+                if (res.success) {
+                    _self.menus = res.data;//一级菜单
+                    if (_self.menus && _self.menus[0].children) {
+                        //默认的二级菜单
+                        _self.subMenus = _self.menus[0].children;
+                    }
+                } else {
+                    _self.$message.error(res.msg);//提示错误
+                }
+            });
+        },
+        methods: {
+            //顶部一级菜单点击事件
+            handleSelect: function (key, keyPath) {
+                var _self = this;
+                var menus = this.menus;
+                for (var i = 0; i < menus.length; i++) {
+                    var menu = menus[i];
+                    if (menu.letter == keyPath[0]) {
+                        _self.subMenus = menu.children;
+                        break;
+                    }
+                }
+            },
+            //左侧二级菜单点击事件
+            handleMenuSelect: function (key, keyPath) {
+                var _self = this;
+                console.log("点击二级菜单"  + key, keyPath);
+                window.location.href = "#/" + keyPath;
+            },
+            //左侧二级菜单展开事件
+            handleOpen: function (key, keyPath) {
+                console.log("二级菜单展开事件"  + key, keyPath);
+                window.location.href = "#/viewBook";
+            },
+            //左侧二级菜单关闭事件
+            handleClose: function (key, keyPath) {
+                console.log("二级菜单关闭事件"  + key, keyPath);
+            }
+        }
+    });
+
+    $(function () {
+        // 如果输入链接进入页面，需要先将url的值变更一下，再重定向才能成功
+        var url = window.location.href;
+        var urlArr = url.split("#");
+        if (urlArr.length > 1) {
+            var routeUrl = urlArr[1];
+            window.location.href = "#main";
+            window.location.href = "#" + routeUrl;
+        }
+    });
+</script>
+
+</body>
+</html>

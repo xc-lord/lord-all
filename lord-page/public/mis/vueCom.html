@@ -1,0 +1,25 @@
+<div>
+    <div>I am async!</div>
+    <div v-for="item in items" @click="onclick(item.company_name)">
+        {{item.web_title}}
+    </div>
+</div>
+
+<script>
+    export = {
+        methods: {
+            onclick: function(msg) {
+                showTip(msg);
+            }
+        }
+    }
+</script>
+
+<style>
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .9s
+    }
+    .fade-enter, .fade-leave-active {
+        opacity: 0
+    }
+</style>

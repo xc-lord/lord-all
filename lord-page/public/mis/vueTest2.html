@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>路由测试</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="/res/css/vue/element-ui-1.2.8.css">
+</head>
+<body>
+<div id="app">
+    {{ message }}
+</div>
+<ul>
+    <li><a href="#/author">#/author</a></li>
+    <li><a href="#/books">#/books</a></li>
+    <li><a href="#/books/view/1">#/books/view/1</a></li>
+</ul>
+
+<div id="showView">
+    {{ message }}
+</div>
+
+<script src="/res/js/require-2.1.11-min.js"></script>
+
+<script type="text/javascript">
+
+    require.config({
+        baseUrl:"/res/js",
+        paths: {
+            "vue":"vue/vue-2.2.0.min",
+            "jquery":"jquery-2.1.4.min",
+            "director":"director.min",
+            "element-ui":"vue/element-ui-1.2.8",
+            "require-test":"require-test-2.0.15"
+        }
+    });
+
+    require(['vue','jquery',"director",'element-ui','require-test'], function (Vue,$){
+        var author = function () {
+            console.log("author");
+
+            $("#showView").load("/mis/example/VueDemo.html");
+        };
+        var books = function () { console.log("books"); };
+        var viewBook = function (bookId) {
+            console.log("viewBook: bookId is populated: " + bookId);
+        };
+        var routes = {
+            '/author': author,
+            '/books': [books, function() {
+                console.log("An inline route handler.");
+            }],
+            '/books/view/:bookId': viewBook
+        };
+        var router = Router(routes);
+        router.init();
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello Vue!'
+            }
+        })
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {{include '../common/htmlHeader'}}
+</head>
+<body>
+<h1>我的网站首页</h1>
+<p>Welcome to lord.com</p>
+{{if helloApi}}
+<p>{{helloApi.name}}</p>
+<p>{{helloApi.createTime | dateFormat:'YYYY/MM/DD HH:mm:ss'}}</p>
+{{/if}}
+<p>{{123.456 | numFormat:'0.00'}}</p>
+{{include '../common/footer'}}
+</body>
+</html>

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {{include '../common/htmlHeader'}}
+</head>
+<body>
+<h1>出现错误：{{error.message}}</h1>
+{{error.stack | strReplace:/\n/g,"<br/>"}}
+
+{{include '../common/footer'}}
+</body>
+</html>
