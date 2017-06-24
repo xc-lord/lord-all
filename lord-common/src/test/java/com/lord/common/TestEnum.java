@@ -1,7 +1,6 @@
 package com.lord.common;
 
 import com.lord.common.constant.BaseEnumType;
-import com.lord.common.constant.mis.MisUserStatus;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
