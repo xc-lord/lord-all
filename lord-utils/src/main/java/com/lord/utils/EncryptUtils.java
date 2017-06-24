@@ -1,8 +1,13 @@
 package com.lord.utils;
 
+import com.lord.utils.exception.CommonException;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.crypto.Cipher;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -69,6 +74,25 @@ public class EncryptUtils {
             e.printStackTrace();
         }
         return str;
+    }
+
+    public static String md5Encode(File file) {
+        FileInputStream fileInputStream = null;
+        try {
+            fileInputStream = new FileInputStream(file);
+            return DigestUtils.md5Hex(fileInputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new CommonException(e.getMessage());
+        } finally {
+            try {
+                if (fileInputStream != null) {
+                    fileInputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**

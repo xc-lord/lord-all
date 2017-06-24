@@ -2,6 +2,7 @@ package com.lord.utils;
 
 import org.junit.Test;
 
+import java.io.File;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Map;
@@ -31,6 +32,13 @@ public class TestEncryptUtils {
         System.out.println("原字符串：" + str);
         System.out.println("加密结果：" + encode);
         System.out.println("加密结果：" + EncryptUtils.base64Encode(encode));
+    }
+
+    @Test
+    public void testMd5File() {
+        String srcFileName = "D:\\upload\\temp\\src.jpeg";
+        String encode = EncryptUtils.md5Encode(new File(srcFileName));
+        System.out.println("文件的MD5值为：" + encode);
     }
 
     @Test

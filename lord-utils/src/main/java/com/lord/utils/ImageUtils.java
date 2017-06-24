@@ -40,17 +40,18 @@ public class ImageUtils {
 
     public static void main(String[] args) {
         //1.等比例缩放
-        scaleNormal("D:\\upload\\temp\\src.jpeg", "D:\\upload\\temp\\scaleNormal.jpg", 400, 600);
+        String srcFileName = "D:\\upload\\temp\\src.jpeg";
+        scaleNormal(srcFileName, "D:\\upload\\temp\\scaleNormal.jpg", 400, 600);
         //2.等比例缩放加水印
-        scaleWithWaterMark("D:\\upload\\temp\\src.jpeg", "D:\\upload\\temp\\scaleWithWaterMark.jpg", 400, 600, "D:\\upload\\temp\\watermark.png");
+        scaleWithWaterMark(srcFileName, "D:\\upload\\temp\\scaleWithWaterMark.jpg", 400, 600, "D:\\upload\\temp\\watermark.png");
         //3.缩放到指定宽度
-        scaleWithWidth("D:\\upload\\temp\\src.jpeg", "D:\\upload\\temp\\scaleWithWidth.jpg", 400);
+        scaleWithWidth(srcFileName, "D:\\upload\\temp\\scaleWithWidth.jpg", 400);
         //4.缩放到指定高度
-        scaleWithHeight("D:\\upload\\temp\\src.jpeg", "D:\\upload\\temp\\scaleWithHeight.jpg", 600);
+        scaleWithHeight(srcFileName, "D:\\upload\\temp\\scaleWithHeight.jpg", 600);
         //5.裁切成正方形
-        cutSquare("D:\\upload\\temp\\src.jpeg", "D:\\upload\\temp\\cut.jpg");
+        cutSquare(srcFileName, "D:\\upload\\temp\\cut.jpg");
         //6.从中间裁切
-        cutCenter("D:\\upload\\temp\\src.jpeg", "D:\\upload\\temp\\cutCenter.jpg", 400, 600);
+        cutCenter(srcFileName, "D:\\upload\\temp\\cutCenter.jpg", 400, 600);
 
     }
 
