@@ -11,6 +11,7 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -384,67 +385,14 @@ public class HttpUtils {
      * @return URL
      */
     private static String convertMapToUrl(Map<String, String> map, String valueEnc) {
-
         if (null == map || map.keySet().size() == 0) {
             return (EMPTY);
         }
-        StringBuffer url = new StringBuffer();
-        Set<String> keys = map.keySet();
-        for (Iterator<String> it = keys.iterator(); it.hasNext(); ) {
-            String key = it.next();
-            if (map.containsKey(key)) {
-                String val = map.get(key);
-                String str = val != null ? val : EMPTY;
-                try {
-                    str = URLEncoder.encode(str, valueEnc);
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                url.append(key).append("=").append(str).append(URL_PARAM_CONNECT_FLAG);
-            }
+        List<NameValuePair> nameValuePairs = new ArrayList<>();
+        for (String key : map.keySet()) {
+            nameValuePairs.add(new BasicNameValuePair(key, map.get(key)));
         }
-        String strURL = EMPTY;
-        strURL = url.toString();
-        if (URL_PARAM_CONNECT_FLAG.equals(EMPTY + strURL.charAt(strURL.length() - 1))) {
-            strURL = strURL.substring(0, strURL.length() - 1);
-        }
-        return (strURL);
+        return URLEncodedUtils.format(nameValuePairs, valueEnc);
     }
 
-    /**
-     * 创建SSL安全连接
-     *
-     * @return
-     */
-    private static SSLConnectionSocketFactory createSSLConnSocketFactory() {
-        SSLConnectionSocketFactory sslsf = null;
-        try {
-            SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, new TrustStrategy() {
-                @Override
-                public boolean isTrusted(java.security.cert.X509Certificate[] chain, String authType) throws java.security.cert.CertificateException {
-                    return false;
-                }
-            }).build();
-            sslsf = new SSLConnectionSocketFactory(sslContext, new X509HostnameVerifier() {
-                @Override
-                public boolean verify(String arg0, SSLSession arg1) {
-                    return true;
-                }
-                @Override
-                public void verify(String host, SSLSocket ssl) throws IOException {
-
-                }
-                @Override
-                public void verify(String host, java.security.cert.X509Certificate cert) throws SSLException {
-
-                }
-                @Override
-                public void verify(String host, String[] cns, String[] subjectAlts) throws SSLException {
-                }
-            });
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        }
-        return sslsf;
-    }
 }
