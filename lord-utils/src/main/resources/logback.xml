@@ -16,11 +16,11 @@
 			<charset>GBK</charset> <!-- 此处设置字符集 -->
 		</encoder>
 	</appender>
-	<appender name="baselog"
+	<appender name="fileLogger"
 			  class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<File>/data/lord-web-log.log</File>
+		<File>/data/logs/lord-log.log</File>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>/data/lord-web/log.%d.%i</fileNamePattern>
+			<fileNamePattern>/data/logs/lord-%d-%i.log</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy  class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<!-- 日志文件的最多存储64MB -->
 				<maxFileSize>64 MB</maxFileSize>
@@ -36,7 +36,8 @@
 		<appender-ref ref="STDOUT" />
 	</root>
 
-	<logger name="com.lord" level="DEBUG">
-		<appender-ref ref="baselog" />
+	<logger name="com.lord" level="DEBUG" additivity="false">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="fileLogger"/>
 	</logger>
 </configuration>

@@ -27,7 +27,7 @@ public class TestHttpUtils {
         params.put("b", "小学");
         params.put("c", "cool");
         String res = HttpUtils.doGet("http://www.baidu.com/", params);
-        System.out.println("响应内容：\n" + res);
+        System.out.println("响应内容：\n" + res.length());
     }
 
     @Test

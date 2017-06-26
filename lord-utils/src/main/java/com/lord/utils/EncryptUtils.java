@@ -1,6 +1,7 @@
 package com.lord.utils;
 
 import com.lord.utils.exception.CommonException;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -115,7 +116,7 @@ public class EncryptUtils {
      * @return String
      */
     public static String base64Encode(byte[] bstr) {
-        return new sun.misc.BASE64Encoder().encode(bstr);
+        return new String(Base64.encodeBase64(bstr));
     }
 
     /**
@@ -128,16 +129,7 @@ public class EncryptUtils {
         if (StringUtils.isEmpty(str)) {
             return str;
         }
-        String s = null;
-        try {
-            sun.misc.BASE64Decoder decoder = new sun.misc.BASE64Decoder();
-            byte[] bt = decoder.decodeBuffer(str);
-            s = new String(bt);
-            return s;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return s;
+        return new String(Base64.decodeBase64(str));
     }
 
     /**
