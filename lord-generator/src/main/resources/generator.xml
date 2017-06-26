@@ -26,9 +26,9 @@
 	<!-- 业务名称 -->
 	<entry key="bizName">系统菜单</entry>
 	<!-- 业务的包名 -->
-	<entry key="bizPackage">mis</entry>
+	<entry key="bizPackage">sys</entry>
 	<!-- 表的变量名 -->
-	<entry key="lowerClassName">misMenu</entry>
+	<entry key="lowerClassName">sysFile</entry>
 
 	<!-- 自定义属性 end -->
 

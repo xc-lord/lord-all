@@ -1,0 +1,102 @@
+<!-- 
+	Desc: 	系统菜单的新增界面
+	Author: xiaocheng
+	Date: 	2017年06月26日 12:12:50
+-->
+
+<!-- UI界面 start -->
+<div id="sysFileAddView">
+    <el-row>
+        <h3><i class="el-icon-edit"></i> <a href="#/sysFile">后台用户管理</a> / 新增</h3>
+    </el-row>
+    <!--编辑界面-->
+    <el-row type="flex" justify="center">
+        <el-col :span="22">
+            <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
+				<!--id不需要-->
+                <el-form-item label="图片名称" prop="name">
+                    <el-input v-model="editForm.name" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="图片描述" prop="intro">
+                    <el-input v-model="editForm.intro" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="图片路径" prop="imgUrl">
+                    <el-input v-model="editForm.imgUrl" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="图片别名" prop="alias">
+                    <el-input v-model="editForm.alias" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="md5值" prop="mdCode">
+                    <el-input v-model="editForm.mdCode" auto-complete="off"></el-input>
+                </el-form-item>
+				<el-form-item label="目录id">
+                    <el-input-number v-model="editForm.directoryId" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="上传后台用户id">
+                    <el-input-number v-model="editForm.misUserId" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="上传用户id">
+                    <el-input-number v-model="editForm.userId" :min="0"></el-input-number>
+                </el-form-item>
+				<!--createTime不需要-->
+				<!--updateTime不需要-->
+                <!--TODO:待修改-->
+                <!--<el-form-item label="状态">
+                    <el-select v-model="editForm.status" placeholder="请选择">
+                        <el-option
+                                v-for="item in sysFileStatus"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>-->
+            </el-form>
+        </el-col>
+    </el-row>
+
+    <el-row type="flex" justify="center">
+        <el-col :span="6">
+            <el-button @click="editFormCancel">取消</el-button>
+            <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading">提交</el-button>
+        </el-col>
+    </el-row>
+
+</div>
+<!-- UI界面 end -->
+
+<script type="text/javascript">
+    $.getScript('/res/js/sys/sysFile/sysFileForm.js', function () {
+        //清空参数
+        pageParam = Object.assign({}, {});
+
+        var sysFileAddView = new Vue({
+            el: '#sysFileAddView',
+            data: SysFileFromCommon.data,
+            //数据初始化
+            created: function () {
+                var _self = this;
+                //获取下拉框选项
+                SysFileFromCommon.loadSelect(_self);
+                _self.editForm = Object.assign({}, SysFileFromCommon.defaultModel);
+            },
+            methods: {
+                //保存事件
+                editSubmit: function (formName) {
+                    var _self = this;
+                    _self.$refs[formName].validate(function(valid){
+                        if (valid) {
+                            SysFileFromCommon.saveAction(_self);
+                        } else{
+                            _self.$message.error("请正确填写表单！");
+                        }
+                    });
+                },
+                //取消事件
+                editFormCancel: function () {
+                    SysFileFromCommon.cancelAction();
+                }
+            }
+        });
+    });
+</script>
