@@ -1,6 +1,7 @@
 package com.lord.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.lord.biz.service.AppConfig;
 import com.lord.utils.Preconditions;
 import com.lord.utils.dto.Result;
 import io.swagger.annotations.Api;
@@ -47,10 +48,10 @@ public class FileController {
             String suffixName = fileName.substring(fileName.lastIndexOf("."));
             logger.info("上传的后缀名为：" + suffixName);
             // 文件上传后的路径
-            String filePath = "E:/article/";
+            String filePath = AppConfig.uploadDir;
             // 解决中文问题，liunx下中文路径，图片显示问题
             // fileName = UUID.randomUUID() + suffixName;
-            File dest = new File(filePath + fileName);
+            File dest = new File(filePath  + "/" + fileName);
             // 检测是否存在目录
             if (!dest.getParentFile().exists()) {
                 dest.getParentFile().mkdirs();
