@@ -1,17 +1,19 @@
 /**
 	Desc: 	系统菜单的表单公共方法
 	Author: xiaocheng
-	Date: 	2017年06月26日 12:12:50
+	Date: 	2017年06月26日 15:37:35
 */
 var SysFileFromCommon = {
     //表单默认值
     defaultModel: {
         //id//不需要此项
-        name: '',		//图片名称
-        intro: '',		//图片描述
-        imgUrl: '',		//图片路径
-        alias: '',		//图片别名
-        mdCode: '',		//md5值
+        name: '',		//文件名称
+        intro: '',		//文件描述
+        filePath: '',		//文件路径
+        fileSize: 0,		//文件大小
+        fileType: '',		//文件类型
+        alias: '',		//文件别名
+        mdCode: '',		//文件md5值
         directoryId: 0,		//目录id
         misUserId: 0,		//上传后台用户id
         userId: 0,		//上传用户id

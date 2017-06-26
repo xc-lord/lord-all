@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2017年06月26日 12:12:50
+ * @Date 2017年06月26日 15:37:35
  */
 @Entity
 @Table(name = "sys_file")
@@ -24,33 +24,45 @@ public class SysFile implements Serializable {
 	private Long id;
 
 	/**
-	 * 图片名称
+	 * 文件名称
 	 */
 	@Column(name = "name", nullable = true, length = 300)
 	private String name;
 
 	/**
-	 * 图片描述
+	 * 文件描述
 	 */
 	@Column(name = "intro", nullable = true, length = 300)
 	private String intro;
 
 	/**
-	 * 图片路径
+	 * 文件路径
 	 */
-	@Column(name = "img_url", length = 300)
-	private String imgUrl;
+	@Column(name = "file_path", length = 300)
+	private String filePath;
 
 	/**
-	 * 图片别名
+	 * 文件大小
+	 */
+	@Column(name = "file_size", nullable = true, length = 19)
+	private Long fileSize;
+
+	/**
+	 * 文件类型
+	 */
+	@Column(name = "file_type", nullable = true, length = 40)
+	private String fileType;
+
+	/**
+	 * 文件别名
 	 */
 	@Column(name = "alias", nullable = true, length = 300)
 	private String alias;
 
 	/**
-	 * md5值
+	 * 文件md5值
 	 */
-	@Column(name = "md_code", unique = true, length = 100)
+	@Column(name = "md_code", length = 100)
 	private String mdCode;
 
 	/**
@@ -107,12 +119,28 @@ public class SysFile implements Serializable {
 		this.intro = intro;
 	}
 
-	public String getImgUrl() {
-		return this.imgUrl;
+	public String getFilePath() {
+		return this.filePath;
 	}
 
-	public void setImgUrl(String imgUrl) {
-		this.imgUrl = imgUrl;
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public Long getFileSize() {
+		return this.fileSize;
+	}
+
+	public void setFileSize(Long fileSize) {
+		this.fileSize = fileSize;
+	}
+
+	public String getFileType() {
+		return this.fileType;
+	}
+
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
 	}
 
 	public String getAlias() {

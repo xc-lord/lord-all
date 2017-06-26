@@ -10,7 +10,7 @@ import com.lord.common.model.sys.SysFile;
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2017年06月26日 12:12:50
+ * @Date 2017年06月26日 15:37:35
  */
 public interface SysFileService {
 

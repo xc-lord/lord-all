@@ -2,6 +2,9 @@ package com.lord.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lord.biz.service.AppConfig;
+import com.lord.common.constant.FileType;
+import com.lord.common.model.sys.SysFile;
+import com.lord.common.service.sys.SysFileService;
 import com.lord.utils.Preconditions;
 import com.lord.utils.dto.Result;
 import io.swagger.annotations.Api;
@@ -10,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,24 +38,37 @@ public class FileController {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
+    @Autowired
+    private SysFileService sysFileService;
+
     /**
      * 上传单个文件
      * @param file  文件
      */
     private void uploadOneFile(MultipartFile file) {
+        if (file == null) {
+            return;
+        }
         try {
             // 获取文件名
             String fileName = file.getOriginalFilename();
+            long fileSize = file.getSize();
             logger.info("上传的文件名为：" + fileName);
-            logger.info("上传的文件大小为：" + file.getSize());
+            logger.info("上传的文件大小为：" + fileSize);
             // 获取文件的后缀名
             String suffixName = fileName.substring(fileName.lastIndexOf("."));
             logger.info("上传的后缀名为：" + suffixName);
+
+            SysFile sysFile = new SysFile();
+            sysFile.setName(fileName);
+            sysFile.setFileSize(fileSize);
+            sysFile.setFileType(FileType.getFileType(suffixName).toString());//文件类型
+
             // 文件上传后的路径
             String filePath = AppConfig.uploadDir;
             // 解决中文问题，liunx下中文路径，图片显示问题
             // fileName = UUID.randomUUID() + suffixName;
-            File dest = new File(filePath  + "/" + fileName);
+            File dest = new File(filePath + "/" + fileName);
             // 检测是否存在目录
             if (!dest.getParentFile().exists()) {
                 dest.getParentFile().mkdirs();

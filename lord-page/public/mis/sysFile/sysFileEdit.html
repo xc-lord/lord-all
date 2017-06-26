@@ -1,7 +1,7 @@
 <!-- 
 	Desc: 	系统菜单的编辑界面
 	Author: xiaocheng
-	Date: 	2017年06月26日 12:12:50
+	Date: 	2017年06月26日 15:37:35
 -->
 
 <!-- UI界面 start -->
@@ -16,19 +16,25 @@
 				<el-form-item label="ID" prop="id">
                     <el-input v-model="editForm.id" auto-complete="off" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item label="图片名称" prop="name">
+                <el-form-item label="文件名称" prop="name">
                     <el-input v-model="editForm.name" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="图片描述" prop="intro">
+                <el-form-item label="文件描述" prop="intro">
                     <el-input v-model="editForm.intro" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="图片路径" prop="imgUrl">
-                    <el-input v-model="editForm.imgUrl" auto-complete="off"></el-input>
+                <el-form-item label="文件路径" prop="filePath">
+                    <el-input v-model="editForm.filePath" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="图片别名" prop="alias">
+				<el-form-item label="文件大小">
+                    <el-input-number v-model="editForm.fileSize" :min="0"></el-input-number>
+                </el-form-item>
+                <el-form-item label="文件类型" prop="fileType">
+                    <el-input v-model="editForm.fileType" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="文件别名" prop="alias">
                     <el-input v-model="editForm.alias" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="md5值" prop="mdCode">
+                <el-form-item label="文件md5值" prop="mdCode">
                     <el-input v-model="editForm.mdCode" auto-complete="off"></el-input>
                 </el-form-item>
 				<el-form-item label="目录id">

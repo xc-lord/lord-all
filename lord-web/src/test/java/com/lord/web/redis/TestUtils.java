@@ -1,5 +1,6 @@
 package com.lord.web.redis;
 
+import com.lord.common.constant.FileType;
 import org.junit.Test;
 
 /**
@@ -34,5 +35,15 @@ public class TestUtils {
     public static Integer randomNum(int start, int end) {
         int num = (int)(start+Math.random()*(end-start+1));
         return num;
+    }
+
+    @Test
+    public void testFileType() {
+        System.out.println(FileType.getFileType(".jpeg"));
+        System.out.println(FileType.getFileType(".mp4"));
+        System.out.println(FileType.getFileType(".mp3"));
+        System.out.println(FileType.getFileType(".doc"));
+        System.out.println(FileType.getFileType(".zip"));
+        System.out.println(FileType.getFileType(".jar"));
     }
 }
