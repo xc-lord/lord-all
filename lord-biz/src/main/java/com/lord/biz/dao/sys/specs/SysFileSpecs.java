@@ -12,7 +12,7 @@ import javax.persistence.criteria.*;
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2017年06月26日 15:37:35
+ * @Date 2017年06月26日 17:34:08
  */
 public class SysFileSpecs extends BaseSpecification {
 

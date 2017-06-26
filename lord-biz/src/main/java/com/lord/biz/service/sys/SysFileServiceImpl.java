@@ -27,7 +27,7 @@ import java.util.List;
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2017年06月26日 15:37:35
+ * @Date 2017年06月26日 17:34:08
  */
 @Component
 public class SysFileServiceImpl implements SysFileService {
@@ -129,5 +129,10 @@ public class SysFileServiceImpl implements SysFileService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public SysFile getSysFileByMd5(String md5) {
+        return sysFileDao.findOne(SysFileSpecs.queryBy("mdCode", md5, SysFile.class));
     }
 }

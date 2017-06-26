@@ -10,7 +10,7 @@ import com.lord.common.model.sys.SysFile;
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2017年06月26日 15:37:35
+ * @Date 2017年06月26日 17:34:08
  */
 public interface SysFileService {
 
@@ -69,4 +69,11 @@ public interface SysFileService {
      * @return
      */
     boolean isExist(Long id, String rowName, String rowValue);
+
+    /**
+     * 根据文件的Md5值获取文件
+     * @param md5   Md5值
+     * @return 文件
+     */
+    SysFile getSysFileByMd5(String md5);
 }

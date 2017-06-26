@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2017年06月26日 15:37:35
+ * @Date 2017年06月26日 17:34:08
  */
 @Entity
 @Table(name = "sys_file")
@@ -52,6 +52,12 @@ public class SysFile implements Serializable {
 	 */
 	@Column(name = "file_type", nullable = true, length = 40)
 	private String fileType;
+
+	/**
+	 * 文件后缀名
+	 */
+	@Column(name = "file_suffix", nullable = true, length = 40)
+	private String fileSuffix;
 
 	/**
 	 * 文件别名
@@ -141,6 +147,14 @@ public class SysFile implements Serializable {
 
 	public void setFileType(String fileType) {
 		this.fileType = fileType;
+	}
+
+	public String getFileSuffix() {
+		return this.fileSuffix;
+	}
+
+	public void setFileSuffix(String fileSuffix) {
+		this.fileSuffix = fileSuffix;
 	}
 
 	public String getAlias() {

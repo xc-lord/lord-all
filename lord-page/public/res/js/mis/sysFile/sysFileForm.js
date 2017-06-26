@@ -1,7 +1,7 @@
 /**
 	Desc: 	系统菜单的表单公共方法
 	Author: xiaocheng
-	Date: 	2017年06月26日 15:37:35
+	Date: 	2017年06月26日 17:34:08
 */
 var SysFileFromCommon = {
     //表单默认值
@@ -12,6 +12,7 @@ var SysFileFromCommon = {
         filePath: '',		//文件路径
         fileSize: 0,		//文件大小
         fileType: '',		//文件类型
+        fileSuffix: '',		//文件后缀名
         alias: '',		//文件别名
         mdCode: '',		//文件md5值
         directoryId: 0,		//目录id

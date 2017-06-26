@@ -1,7 +1,7 @@
 <!-- 
 	Desc: 	系统菜单的编辑界面
 	Author: xiaocheng
-	Date: 	2017年06月26日 15:37:35
+	Date: 	2017年06月26日 17:34:08
 -->
 
 <!-- UI界面 start -->
@@ -30,6 +30,9 @@
                 </el-form-item>
                 <el-form-item label="文件类型" prop="fileType">
                     <el-input v-model="editForm.fileType" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="文件后缀名" prop="fileSuffix">
+                    <el-input v-model="editForm.fileSuffix" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="文件别名" prop="alias">
                     <el-input v-model="editForm.alias" auto-complete="off"></el-input>

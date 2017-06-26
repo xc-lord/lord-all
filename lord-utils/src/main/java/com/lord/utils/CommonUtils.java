@@ -1,5 +1,9 @@
 package com.lord.utils;
 
+import org.apache.commons.lang.StringUtils;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
 import java.util.UUID;
@@ -14,6 +18,9 @@ import java.util.UUID;
 public class CommonUtils {
     final static int[] sizeTable = { 9, 99, 999, 9999, 99999, 999999, 9999999,
             99999999, 999999999, Integer.MAX_VALUE };
+
+    public static final String dateFormat = "yyyy-MM-dd HH:mm:ss";
+    public static final String dayFormat = "yyyy-MM-dd";
 
     /**
      * 快速判断一个int值是几位数
@@ -84,4 +91,37 @@ public class CommonUtils {
         String newString = String.format("%0" + stringSize + "d", num);
         return newString;
     }
+
+    /**
+     * 时间格式化
+     * @param date      时间
+     * @param format    格式化的格式，默认：yyyy-MM-dd HH:mm:ss
+     * @return 格式化的结果
+     */
+    public static String dateFormat(Date date, String format) {
+        if (StringUtils.isEmpty(format)) {
+            format = dateFormat;
+        }
+        SimpleDateFormat sdformat = new SimpleDateFormat(format);
+        return sdformat.format(date);
+    }
+
+    /**
+     * 时间格式化
+     * @param date      时间
+     * @return 格式化的结果
+     */
+    public static String dateFormat(Date date) {
+        return dateFormat(date, dateFormat);
+    }
+
+    /**
+     * 时间格式化
+     * @param date      日期
+     * @return 格式化的结果
+     */
+    public static String dayFormat(Date date) {
+        return dateFormat(date, dayFormat);
+    }
+
 }
