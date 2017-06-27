@@ -71,10 +71,6 @@ var MisUserFromCommon = {
         misUserStatus: [],
         //用户角色
         userRoles:[],
-        //图片上传预览窗口是否显示
-        picViewVisible:false,
-        //图片上传预览图片地址
-        picViewImageUrl:'',
     },
     //加载下拉框的数据
     loadSelect: function (_self) {

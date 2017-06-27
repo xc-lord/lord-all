@@ -50,6 +50,38 @@ var commonUtils = {
             }
         });
     },
+    /**
+     * 上传图片前的验证事件
+     * @param file      图片
+     * @param _self     vue对象
+     * @returns 是否可以上传
+     */
+    uploadImageCheck:function(file, _self) {
+        const isJPG = file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/gif' || file.type === 'image/x-icon';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isJPG) {
+            _self.$message.error('上传的图片只能是 JPG、PNG、GIF、ICON格式!');
+        }
+        if (!isLt2M) {
+            _self.$message.error('上传的图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
+    },
+    /**
+     * 上传图片成功的回调事件
+     * @param res   服务器响应
+     * @param file  图片
+     * @param _self vue对象
+     * @returns 上传后的图片地址
+     */
+    uploadImageSuccess:function(res, file, _self) {
+        if(res.success) {
+            return res.data.filePath;
+        } else {
+            _self.$message.error(res.msg);
+        }
+        return '';
+    },
 };
 
 //页面的参数存储

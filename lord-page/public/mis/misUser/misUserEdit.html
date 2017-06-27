@@ -42,8 +42,17 @@
                     <el-input v-model="editForm.email" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="头像" prop="icon">
-                    <el-input v-model="editForm.icon" auto-complete="off"></el-input>
+                    <el-upload
+                            class="avatar-uploader"
+                            action="/api/uploadFile.do"
+                            :show-file-list="false"
+                            :on-success="handleAvatarSuccess"
+                            :before-upload="beforeAvatarUpload">
+                        <img v-if="editForm.icon" :src="editForm.icon" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
                 </el-form-item>
+
                 <el-form-item label="用户角色" prop="roleId">
                     <el-select v-model="editForm.roleId" placeholder="请选择">
                         <el-option
@@ -143,6 +152,16 @@
                 //取消事件
                 editFormCancel: function () {
                     MisUserFromCommon.cancelAction();
+                },
+                //上传图片成功的回调事件
+                handleAvatarSuccess:function(res, file) {
+                    var _self = this;
+                    _self.editForm.icon = commonUtils.uploadImageSuccess(res, file, _self);
+                },
+                //上传图片前的验证事件
+                beforeAvatarUpload:function(file) {
+                    var _self = this;
+                    commonUtils.uploadImageCheck(file, _self);
                 }
             }
         });

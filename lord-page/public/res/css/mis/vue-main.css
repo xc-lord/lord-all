@@ -63,3 +63,28 @@ ul.thumbnails.image_picker_selector li .thumbnail img {
     -webkit-user-drag: none; }
 ul.thumbnails.image_picker_selector li .thumbnail.selected {
     background: #0088cc; }
+
+/**图片上传样式 */
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+    border-color: #20a0ff;
+}
+.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 160px;
+    height: 160px;
+    line-height: 160px;
+    text-align: center;
+}
+.avatar {
+    max-width: 160px;
+    max-height: 160px;
+    display: block;
+}

@@ -65,7 +65,7 @@ public class FileController {
             String fileType = FileType.getFileType(suffixName).toString();//文件类型
 
             String day = CommonUtils.dateFormat(new Date(), "yyyy/MM/dd");
-            String fileUrl = fileType.toLowerCase() + "/" + day + "/" + CommonUtils.getUUID() + suffixName;
+            String fileUrl = "/" + fileType.toLowerCase() + "/" + day + "/" + CommonUtils.getUUID() + suffixName;
 
             byteArrayOutputStream = getByteArrayOutputStream(file);
             String md5 = DigestUtils.md5Hex(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));//md5值
