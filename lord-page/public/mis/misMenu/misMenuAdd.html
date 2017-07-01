@@ -88,7 +88,7 @@
 <script type="text/javascript">
     $.getScript('/res/js/mis/misMenu/misMenuForm.js', function () {
         //新增的表单设置默认值
-        var misMenuModel = {
+        var categoryModel = {
 			//id//不需要此项
 			name: '',		//名称
 			level: 1,		//等级
@@ -113,7 +113,8 @@
                 var _self = this;
                 //获取下拉框选项
                 MisMenuFromCommon.loadSelect(_self);
-                _self.editForm = Object.assign({}, misMenuModel);
+                _self.editForm = Object.assign({}, categoryModel);
+                //加载父分类
                 if(pageParam.parentId) {
                     //根据Id,获取父节点
                     $.ajax({

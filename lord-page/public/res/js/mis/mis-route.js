@@ -59,6 +59,28 @@ var routes = {
         pageParam = Object.assign({}, {id: id});//设置页面参数
         $("#showView").load("/mis/sysSite/sysSiteEdit.html");
     },
+    //文章标签
+    '/cmsTags': function () {
+        $("#showView").load("/mis/cmsTags/cmsTagsList.html");
+    },
+    '/cmsTags/add': function () {
+        $("#showView").load("/mis/cmsTags/cmsTagsAdd.html");
+    },
+    '/cmsTags/edit/:id': function (id) {
+        pageParam = Object.assign({}, {id: id});//设置页面参数
+        $("#showView").load("/mis/cmsTags/cmsTagsEdit.html");
+    },
+    //文章分类
+    '/cmsCategory': function () {
+        $("#showView").load("/mis/cmsCategory/cmsCategoryTree.html");
+    },
+    '/cmsCategory/add': function () {
+        $("#showView").load("/mis/cmsCategory/cmsCategoryAdd.html");
+    },
+    '/cmsCategory/edit/:id': function (id) {
+        pageParam = Object.assign({}, {id: id});//设置页面参数
+        $("#showView").load("/mis/cmsCategory/cmsCategoryEdit.html");
+    },
 };
 var router = Router(routes);
 router.init();

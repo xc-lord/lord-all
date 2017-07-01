@@ -1,35 +1,32 @@
-package com.lord.common.service.mis;
+package com.lord.common.service.cms;
 
+import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
-import com.lord.common.dto.PagerSort;
-import com.lord.common.dto.TreeNode;
-import com.lord.common.model.mis.MisMenu;
-
-import java.util.List;
+import com.lord.common.model.cms.CmsTags;
 
 /**
- * 系统菜单mis_menu的Service
+ * 文章标签cms_tags的Service
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2017年05月10日 15:51:31
+ * @Date 2017年07月01日 15:42:51
  */
-public interface MisMenuService {
+public interface CmsTagsService {
 
     /**
      * 根据主键Id查询
      * @param id    主键Id
      * @return  数据库对象
      */
-    MisMenu getMisMenu(Long id);
+    CmsTags getCmsTags(Long id);
 
     /**
      * 新增或者更新
      * @param pageObj   页面传参
      * @return  数据库对象
      */
-    MisMenu saveOrUpdate(MisMenu pageObj);
+    CmsTags saveOrUpdate(CmsTags pageObj);
 
     /**
      * 分页查询
@@ -38,7 +35,7 @@ public interface MisMenuService {
      * @param pageSize  分页大小
      * @return  分页结果
      */
-    Pager<MisMenu> pageMisMenu(MisMenu param, int page, int pageSize);
+    Pager<CmsTags> pageCmsTags(CmsTags param, int page, int pageSize);
 
     /**
      * 分页查询
@@ -46,7 +43,7 @@ public interface MisMenuService {
      * @param pagerParam    分页参数
      * @return  分页结果
      */
-    Pager<MisMenu> pageMisMenu(MisMenu param, PagerParam pagerParam);
+    Pager<CmsTags> pageCmsTags(CmsTags param, PagerParam pagerParam);
 
     /**
      * 分页查询
@@ -55,13 +52,13 @@ public interface MisMenuService {
      * @param sorts         排序字段
      * @return  分页结果
      */
-    Pager<MisMenu> pageMisMenu(MisMenu param, PagerParam pagerParam, PagerSort... sorts);
+    Pager<CmsTags> pageCmsTags(CmsTags param, PagerParam pagerParam, PagerSort... sorts);
 
     /**
      * 物理删除
      * @param ids    主键ID
      */
-    void deleteMisMenu(Long... ids);
+    void deleteCmsTags(Long... ids);
 
 
     /**
@@ -70,6 +67,11 @@ public interface MisMenuService {
      * @param orderValue    排序值
      */
     void updateOrderValue(Long id, Long orderValue);
+    /**
+     * 逻辑删除
+     * @param ids    主键ID
+     */
+    void removeCmsTags(Long... ids);
 
     /**
      * 是否存在相同的记录
@@ -79,10 +81,4 @@ public interface MisMenuService {
      * @return
      */
     boolean isExist(Long id, String rowName, String rowValue);
-
-    /**
-     * 获得树形结构
-     * @return
-     */
-    List<TreeNode> getTree();
 }
