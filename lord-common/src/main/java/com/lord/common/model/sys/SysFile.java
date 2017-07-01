@@ -7,11 +7,11 @@ import java.io.Serializable;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 /**
- * 系统菜单sys_file的JPA对象
+ * 文件管理sys_file的JPA对象
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2017年06月26日 17:34:08
+ * @Date 2017年07月01日 11:39:47
  */
 @Entity
 @Table(name = "sys_file")

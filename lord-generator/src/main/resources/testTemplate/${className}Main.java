@@ -6,3 +6,10 @@
 <#else>
     表中没有orderValue这个字段啊啊啊啊啊
 </#if>
+
+
+<#list table.columns as column>
+    <#if column.sqlName?contains("img") || column.sqlName?contains("icon")>
+        ${column.sqlName}
+    </#if>
+</#list>

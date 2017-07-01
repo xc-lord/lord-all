@@ -8,11 +8,11 @@ import org.springframework.data.jpa.domain.Specification;
 import javax.persistence.criteria.*;
 
 /**
- * 系统菜单sys_file的动态SQL拼装工具类
+ * 文件管理sys_file的动态SQL拼装工具类
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2017年06月26日 17:34:08
+ * @Date 2017年07月01日 11:39:47
  */
 public class SysFileSpecs extends BaseSpecification {
 

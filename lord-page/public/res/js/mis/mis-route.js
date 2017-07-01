@@ -37,6 +37,17 @@ var routes = {
         pageParam = Object.assign({}, {id: id});//设置页面参数
         $("#showView").load("/mis/misMenu/misMenuEdit.html");
     },
+    //文件管理
+    '/sysFile': function () {
+        $("#showView").load("/mis/sysFile/sysFileList.html");
+    },
+    '/sysFile/add': function () {
+        $("#showView").load("/mis/sysFile/sysFileAdd.html");
+    },
+    '/sysFile/edit/:id': function (id) {
+        pageParam = Object.assign({}, {id: id});//设置页面参数
+        $("#showView").load("/mis/sysFile/sysFileEdit.html");
+    },
 };
 var router = Router(routes);
 router.init();

@@ -69,7 +69,7 @@ public class FileController {
 
             byteArrayOutputStream = getByteArrayOutputStream(file);
             String md5 = DigestUtils.md5Hex(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));//md5值
-            SysFile sysFile = sysFileService.getSysFileByMd5(md5);
+            SysFile sysFile = sysFileService.getSysFileByMd5(md5);//根据Md5值查询文件
             if (sysFile != null) {
                 logger.info("上传的文件{}已经上传过了", fileName);
                 return sysFile;

@@ -1,7 +1,7 @@
 <!-- 
-	Desc: 	系统菜单的新增界面
+	Desc: 	文件管理的新增界面
 	Author: xiaocheng
-	Date: 	2017年06月26日 17:34:08
+	Date: 	2017年07月01日 11:39:47
 -->
 
 <!-- UI界面 start -->
@@ -75,7 +75,7 @@
 <!-- UI界面 end -->
 
 <script type="text/javascript">
-    $.getScript('/res/js/sys/sysFile/sysFileForm.js', function () {
+    $.getScript('/res/js/mis/sysFile/sysFileForm.js', function () {
         //清空参数
         pageParam = Object.assign({}, {});
 
@@ -104,6 +104,11 @@
                 //取消事件
                 editFormCancel: function () {
                     SysFileFromCommon.cancelAction();
+                },
+                //上传图片前的验证事件
+                beforeAvatarUpload:function(file) {
+                    var _self = this;
+                    commonUtils.uploadImageCheck(file, _self);
                 }
             }
         });

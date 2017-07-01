@@ -13,22 +13,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 功能：系统菜单sys_file的Api
+ * 功能：文件管理sys_file的Api
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2017年06月26日 17:34:08
+ * @Date 2017年07月01日 11:39:47
  */
 @RestController
-@Api(description = "系统菜单API")
+@Api(description = "文件管理API")
 public class SysFileController {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private SysFileService sysFileService;
 
-    @ApiOperation(value = "查询系统菜单的列表")
-    @RequestMapping(value = "/api/admin/mis/sysFile/list", method = {RequestMethod.GET, RequestMethod.POST})
+    @ApiOperation(value = "查询文件管理的列表")
+    @RequestMapping(value = "/api/admin/sys/sysFile/list", method = {RequestMethod.GET, RequestMethod.POST})
     public Result list(@ModelAttribute QueryParams queryParams) {
         SysFile param = new SysFile();
         if (queryParams != null) {
@@ -40,16 +40,16 @@ public class SysFileController {
         return Result.success("查询成功", pager);
     }
 
-    @ApiOperation(value = "保存或更新系统菜单")
-    @RequestMapping(value = "/api/admin/mis/sysFile/saveOrUpdate", method = RequestMethod.POST)
+    @ApiOperation(value = "保存或更新文件管理")
+    @RequestMapping(value = "/api/admin/sys/sysFile/saveOrUpdate", method = RequestMethod.POST)
     public Result saveOrUpdate(@ModelAttribute SysFile pageObj) {
         SysFile dbObj = sysFileService.saveOrUpdate(pageObj);
         return Result.success("保存成功", dbObj);
     }
 
-    @ApiOperation(value="删除系统菜单", notes="根据主键id，删除系统菜单")
+    @ApiOperation(value="删除文件管理", notes="根据主键id，删除文件管理")
     @ApiImplicitParam(name = "ids", value = "主键Id", required = true, dataType = "Long", paramType = "query")
-    @RequestMapping(value = "/api/admin/mis/sysFile/remove", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/admin/sys/sysFile/remove", method = RequestMethod.GET)
     public Result remove(Long[] ids) {
         Preconditions.checkNotNull(ids, "ids不能为空");
         //sysFileService.removeSysFile(ids);//逻辑删除
@@ -57,9 +57,9 @@ public class SysFileController {
         return Result.success("删除成功");
     }
 
-    @ApiOperation(value="获取系统菜单", notes="根据主键id，获取系统菜单")
+    @ApiOperation(value="获取文件管理", notes="根据主键id，获取文件管理")
     @ApiImplicitParam(name = "id", value = "主键Id", required = true, dataType = "Long", paramType = "path")
-    @RequestMapping(value = "/api/admin/mis/sysFile/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/admin/sys/sysFile/{id}", method = RequestMethod.GET)
     public Result get(@PathVariable Long id) {
         Preconditions.checkNotNull(id, "id不能为空");
         SysFile dbObj = sysFileService.getSysFile(id);
@@ -72,7 +72,7 @@ public class SysFileController {
             @ApiImplicitParam(name = "id", value = "主键Id", dataType = "Long", paramType = "query"),
             @ApiImplicitParam(name = "rowName", value = "属性名", dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "rowValue", value = "属性值", dataType = "String", paramType = "query")})
-    @RequestMapping(value = "/api/admin/mis/sysFile/isExist", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/admin/sys/sysFile/isExist", method = RequestMethod.GET)
     public Result isExist(Long id, String rowName, String rowValue) {
         Preconditions.checkNotNull(rowName, "rowName不能为空");
         Preconditions.checkNotNull(rowValue, "rowValue不能为空");

@@ -31,7 +31,7 @@ public class ${className}Controller {
     private ${className}Service ${classNameLower}Service;
 
     @ApiOperation(value = "查询${bizName}的列表")
-    @RequestMapping(value = "/api/admin/mis/${classNameLower}/list", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/api/admin/${bizPackage}/${classNameLower}/list", method = {RequestMethod.GET, RequestMethod.POST})
     public Result list(@ModelAttribute QueryParams queryParams) {
         ${className} param = new ${className}();
         if (queryParams != null) {
@@ -46,7 +46,7 @@ public class ${className}Controller {
     }
 
     @ApiOperation(value = "保存或更新${bizName}")
-    @RequestMapping(value = "/api/admin/mis/${classNameLower}/saveOrUpdate", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/admin/${bizPackage}/${classNameLower}/saveOrUpdate", method = RequestMethod.POST)
     public Result saveOrUpdate(@ModelAttribute ${className} pageObj) {
         ${className} dbObj = ${classNameLower}Service.saveOrUpdate(pageObj);
         return Result.success("保存成功", dbObj);
@@ -54,7 +54,7 @@ public class ${className}Controller {
 
     @ApiOperation(value="删除${bizName}", notes="根据主键id，删除${bizName}")
     @ApiImplicitParam(name = "ids", value = "主键Id", required = true, dataType = "Long", paramType = "query")
-    @RequestMapping(value = "/api/admin/mis/${classNameLower}/remove", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/admin/${bizPackage}/${classNameLower}/remove", method = RequestMethod.GET)
     public Result remove(Long[] ids) {
         Preconditions.checkNotNull(ids, "ids不能为空");
         //${classNameLower}Service.remove${className}(ids);//逻辑删除
@@ -64,7 +64,7 @@ public class ${className}Controller {
 
     @ApiOperation(value="获取${bizName}", notes="根据主键id，获取${bizName}")
     @ApiImplicitParam(name = "id", value = "主键Id", required = true, dataType = "Long", paramType = "path")
-    @RequestMapping(value = "/api/admin/mis/${classNameLower}/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/admin/${bizPackage}/${classNameLower}/{id}", method = RequestMethod.GET)
     public Result get(@PathVariable Long id) {
         Preconditions.checkNotNull(id, "id不能为空");
         ${className} dbObj = ${classNameLower}Service.get${className}(id);
@@ -79,7 +79,7 @@ public class ${className}Controller {
             @ApiImplicitParam(name = "id", value = "主键Id", required = true, dataType = "Long", paramType = "query"),
             @ApiImplicitParam(name = "orderValue", value = "排序值", required = true, dataType = "Long", paramType = "query")
     })
-    @RequestMapping(value = "/api/admin/mis/${classNameLower}/updateOrderValue", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/admin/${bizPackage}/${classNameLower}/updateOrderValue", method = RequestMethod.GET)
     public Result updateOrderValue(Long id, Long orderValue)
     {
         Preconditions.checkNotNull(id, "id不能为空");
@@ -95,7 +95,7 @@ public class ${className}Controller {
             @ApiImplicitParam(name = "id", value = "主键Id", dataType = "Long", paramType = "query"),
             @ApiImplicitParam(name = "rowName", value = "属性名", dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "rowValue", value = "属性值", dataType = "String", paramType = "query")})
-    @RequestMapping(value = "/api/admin/mis/${classNameLower}/isExist", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/admin/${bizPackage}/${classNameLower}/isExist", method = RequestMethod.GET)
     public Result isExist(Long id, String rowName, String rowValue) {
         Preconditions.checkNotNull(rowName, "rowName不能为空");
         Preconditions.checkNotNull(rowValue, "rowValue不能为空");

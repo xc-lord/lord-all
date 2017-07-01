@@ -23,11 +23,11 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 系统菜单sys_file的Service实现
+ * 文件管理sys_file的Service实现
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2017年06月26日 17:34:08
+ * @Date 2017年07月01日 11:39:47
  */
 @Component
 public class SysFileServiceImpl implements SysFileService {

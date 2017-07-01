@@ -1,7 +1,7 @@
 /**
-	Desc: 	系统菜单的表单公共方法
+	Desc: 	文件管理的表单公共方法
 	Author: xiaocheng
-	Date: 	2017年06月26日 17:34:08
+	Date: 	2017年07月01日 11:39:47
 */
 var SysFileFromCommon = {
     //表单默认值

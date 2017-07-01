@@ -1,13 +1,13 @@
 <!-- 
-	Desc: 	系统菜单的编辑界面
+	Desc: 	文件管理的编辑界面
 	Author: xiaocheng
-	Date: 	2017年06月26日 17:34:08
+	Date: 	2017年07月01日 11:39:47
 -->
 
 <!-- UI界面 start -->
 <div id="sysFileEditView">
     <el-row>
-        <h3><i class="el-icon-edit"></i> <a href="#/sysFile">系统菜单管理</a> / 编辑</h3>
+        <h3><i class="el-icon-edit"></i> <a href="#/sysFile">文件管理管理</a> / 编辑</h3>
     </el-row>
     <!--编辑界面-->
     <el-row type="flex" justify="center">
@@ -89,7 +89,7 @@
 <!-- UI界面 end -->
 
 <script type="text/javascript">
-    $.getScript('/res/js/sys/sysFile/sysFileForm.js', function () {
+    $.getScript('/res/js/mis/sysFile/sysFileForm.js', function () {
         var sysFileEditView = new Vue({
             el: '#sysFileEditView',
             data: SysFileFromCommon.data,
@@ -105,7 +105,7 @@
                     dataType: "json"
                 }).done(function (res) {
                     if (res.success) {
-                        _self.editForm = Object.assign(res.data, SysFileFromCommon.defaultModel);
+                        _self.editForm = Object.assign(SysFileFromCommon.defaultModel, res.data);
                     } else {
                         _self.$message.error(res.msg);//提示错误
                     }
@@ -126,6 +126,11 @@
                 //取消事件
                 editFormCancel: function () {
                     SysFileFromCommon.cancelAction();
+                },
+                //上传图片前的验证事件
+                beforeAvatarUpload:function(file) {
+                    var _self = this;
+                    commonUtils.uploadImageCheck(file, _self);
                 }
             }
         });

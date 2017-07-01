@@ -43,6 +43,18 @@
                                     v-model="editForm.${column.columnNameLower}">
 					</el-date-picker>
                 </el-form-item>
+            <#elseif column.sqlName?contains("img") || column.sqlName?contains("icon")>
+                <el-form-item label="${column.remarks}" prop="${column.columnNameLower}">
+                    <el-upload
+                            class="avatar-uploader"
+                            action="/api/uploadFile.do"
+                            :show-file-list="false"
+                            :on-success="handleUpload${column.columnName}Success"
+                            :before-upload="beforeAvatarUpload">
+                        <img v-if="editForm.${column.columnNameLower}" :src="editForm.${column.columnNameLower}" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
 			<#elseif column.size gt 500>
 				<el-form-item label="${column.remarks}">
                     <el-input type="textarea" v-model="editForm.${column.columnNameLower}"></el-input>
@@ -79,7 +91,7 @@
 <!-- UI界面 end -->
 
 <script type="text/javascript">
-    $.getScript('/res/js/${bizPackage}/${classNameLower}/${classNameLower}Form.js', function () {
+    $.getScript('/res/js/mis/${classNameLower}/${classNameLower}Form.js', function () {
         var ${classNameLower}EditView = new Vue({
             el: '#${classNameLower}EditView',
             data: ${className}FromCommon.data,
@@ -95,7 +107,7 @@
                     dataType: "json"
                 }).done(function (res) {
                     if (res.success) {
-                        _self.editForm = Object.assign(res.data, ${className}FromCommon.defaultModel);
+                        _self.editForm = Object.assign(${className}FromCommon.defaultModel, res.data);
                     } else {
                         _self.$message.error(res.msg);//提示错误
                     }
@@ -116,6 +128,20 @@
                 //取消事件
                 editFormCancel: function () {
                     ${className}FromCommon.cancelAction();
+                },
+                <#list table.columns as column>
+                <#if column.sqlName?contains("img") || column.sqlName?contains("icon")>
+                    //上传图片成功的回调事件
+                handleUpload${column.columnName}Success:function(res, file) {
+                    var _self = this;
+                    _self.editForm.${column.columnNameLower} = commonUtils.uploadImageSuccess(res, file, _self);
+                },
+                </#if>
+                </#list>
+                //上传图片前的验证事件
+                beforeAvatarUpload:function(file) {
+                    var _self = this;
+                    commonUtils.uploadImageCheck(file, _self);
                 }
             }
         });

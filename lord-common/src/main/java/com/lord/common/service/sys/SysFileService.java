@@ -6,11 +6,11 @@ import com.lord.common.dto.PagerParam;
 import com.lord.common.model.sys.SysFile;
 
 /**
- * 系统菜单sys_file的Service
+ * 文件管理sys_file的Service
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2017年06月26日 17:34:08
+ * @Date 2017年07月01日 11:39:47
  */
 public interface SysFileService {
 
@@ -71,9 +71,9 @@ public interface SysFileService {
     boolean isExist(Long id, String rowName, String rowValue);
 
     /**
-     * 根据文件的Md5值获取文件
-     * @param md5   Md5值
-     * @return 文件
+     * 根据Md5值查询文件
+     * @param md5
+     * @return
      */
     SysFile getSysFileByMd5(String md5);
 }
