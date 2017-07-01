@@ -25,11 +25,11 @@ var SysFileFromCommon = {
 		editLoading:false,
         //表单验证规则
         editFormRules: {
-            name: [
-                {required: true, message: '名称不能为空', trigger: 'blur'},
+            mdCode: [
+                {required: true, message: 'md5值不能为空', trigger: 'blur'},
                 {
                     validator: function(rule, value, callback){
-                        return commonUtils.formRowIsExist('/api/admin/mis/sysFile/isExist.do',"name",rule, value, callback);
+                        return commonUtils.formRowIsExist('/api/admin/mis/sysFile/isExist.do',"mdCode",rule, value, callback);
                     },
                     trigger: 'blur'
                 }

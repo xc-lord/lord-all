@@ -51,7 +51,7 @@ public class SysFileServiceImpl implements SysFileService {
             logger.debug("保存" + pageObj);
 
         //验证字段的唯一性
-        Preconditions.checkArgument(isExist(pageObj.getId(), "name", pageObj.getName()), "名称[" + pageObj.getName() + "]已经存在");
+        Preconditions.checkArgument(isExist(pageObj.getId(), "mdCode", pageObj.getMdCode()), "md5值[" + pageObj.getMdCode() + "]已经存在");
 
         //新增记录
         if (pageObj.getId() == null) {
