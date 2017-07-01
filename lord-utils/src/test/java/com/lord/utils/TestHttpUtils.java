@@ -42,4 +42,19 @@ public class TestHttpUtils {
         }
         System.out.println(URLEncodedUtils.format(nameValuePairs, "UTF-8"));
     }
+
+    @Test
+    public void testPinYin() {
+        String keyword = "长沙";
+        Map<String, Integer> pinyinMap = Pinyin4jUtils.getPinyinMap(keyword);
+        if (pinyinMap != null) {
+            System.out.println(keyword + "的全拼结果为：");
+            System.out.println(pinyinMap);
+        }
+        Map<String, Integer> letterMap = Pinyin4jUtils.getFirstLetterMap(keyword);
+        if (letterMap != null) {
+            System.out.println(keyword + "的首字母缩写结果为：");
+            System.out.println(letterMap);
+        }
+    }
 }

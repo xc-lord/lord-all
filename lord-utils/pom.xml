@@ -108,6 +108,12 @@
             <artifactId>httpclient</artifactId>
         </dependency>
         <!--相关的工具类 end-->
+        <!--拼音工具类 start-->
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+        </dependency>
+        <!--拼音工具类 end-->
     </dependencies>
 
     <build>
