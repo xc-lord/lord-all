@@ -48,6 +48,17 @@ var routes = {
         pageParam = Object.assign({}, {id: id});//设置页面参数
         $("#showView").load("/mis/sysFile/sysFileEdit.html");
     },
+    //站点管理
+    '/sysSite': function () {
+        $("#showView").load("/mis/sysSite/sysSiteList.html");
+    },
+    '/sysSite/add': function () {
+        $("#showView").load("/mis/sysSite/sysSiteAdd.html");
+    },
+    '/sysSite/edit/:id': function (id) {
+        pageParam = Object.assign({}, {id: id});//设置页面参数
+        $("#showView").load("/mis/sysSite/sysSiteEdit.html");
+    },
 };
 var router = Router(routes);
 router.init();

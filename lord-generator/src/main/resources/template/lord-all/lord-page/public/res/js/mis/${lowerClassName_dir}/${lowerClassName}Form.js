@@ -28,7 +28,7 @@ var ${className}FromCommon = {
                 {required: true, message: '名称不能为空', trigger: 'blur'},
                 {
                     validator: function(rule, value, callback){
-                        return commonUtils.formRowIsExist('/api/admin/mis/${classNameLower}/isExist.do',"name",rule, value, callback);
+                        return commonUtils.formRowIsExist('/api/admin/${bizPackage}/${classNameLower}/isExist.do',"name",rule, value, callback);
                     },
                     trigger: 'blur'
                 }
@@ -71,7 +71,7 @@ var ${className}FromCommon = {
         $.ajax({
             async: true,
             method: "post",
-            url: '/api/admin/mis/${classNameLower}/saveOrUpdate.do',
+            url: '/api/admin/${bizPackage}/${classNameLower}/saveOrUpdate.do',
             data: _self.editForm,
             dataType: "json"
         }).done(function (res, status, xhr) {

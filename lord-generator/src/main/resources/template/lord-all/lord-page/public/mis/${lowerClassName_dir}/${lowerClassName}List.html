@@ -71,6 +71,16 @@
                     :formatter="dateFormat"
                     width="180">
             </el-table-column>
+			<#elseif column.sqlName?contains("img") || column.sqlName?contains("icon")>
+            <el-table-column
+                    label="${column.remarks}"
+                    width="135">
+                <template scope="scope">
+                    <div class="el-table-img-div">
+                        <img :src="scope.row.${column.columnNameLower}" class="el-table-img">
+                    </div>
+                </template>
+            </el-table-column>
 			<#elseif column.columnNameLower == 'orderValue'>
 			<el-table-column
                     label="排序值"
@@ -277,14 +287,14 @@
             dialogAddClick: function () {
                 var _self = this;
                 _self.dialogFormVisible = true;
-                _self.dialogFormUrl = "/${bizPackage}/${classNameLower}/${classNameLower}Add.html";
+                _self.dialogFormUrl = "/mis/${classNameLower}/${classNameLower}Add.html";
             },
             //表格弹窗编辑事件
             dialogEditClick: function (row) {
                 var _self = this;
                 pageParam = Object.assign({}, {id: row.id});//设置页面参数
                 _self.dialogFormVisible = true;
-                _self.dialogFormUrl = "/${bizPackage}/${classNameLower}/${classNameLower}Edit.html";
+                _self.dialogFormUrl = "/mis/${classNameLower}/${classNameLower}Edit.html";
             },
             //弹窗打开事件
             dialogFormOpen:function() {
