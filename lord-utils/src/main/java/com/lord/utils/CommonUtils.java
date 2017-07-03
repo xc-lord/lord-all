@@ -1,7 +1,10 @@
 package com.lord.utils;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
@@ -38,10 +41,49 @@ public class CommonUtils {
      * @param filePath  配置文件路径（默认搜寻路径为classpath路径下）
      * @return  返回配置属性键值对
      */
-    public static Properties readConfigFile(String filePath) throws java.io.IOException {
+    public static Properties readConfigFile(String filePath) {
         Properties property = new Properties();
-        property.load(CommonUtils.class.getClassLoader().getResourceAsStream(filePath));
+        InputStream inputStream = null;
+        try {
+            inputStream = CommonUtils.class.getClassLoader().getResourceAsStream(filePath);
+            property.load(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return property;
+    }
+
+    /**
+     * 读取classpath下的文件
+     * @param filePath  文件路径
+     * @return  文件内容
+     */
+    public static String readClassPathFile(String filePath) {
+        InputStream inputStream = null;
+        try {
+            inputStream = CommonUtils.class.getClassLoader().getResourceAsStream(filePath);
+            String content = IOUtils.toString(inputStream, "UTF-8");
+            return content;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.lord.web.redis;
 
 import com.lord.common.constant.FileType;
+import com.lord.utils.CommonUtils;
 import org.junit.Test;
 
 /**
@@ -45,5 +46,12 @@ public class TestUtils {
         System.out.println(FileType.getFileType(".doc"));
         System.out.println(FileType.getFileType(".zip"));
         System.out.println(FileType.getFileType(".jar"));
+    }
+
+    @Test
+    public void testClassPath() {
+        System.out.println("读取classpath下的文件");
+        String filePath = "ueditor-config.json";
+        System.out.println(CommonUtils.readClassPathFile(filePath));
     }
 }

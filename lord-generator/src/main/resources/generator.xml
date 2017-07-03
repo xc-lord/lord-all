@@ -24,11 +24,11 @@
 	<!-- Dao类路径 -->
 	<entry key="srcPathDao">src.main.java.com.lord.biz.dao</entry>
 	<!-- 业务名称 -->
-	<entry key="bizName">文章分类</entry>
+	<entry key="bizName">文章</entry>
 	<!-- 业务的包名 -->
 	<entry key="bizPackage">cms</entry>
 	<!-- 表的变量名 -->
-	<entry key="lowerClassName">cmsCategory</entry>
+	<entry key="lowerClassName">cmsArticle</entry>
 
 	<!-- 自定义属性 end -->
 

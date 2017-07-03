@@ -60,6 +60,17 @@ var routes = {
         $("#showView").load("/mis/sysSite/sysSiteEdit.html");
     },
     //文章标签
+    '/cmsArticle': function () {
+        $("#showView").load("/mis/cmsArticle/cmsArticleList.html");
+    },
+    '/cmsArticle/add': function () {
+        $("#showView").load("/mis/cmsArticle/cmsArticleAdd.html");
+    },
+    '/cmsArticle/edit/:id': function (id) {
+        pageParam = Object.assign({}, {id: id});//设置页面参数
+        $("#showView").load("/mis/cmsArticle/cmsArticleEdit.html");
+    },
+    //文章标签
     '/cmsTags': function () {
         $("#showView").load("/mis/cmsTags/cmsTagsList.html");
     },
