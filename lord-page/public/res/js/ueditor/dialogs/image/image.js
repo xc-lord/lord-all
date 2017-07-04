@@ -801,6 +801,13 @@
         /* 初始化容器 */
         initContainer: function () {
             this.container.innerHTML = '';
+            //分页按钮
+            var para=document.createElement("p");
+            para.innerHTML = '&nbsp; 共有<a id="onlineView_count">0</a>个图片，每页显示' + this.listSize
+                + '个图片，当前为第 <a id="onlineView_currentPage">1</a> 页 &nbsp;'
+                + '<a id="onlineView_previous">[上一页]</a>， <a id="onlineView_next">[下一页]</a>';
+            this.container.appendChild(para);
+
             this.list = document.createElement('ul');
             this.clearFloat = document.createElement('li');
 
@@ -831,6 +838,25 @@
                         domUtils.removeClasses(li, 'selected');
                     } else {
                         domUtils.addClass(li, 'selected');
+                    }
+                } else if(target.getAttribute("id") == "onlineView_previous") {
+                    //点击上一页事件
+                    _this.list.innerHTML = "";
+                    _this.list.appendChild(_this.clearFloat);
+                    _this.listIndex = _this.listIndex - _this.listSize*2;
+                    if(_this.listEnd) {
+                        _this.listEnd = false;
+                    }
+                    if(_this.listIndex < 0) {
+                        _this.listIndex = 0;
+                    }
+                    _this.getImageData();
+                } else if(target.getAttribute("id") == "onlineView_next") {
+                    //点击下一页事件
+                    if(!_this.listEnd) {
+                        _this.list.innerHTML = "";
+                        _this.list.appendChild(_this.clearFloat);
+                        _this.getImageData();
                     }
                 }
             });
@@ -873,11 +899,19 @@
                             var json = isJsonp ? r:eval('(' + r.responseText + ')');
                             if (json.state == 'SUCCESS') {
                                 _this.pushData(json.list);
-                                _this.listIndex = parseInt(json.start) + parseInt(json.list.length);
+                                _this.listIndex = parseInt(json.start) + parseInt(_this.listSize);
                                 if(_this.listIndex >= json.total) {
                                     _this.listEnd = true;
                                 }
                                 _this.isLoadingData = false;
+
+                                //设置分页信息
+                                $G('onlineView_count').innerHTML= "" + json.total;
+                                var currentPage = 1;
+                                if(_this.listIndex > 0) {
+                                    currentPage = _this.listIndex/_this.listSize;
+                                }
+                                $G('onlineView_currentPage').innerHTML= "" + currentPage;
                             }
                         } catch (e) {
                             if(r.responseText.indexOf('ue_separate_ue') != -1) {

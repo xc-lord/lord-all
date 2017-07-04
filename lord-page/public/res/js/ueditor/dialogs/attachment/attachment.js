@@ -571,6 +571,7 @@
     }
     OnlineFile.prototype = {
         init: function () {
+            this.listSize = editor.getOpt('fileManagerListSize');
             this.initContainer();
             this.initEvents();
             this.initData();
@@ -578,6 +579,13 @@
         /* 初始化容器 */
         initContainer: function () {
             this.container.innerHTML = '';
+            //分页按钮
+            var para=document.createElement("p");
+            para.innerHTML = '&nbsp; 共有<a id="o_fileView_count">0</a>个附件，每页显示' + this.listSize
+                + '个附件，当前为第 <a id="o_fileView_currentPage">1</a> 页 &nbsp;'
+                + '<a id="o_fileView_previous">[上一页]</a>， <a id="o_fileView_next">[下一页]</a>';
+            this.container.appendChild(para);
+
             this.list = document.createElement('ul');
             this.clearFloat = document.createElement('li');
 
@@ -599,15 +607,33 @@
                 }
             });
             /* 选中图片 */
-            domUtils.on(this.list, 'click', function (e) {
+            domUtils.on(this.container, 'click', function (e) {
                 var target = e.target || e.srcElement,
                     li = target.parentNode;
-
                 if (li.tagName.toLowerCase() == 'li') {
                     if (domUtils.hasClass(li, 'selected')) {
                         domUtils.removeClasses(li, 'selected');
                     } else {
                         domUtils.addClass(li, 'selected');
+                    }
+                } else if(target.getAttribute("id") == "o_fileView_previous") {
+                    //点击上一页事件
+                    _this.list.innerHTML = "";
+                    _this.list.appendChild(_this.clearFloat);
+                    _this.listIndex = _this.listIndex - _this.listSize*2;
+                    if(_this.listEnd) {
+                        _this.listEnd = false;
+                    }
+                    if(_this.listIndex < 0) {
+                        _this.listIndex = 0;
+                    }
+                    _this.getFileData();
+                } else if(target.getAttribute("id") == "o_fileView_next") {
+                    //点击下一页事件
+                    if(!_this.listEnd) {
+                        _this.list.innerHTML = "";
+                        _this.list.appendChild(_this.clearFloat);
+                        _this.getFileData();
                     }
                 }
             });
@@ -642,11 +668,19 @@
                             var json = eval('(' + r.responseText + ')');
                             if (json.state == 'SUCCESS') {
                                 _this.pushData(json.list);
-                                _this.listIndex = parseInt(json.start) + parseInt(json.list.length);
+                                _this.listIndex = parseInt(json.start) + parseInt(_this.listSize);
                                 if(_this.listIndex >= json.total) {
                                     _this.listEnd = true;
                                 }
                                 _this.isLoadingData = false;
+
+                                //设置分页信息
+                                $G('o_fileView_count').innerHTML= "" + json.total;
+                                var currentPage = 1;
+                                if(_this.listIndex > 0) {
+                                    currentPage = _this.listIndex/_this.listSize;
+                                }
+                                $G('o_fileView_currentPage').innerHTML= "" + currentPage;
                             }
                         } catch (e) {
                             if(r.responseText.indexOf('ue_separate_ue') != -1) {
