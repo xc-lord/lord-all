@@ -6,13 +6,16 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.lord.biz.service.AppConfig;
+import com.lord.common.constant.*;
+import com.lord.common.constant.FileType;
+import com.lord.common.dto.Pager;
+import com.lord.common.model.sys.SysFile;
+import com.lord.common.service.sys.SysFileService;
+import com.lord.web.config.SpringUtils;
+import com.lord.web.controller.ueditor.define.*;
 import org.apache.commons.io.FileUtils;
 
 import com.lord.web.controller.ueditor.PathFormat;
-import com.lord.web.controller.ueditor.define.AppInfo;
-import com.lord.web.controller.ueditor.define.BaseState;
-import com.lord.web.controller.ueditor.define.MultiState;
-import com.lord.web.controller.ueditor.define.State;
 
 public class FileManager {
 
@@ -32,7 +35,34 @@ public class FileManager {
 		this.count = (Integer)conf.get( "count" );
 		
 	}
-	
+
+	public State listFile ( int index, int actionCode) {
+		MultiState state = new MultiState( true );
+		Integer page = 1;
+		Integer pageSize = this.count;
+		if (index > 0) {
+			page = index/pageSize;
+		}
+		SysFile param = new SysFile();
+		if (ActionMap.LIST_IMAGE == actionCode) {
+			param.setFileType(FileType.Image.toString());
+		}
+
+		SysFileService sysFileService = SpringUtils.getBean(SysFileService.class);
+		Pager<SysFile> pager = sysFileService.pageSysFile(param, page, this.count);//查询数据库
+		if (pager.getTotalRows() > 0) {
+			state = new MultiState( true );
+			for (SysFile sysFile : pager.getList()) {
+				BaseState fileState = new BaseState(true);
+				fileState.putInfo( "url", sysFile.getFilePath());
+				state.addState( fileState );
+			}
+		}
+		state.putInfo( "start", index );
+		state.putInfo( "total", pager.getTotalRows());
+		return state;
+	}
+
 	public State listFile ( int index ) {
 		
 		File dir = new File( this.dir );

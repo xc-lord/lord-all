@@ -78,8 +78,8 @@ public class SysFileServiceImpl implements SysFileService {
     @Override
     public Pager<SysFile> pageSysFile(SysFile param, int page, int pageSize) {
         PagerParam pagerParam = new PagerParam(page, pageSize);
-        return pageSysFile(param, pagerParam);
 
+        return pageSysFile(param, pagerParam);
     }
 
     @Override

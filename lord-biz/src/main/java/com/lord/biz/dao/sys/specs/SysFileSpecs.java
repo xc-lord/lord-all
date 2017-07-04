@@ -36,6 +36,10 @@ public class SysFileSpecs extends BaseSpecification {
                     Path name = root.get("name");
                     predicate = builder.and(predicate, builder.like(name, "%" + pageObj.getName() + "%"));
                 }
+                if (StringUtils.isNotEmpty(pageObj.getFileType())) {
+                    Path name = root.get("fileType");
+                    predicate = builder.and(predicate, builder.equal(name, pageObj.getFileType()));
+                }
                 query.where(predicate);
                 query.orderBy(builder.desc(root.get("createTime")));
                 return null;

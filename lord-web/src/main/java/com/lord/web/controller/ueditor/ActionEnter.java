@@ -90,7 +90,7 @@ public class ActionEnter {
 			case ActionMap.LIST_FILE:
 				conf = configManager.getConfig( actionCode );
 				int start = this.getStartIndex();
-				state = new FileManager( conf ).listFile( start );
+				state = new FileManager( conf ).listFile( start, actionCode);//显示在线的图片或附件
 				break;
 				
 		}
