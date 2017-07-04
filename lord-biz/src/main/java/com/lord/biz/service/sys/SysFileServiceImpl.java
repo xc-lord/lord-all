@@ -117,7 +117,7 @@ public class SysFileServiceImpl implements SysFileService {
     public boolean isExist(Long id, String rowName, String rowValue) {
         List<String> rowList = new ArrayList<>();
         rowList.add("name");
-        rowList.add("username");
+        rowList.add("mdCode");
         Preconditions.checkArgument(!rowList.contains(rowName), "此字段不需要判断是否存在");
         List<SysFile> list = sysFileDao.findAll(SysFileSpecs.queryBy(rowName, rowValue, SysFile.class));
         if (list == null || list.size() < 1) {

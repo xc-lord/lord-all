@@ -1,5 +1,8 @@
 package com.lord.web.controller.ueditor.upload;
 
+import com.lord.common.model.sys.SysFile;
+import com.lord.web.config.SpringUtils;
+import com.lord.web.controller.FileController;
 import com.lord.web.controller.ueditor.PathFormat;
 import com.lord.web.controller.ueditor.define.AppInfo;
 import com.lord.web.controller.ueditor.define.BaseState;
@@ -11,6 +14,29 @@ import java.util.Map;
 import org.apache.commons.codec.binary.Base64;
 
 public final class Base64Uploader {
+
+	public static State saveFile(String content, Map<String, Object> conf) {
+		byte[] data = decode(content);
+
+		long maxSize = ((Long) conf.get("maxSize")).longValue();
+
+		if (!validSize(data, maxSize)) {
+			return new BaseState(false, AppInfo.MAX_SIZE);
+		}
+
+		FileController fileController = SpringUtils.getBean(FileController.class);
+		SysFile sysFile = fileController.uploadOneImageByBase64(data);//上传文件
+		if (sysFile != null) {
+			State state = new BaseState(true);
+			state.putInfo("title", sysFile.getName());
+			state.putInfo("size", sysFile.getFileSize());
+			state.putInfo("url", sysFile.getFilePath());
+			state.putInfo("type", sysFile.getFileSuffix());
+			state.putInfo("original", sysFile.getFilePath());
+			return state;
+		}
+		return new BaseState(false, AppInfo.IO_ERROR);
+	}
 
 	public static State save(String content, Map<String, Object> conf) {
 		
@@ -29,6 +55,7 @@ public final class Base64Uploader {
 		
 		savePath = savePath + suffix;
 		String physicalPath = (String) conf.get("rootPath") + savePath;
+		System.out.println("上传文件路径： " + physicalPath);
 
 		State storageState = StorageManager.saveBinaryFile(data, physicalPath);
 

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
+import com.lord.biz.service.AppConfig;
 import org.apache.commons.io.FileUtils;
 
 import com.lord.web.controller.ueditor.PathFormat;
@@ -23,6 +24,9 @@ public class FileManager {
 	public FileManager ( Map<String, Object> conf ) {
 
 		this.rootPath = (String)conf.get( "rootPath" );
+		this.dir = this.rootPath + (String)conf.get( "dir" );
+
+		this.rootPath = AppConfig.uploadDir;
 		this.dir = this.rootPath + (String)conf.get( "dir" );
 		this.allowFiles = this.getAllowFiles( conf.get("allowFiles") );
 		this.count = (Integer)conf.get( "count" );
@@ -80,11 +84,8 @@ public class FileManager {
 	}
 	
 	private String getPath ( File file ) {
-		
 		String path = file.getAbsolutePath();
-		
-		return path.replace( this.rootPath, "/" );
-		
+		return path.replace("\\", "/").replace(this.rootPath, "");
 	}
 	
 	private String[] getAllowFiles ( Object fileExt ) {

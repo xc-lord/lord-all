@@ -1,5 +1,9 @@
 package com.lord.web.controller.ueditor.upload;
 
+import com.lord.common.model.sys.SysFile;
+import com.lord.utils.Preconditions;
+import com.lord.web.config.SpringUtils;
+import com.lord.web.controller.FileController;
 import com.lord.web.controller.ueditor.PathFormat;
 import com.lord.web.controller.ueditor.define.AppInfo;
 import com.lord.web.controller.ueditor.define.BaseState;
@@ -19,8 +23,36 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 public class BinaryUploader {
+
+	/**
+	 * 保存文件的方法
+	 * @param request
+	 * @param conf
+	 * @return
+	 */
+	public static final State saveFile(HttpServletRequest request,
+			Map<String, Object> conf) {
+		List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("upfile");
+		Preconditions.checkNotNull(files, "文件不能为空");
+		Preconditions.checkArgument(files.isEmpty(), "文件不能为空!");
+		MultipartFile file = files.get(0);
+		FileController fileController = SpringUtils.getBean(FileController.class);
+		SysFile sysFile = fileController.uploadOneFile(file);//上传文件
+		if (sysFile != null) {
+			State state = new BaseState(true);
+			state.putInfo("title", sysFile.getName());
+			state.putInfo("size", sysFile.getFileSize());
+			state.putInfo("url", sysFile.getFilePath());
+			state.putInfo("type", sysFile.getFileSuffix());
+			state.putInfo("original", sysFile.getFilePath());
+			return state;
+		}
+		return new BaseState(false, AppInfo.IO_ERROR);
+	}
 
 	public static final State save(HttpServletRequest request,
 			Map<String, Object> conf) {
