@@ -1,0 +1,213 @@
+<!-- 
+	Desc: 	文章的编辑界面
+	Author: xiaocheng
+	Date: 	2017年07月01日 18:09:10
+-->
+
+<!-- UI界面 start -->
+<div id="cmsArticleEditView">
+    <el-row>
+        <h3><i class="el-icon-edit"></i> <a href="#/cmsArticle">文章管理</a> / 编辑</h3>
+    </el-row>
+    <!--编辑界面-->
+    <el-row type="flex" justify="center">
+        <el-col :span="22">
+            <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
+				<el-form-item label="ID" prop="id">
+                    <el-input v-model="editForm.id" auto-complete="off" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="文章标题" prop="title">
+                    <el-input v-model="editForm.title" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="副标题" prop="titleSub">
+                    <el-input v-model="editForm.titleSub" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="封面" prop="coverImg">
+                    <el-upload
+                            class="avatar-uploader"
+                            action="/api/uploadFile.do"
+                            :show-file-list="false"
+                            :on-success="handleUploadCoverImgSuccess"
+                            :before-upload="beforeAvatarUpload">
+                        <img v-if="editForm.coverImg" :src="editForm.coverImg" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
+                <el-form-item label="文章简介" prop="intro">
+                    <el-input v-model="editForm.intro" auto-complete="off"></el-input>
+                </el-form-item>
+				<el-form-item label="作者Id">
+                    <el-input-number v-model="editForm.authorId" :min="0"></el-input-number>
+                </el-form-item>
+                <el-form-item label="作者头像" prop="authorImg">
+                    <el-upload
+                            class="avatar-uploader"
+                            action="/api/uploadFile.do"
+                            :show-file-list="false"
+                            :on-success="handleUploadAuthorImgSuccess"
+                            :before-upload="beforeAvatarUpload">
+                        <img v-if="editForm.authorImg" :src="editForm.authorImg" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
+                <el-form-item label="作者名称" prop="authorName">
+                    <el-input v-model="editForm.authorName" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="来源" prop="source">
+                    <el-input v-model="editForm.source" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="来源链接" prop="sourceUrl">
+                    <el-input v-model="editForm.sourceUrl" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="文章标签" prop="tags">
+                    <el-input v-model="editForm.tags" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="文章标签json" prop="tagsJson">
+                    <el-input v-model="editForm.tagsJson" auto-complete="off"></el-input>
+                </el-form-item>
+				<el-form-item label="站点id">
+                    <el-input-number v-model="editForm.siteId" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="分类id">
+                    <el-input-number v-model="editForm.catId" :min="0"></el-input-number>
+                </el-form-item>
+                <el-form-item label="分类名称" prop="catName">
+                    <el-input v-model="editForm.catName" auto-complete="off"></el-input>
+                </el-form-item>
+				<el-form-item label="一级分类">
+                    <el-input-number v-model="editForm.catOneId" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="二级分类">
+                    <el-input-number v-model="editForm.catTwoId" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="三级分类">
+                    <el-input-number v-model="editForm.catThreeId" :min="0"></el-input-number>
+                </el-form-item>
+                <el-form-item label="审核状态" prop="checkState">
+                    <el-input v-model="editForm.checkState" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="文章状态" prop="state">
+                    <el-input v-model="editForm.state" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="样式" prop="style">
+                    <el-input v-model="editForm.style" auto-complete="off"></el-input>
+                </el-form-item>
+				<el-form-item label="发布时间">
+                    <el-date-picker type="datetime" 
+									placeholder="选择日期和时间"
+                                    v-model="editForm.publishTime">
+					</el-date-picker>
+                </el-form-item>
+				<el-form-item label="添加用户Id">
+                    <el-input-number v-model="editForm.misUserId" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="用户Id">
+                    <el-input-number v-model="editForm.userId" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="是否允许评论">
+                    <el-radio-group v-model="editForm.allowComment">
+                        <el-radio class="radio" :label="true">是</el-radio>
+                        <el-radio class="radio" :label="false">否</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+				<el-form-item label="排序">
+                    <el-input-number v-model="editForm.orderValue" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="创建时间">
+                    <el-date-picker type="datetime" 
+									placeholder="选择日期和时间"
+									:disabled="true"
+                                    v-model="editForm.createTime">
+					</el-date-picker>
+                </el-form-item>
+				<el-form-item label="更新时间">
+                    <el-date-picker type="datetime" 
+									placeholder="选择日期和时间"
+									:disabled="true"
+                                    v-model="editForm.updateTime">
+					</el-date-picker>
+                </el-form-item>
+				<!--removed不需要-->
+                <!--TODO:待修改-->
+				<!--<el-form-item label="状态">
+                    <el-select v-model="editForm.status" placeholder="请选择">
+                        <el-option
+                                v-for="item in cmsArticleStatus"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>-->
+            </el-form>
+        </el-col>
+    </el-row>
+
+    <el-row type="flex" justify="center">
+        <el-col :span="6">
+            <el-button @click="editFormCancel">取消</el-button>
+            <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading">提交</el-button>
+        </el-col>
+    </el-row>
+
+</div>
+<!-- UI界面 end -->
+
+<script type="text/javascript">
+    $.getScript('/res/js/mis/cms/cmsArticle/cmsArticleForm.js', function () {
+        var cmsArticleEditView = new Vue({
+            el: '#cmsArticleEditView',
+            data: CmsArticleFromCommon.data,
+            //数据初始化
+            created: function () {
+                var _self = this;
+                //获取下拉框选项
+                CmsArticleFromCommon.loadSelect(_self);
+                //根据Id,获取编辑的对象
+                $.ajax({
+                    async: true,
+                    url: '/api/admin/cms/cmsArticle/' + pageParam.id + ".do",
+                    dataType: "json"
+                }).done(function (res) {
+                    if (res.success) {
+                        _self.editForm = Object.assign(CmsArticleFromCommon.defaultModel, res.data);
+                    } else {
+                        _self.$message.error(res.msg);//提示错误
+                    }
+                });
+            },
+            methods: {
+                //保存事件
+                editSubmit: function (formName) {
+                    var _self = this;
+                    _self.$refs[formName].validate(function(valid){
+                        if (valid) {
+                            CmsArticleFromCommon.saveAction(_self);
+                        } else{
+                            _self.$message.error("请正确填写表单！");
+                        }
+                    });
+                },
+                //取消事件
+                editFormCancel: function () {
+                    CmsArticleFromCommon.cancelAction();
+                },
+                    //上传图片成功的回调事件
+                handleUploadCoverImgSuccess:function(res, file) {
+                    var _self = this;
+                    _self.editForm.coverImg = commonUtils.uploadImageSuccess(res, file, _self);
+                },
+                    //上传图片成功的回调事件
+                handleUploadAuthorImgSuccess:function(res, file) {
+                    var _self = this;
+                    _self.editForm.authorImg = commonUtils.uploadImageSuccess(res, file, _self);
+                },
+                //上传图片前的验证事件
+                beforeAvatarUpload:function(file) {
+                    var _self = this;
+                    commonUtils.uploadImageCheck(file, _self);
+                }
+            }
+        });
+    });
+</script>

@@ -1,0 +1,111 @@
+<!-- 
+	Desc: 	用户角色的编辑界面
+	Author: xiaocheng
+	Date: 	2017年05月08日 12:14:33
+-->
+
+<!-- UI界面 start -->
+<div id="misRoleEditView">
+    <el-row>
+        <h3><i class="el-icon-edit"></i> <a href="#/misRole">用户角色管理</a> / 编辑</h3>
+    </el-row>
+    <!--编辑界面-->
+    <el-row type="flex" justify="center">
+        <el-col :span="22">
+            <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
+				<el-form-item label="ID" prop="id">
+                    <el-input v-model="editForm.id" auto-complete="off" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="名称" prop="name">
+                    <el-input v-model="editForm.name" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="角色Code" prop="roleCode">
+                    <el-input v-model="editForm.roleCode" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="说明" prop="intro">
+                    <el-input v-model="editForm.intro" auto-complete="off"></el-input>
+                </el-form-item>
+				<el-form-item label="创建时间">
+                    <el-date-picker type="datetime" 
+									placeholder="选择日期和时间"
+									:disabled="true"
+                                    v-model="editForm.createTime">
+					</el-date-picker>
+                </el-form-item>
+				<el-form-item label="更新时间">
+                    <el-date-picker type="datetime" 
+									placeholder="选择日期和时间"
+									:disabled="true"
+                                    v-model="editForm.updateTime">
+					</el-date-picker>
+                </el-form-item>
+				<!--removed不需要-->
+				<!-- 
+				<el-form-item label="状态">
+                    <el-select v-model="editForm.status" placeholder="请选择">
+                        <el-option
+                                v-for="item in #misRoleStatus"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+				-->
+            </el-form>
+        </el-col>
+    </el-row>
+
+    <el-row type="flex" justify="center">
+        <el-col :span="6">
+            <el-button @click="editFormCancel">取消</el-button>
+            <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading">提交</el-button>
+        </el-col>
+    </el-row>
+
+</div>
+<!-- UI界面 end -->
+
+<script type="text/javascript">
+    $.getScript('/res/js/mis/mis/misRole/misRoleForm.js', function () {
+        var misRoleEditView = new Vue({
+            el: '#misRoleEditView',
+            data: MisRoleFromCommon.data,
+            //数据初始化
+            created: function () {
+                var _self = this;
+                //获取下拉框选项
+                MisRoleFromCommon.loadSelect(_self);
+                //根据Id,获取编辑的对象
+                $.ajax({
+                    async: true,
+                    url: '/api/admin/mis/misRole/' + pageParam.id + ".do",
+                    dataType: "json"
+                }).done(function (res) {
+                    if (res.success) {
+                        _self.editForm = res.data;
+                    } else {
+                        _self.$message.error(res.msg);//提示错误
+                    }
+                });
+            },
+            methods: {
+                //保存事件
+                editSubmit: function (formName) {
+                    var _self = this;
+                    _self.$refs[formName].validate(function(valid){
+                        if (valid) {
+                            MisRoleFromCommon.saveAction(_self);
+                        } else{
+                            _self.$message.error("请正确填写表单！");
+                        }
+                    });
+                },
+                //取消事件
+                editFormCancel: function () {
+                    MisRoleFromCommon.cancelAction();
+                }
+            }
+        });
+    });
+</script>

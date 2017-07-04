@@ -1,0 +1,98 @@
+<!-- 
+	Desc: 	文章内容表的新增界面
+	Author: xiaocheng
+	Date: 	2017年07月01日 18:06:04
+-->
+
+<!-- UI界面 start -->
+<div id="cmsArticleContentAddView">
+    <el-row>
+        <h3><i class="el-icon-edit"></i> <a href="#/cmsArticleContent">文章内容表管理</a> / 新增</h3>
+    </el-row>
+    <!--编辑界面-->
+    <el-row type="flex" justify="center">
+        <el-col :span="22">
+            <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
+				<!--id不需要-->
+				<el-form-item label="文章Id">
+                    <el-input-number v-model="editForm.articleId" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="文章内容">
+                    <el-input type="textarea" v-model="editForm.content"></el-input>
+                </el-form-item>
+				<el-form-item label="编辑的内容">
+                    <el-input type="textarea" v-model="editForm.contentEdit"></el-input>
+                </el-form-item>
+				<el-form-item label="移动端内容">
+                    <el-input type="textarea" v-model="editForm.mcontent"></el-input>
+                </el-form-item>
+				<el-form-item label="移动端编辑的内容">
+                    <el-input type="textarea" v-model="editForm.mcontenttEdit"></el-input>
+                </el-form-item>
+				<!--createTime不需要-->
+				<!--updateTime不需要-->
+                <!--TODO:待修改-->
+                <!--<el-form-item label="状态">
+                    <el-select v-model="editForm.status" placeholder="请选择">
+                        <el-option
+                                v-for="item in cmsArticleContentStatus"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>-->
+            </el-form>
+        </el-col>
+    </el-row>
+
+    <el-row type="flex" justify="center">
+        <el-col :span="6">
+            <el-button @click="editFormCancel">取消</el-button>
+            <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading">提交</el-button>
+        </el-col>
+    </el-row>
+
+</div>
+<!-- UI界面 end -->
+
+<script type="text/javascript">
+    $.getScript('/res/js/mis/cms/cmsArticleContent/cmsArticleContentForm.js', function () {
+        //清空参数
+        pageParam = Object.assign({}, {});
+
+        var cmsArticleContentAddView = new Vue({
+            el: '#cmsArticleContentAddView',
+            data: CmsArticleContentFromCommon.data,
+            //数据初始化
+            created: function () {
+                var _self = this;
+                //获取下拉框选项
+                CmsArticleContentFromCommon.loadSelect(_self);
+                _self.editForm = Object.assign({}, CmsArticleContentFromCommon.defaultModel);
+            },
+            methods: {
+                //保存事件
+                editSubmit: function (formName) {
+                    var _self = this;
+                    _self.$refs[formName].validate(function(valid){
+                        if (valid) {
+                            CmsArticleContentFromCommon.saveAction(_self);
+                        } else{
+                            _self.$message.error("请正确填写表单！");
+                        }
+                    });
+                },
+                //取消事件
+                editFormCancel: function () {
+                    CmsArticleContentFromCommon.cancelAction();
+                },
+                //上传图片前的验证事件
+                beforeAvatarUpload:function(file) {
+                    var _self = this;
+                    commonUtils.uploadImageCheck(file, _self);
+                }
+            }
+        });
+    });
+</script>
