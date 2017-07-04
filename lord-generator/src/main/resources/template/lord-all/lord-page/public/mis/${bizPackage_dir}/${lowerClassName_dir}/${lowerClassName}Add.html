@@ -1,0 +1,132 @@
+<#assign className = table.className>
+<#assign classNameLower = className?uncap_first>
+<!-- 
+	Desc: 	${bizName}的新增界面
+	Author: xiaocheng
+	Date: 	${now?string('yyyy年MM月dd日 HH:mm:ss')}
+-->
+
+<!-- UI界面 start -->
+<div id="${classNameLower}AddView">
+    <el-row>
+        <h3><i class="el-icon-edit"></i> <a href="#/${classNameLower}">${bizName}管理</a> / 新增</h3>
+    </el-row>
+    <!--编辑界面-->
+    <el-row type="flex" justify="center">
+        <el-col :span="22">
+            <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
+			<#list table.columns as column>
+			<#if column.pk || column.columnNameLower == 'createTime' || column.columnNameLower == 'updateTime' || column.columnNameLower == 'removed'>
+				<!--${column.columnNameLower}不需要-->
+			<#elseif column.javaType == 'java.lang.Boolean'>
+				<el-form-item label="${column.remarks}">
+                    <el-radio-group v-model="editForm.${column.columnNameLower}">
+                        <el-radio class="radio" :label="true">是</el-radio>
+                        <el-radio class="radio" :label="false">否</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+			<#elseif column.javaType == 'java.lang.Long' || column.javaType == 'java.lang.Integer'>
+				<el-form-item label="${column.remarks}">
+                    <el-input-number v-model="editForm.${column.columnNameLower}" :min="0"></el-input-number>
+                </el-form-item>
+			<#elseif column.javaType == 'java.util.Date'>
+				<el-form-item label="${column.remarks}">
+                    <el-date-picker type="datetime" placeholder="选择日期和时间"
+                                    v-model="editForm.${column.columnNameLower}"></el-date-picker>
+                </el-form-item>
+            <#elseif column.sqlName?contains("img") || column.sqlName?contains("icon")>
+                <el-form-item label="${column.remarks}" prop="${column.columnNameLower}">
+                    <el-upload
+                            class="avatar-uploader"
+                            action="/api/uploadFile.do"
+                            :show-file-list="false"
+                            :on-success="handleUpload${column.columnName}Success"
+                            :before-upload="beforeAvatarUpload">
+                        <img v-if="editForm.${column.columnNameLower}" :src="editForm.${column.columnNameLower}" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
+			<#elseif column.size gt 500>
+				<el-form-item label="${column.remarks}">
+                    <el-input type="textarea" v-model="editForm.${column.columnNameLower}"></el-input>
+                </el-form-item>
+			<#else>
+                <el-form-item label="${column.remarks}" prop="${column.columnNameLower}">
+                    <el-input v-model="editForm.${column.columnNameLower}" auto-complete="off"></el-input>
+                </el-form-item>
+			</#if>
+			</#list>
+                <!--TODO:待修改-->
+                <!--<el-form-item label="状态">
+                    <el-select v-model="editForm.status" placeholder="请选择">
+                        <el-option
+                                v-for="item in ${classNameLower}Status"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>-->
+            </el-form>
+        </el-col>
+    </el-row>
+
+    <el-row type="flex" justify="center">
+        <el-col :span="6">
+            <el-button @click="editFormCancel">取消</el-button>
+            <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading">提交</el-button>
+        </el-col>
+    </el-row>
+
+</div>
+<!-- UI界面 end -->
+
+<script type="text/javascript">
+    $.getScript('/res/js/mis/${classNameLower}/${classNameLower}Form.js', function () {
+        //清空参数
+        pageParam = Object.assign({}, {});
+
+        var ${classNameLower}AddView = new Vue({
+            el: '#${classNameLower}AddView',
+            data: ${className}FromCommon.data,
+            //数据初始化
+            created: function () {
+                var _self = this;
+                //获取下拉框选项
+                ${className}FromCommon.loadSelect(_self);
+                _self.editForm = Object.assign({}, ${className}FromCommon.defaultModel);
+            },
+            methods: {
+                //保存事件
+                editSubmit: function (formName) {
+                    var _self = this;
+                    _self.$refs[formName].validate(function(valid){
+                        if (valid) {
+                            ${className}FromCommon.saveAction(_self);
+                        } else{
+                            _self.$message.error("请正确填写表单！");
+                        }
+                    });
+                },
+                //取消事件
+                editFormCancel: function () {
+                    ${className}FromCommon.cancelAction();
+                },
+                <#list table.columns as column>
+                <#if column.sqlName?contains("img") || column.sqlName?contains("icon")>
+                //上传图片成功的回调事件
+                handleUpload${column.columnName}Success:function(res, file) {
+                    var _self = this;
+                    _self.editForm.${column.columnNameLower} = commonUtils.uploadImageSuccess(res, file, _self);
+                },
+                </#if>
+                </#list>
+                //上传图片前的验证事件
+                beforeAvatarUpload:function(file) {
+                    var _self = this;
+                    commonUtils.uploadImageCheck(file, _self);
+                }
+            }
+        });
+    });
+</script>
