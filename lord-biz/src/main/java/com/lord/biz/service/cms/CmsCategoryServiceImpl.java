@@ -81,11 +81,6 @@ public class CmsCategoryServiceImpl extends CategoryServiceImpl implements CmsCa
     }
 
     @Override
-    public List<TreeNode> getTree() {
-        return super.getTreeNodes();
-    }
-
-    @Override
     protected List<Category> findAllCategory() {
         List<CmsCategory> categoryList = cmsCategoryDao.findAll(new Sort(new Sort.Order(Sort.Direction.ASC, "level"),
                 new Sort.Order(Sort.Direction.ASC, "orderValue")));

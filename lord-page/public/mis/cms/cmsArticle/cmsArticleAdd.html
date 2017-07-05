@@ -112,7 +112,16 @@
                             <el-input-number v-model="editForm.orderValue" :min="0"></el-input-number>
                         </el-form-item>
                 </el-tab-pane>
-                <el-tab-pane label="文章内容" name="second">配置管理</el-tab-pane>
+                <el-tab-pane label="文章内容" name="second">
+                    <el-tabs type="card">
+                        <el-tab-pane label="PC">
+                            <script id="articlePCContent" name="articlePCContent" type="text/plain"></script>
+                        </el-tab-pane>
+                        <el-tab-pane label="移动">
+                            <script id="articleMobileContent" name="articleMobileContent" type="text/plain"></script>
+                        </el-tab-pane>
+                    </el-tabs>
+                </el-tab-pane>
                 <el-tab-pane label="关联文章" name="third">角色管理</el-tab-pane>
                 <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
             </el-tabs>
@@ -135,6 +144,8 @@
         //清空参数
         pageParam = Object.assign({}, {});
 
+        var pcUe, mobileUe;
+
         var cmsArticleAddView = new Vue({
             el: '#cmsArticleAddView',
             data: CmsArticleFromCommon.data,
@@ -144,18 +155,22 @@
                 //获取下拉框选项
                 CmsArticleFromCommon.loadSelect(_self);
                 _self.editForm = Object.assign({}, CmsArticleFromCommon.defaultModel);
+
+                pcUe = UE.getEditor('articlePCContent', {initialFrameHeight:500});
+                mobileUe = UE.getEditor('articleMobileContent', {initialFrameHeight:500});
             },
             methods: {
                 //保存事件
                 editSubmit: function (formName) {
                     var _self = this;
-                    _self.$refs[formName].validate(function(valid){
+                    alert(pcUe.getContent());
+                    /*_self.$refs[formName].validate(function(valid){
                         if (valid) {
                             CmsArticleFromCommon.saveAction(_self);
                         } else{
                             _self.$message.error("请正确填写表单！");
                         }
-                    });
+                    });*/
                 },
                 //取消事件
                 editFormCancel: function () {

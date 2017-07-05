@@ -1,5 +1,6 @@
 package com.lord.web.controller.cms;
 
+import com.lord.common.dto.OptionNode;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.QueryParams;
 import com.lord.common.dto.TreeNode;
@@ -39,7 +40,20 @@ public class CmsCategoryController {
             param.setId(queryParams.getLongId());
             param.setName(queryParams.getName());
         }
-        List<TreeNode> treeNodes = cmsCategoryService.getTree();
+        List<TreeNode> treeNodes = cmsCategoryService.getTreeNodes();
+        return Result.success("查询成功", treeNodes);
+    }
+
+    @ApiOperation(value = "查询系统菜单的级联选择器数据")
+    @RequestMapping(value = "/api/admin/cms/cmsCategory/getOptions", method = {RequestMethod.GET, RequestMethod.POST})
+    public Result getOptions(@ModelAttribute QueryParams queryParams) {
+        CmsCategory param = new CmsCategory();
+        if (queryParams != null) {
+            //TODO:待修改
+            param.setId(queryParams.getLongId());
+            param.setName(queryParams.getName());
+        }
+        List<OptionNode> treeNodes = cmsCategoryService.getOptions();
         return Result.success("查询成功", treeNodes);
     }
 

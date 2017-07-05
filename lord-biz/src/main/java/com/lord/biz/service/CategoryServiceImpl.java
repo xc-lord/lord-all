@@ -1,6 +1,7 @@
 package com.lord.biz.service;
 
 import com.lord.common.dto.Category;
+import com.lord.common.dto.OptionNode;
 import com.lord.common.dto.TreeNode;
 import com.lord.utils.Preconditions;
 import org.apache.commons.lang3.StringUtils;
@@ -100,13 +101,42 @@ public abstract class CategoryServiceImpl {
     }
 
     public List<TreeNode> getTreeNodes() {
-        List<Category> categoryList = findAllCategory();
         List<TreeNode> list = new ArrayList<>();
+        List<Category> categoryList = findAllCategory();
         if (categoryList == null || categoryList.size() < 1) {
             return list;
         }
 
         long rootParentId = 0L;
+        Map<Long, List<Category>> parentMap = getCategoryMap(rootParentId, categoryList);
+
+        List<Category> rootList = parentMap.get(rootParentId);
+        for (Category sub : rootList) {
+            TreeNode treeNode = setTreeNode(sub, parentMap);
+            list.add(treeNode);
+        }
+        return list;
+    }
+
+    public List<OptionNode> getOptions() {
+        List<OptionNode> list = new ArrayList<>();
+        List<Category> categoryList = findAllCategory();
+        if (categoryList == null || categoryList.size() < 1) {
+            return list;
+        }
+
+        long rootParentId = 0L;
+        Map<Long, List<Category>> parentMap = getCategoryMap(rootParentId, categoryList);
+
+        List<Category> rootList = parentMap.get(rootParentId);
+        for (Category sub : rootList) {
+            OptionNode treeNode = setOptionNode(sub, parentMap);
+            list.add(treeNode);
+        }
+        return list;
+    }
+
+    private Map<Long, List<Category>> getCategoryMap(long rootParentId, List<Category> categoryList) {
         Map<Long, List<Category>> parentMap = new HashMap<>();
         for (Category category : categoryList) {
             Long parentId = category.getParentId();
@@ -118,13 +148,7 @@ public abstract class CategoryServiceImpl {
             }
             parentMap.get(parentId).add(category);
         }
-
-        List<Category> rootList = parentMap.get(rootParentId);
-        for (Category sub : rootList) {
-            TreeNode treeNode = setTreeNode(sub, parentMap);
-            list.add(treeNode);
-        }
-        return list;
+        return parentMap;
     }
 
     private TreeNode setTreeNode(Category sub, Map<Long, List<Category>> parentMap) {
@@ -138,6 +162,27 @@ public abstract class CategoryServiceImpl {
             }
             treeNode.setChildren(sList);
         }
+        return treeNode;
+    }
+
+    private OptionNode setOptionNode(Category sub, Map<Long, List<Category>> parentMap) {
+        OptionNode treeNode = parseOptionNode(sub);
+        List<Category> subList = parentMap.get(sub.getId());
+        if (subList != null && subList.size() > 0) {
+            List<OptionNode> sList = new ArrayList<>();
+            for (Category category : subList) {
+                OptionNode sNode = setOptionNode(category, parentMap);
+                sList.add(sNode);
+            }
+            treeNode.setChildren(sList);
+        }
+        return treeNode;
+    }
+
+    private OptionNode parseOptionNode(Category sub) {
+        OptionNode treeNode = new OptionNode();
+        treeNode.setValue(sub.getId() + "");
+        treeNode.setLabel(sub.getName());
         return treeNode;
     }
 

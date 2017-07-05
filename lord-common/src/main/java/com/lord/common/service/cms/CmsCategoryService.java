@@ -1,9 +1,6 @@
 package com.lord.common.service.cms;
 
-import com.lord.common.dto.PagerSort;
-import com.lord.common.dto.Pager;
-import com.lord.common.dto.PagerParam;
-import com.lord.common.dto.TreeNode;
+import com.lord.common.dto.*;
 import com.lord.common.model.cms.CmsCategory;
 
 import java.util.List;
@@ -89,5 +86,11 @@ public interface CmsCategoryService {
      * 获得树形结构
      * @return
      */
-    List<TreeNode> getTree();
+    List<TreeNode> getTreeNodes();
+
+    /**
+     * 获得级联选择器数据
+     * @return
+     */
+    List<OptionNode> getOptions();
 }
