@@ -154,7 +154,6 @@
                 }
                 //搜索
                 $.ajax({
-                    async: true,
                     url: '/api/admin/mis/misRole/list.do',
                     data: paramData,
                     dataType: "json"
@@ -182,7 +181,6 @@
                 }
                 //修改排序值
                 $.ajax({
-                    async: true,
                     url: '/api/admin/mis/misRole/updateOrderValue.do',
                     data: {id: id, orderValue: orderValue},
                     dataType: "json"
@@ -283,7 +281,6 @@
                 }).then(function () {
                     //删除记录
                     $.ajax({
-                        async: true,
                         url: '/api/admin/mis/misRole/remove.do',
                         data: {ids: ids},
                         dataType: "json"

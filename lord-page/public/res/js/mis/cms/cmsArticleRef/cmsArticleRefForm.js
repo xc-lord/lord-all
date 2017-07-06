@@ -36,7 +36,6 @@ var CmsArticleRefFromCommon = {
     loadSelect: function (_self) {
         //获取下拉框选项
         $.ajax({
-            async: true,
             url: '/api/mis/getEnumType.do',
             data: {cls: "MisUserStatus"},
             dataType: "json"
@@ -54,7 +53,6 @@ var CmsArticleRefFromCommon = {
         //转换称时间戳
         //保存异步提交
         $.ajax({
-            async: true,
             method: "post",
             url: '/api/admin/cms/cmsArticleRef/saveOrUpdate.do',
             data: _self.editForm,

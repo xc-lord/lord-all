@@ -15,7 +15,7 @@
 
     <div class="block" id="vueComponent">
         <span class="demonstration">{{parentMsg}}hover 触发子菜单</span>
-        <mis-cascader ref="cmpSelect" v-on:cascader-changed="getOptions" cascader-api-url="/api/admin/cms/cmsCategory/getOptions.do"></mis-cascader>
+        <mis-cascader ref="cmpSelect" placeholder="文章" api-url="/api/admin/cms/cmsCategory/getOptions.do" v-on:cascader-changed="getOptions" :can-select-all="true"></mis-cascader>
     </div>
 
     <script>
@@ -23,10 +23,12 @@
             el: '#vueComponent',
             data:{
                 parentMsg:"父组件信息",
+                selectValue:["1","3"],
             },
             methods:{
                 getOptions:function(values) {
                     console.info(values[values.length-1]);
+                    console.info(values);
                 }
             }
         })

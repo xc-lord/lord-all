@@ -42,7 +42,7 @@ public class MisMenuController {
             param.setId(queryParams.getLongId());
             param.setName(queryParams.getName());
         }
-        List<TreeNode> treeNodes = misMenuService.getTree();
+        List<TreeNode> treeNodes = misMenuService.getTreeNodes();
         return Result.success("查询成功", treeNodes);
     }
 

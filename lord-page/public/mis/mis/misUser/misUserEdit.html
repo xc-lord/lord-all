@@ -126,7 +126,6 @@
                 MisUserFromCommon.loadSelect(_self);
                 //根据Id,获取编辑的对象
                 $.ajax({
-                    async: true,
                     url: '/api/admin/mis/misUser/' + pageParam.id + ".do",
                     dataType: "json"
                 }).done(function (res) {

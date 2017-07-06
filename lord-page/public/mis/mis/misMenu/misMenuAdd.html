@@ -118,7 +118,6 @@
                 if(pageParam.parentId) {
                     //根据Id,获取父节点
                     $.ajax({
-                        async: true,
                         url: '/api/admin/mis/misMenu/' + pageParam.parentId + ".do",
                         dataType: "json"
                     }).done(function (res) {

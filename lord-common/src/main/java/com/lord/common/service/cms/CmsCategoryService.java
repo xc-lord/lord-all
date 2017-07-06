@@ -2,6 +2,7 @@ package com.lord.common.service.cms;
 
 import com.lord.common.dto.*;
 import com.lord.common.model.cms.CmsCategory;
+import com.lord.common.service.CategoryService;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * @version 1.0
  * @Date 2017年07月01日 16:25:37
  */
-public interface CmsCategoryService {
+public interface CmsCategoryService extends CategoryService {
 
     /**
      * 根据主键Id查询
@@ -81,16 +82,4 @@ public interface CmsCategoryService {
      * @return
      */
     boolean isExist(Long id, String rowName, String rowValue);
-
-    /**
-     * 获得树形结构
-     * @return
-     */
-    List<TreeNode> getTreeNodes();
-
-    /**
-     * 获得级联选择器数据
-     * @return
-     */
-    List<OptionNode> getOptions();
 }

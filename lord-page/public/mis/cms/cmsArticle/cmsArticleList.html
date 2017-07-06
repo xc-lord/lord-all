@@ -19,20 +19,12 @@
                 <el-input v-model="searchForm.name" placeholder="名称"></el-input>
             </el-form-item>
             <!--TODO:待修改-->
-            <el-form-item label="状态">
-                <el-select v-model="searchForm.state" placeholder="请选择">
-                    <el-option
-                            v-for="item in enumTypeSelect"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
+            <el-form-item label="分类">
+                <mis-cascader ref="cmpSelect" placeholder="搜索" api-url="/api/admin/cms/cmsCategory/getOptions.do" v-on:cascader-changed="getOptions" :can-select-all="true"></mis-cascader>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
                 <el-button type="success" icon="plus" @click="addClick">新增</el-button>
-                <el-button type="success" icon="plus" @click="dialogAddClick">弹窗新增</el-button>
             </el-form-item>
         </el-form>
     </el-row>
@@ -220,9 +212,6 @@
                     <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">
                         删除
                     </el-button>
-                    <el-button :plain="true" type="success" size="small" icon="edit" @click="dialogEditClick(scope.row)">
-                        弹窗编辑
-                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -284,6 +273,8 @@
             dialogFormUrl: '',
             //弹窗表单是否显示
             dialogFormVisible: false,
+            //分类信息
+            categoryArr:[],
         },
         //数据初始化
         created: function () {
@@ -291,7 +282,6 @@
             //TODO:待修改
             //获取枚举类型
             $.ajax({
-                async: true,
                 url: '/api/mis/getEnumType.do',
                 data: {cls: "MisUserStatus"},
                 dataType: "json"
@@ -334,7 +324,6 @@
                 }
                 //搜索
                 $.ajax({
-                    async: true,
                     url: '/api/admin/cms/cmsArticle/list.do',
                     data: paramData,
                     dataType: "json"
@@ -362,7 +351,6 @@
                 }
                 //修改排序值
                 $.ajax({
-                    async: true,
                     url: '/api/admin/cms/cmsArticle/updateOrderValue.do',
                     data: {id: id, orderValue: orderValue},
                     dataType: "json"
@@ -388,24 +376,15 @@
             },
             //新建事件
             addClick: function () {
+                if(this.categoryArr && this.categoryArr.length > 0) {
+                    var categoryId = this.categoryArr[this.categoryArr.length - 1];
+                    pageParam = Object.assign({}, {categoryId: categoryId});//新建文章时自动设置分类
+                }
                 window.location.href = "#/cmsArticle/add";
             },
             //表格编辑事件
             editClick: function (row) {
                 window.location.href = "#/cmsArticle/edit/" + row.id;
-            },
-            //弹窗新建事件
-            dialogAddClick: function () {
-                var _self = this;
-                _self.dialogFormVisible = true;
-                _self.dialogFormUrl = "/mis/cmsArticle/cmsArticleAdd.html";
-            },
-            //表格弹窗编辑事件
-            dialogEditClick: function (row) {
-                var _self = this;
-                pageParam = Object.assign({}, {id: row.id});//设置页面参数
-                _self.dialogFormVisible = true;
-                _self.dialogFormUrl = "/mis/cmsArticle/cmsArticleEdit.html";
             },
             //弹窗打开事件
             dialogFormOpen:function() {
@@ -463,7 +442,6 @@
                 }).then(function () {
                     //删除记录
                     $.ajax({
-                        async: true,
                         url: '/api/admin/cms/cmsArticle/remove.do',
                         data: {ids: ids},
                         dataType: "json"
@@ -513,6 +491,9 @@
                     return "";
                 }
                 return moment(date).format("YYYY-MM-DD HH:mm:ss");
+            },
+            getOptions:function(values) {
+                this.categoryArr = values;
             }
         }
     });

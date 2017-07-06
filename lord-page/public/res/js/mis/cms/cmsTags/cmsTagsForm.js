@@ -42,7 +42,6 @@ var CmsTagsFromCommon = {
     loadSelect: function (_self) {
         //获取下拉框选项
         $.ajax({
-            async: true,
             url: '/api/mis/getEnumType.do',
             data: {cls: "MisUserStatus"},
             dataType: "json"
@@ -62,7 +61,6 @@ var CmsTagsFromCommon = {
 		_self.editForm.updateTime = commonUtils.toTimestamp(_self.editForm.updateTime);//更新时间
         //保存异步提交
         $.ajax({
-            async: true,
             method: "post",
             url: '/api/admin/cms/cmsTags/saveOrUpdate.do',
             data: _self.editForm,

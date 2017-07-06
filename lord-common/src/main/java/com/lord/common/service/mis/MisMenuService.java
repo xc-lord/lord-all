@@ -5,6 +5,7 @@ import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.TreeNode;
 import com.lord.common.model.mis.MisMenu;
+import com.lord.common.service.CategoryService;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * @version 1.0
  * @Date 2017年05月10日 15:51:31
  */
-public interface MisMenuService {
+public interface MisMenuService extends CategoryService {
 
     /**
      * 根据主键Id查询
@@ -80,9 +81,4 @@ public interface MisMenuService {
      */
     boolean isExist(Long id, String rowName, String rowValue);
 
-    /**
-     * 获得树形结构
-     * @return
-     */
-    List<TreeNode> getTree();
 }

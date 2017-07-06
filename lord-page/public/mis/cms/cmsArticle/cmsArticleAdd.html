@@ -141,9 +141,6 @@
 
 <script type="text/javascript">
     $.getScript('/res/js/mis/cms/cmsArticle/cmsArticleForm.js', function () {
-        //清空参数
-        pageParam = Object.assign({}, {});
-
         var pcUe, mobileUe;
 
         var cmsArticleAddView = new Vue({
@@ -156,6 +153,7 @@
                 CmsArticleFromCommon.loadSelect(_self);
                 _self.editForm = Object.assign({}, CmsArticleFromCommon.defaultModel);
 
+                _self.editForm.catId = pageParam.categoryId;
                 pcUe = UE.getEditor('articlePCContent', {initialFrameHeight:500});
                 mobileUe = UE.getEditor('articleMobileContent', {initialFrameHeight:500});
             },

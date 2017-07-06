@@ -46,7 +46,6 @@ var ${className}FromCommon = {
     loadSelect: function (_self) {
         //获取下拉框选项
         $.ajax({
-            async: true,
             url: '/api/mis/getEnumType.do',
             data: {cls: "MisUserStatus"},
             dataType: "json"
@@ -69,7 +68,6 @@ var ${className}FromCommon = {
 	</#list>        
         //保存异步提交
         $.ajax({
-            async: true,
             method: "post",
             url: '/api/admin/${bizPackage}/${classNameLower}/saveOrUpdate.do',
             data: _self.editForm,

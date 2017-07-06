@@ -254,7 +254,6 @@
             //TODO:待修改
             //获取枚举类型
             $.ajax({
-                async: true,
                 url: '/api/mis/getEnumType.do',
                 data: {cls: "MisUserStatus"},
                 dataType: "json"
@@ -297,7 +296,6 @@
                 }
                 //搜索
                 $.ajax({
-                    async: true,
                     url: '/api/admin/mis/misUser/list.do',
                     data: paramData,
                     dataType: "json"
@@ -325,7 +323,6 @@
                 }
                 //修改排序值
                 $.ajax({
-                    async: true,
                     url: '/api/admin/mis/misUser/updateOrderValue.do',
                     data: {id: id, orderValue: orderValue},
                     dataType: "json"
@@ -403,7 +400,6 @@
                 }
                 //修改密码
                 $.ajax({
-                    async: true,
                     url: '/api/admin/mis/misUser/updatePassword.do',
                     data: {id: _self.pwdForm.id, password: _self.pwdForm.password},
                     dataType: "json"
@@ -455,7 +451,6 @@
                 }).then(function () {
                     //删除记录
                     $.ajax({
-                        async: true,
                         url: '/api/admin/mis/misUser/remove.do',
                         data: {ids: ids},
                         dataType: "json"

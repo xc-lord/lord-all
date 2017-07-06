@@ -82,7 +82,6 @@
                 CmsArticleContentFromCommon.loadSelect(_self);
                 //根据Id,获取编辑的对象
                 $.ajax({
-                    async: true,
                     url: '/api/admin/cms/cmsArticleContent/' + pageParam.id + ".do",
                     dataType: "json"
                 }).done(function (res) {

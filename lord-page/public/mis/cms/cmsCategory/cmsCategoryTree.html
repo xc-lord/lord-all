@@ -80,7 +80,6 @@
             var _self = this;
             //获取枚举类型
             $.ajax({
-                async: true,
                 url: '/api/mis/getEnumType.do',
                 data: {cls: "MisUserStatus"},
                 dataType: "json"
@@ -110,7 +109,6 @@
                 var _self = this;
                 //获取树的数据
                 $.ajax({
-                    async: true,
                     url: '/api/admin/cms/cmsCategory/getTree.do',
                     dataType: "json"
                 }).done(function (res) {
@@ -131,7 +129,6 @@
                 }
                 //修改排序值
                 $.ajax({
-                    async: true,
                     url: '/api/admin/cms/cmsCategory/updateOrderValue.do',
                     data: {id: id, orderValue: orderValue},
                     dataType: "json"
@@ -208,7 +205,6 @@
                 }).then(function () {
                     //删除记录
                     $.ajax({
-                        async: true,
                         url: '/api/admin/cms/cmsCategory/remove.do',
                         data: {ids: ids},
                         dataType: "json"

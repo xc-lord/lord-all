@@ -80,10 +80,6 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
         return pageObj;
     }
 
-    public List<TreeNode> getTree() {
-        return super.getTreeNodes();
-    }
-
     @Override
     protected List<Category> findAllCategory() {
         List<MisMenu> categoryList = misMenuDao.findAll(new Sort(new Sort.Order(Sort.Direction.ASC, "level"),

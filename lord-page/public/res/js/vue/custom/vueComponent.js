@@ -1,19 +1,46 @@
 /**
  * 级联选择组件
- * 使用例子：<mis-cascader ref="cmpSelect" v-on:cascader-changed="getOptions" cascader-api-url="/api/admin/cms/cmsCategory/getOptions.do"></mis-cascader>
+ * api-url 调用的api地址
+ * default-value 级联选择的默认值
+ * cascader-changed 级联选择的选项变更时间
+ * can-select-all 可否选择任意项
+ * 使用例子：
+ * <mis-cascader ref="cmpSelect" api-url="/api/admin/cms/cmsCategory/getOptions.do" :default-value="selectValue" v-on:cascader-changed="getOptions" :can-select-all="true"></mis-cascader>
  */
 Vue.component('mis-cascader', {
-    props: ['cascaderApiUrl'],
+    props: {
+        apiUrl:String,
+        placeholder:{
+            type:String,
+            default:function (){
+                return "搜索";
+            }
+        },
+        defaultValue:{
+            type:Array,
+            default:function (){
+                return [];
+            }
+        },
+        canSelectAll:{
+            type:Boolean,
+            default:false
+        },
+    },
     template: '<el-cascader\
                         expand-trigger="hover"\
                         :options="options"\
+                        :placeholder="placeholder"\
+                        filterable\
+                        :change-on-select="selectAll"\
                         v-model="selectedOptions"\
                         @change="handleChange">\
                     </el-cascader>',
     data: function () {
         return {
             options: [],
-            selectedOptions: []
+            selectedOptions: this.defaultValue,
+            selectAll:this.canSelectAll
         };
     },
     methods:{
@@ -23,9 +50,12 @@ Vue.component('mis-cascader', {
     },
     mounted: function() {
         var _self = this;
+        if(!_self.apiUrl) {
+            return;
+        }
         //获取级联选择器的数据
         $.ajax({
-            url: _self.cascaderApiUrl,
+            url: _self.apiUrl,
             dataType: "json"
         }).done(function (res) {
             if (res.success) {
