@@ -2,6 +2,7 @@ package com.lord.web.controller.cms;
 
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.QueryParams;
+import com.lord.common.dto.cms.CmsArticleDto;
 import com.lord.common.model.cms.CmsArticle;
 import com.lord.common.service.cms.CmsArticleService;
 import com.lord.utils.Preconditions;
@@ -37,6 +38,13 @@ public class CmsArticleController {
         }
         Pager<CmsArticle> pager = cmsArticleService.pageCmsArticle(param, queryParams.getPage(), queryParams.getPageSize());
         return Result.success("查询成功", pager);
+    }
+
+    @ApiOperation(value = "保存或更新文章")
+    @RequestMapping(value = "/api/admin/cms/cmsArticle/save", method = RequestMethod.POST)
+    public Result save(@ModelAttribute CmsArticleDto pageObj) {
+        CmsArticle dbObj = cmsArticleService.save(pageObj);
+        return Result.success("保存成功", dbObj);
     }
 
     @ApiOperation(value = "保存或更新文章")

@@ -3,6 +3,7 @@ package com.lord.common.service.cms;
 import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
+import com.lord.common.dto.cms.CmsArticleDto;
 import com.lord.common.model.cms.CmsArticle;
 
 /**
@@ -81,4 +82,11 @@ public interface CmsArticleService {
      * @return
      */
     boolean isExist(Long id, String rowName, String rowValue);
+
+    /**
+     * 保存文章
+     * @param pageObj   页面对象
+     * @return
+     */
+    CmsArticle save(CmsArticleDto pageObj);
 }

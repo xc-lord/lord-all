@@ -66,6 +66,10 @@ var routes = {
     '/cmsArticle/add': function () {
         $("#showView").load("/mis/cms/cmsArticle/cmsArticleAdd.html");
     },
+    '/cmsArticle/add/:paramStr': function (paramStr) {
+        getRouterParam(paramStr);//设置参数
+        $("#showView").load("/mis/cms/cmsArticle/cmsArticleAdd.html");
+    },
     '/cmsArticle/edit/:id': function (id) {
         pageParam = Object.assign({}, {id: id});//设置页面参数
         $("#showView").load("/mis/cms/cmsArticle/cmsArticleEdit.html");
@@ -95,3 +99,15 @@ var routes = {
 };
 var router = Router(routes);
 router.init();
+
+function getRouterParam(paramStr) {
+    var param = {};
+    var paramArr = paramStr.split("-");
+    for(var index in paramArr) {
+        var p = paramArr[index];
+        p = p.split("_");
+        param[p[0]] = p[1];
+    }
+    pageParam = Object.assign({}, param);//设置页面参数
+    return param;
+}

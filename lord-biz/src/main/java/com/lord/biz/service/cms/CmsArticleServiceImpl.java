@@ -1,14 +1,18 @@
 package com.lord.biz.service.cms;
 
-import com.lord.biz.dao.cms.CmsArticleDao;
+import com.lord.biz.dao.cms.*;
+import com.lord.biz.dao.cms.specs.CmsArticleContentSpecs;
 import com.lord.biz.dao.cms.specs.CmsArticleSpecs;
+import com.lord.biz.dao.cms.specs.CmsTagsSpecs;
 import com.lord.biz.utils.ServiceUtils;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
-import com.lord.common.model.cms.CmsArticle;
+import com.lord.common.dto.cms.CmsArticleDto;
+import com.lord.common.model.cms.*;
 import com.lord.common.service.cms.CmsArticleService;
 import com.lord.utils.Preconditions;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +40,18 @@ public class CmsArticleServiceImpl implements CmsArticleService {
 
     @Autowired
     private CmsArticleDao cmsArticleDao;
+
+    @Autowired
+    private CmsTagsDao cmsTagsDao;
+
+    @Autowired
+    private CmsArticleTagsDao cmsArticleTagsDao;
+
+    @Autowired
+    private CmsArticleRefDao cmsArticleRefDao;
+
+    @Autowired
+    private CmsArticleContentDao cmsArticleContentDao;
 
     @Override
     public CmsArticle getCmsArticle(Long id) {
@@ -148,4 +164,106 @@ public class CmsArticleServiceImpl implements CmsArticleService {
         }
         return true;
     }
+
+    @Override
+    @Transactional
+    public CmsArticle save(CmsArticleDto pageObj) {
+        Preconditions.checkNotNull(pageObj, "保存对象不能为空");
+        Preconditions.checkNotNull(pageObj.getArticle(), "文章的基础信息不能为空");
+        Preconditions.checkNotNull(pageObj.getArticle().getCatId(), "文章的分类不能为空");
+        List<CmsTags> tags = saveArticleTags(pageObj.getArticleTags());//保存文章标签
+        CmsArticle article = saveOrUpdate(pageObj.getArticle());//保存文章
+        saveArticleContent(article, pageObj.getContent());//保存文章内容
+        connectArticleAndTags(article, tags);//文章与标签进行关联
+        connectArticleAndRef(article, pageObj.getArticleRefIds());//文章与关联文章进行关联
+        return article;
+    }
+
+    /**
+     * 保存文章标签
+     * @param articleTags
+     * @return
+     */
+    private List<CmsTags> saveArticleTags(List<String> articleTags) {
+        List<CmsTags> list = new ArrayList<>();
+        if (CollectionUtils.isEmpty(articleTags)) {
+            return list;
+        }
+        for (String tag : articleTags) {
+            CmsTags cmsTags = cmsTagsDao.findOne(CmsTagsSpecs.queryBy("name", tag, CmsTags.class));
+            if (cmsTags == null) {
+                cmsTags = new CmsTags();
+                cmsTags.setCreateTime(new Date());
+                cmsTags.setUpdateTime(new Date());
+                cmsTags.setRemoved(false);
+                cmsTagsDao.save(cmsTags);//新增
+            }
+            list.add(cmsTags);
+        }
+        return list;
+    }
+
+    /**
+     * 保存文章内容
+     * @param article
+     * @param content
+     */
+    private void saveArticleContent(CmsArticle article, CmsArticleContent content) {
+        if (article == null || article.getId() == null || content == null) {
+            return;
+        }
+        content.setArticleId(article.getId());
+        //TODO:待添加
+        CmsArticleContent dbObj = cmsArticleContentDao.findOne(CmsArticleContentSpecs.queryBy("articleId", article.getId(), CmsArticleContent.class));
+        if (dbObj == null) {
+            //新增时，设置默认属性
+            content.setCreateTime(new Date());
+            content.setUpdateTime(new Date());
+        } else {
+            //更新时，设置不能修改的字段
+            content.setId(dbObj.getId());
+            content.setCreateTime(dbObj.getCreateTime());
+            content.setUpdateTime(new Date());//更新时间
+        }
+        cmsArticleContentDao.save(content);//新增
+    }
+
+    /**
+     * 文章与标签进行关联
+     * @param article
+     * @param tags
+     */
+    private void connectArticleAndTags(CmsArticle article, List<CmsTags> tags) {
+        if (article == null || article.getId() == null || CollectionUtils.isEmpty(tags)) {
+            return;
+        }
+        cmsArticleTagsDao.deleteByArticle(article.getId());//删除旧的关联关系
+        for (CmsTags tag : tags) {
+            CmsArticleTags cmsArticleTags = new CmsArticleTags();
+            cmsArticleTags.setArticleId(article.getId());
+            cmsArticleTags.setTagsId(tag.getId());
+            cmsArticleTagsDao.save(cmsArticleTags);
+        }
+    }
+
+    /**
+     * 文章与关联文章进行关联
+     * @param article
+     * @param articleRefIds
+     */
+    private void connectArticleAndRef(CmsArticle article, List<Long> articleRefIds) {
+        if (article == null || article.getId() == null || CollectionUtils.isEmpty(articleRefIds)) {
+            return;
+        }
+        cmsArticleRefDao.deleteByArticle(article.getId());//删除旧的关联关系
+        Long[] ids = (Long[]) articleRefIds.toArray();
+        List<CmsArticle> list = cmsArticleDao.findByIds(ids);
+        for (CmsArticle cmsArticle : list) {
+            CmsArticleRef ref = new CmsArticleRef();
+            ref.setArticleId(article.getId());
+            ref.setRefArticleId(cmsArticle.getId());
+            cmsArticleRefDao.save(ref);//保存关联文章
+        }
+    }
+
 }

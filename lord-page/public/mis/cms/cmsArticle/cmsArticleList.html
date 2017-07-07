@@ -18,9 +18,8 @@
             <el-form-item label="名称">
                 <el-input v-model="searchForm.name" placeholder="名称"></el-input>
             </el-form-item>
-            <!--TODO:待修改-->
             <el-form-item label="分类">
-                <mis-cascader ref="cmpSelect" placeholder="搜索" api-url="/api/admin/cms/cmsCategory/getOptions.do" v-on:cascader-changed="getOptions" :can-select-all="true"></mis-cascader>
+                <mis-cascader ref="cmpSelect" placeholder="搜索" api-url="/api/admin/cms/cmsCategory/getOptions.do" :default-value="categoryArr" v-on:cascader-changed="getOptions" :can-select-all="true"></mis-cascader>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
@@ -378,7 +377,8 @@
             addClick: function () {
                 if(this.categoryArr && this.categoryArr.length > 0) {
                     var categoryId = this.categoryArr[this.categoryArr.length - 1];
-                    pageParam = Object.assign({}, {categoryId: categoryId});//新建文章时自动设置分类
+                    window.location.href = "#/cmsArticle/add/catId_" + categoryId;
+                    return;
                 }
                 window.location.href = "#/cmsArticle/add";
             },

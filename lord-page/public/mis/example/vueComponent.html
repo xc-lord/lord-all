@@ -15,7 +15,7 @@
 
     <div class="block" id="vueComponent">
         <span class="demonstration">{{parentMsg}}hover 触发子菜单</span>
-        <mis-cascader ref="cmpSelect" placeholder="文章" api-url="/api/admin/cms/cmsCategory/getOptions.do" v-on:cascader-changed="getOptions" :can-select-all="true"></mis-cascader>
+        <mis-cascader ref="cmpSelect" placeholder="文章" default-one-value="5" api-url="/api/admin/cms/cmsCategory/getOptions.do" v-on:cascader-changed="getOptions" :can-select-all="true"></mis-cascader>
     </div>
 
     <script>

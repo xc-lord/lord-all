@@ -26,6 +26,7 @@ public interface CmsArticleTagsDao extends JpaRepository<CmsArticleTags, Long>, 
     @Query("select u from CmsArticleTags u where u.id in ?1")
     List<CmsArticleTags> findByIds(Long... ids);
 
-
-	//在此添加你的自定义方法...
+    @Modifying
+    @Query("delete from CmsArticleTags where articleId=?1")
+    void deleteByArticle(Long id);
 }

@@ -26,6 +26,7 @@ public interface CmsArticleRefDao extends JpaRepository<CmsArticleRef, Long>, Jp
     @Query("select u from CmsArticleRef u where u.id in ?1")
     List<CmsArticleRef> findByIds(Long... ids);
 
-
-	//在此添加你的自定义方法...
+    @Modifying
+    @Query("delete from CmsArticleRef where articleId=?1")
+    void deleteByArticle(Long articleId);
 }

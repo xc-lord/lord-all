@@ -59,6 +59,19 @@ var CmsArticleFromCommon = {
         cmsArticleStatus: [],
         //选项卡默认显示的窗口
         activeTabName:"article_base",
+        //分类数组
+        categoryArr:[],
+        options5: [{
+            value: 'HTML',
+            label: 'HTML'
+        }, {
+            value: 'CSS',
+            label: 'CSS'
+        }, {
+            value: 'JavaScript',
+            label: 'JavaScript'
+        }],
+        value10: []
     },
     //加载下拉框的数据
     loadSelect: function (_self) {
