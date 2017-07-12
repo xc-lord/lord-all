@@ -46,9 +46,10 @@ public class CommonController
         {
             for (String className : cls)
             {
+                String clsName = "";
                 if (className.contains("_"))
                 {
-                    className = className.replaceAll("_", ".");
+                    clsName = className.replaceAll("_", ".");
                 }
                 if (enumMaps.get(className) != null)
                 {
@@ -56,7 +57,7 @@ public class CommonController
                     continue;
                 }
                 logger.info("使用反射加载{}的枚举类型列表", className);
-                Class aClass = Class.forName("com.lord.common.constant." + className);
+                Class aClass = Class.forName("com.lord.common.constant." + clsName);
                 Method method = aClass.getMethod("values");
                 BaseEnumType inter[] = (BaseEnumType[]) method.invoke(null, null);
                 JSONArray enumArray = new JSONArray();
