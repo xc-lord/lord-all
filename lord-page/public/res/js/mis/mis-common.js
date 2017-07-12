@@ -117,6 +117,11 @@ var commonUtils = {
         }
         return ids;
     },
+    /**
+     * vue查询枚举类型
+     * @param _self
+     * @param cls
+     */
     vueGetEnumType:function(_self, cls) {
         //获取枚举类型
         $.ajax({
@@ -143,6 +148,22 @@ var commonUtils = {
                 _self.$message.error(res.msg);//提示错误
             }
         });
+    },
+    /**
+     * 数组是否包含某个元素
+     * @param arr
+     * @param obj
+     * @returns {boolean}
+     */
+    arrayContains:function contains(arr, obj) {
+        var i = arr.length;
+        while (i--) {
+            console.info(arr[i] + "=" + obj + "   " + (arr[i] == obj));
+            if (arr[i] == obj) {
+                return true;
+            }
+        }
+        return false;
     }
 };
 

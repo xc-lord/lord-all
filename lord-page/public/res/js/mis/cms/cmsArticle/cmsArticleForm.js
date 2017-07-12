@@ -83,7 +83,7 @@ var CmsArticleFromCommon = {
         //多选值
         multipleSelection: [],
         dialogFormVisible:false,
-        searchArticleIds:[],
+        refArticleIds:[],
     },
     //加载下拉框的数据
     loadSelect: function (_self) {

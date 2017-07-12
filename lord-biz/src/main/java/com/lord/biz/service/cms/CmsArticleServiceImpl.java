@@ -321,7 +321,7 @@ public class CmsArticleServiceImpl implements CmsArticleService {
             return;
         }
         cmsArticleRefDao.deleteByArticle(article.getId());//删除旧的关联关系
-        Long[] ids = (Long[]) articleRefIds.toArray();
+        Long[] ids = articleRefIds.toArray(new Long[articleRefIds.size()]);
         List<CmsArticle> list = cmsArticleDao.findByIds(ids);
         for (CmsArticle cmsArticle : list) {
             CmsArticleRef ref = new CmsArticleRef();

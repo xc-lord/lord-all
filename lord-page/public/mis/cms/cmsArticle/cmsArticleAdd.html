@@ -65,9 +65,9 @@
                                     placeholder="请选择文章标签">
                                 <el-option
                                         v-for="item in tagOptions"
-                                        :key="item.id"
+                                        :key="item.name"
                                         :label="item.name"
-                                        :value="item.id">
+                                        :value="item.name">
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -103,6 +103,9 @@
                     <!--列表顶部搜索和工具条-->
                     <el-row>
                         <el-form :inline="true" class="demo-form-inline">
+                            <el-form-item label="已关联的文章ID" prop="articleRefIds">
+                                <el-input v-model="editForm.articleRefIds" auto-complete="off"></el-input>
+                            </el-form-item>
                             <el-form-item>
                                 <el-button type="success" icon="plus" @click="addArticleRefClick">添加关联文章</el-button>
                             </el-form-item>
@@ -419,7 +422,20 @@
                 },
                 dialogFormClose:function(ids) {
                     console.info(ids);
-                    this.dialogFormVisible = false;
+                    var _self = this;
+                    var refIds = [];
+                    if(commonUtils.isNotEmpty(_self.editForm.articleRefIds)) {
+                        refIds = _self.editForm.articleRefIds.split(",");
+                    }
+                    console.info("refIds = " + ids);
+                    for(var i=0;i<ids.length;i++) {
+                        var id = ids[i];
+                        if(!commonUtils.arrayContains(refIds, id)) {
+                            refIds.push(id);
+                        }
+                    }
+                    _self.editForm.articleRefIds = commonUtils.arrayToString(refIds);
+                    _self.dialogFormVisible = false;
                 },
                 addArticleRefClick:function() {
                     this.dialogFormVisible = true;
