@@ -6,11 +6,11 @@ import com.lord.common.dto.PagerParam;
 import com.lord.common.model.cms.CmsArticleContent;
 
 /**
- * 文章内容表cms_article_content的Service
+ * 文章内容cms_article_content的Service
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2017年07月01日 18:06:04
+ * @Date 2017年07月08日 15:04:19
  */
 public interface CmsArticleContentService {
 

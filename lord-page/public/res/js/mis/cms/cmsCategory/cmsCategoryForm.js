@@ -58,7 +58,7 @@ var CmsCategoryFromCommon = {
             dataType: "json"
         }).done(function (res) {
             if (res.success) {
-                _self.cmsCategoryStatus = res.data.MisUserStatus;
+                _self.cmsCategoryStatus = res.data.mis_MisUserStatus;
             } else {
                 _self.$message.error(res.msg);//提示错误
             }

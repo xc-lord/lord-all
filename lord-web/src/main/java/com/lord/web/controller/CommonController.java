@@ -27,31 +27,41 @@ import java.util.Map;
  */
 @Api(description = "全网站公共的Api")
 @RestController
-public class CommonController {
+public class CommonController
+{
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     private static Map<String, JSONArray> enumMaps = new HashMap<>();
 
-    @ApiOperation(value="获得枚举类型列表", notes="根据类名，获得类型列表")
+    @ApiOperation(value = "获得枚举类型列表", notes = "根据类名，获得类型列表")
     @ApiImplicitParam(name = "cls", value = "类名，逗号分隔", required = true, dataType = "Array", paramType = "query")
     @RequestMapping(value = "/api/mis/getEnumType", method = RequestMethod.GET)
-    public Result getEnumType(String[] cls) {
+    public Result getEnumType(String[] cls)
+    {
         Preconditions.checkNotNull(cls, "类名不能为空");
         Preconditions.checkArgument(cls.length < 1, "类名不能为空!");
         JSONObject jsonObject = new JSONObject();
-        try {
-            for (String className : cls) {
-                if (enumMaps.get(className) != null) {
+        try
+        {
+            for (String className : cls)
+            {
+                if (className.contains("_"))
+                {
+                    className = className.replaceAll("_", ".");
+                }
+                if (enumMaps.get(className) != null)
+                {
                     jsonObject.put(className, enumMaps.get(className));
                     continue;
                 }
                 logger.info("使用反射加载{}的枚举类型列表", className);
-                Class aClass = Class.forName("com.lord.common.constant.mis." + className);
+                Class aClass = Class.forName("com.lord.common.constant." + className);
                 Method method = aClass.getMethod("values");
                 BaseEnumType inter[] = (BaseEnumType[]) method.invoke(null, null);
                 JSONArray enumArray = new JSONArray();
-                for (BaseEnumType enumValue : inter) {
+                for (BaseEnumType enumValue : inter)
+                {
                     JSONObject json = new JSONObject();
                     json.put("value", enumValue);
                     json.put("label", enumValue.getName());
@@ -60,7 +70,9 @@ public class CommonController {
                 enumMaps.put(className, enumArray);//保存到缓存中
                 jsonObject.put(className, enumArray);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error("根据类名，获得类型列表失败：" + e.getMessage(), e);
         }
         return Result.success(jsonObject);

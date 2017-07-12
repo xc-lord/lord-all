@@ -30,21 +30,25 @@ var CmsArticleFromCommon = {
         publishTime: '',		//发布时间
         misUserId: 0,		//添加用户Id
         userId: 0,		//用户Id
-        allowComment: false,	//是否允许评论
+        allowComment: true,	//是否允许评论
         orderValue: 0,		//排序
         createTime: '',		//创建时间
         updateTime: '',		//更新时间
         removed: false,	//是否删除
+        content:'', //文章PC端内容
+        mcontent:'', //文章移动端内容
+        articleRefIds:'',//关联文章Id
+        articleTags:'',//文章标签
     },
     data: {
 		editLoading:false,
         //表单验证规则
         editFormRules: {
-            name: [
-                {required: true, message: '名称不能为空', trigger: 'blur'},
+            title: [
+                {required: true, message: '标题不能为空', trigger: 'blur'},
                 {
                     validator: function(rule, value, callback){
-                        return commonUtils.formRowIsExist('/api/admin/cms/cmsArticle/isExist.do',"name",rule, value, callback);
+                        return commonUtils.formRowIsExist('/api/admin/cms/cmsArticle/isExist.do',"title",rule, value, callback);
                     },
                     trigger: 'blur'
                 }
@@ -61,7 +65,8 @@ var CmsArticleFromCommon = {
         activeTabName:"article_base",
         //分类数组
         categoryArr:[],
-        options5: [{
+        //标签数组
+        tagOptions: [{
             value: 'HTML',
             label: 'HTML'
         }, {
@@ -71,18 +76,37 @@ var CmsArticleFromCommon = {
             value: 'JavaScript',
             label: 'JavaScript'
         }],
-        value10: []
+        tagValues:[],
+        //关联文章列表数据
+        refTableData: [],
+        searchRefForm:{name:""},
+        //多选值
+        multipleSelection: [],
+        dialogFormVisible:false,
+        searchArticleIds:[],
     },
     //加载下拉框的数据
     loadSelect: function (_self) {
         //获取下拉框选项
         $.ajax({
             url: '/api/mis/getEnumType.do',
-            data: {cls: "MisUserStatus"},
+            data: {cls: "cms_CmsArticleState,CheckState"},
             dataType: "json"
         }).done(function (res) {
             if (res.success) {
                 _self.cmsArticleStatus = res.data.MisUserStatus;
+            } else {
+                _self.$message.error(res.msg);//提示错误
+            }
+        });
+
+        //获取文章标签
+        $.ajax({
+            url: '/api/admin/cms/cmsTags/list.do',
+            dataType: "json"
+        }).done(function (res) {
+            if (res.success) {
+                _self.tagOptions = res.data.list;
             } else {
                 _self.$message.error(res.msg);//提示错误
             }
@@ -98,7 +122,7 @@ var CmsArticleFromCommon = {
         //保存异步提交
         $.ajax({
             method: "post",
-            url: '/api/admin/cms/cmsArticle/saveOrUpdate.do',
+            url: '/api/admin/cms/cmsArticle/save.do',
             data: _self.editForm,
             dataType: "json"
         }).done(function (res, status, xhr) {

@@ -36,9 +36,6 @@
                         <el-form-item label="文章简介" prop="intro">
                             <el-input v-model="editForm.intro" auto-complete="off"></el-input>
                         </el-form-item>
-                        <el-form-item label="作者Id">
-                            <el-input-number v-model="editForm.authorId" :min="0"></el-input-number>
-                        </el-form-item>
                         <el-form-item label="作者头像" prop="authorImg">
                             <el-upload
                                     class="avatar-uploader"
@@ -61,66 +58,26 @@
                         </el-form-item>
                         <el-form-item label="文章标签" prop="tags">
                             <el-select
-                                    v-model="value10"
+                                    v-model="tagValues"
                                     multiple
                                     filterable
                                     allow-create
                                     placeholder="请选择文章标签">
                                 <el-option
-                                        v-for="item in options5"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
+                                        v-for="item in tagOptions"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id">
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="文章标签" prop="tags">
-                            <el-input v-model="editForm.tags" auto-complete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="文章标签json" prop="tagsJson">
-                            <el-input v-model="editForm.tagsJson" auto-complete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="站点id">
-                            <el-input-number v-model="editForm.siteId" :min="0"></el-input-number>
-                        </el-form-item>
                         <el-form-item label="分类">
-                            <mis-cascader ref="cmpSelect" placeholder="搜索" api-url="/api/admin/cms/cmsCategory/getOptions.do"
+                            <mis-cascader ref="cmpSelect" placeholder="请选择文章分类" api-url="/api/admin/cms/cmsCategory/getOptions.do"
                                           :default-one-value="editForm.catId +''" v-on:cascader-changed="getCategory" :can-select-all="true">
                             </mis-cascader>
                         </el-form-item>
-                        <el-form-item label="分类id">
-                            <el-input-number v-model="editForm.catId" :min="0"></el-input-number>
-                        </el-form-item>
-                        <el-form-item label="分类名称" prop="catName">
-                            <el-input v-model="editForm.catName" auto-complete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="一级分类">
-                            <el-input-number v-model="editForm.catOneId" :min="0"></el-input-number>
-                        </el-form-item>
-                        <el-form-item label="二级分类">
-                            <el-input-number v-model="editForm.catTwoId" :min="0"></el-input-number>
-                        </el-form-item>
-                        <el-form-item label="三级分类">
-                            <el-input-number v-model="editForm.catThreeId" :min="0"></el-input-number>
-                        </el-form-item>
-                        <el-form-item label="审核状态" prop="checkState">
-                            <el-input v-model="editForm.checkState" auto-complete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="文章状态" prop="state">
-                            <el-input v-model="editForm.state" auto-complete="off"></el-input>
-                        </el-form-item>
                         <el-form-item label="样式" prop="style">
                             <el-input v-model="editForm.style" auto-complete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="发布时间">
-                            <el-date-picker type="datetime" placeholder="选择日期和时间"
-                                            v-model="editForm.publishTime"></el-date-picker>
-                        </el-form-item>
-                        <el-form-item label="添加用户Id">
-                            <el-input-number v-model="editForm.misUserId" :min="0"></el-input-number>
-                        </el-form-item>
-                        <el-form-item label="用户Id">
-                            <el-input-number v-model="editForm.userId" :min="0"></el-input-number>
                         </el-form-item>
                         <el-form-item label="是否允许评论">
                             <el-radio-group v-model="editForm.allowComment">
@@ -142,7 +99,206 @@
                         </el-tab-pane>
                     </el-tabs>
                 </el-tab-pane>
-                <el-tab-pane label="关联文章" name="third">角色管理</el-tab-pane>
+                <el-tab-pane label="关联文章" name="third">
+                    <!--列表顶部搜索和工具条-->
+                    <el-row>
+                        <el-form :inline="true" class="demo-form-inline">
+                            <el-form-item>
+                                <el-button type="success" icon="plus" @click="addArticleRefClick">添加关联文章</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </el-row>
+                    <!--列表-->
+                    <el-row>
+                        <el-table
+                                :data="refTableData"
+                                border
+                                @selection-change="selectionChange"
+                                style="width: 100%">
+                            <el-table-column
+                                    type="selection"
+                                    width="50">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="id"
+                                    label="ID"
+                                    width="80">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="title"
+                                    label="文章标题"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="titleSub"
+                                    label="副标题"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    label="封面"
+                                    width="135">
+                                <template scope="scope">
+                                    <div class="el-table-img-div">
+                                        <img :src="scope.row.coverImg" class="el-table-img">
+                                    </div>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                    prop="intro"
+                                    label="文章简介"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="authorId"
+                                    label="作者Id"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    label="作者头像"
+                                    width="135">
+                                <template scope="scope">
+                                    <div class="el-table-img-div">
+                                        <img :src="scope.row.authorImg" class="el-table-img">
+                                    </div>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                    prop="authorName"
+                                    label="作者名称"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="source"
+                                    label="来源"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="sourceUrl"
+                                    label="来源链接"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="tags"
+                                    label="文章标签"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="tagsJson"
+                                    label="文章标签json"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="siteId"
+                                    label="站点id"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="catId"
+                                    label="分类id"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="catName"
+                                    label="分类名称"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="catOneId"
+                                    label="一级分类"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="catTwoId"
+                                    label="二级分类"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="catThreeId"
+                                    label="三级分类"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="checkState"
+                                    label="审核状态"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="state"
+                                    label="文章状态"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="style"
+                                    label="样式"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="publishTime"
+                                    label="发布时间"
+                                    :formatter="dateFormat"
+                                    width="180">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="misUserId"
+                                    label="添加用户Id"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="userId"
+                                    label="用户Id"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="allowComment"
+                                    label="是否允许评论"
+                                    :formatter="booleanFormat"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    label="排序值"
+                                    width="100">
+                                <template scope="scope">
+                                    <el-input v-model="scope.row.orderValue" placeholder="排序值" size="small" @blur="orderBlurEvent"
+                                              :data-id="scope.row.id"></el-input>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                    prop="createTime"
+                                    label="创建时间"
+                                    :formatter="dateFormat"
+                                    width="180">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="updateTime"
+                                    label="更新时间"
+                                    :formatter="dateFormat"
+                                    width="180">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="removed"
+                                    label="是否删除"
+                                    :formatter="booleanFormat"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    fixed="right"
+                                    label="操作"
+                                    width="320">
+                                <template scope="scope">
+                                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">
+                                        编辑
+                                    </el-button>
+                                    <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">
+                                        删除
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-row>
+                    <el-dialog v-model="dialogFormVisible" @open="dialogFormOpen">
+                        <div id="dialogForm">...</div>
+                    </el-dialog>
+                </el-tab-pane>
                 <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
             </el-tabs>
             </el-form>
@@ -158,8 +314,14 @@
 
 </div>
 <!-- UI界面 end -->
-
+<!-- 配置文件 -->
+<script type="text/javascript" src="/res/js/ueditor/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="/res/js/ueditor/ueditor.all.min.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="/res/js/ueditor/ueditor.parse.min.js"></script>
 <script type="text/javascript">
+    var searchCmsArticleParentView;
     $.getScript('/res/js/mis/cms/cmsArticle/cmsArticleForm.js', function () {
         var pcUe, mobileUe;
 
@@ -182,14 +344,16 @@
                 //保存事件
                 editSubmit: function (formName) {
                     var _self = this;
-                    alert(pcUe.getContent());
-                    /*_self.$refs[formName].validate(function(valid){
+                    _self.editForm.content = pcUe.getContent();
+                    _self.editForm.mcontent = mobileUe.getContent();
+                    _self.editForm.articleTags = _self.tagValues.join(",");
+                    _self.$refs[formName].validate(function(valid){
                         if (valid) {
                             CmsArticleFromCommon.saveAction(_self);
                         } else{
                             _self.$message.error("请正确填写表单！");
                         }
-                    });*/
+                    });
                 },
                 //取消事件
                 editFormCancel: function () {
@@ -216,9 +380,53 @@
                 },
                 //分类级联选择，修改分类
                 getCategory:function(values) {
+                    var _self = this;
                     this.categoryArr = values;
-                }
+                    _self.editForm.catId = values[values.length - 1];
+                },
+                //布尔值格式化
+                booleanFormat: function (row, column) {
+                    var columnName = column.property;
+                    var columnVal = row[columnName];
+                    if (columnVal) {
+                        return "是";
+                    }
+                    return "否";
+                },
+                //时间格式化
+                dateFormat: function (row, column) {
+                    var date = row[column.property];
+                    if (date == undefined) {
+                        return "";
+                    }
+                    return moment(date).format("YYYY-MM-DD HH:mm:ss");
+                },
+                //表格勾选事件
+                selectionChange: function (val) {
+                    this.multipleSelection = val;
+                },
+                dialogFormOpen:function() {
+                    var _self = this;
+                    pageParam.showEditPage = false;
+                    var dialogUrl = "/mis/cms/cmsArticle/cmsArticleList.html";
+                    if (commonUtils.isNotEmpty(dialogUrl)) {
+                        $.ajax({
+                            url: dialogUrl
+                        }).done(function (res) {
+                            $("#dialogForm").html(res);
+                        });
+                    }
+                },
+                dialogFormClose:function(ids) {
+                    console.info(ids);
+                    this.dialogFormVisible = false;
+                },
+                addArticleRefClick:function() {
+                    this.dialogFormVisible = true;
+                },
             }
         });
+
+        searchCmsArticleParentView = cmsArticleAddView;
     });
 </script>

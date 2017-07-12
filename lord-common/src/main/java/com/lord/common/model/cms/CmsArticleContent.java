@@ -7,11 +7,11 @@ import java.io.Serializable;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 /**
- * 文章内容表cms_article_content的JPA对象
+ * 文章内容cms_article_content的JPA对象
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2017年07月01日 18:06:04
+ * @Date 2017年07月08日 15:04:19
  */
 @Entity
 @Table(name = "cms_article_content")
@@ -54,8 +54,8 @@ public class CmsArticleContent implements Serializable {
 	 * 移动端编辑的内容
 	 */
 	@Lob
-	@Column(name = "m_contentt_edit", nullable = true, length = 65535)
-	private String mcontenttEdit;
+	@Column(name = "m_content_edit", nullable = true, length = 65535)
+	private String mcontentEdit;
 
 	/**
 	 * 创建时间
@@ -109,12 +109,12 @@ public class CmsArticleContent implements Serializable {
 		this.mcontent = mcontent;
 	}
 
-	public String getMcontenttEdit() {
-		return this.mcontenttEdit;
+	public String getMcontentEdit() {
+		return this.mcontentEdit;
 	}
 
-	public void setMcontenttEdit(String mcontenttEdit) {
-		this.mcontenttEdit = mcontenttEdit;
+	public void setMcontentEdit(String mcontentEdit) {
+		this.mcontentEdit = mcontentEdit;
 	}
 
 	public Date getCreateTime() {

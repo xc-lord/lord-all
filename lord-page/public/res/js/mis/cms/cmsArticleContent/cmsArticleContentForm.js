@@ -1,7 +1,7 @@
 /**
-	Desc: 	文章内容表的表单公共方法
+	Desc: 	文章内容的表单公共方法
 	Author: xiaocheng
-	Date: 	2017年07月01日 18:06:04
+	Date: 	2017年07月08日 15:04:19
 */
 var CmsArticleContentFromCommon = {
     //表单默认值
@@ -11,7 +11,7 @@ var CmsArticleContentFromCommon = {
         content: '',		//文章内容
         contentEdit: '',		//编辑的内容
         mcontent: '',		//移动端内容
-        mcontenttEdit: '',		//移动端编辑的内容
+        mcontentEdit: '',		//移动端编辑的内容
         createTime: '',		//创建时间
         updateTime: '',		//更新时间
     },
@@ -42,11 +42,11 @@ var CmsArticleContentFromCommon = {
         //获取下拉框选项
         $.ajax({
             url: '/api/mis/getEnumType.do',
-            data: {cls: "MisUserStatus"},
+            data: {cls: "mis_MisUserStatus"},
             dataType: "json"
         }).done(function (res) {
             if (res.success) {
-                _self.cmsArticleContentStatus = res.data.MisUserStatus;
+                _self.cmsArticleContentStatus = res.data.mis_MisUserStatus;
             } else {
                 _self.$message.error(res.msg);//提示错误
             }

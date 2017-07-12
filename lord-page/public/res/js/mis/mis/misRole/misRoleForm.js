@@ -34,11 +34,11 @@ var MisRoleFromCommon = {
         //获取下拉框选项
         $.ajax({
             url: '/api/mis/getEnumType.do',
-            data: {cls: "MisUserStatus"},
+            data: {cls: "mis_MisUserStatus"},
             dataType: "json"
         }).done(function (res) {
             if (res.success) {
-                _self.misRoleStatus = res.data.misRoleStatus;
+                _self.misRoleStatus = res.data.mis_MisUserStatus;
             } else {
                 _self.$message.error(res.msg);//提示错误
             }

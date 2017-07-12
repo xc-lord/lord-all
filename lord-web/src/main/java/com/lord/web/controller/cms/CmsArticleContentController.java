@@ -13,21 +13,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 功能：文章内容表cms_article_content的Api
+ * 功能：文章内容cms_article_content的Api
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2017年07月01日 18:06:04
+ * @Date 2017年07月08日 15:04:19
  */
 @RestController
-@Api(description = "文章内容表API")
+@Api(description = "文章内容API")
 public class CmsArticleContentController {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private CmsArticleContentService cmsArticleContentService;
 
-    @ApiOperation(value = "查询文章内容表的列表")
+    @ApiOperation(value = "查询文章内容的列表")
     @RequestMapping(value = "/api/admin/cms/cmsArticleContent/list", method = {RequestMethod.GET, RequestMethod.POST})
     public Result list(@ModelAttribute QueryParams queryParams) {
         CmsArticleContent param = new CmsArticleContent();
@@ -39,14 +39,14 @@ public class CmsArticleContentController {
         return Result.success("查询成功", pager);
     }
 
-    @ApiOperation(value = "保存或更新文章内容表")
+    @ApiOperation(value = "保存或更新文章内容")
     @RequestMapping(value = "/api/admin/cms/cmsArticleContent/saveOrUpdate", method = RequestMethod.POST)
     public Result saveOrUpdate(@ModelAttribute CmsArticleContent pageObj) {
         CmsArticleContent dbObj = cmsArticleContentService.saveOrUpdate(pageObj);
         return Result.success("保存成功", dbObj);
     }
 
-    @ApiOperation(value="删除文章内容表", notes="根据主键id，删除文章内容表")
+    @ApiOperation(value="删除文章内容", notes="根据主键id，删除文章内容")
     @ApiImplicitParam(name = "ids", value = "主键Id", required = true, dataType = "Long", paramType = "query")
     @RequestMapping(value = "/api/admin/cms/cmsArticleContent/remove", method = RequestMethod.GET)
     public Result remove(Long[] ids) {
@@ -56,7 +56,7 @@ public class CmsArticleContentController {
         return Result.success("删除成功");
     }
 
-    @ApiOperation(value="获取文章内容表", notes="根据主键id，获取文章内容表")
+    @ApiOperation(value="获取文章内容", notes="根据主键id，获取文章内容")
     @ApiImplicitParam(name = "id", value = "主键Id", required = true, dataType = "Long", paramType = "path")
     @RequestMapping(value = "/api/admin/cms/cmsArticleContent/{id}", method = RequestMethod.GET)
     public Result get(@PathVariable Long id) {

@@ -59,8 +59,9 @@ var routes = {
         pageParam = Object.assign({}, {id: id});//设置页面参数
         $("#showView").load("/mis/sys/sysSite/sysSiteEdit.html");
     },
-    //文章标签
+    //文章
     '/cmsArticle': function () {
+        pageParam = Object.assign({}, {showEditPage: true});
         $("#showView").load("/mis/cms/cmsArticle/cmsArticleList.html");
     },
     '/cmsArticle/add': function () {

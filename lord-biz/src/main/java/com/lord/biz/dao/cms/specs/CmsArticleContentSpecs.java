@@ -8,11 +8,11 @@ import org.springframework.data.jpa.domain.Specification;
 import javax.persistence.criteria.*;
 
 /**
- * 文章内容表cms_article_content的动态SQL拼装工具类
+ * 文章内容cms_article_content的动态SQL拼装工具类
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2017年07月01日 18:06:04
+ * @Date 2017年07月08日 15:04:19
  */
 public class CmsArticleContentSpecs extends BaseSpecification {
 

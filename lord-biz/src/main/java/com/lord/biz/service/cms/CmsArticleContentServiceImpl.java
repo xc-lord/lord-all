@@ -23,11 +23,11 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 文章内容表cms_article_content的Service实现
+ * 文章内容cms_article_content的Service实现
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2017年07月01日 18:06:04
+ * @Date 2017年07月08日 15:04:19
  */
 @Component
 public class CmsArticleContentServiceImpl implements CmsArticleContentService {

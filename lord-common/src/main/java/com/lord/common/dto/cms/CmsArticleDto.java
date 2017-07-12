@@ -12,30 +12,31 @@ import java.util.List;
  * @version 1.0
  * @Date 2017年07月07日 17:22
  */
-public class CmsArticleDto {
-    /** 文章的基础信息 */
-    private CmsArticle article;
-    /** 文章的内容 */
-    private CmsArticleContent content;
+public class CmsArticleDto extends CmsArticle {
+
+    /** 文章的PC内容 */
+    private String content;
+    /** 文章的移动端内容 */
+    private String mcontent;
     /** 文章的关联文章 */
     private List<Long> articleRefIds;
     /** 文章的标签 */
     private List<String> articleTags;
 
-    public CmsArticle getArticle() {
-        return article;
-    }
-
-    public void setArticle(CmsArticle article) {
-        this.article = article;
-    }
-
-    public CmsArticleContent getContent() {
+    public String getContent() {
         return content;
     }
 
-    public void setContent(CmsArticleContent content) {
+    public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getMcontent() {
+        return mcontent;
+    }
+
+    public void setMcontent(String mcontent) {
+        this.mcontent = mcontent;
     }
 
     public List<Long> getArticleRefIds() {

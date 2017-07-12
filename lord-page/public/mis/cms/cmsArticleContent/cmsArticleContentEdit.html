@@ -1,13 +1,13 @@
 <!-- 
-	Desc: 	文章内容表的编辑界面
+	Desc: 	文章内容的编辑界面
 	Author: xiaocheng
-	Date: 	2017年07月01日 18:06:04
+	Date: 	2017年07月08日 15:04:19
 -->
 
 <!-- UI界面 start -->
 <div id="cmsArticleContentEditView">
     <el-row>
-        <h3><i class="el-icon-edit"></i> <a href="#/cmsArticleContent">文章内容表管理</a> / 编辑</h3>
+        <h3><i class="el-icon-edit"></i> <a href="#/cmsArticleContent">文章内容管理</a> / 编辑</h3>
     </el-row>
     <!--编辑界面-->
     <el-row type="flex" justify="center">
@@ -29,7 +29,7 @@
                     <el-input type="textarea" v-model="editForm.mcontent"></el-input>
                 </el-form-item>
 				<el-form-item label="移动端编辑的内容">
-                    <el-input type="textarea" v-model="editForm.mcontenttEdit"></el-input>
+                    <el-input type="textarea" v-model="editForm.mcontentEdit"></el-input>
                 </el-form-item>
 				<el-form-item label="创建时间">
                     <el-date-picker type="datetime" 

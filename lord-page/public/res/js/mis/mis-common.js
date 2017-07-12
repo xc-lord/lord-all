@@ -82,6 +82,41 @@ var commonUtils = {
         }
         return '';
     },
+    /**
+     * 数组转换为逗号分隔的字符串
+     * @param arr           数组
+     * @param paramName     数组的其中一个属性名
+     * @returns {string}    逗号分隔的字符串
+     */
+    arrayToString:function(arr, paramName) {
+        var ids = "";
+        for (var i = 0; i < arr.length; i++) {
+            var row = arr[i];
+            if(paramName) {
+                ids += row[paramName] + ","
+            } else {
+                ids += row + ","
+            }
+        }
+        //去掉末尾逗号
+        if(ids.indexOf(',') > -1)
+            ids = ids.substr(0, ids.length - 1);
+        return ids;
+    },
+    /**
+     * 数组对象转换为单属性的数组
+     * @param arr           数组
+     * @param paramName     数组的其中一个属性名
+     * @returns {string}    单属性的数组
+     */
+    arrayToSingleArray:function(arr, paramName) {
+        var ids = [];
+        for (var i = 0; i < arr.length; i++) {
+            var row = arr[i];
+            ids.push(row[paramName]);
+        }
+        return ids;
+    }
 };
 
 //页面的参数存储

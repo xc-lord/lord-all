@@ -1,10 +1,14 @@
 package com.lord.biz.service.cms;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.lord.biz.dao.cms.*;
 import com.lord.biz.dao.cms.specs.CmsArticleContentSpecs;
 import com.lord.biz.dao.cms.specs.CmsArticleSpecs;
 import com.lord.biz.dao.cms.specs.CmsTagsSpecs;
 import com.lord.biz.utils.ServiceUtils;
+import com.lord.common.constant.CheckState;
+import com.lord.common.constant.cms.CmsArticleState;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
@@ -12,7 +16,9 @@ import com.lord.common.dto.cms.CmsArticleDto;
 import com.lord.common.model.cms.*;
 import com.lord.common.service.cms.CmsArticleService;
 import com.lord.utils.Preconditions;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +28,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,6 +47,9 @@ public class CmsArticleServiceImpl implements CmsArticleService {
 
     @Autowired
     private CmsArticleDao cmsArticleDao;
+
+    @Autowired
+    private CmsCategoryDao cmsCategoryDao;
 
     @Autowired
     private CmsTagsDao cmsTagsDao;
@@ -65,8 +75,31 @@ public class CmsArticleServiceImpl implements CmsArticleService {
 
         if(logger.isDebugEnabled())
             logger.debug("保存" + pageObj);
-
         //验证字段的唯一性
+        Preconditions.checkArgument(isExist(pageObj.getId(), "title", pageObj.getTitle()), "文章的标题不能重复");
+
+        CmsCategory category = cmsCategoryDao.findOne(pageObj.getCatId());
+        Preconditions.checkNotNull(category, "文章的分类不存在");
+        pageObj.setCatName(category.getName());
+        Integer level = category.getLevel();
+        Preconditions.checkArgument(level == null || level < 1 || level > 4, "文章的分类等级数据不正确");
+        if (level.equals(1)) {
+            pageObj.setCatOneId(category.getId());
+        } else if(level.equals(2)) {
+            pageObj.setCatTwoId(category.getId());
+            pageObj.setCatOneId(category.getParentId());
+        } else if(level.equals(3)) {
+            pageObj.setCatThreeId(category.getId());
+            pageObj.setCatTwoId(category.getParentId());
+            CmsCategory catTwo = cmsCategoryDao.findOne(category.getParentId());
+            pageObj.setCatOneId(catTwo.getParentId());
+        } else if(level.equals(4)) {
+            CmsCategory catThree = cmsCategoryDao.findOne(category.getParentId());
+            pageObj.setCatThreeId(catThree.getId());
+            pageObj.setCatTwoId(catThree.getParentId());
+            CmsCategory catTwo = cmsCategoryDao.findOne(catThree.getParentId());
+            pageObj.setCatOneId(catTwo.getParentId());
+        }
 
         //新增记录
         if (pageObj.getId() == null) {
@@ -74,6 +107,8 @@ public class CmsArticleServiceImpl implements CmsArticleService {
             pageObj.setCreateTime(new Date());
             pageObj.setUpdateTime(new Date());
             pageObj.setRemoved(false);
+            pageObj.setCheckState(CheckState.WaitCheck.toString());
+            pageObj.setState(CmsArticleState.Create.toString());
 
             cmsArticleDao.save(pageObj);//新增
             return pageObj;
@@ -150,8 +185,7 @@ public class CmsArticleServiceImpl implements CmsArticleService {
     @Override
     public boolean isExist(Long id, String rowName, String rowValue) {
         List<String> rowList = new ArrayList<>();
-        rowList.add("name");
-        rowList.add("username");
+        rowList.add("title");
         Preconditions.checkArgument(!rowList.contains(rowName), "此字段不需要判断是否存在");
         List<CmsArticle> list = cmsArticleDao.findAll(CmsArticleSpecs.queryBy(rowName, rowValue, false, CmsArticle.class));
         if (list == null || list.size() < 1) {
@@ -169,11 +203,19 @@ public class CmsArticleServiceImpl implements CmsArticleService {
     @Transactional
     public CmsArticle save(CmsArticleDto pageObj) {
         Preconditions.checkNotNull(pageObj, "保存对象不能为空");
-        Preconditions.checkNotNull(pageObj.getArticle(), "文章的基础信息不能为空");
-        Preconditions.checkNotNull(pageObj.getArticle().getCatId(), "文章的分类不能为空");
+        Preconditions.checkNotNull(pageObj.getTitle(), "文章的标题不能为空");
+        Preconditions.checkNotNull(pageObj.getCatId(), "文章的分类不能为空");
+        CmsArticle article = new CmsArticle();
+        try {
+            BeanUtils.copyProperties(article, pageObj);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        saveOrUpdate(article);//保存文章
+        saveArticleContent(article, pageObj);//保存文章内容
         List<CmsTags> tags = saveArticleTags(pageObj.getArticleTags());//保存文章标签
-        CmsArticle article = saveOrUpdate(pageObj.getArticle());//保存文章
-        saveArticleContent(article, pageObj.getContent());//保存文章内容
         connectArticleAndTags(article, tags);//文章与标签进行关联
         connectArticleAndRef(article, pageObj.getArticleRefIds());//文章与关联文章进行关联
         return article;
@@ -196,6 +238,7 @@ public class CmsArticleServiceImpl implements CmsArticleService {
                 cmsTags.setCreateTime(new Date());
                 cmsTags.setUpdateTime(new Date());
                 cmsTags.setRemoved(false);
+                cmsTags.setName(tag);
                 cmsTagsDao.save(cmsTags);//新增
             }
             list.add(cmsTags);
@@ -206,14 +249,16 @@ public class CmsArticleServiceImpl implements CmsArticleService {
     /**
      * 保存文章内容
      * @param article
-     * @param content
+     * @param pageObj
      */
-    private void saveArticleContent(CmsArticle article, CmsArticleContent content) {
-        if (article == null || article.getId() == null || content == null) {
+    private void saveArticleContent(CmsArticle article, CmsArticleDto pageObj) {
+        if (article == null || article.getId() == null || pageObj == null) {
             return;
         }
-        content.setArticleId(article.getId());
-        //TODO:待添加
+        if (StringUtils.isEmpty(pageObj.getContent()) && StringUtils.isEmpty(pageObj.getMcontent())) {
+            return;
+        }
+        CmsArticleContent content = new CmsArticleContent();
         CmsArticleContent dbObj = cmsArticleContentDao.findOne(CmsArticleContentSpecs.queryBy("articleId", article.getId(), CmsArticleContent.class));
         if (dbObj == null) {
             //新增时，设置默认属性
@@ -225,6 +270,14 @@ public class CmsArticleServiceImpl implements CmsArticleService {
             content.setCreateTime(dbObj.getCreateTime());
             content.setUpdateTime(new Date());//更新时间
         }
+
+        //TODO:待添加
+        content.setContent(pageObj.getContent());
+        content.setContentEdit(pageObj.getContent());
+        content.setMcontent(pageObj.getMcontent());
+        content.setMcontentEdit(pageObj.getMcontent());
+        content.setArticleId(article.getId());
+
         cmsArticleContentDao.save(content);//新增
     }
 
@@ -238,12 +291,24 @@ public class CmsArticleServiceImpl implements CmsArticleService {
             return;
         }
         cmsArticleTagsDao.deleteByArticle(article.getId());//删除旧的关联关系
+        String tagNames = "";
+        JSONArray array = new JSONArray();
         for (CmsTags tag : tags) {
             CmsArticleTags cmsArticleTags = new CmsArticleTags();
             cmsArticleTags.setArticleId(article.getId());
             cmsArticleTags.setTagsId(tag.getId());
             cmsArticleTagsDao.save(cmsArticleTags);
+
+            tagNames += tag.getName() + ",";
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("tagId", tag.getId());
+            jsonObject.put("tagName", tag.getName());
+            array.add(jsonObject);
         }
+        CmsArticle dbObj = cmsArticleDao.findOne(article.getId());
+        dbObj.setTags(tagNames);
+        dbObj.setTagsJson(array.toJSONString());
+        cmsArticleDao.save(dbObj);
     }
 
     /**
