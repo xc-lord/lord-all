@@ -116,6 +116,33 @@ var commonUtils = {
             ids.push(row[paramName]);
         }
         return ids;
+    },
+    vueGetEnumType:function(_self, cls) {
+        //获取枚举类型
+        $.ajax({
+            url: '/api/mis/getEnumType.do',
+            data: {cls: cls},
+            dataType: "json"
+        }).done(function (res) {
+            if (res.success) {
+                var enumJson = {};
+                for(var key in res.data){
+                    var enumArr = res.data[key];
+                    var enumEle = {};
+                    for(var i=0;i<enumArr.length;i++) {
+                        var enumObj = enumArr[i];
+                        enumEle[enumObj.value] = enumObj.label;
+                    }
+                    enumJson[key] = enumEle;
+                    if(cls.indexOf(",") == -1) {
+                        _self.enumTypeSelect = enumArr;
+                    }
+                }
+                _self.enumType = enumJson;
+            } else {
+                _self.$message.error(res.msg);//提示错误
+            }
+        });
     }
 };
 
