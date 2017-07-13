@@ -6,10 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Properties;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 功能：公共工具类
@@ -164,6 +161,21 @@ public class CommonUtils {
      */
     public static String dayFormat(Date date) {
         return dateFormat(date, dayFormat);
+    }
+
+    /**
+     * 字符串list转换为Long数组
+     * @param ids 字符串list
+     * @return Long数组
+     */
+    public static Long[] parseLongArray(List<String> ids)
+    {
+        Long[] arr = new Long[ids.size()];
+        for (int i = 0; i < ids.size(); i++)
+        {
+            arr[i] = Long.parseLong(ids.get(i));
+        }
+        return arr;
     }
 
 }

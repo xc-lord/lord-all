@@ -6,6 +6,8 @@ import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.cms.CmsArticleDto;
 import com.lord.common.model.cms.CmsArticle;
 
+import java.util.List;
+
 /**
  * 文章cms_article的Service
  *
@@ -89,4 +91,11 @@ public interface CmsArticleService {
      * @return
      */
     CmsArticle save(CmsArticleDto pageObj);
+
+    /**
+     * 根据Id列表查询文章
+     * @param ids
+     * @return
+     */
+    List<CmsArticle> listByIds(List<String> ids);
 }

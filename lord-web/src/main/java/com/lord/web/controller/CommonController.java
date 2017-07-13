@@ -46,7 +46,7 @@ public class CommonController
         {
             for (String className : cls)
             {
-                String clsName = "";
+                String clsName = className + "";
                 if (className.contains("_"))
                 {
                     clsName = className.replaceAll("_", ".");

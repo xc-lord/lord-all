@@ -1,6 +1,7 @@
 package com.lord.common.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 功能：查询的基本参数
@@ -15,6 +16,10 @@ public class QueryParams implements Serializable {
      * 主键Id
      */
     private String id;
+    /**
+     * 主键Id列表
+     */
+    private List<String> ids;
     /**
      * 名称，模糊查询
      */
@@ -39,6 +44,16 @@ public class QueryParams implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public List<String> getIds()
+    {
+        return ids;
+    }
+
+    public void setIds(List<String> ids)
+    {
+        this.ids = ids;
     }
 
     public String getName() {

@@ -60,7 +60,9 @@ var CmsArticleFromCommon = {
         //编辑界面数据
         editForm: {},
         //状态
-        cmsArticleStatus: [],
+        cmsArticleState: [],
+        //状态
+        cmsArticleCheckState: [],
         //选项卡默认显示的窗口
         activeTabName:"article_base",
         //分类数组
@@ -94,7 +96,8 @@ var CmsArticleFromCommon = {
             dataType: "json"
         }).done(function (res) {
             if (res.success) {
-                _self.cmsArticleStatus = res.data.MisUserStatus;
+                _self.cmsArticleState = res.data.cms_CmsArticleState;
+                _self.cmsArticleCheckState = res.data.CheckState;
             } else {
                 _self.$message.error(res.msg);//提示错误
             }

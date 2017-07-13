@@ -15,6 +15,7 @@ import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.cms.CmsArticleDto;
 import com.lord.common.model.cms.*;
 import com.lord.common.service.cms.CmsArticleService;
+import com.lord.utils.CommonUtils;
 import com.lord.utils.Preconditions;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -219,6 +220,12 @@ public class CmsArticleServiceImpl implements CmsArticleService {
         connectArticleAndTags(article, tags);//文章与标签进行关联
         connectArticleAndRef(article, pageObj.getArticleRefIds());//文章与关联文章进行关联
         return article;
+    }
+
+    @Override
+    public List<CmsArticle> listByIds(List<String> ids)
+    {
+        return cmsArticleDao.findByIds(CommonUtils.parseLongArray(ids));
     }
 
     /**

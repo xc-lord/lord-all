@@ -8,10 +8,13 @@ import com.lord.common.service.cms.CmsArticleService;
 import com.lord.utils.Preconditions;
 import com.lord.utils.dto.Result;
 import io.swagger.annotations.*;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 功能：文章cms_article的Api
@@ -35,6 +38,13 @@ public class CmsArticleController {
         if (queryParams != null) {
             //TODO:待修改
             param.setId(queryParams.getLongId());
+            if (CollectionUtils.isNotEmpty(queryParams.getIds()))
+            {
+                List<CmsArticle> list = cmsArticleService.listByIds(queryParams.getIds());
+                Pager<CmsArticle> pager = new Pager<CmsArticle>(1, list.size(), list.size());
+                pager.setList(list);
+                return Result.success("查询成功", pager);
+            }
         }
         Pager<CmsArticle> pager = cmsArticleService.pageCmsArticle(param, queryParams.getPage(), queryParams.getPageSize());
         return Result.success("查询成功", pager);

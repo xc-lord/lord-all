@@ -149,23 +149,29 @@ var commonUtils = {
             }
         });
     },
-    /**
-     * 数组是否包含某个元素
-     * @param arr
-     * @param obj
-     * @returns {boolean}
-     */
-    arrayContains:function contains(arr, obj) {
-        var i = arr.length;
-        while (i--) {
-            console.info(arr[i] + "=" + obj + "   " + (arr[i] == obj));
-            if (arr[i] == obj) {
-                return true;
-            }
-        }
-        return false;
-    }
 };
 
 //页面的参数存储
 var pageParam = {};
+
+//JS的元素对象属性扩展
+Array.prototype.indexOf = function(val) {
+    for (var i = 0; i < this.length; i++) {
+        if (this[i] == val) return i;
+    }
+    return -1;
+};
+
+Array.prototype.remove = function(val) {
+    var index = this.indexOf(val);
+    if (index > -1) {
+        this.splice(index, 1);
+    }
+};
+Array.prototype.contains = function(val) {
+    var index = this.indexOf(val);
+    if (index > -1) {
+        return true;
+    }
+    return false;
+};

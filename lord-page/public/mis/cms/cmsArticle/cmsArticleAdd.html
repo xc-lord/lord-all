@@ -12,9 +12,9 @@
     <!--编辑界面-->
     <el-row type="flex" justify="center">
         <el-col :span="22">
+            <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
             <el-tabs v-model="activeTabName" @tab-click="handleTabClick">
                 <el-tab-pane label="基础信息" name="article_base">
-                    <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
                         <!--id不需要-->
                         <el-form-item label="文章标题" prop="title">
                             <el-input v-model="editForm.title" auto-complete="off"></el-input>
@@ -87,6 +87,26 @@
                         </el-form-item>
                         <el-form-item label="排序">
                             <el-input-number v-model="editForm.orderValue" :min="0"></el-input-number>
+                        </el-form-item>
+                        <el-form-item label="文章状态">
+                            <el-select v-model="editForm.state" placeholder="请选择">
+                                <el-option
+                                        v-for="item in cmsArticleState"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="审核状态">
+                            <el-select v-model="editForm.checkState" placeholder="请选择">
+                                <el-option
+                                        v-for="item in cmsArticleCheckState"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                 </el-tab-pane>
                 <el-tab-pane label="文章内容" name="second">
@@ -258,14 +278,6 @@
                                     width="120">
                             </el-table-column>
                             <el-table-column
-                                    label="排序值"
-                                    width="100">
-                                <template scope="scope">
-                                    <el-input v-model="scope.row.orderValue" placeholder="排序值" size="small" @blur="orderBlurEvent"
-                                              :data-id="scope.row.id"></el-input>
-                                </template>
-                            </el-table-column>
-                            <el-table-column
                                     prop="createTime"
                                     label="创建时间"
                                     :formatter="dateFormat"
@@ -288,10 +300,7 @@
                                     label="操作"
                                     width="320">
                                 <template scope="scope">
-                                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">
-                                        编辑
-                                    </el-button>
-                                    <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">
+                                    <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteRefClick(scope.row)">
                                         删除
                                     </el-button>
                                 </template>
@@ -302,7 +311,6 @@
                         <div id="dialogForm">...</div>
                     </el-dialog>
                 </el-tab-pane>
-                <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
             </el-tabs>
             </el-form>
         </el-col>
@@ -379,7 +387,7 @@
                 },
                 //选项卡切换事件
                 handleTabClick:function(tab, event) {
-                    console.log(tab, event);
+                    //console.log(tab, event);
                 },
                 //分类级联选择，修改分类
                 getCategory:function(values) {
@@ -408,6 +416,7 @@
                 selectionChange: function (val) {
                     this.multipleSelection = val;
                 },
+                //关联文章选择弹窗打开事件
                 dialogFormOpen:function() {
                     var _self = this;
                     pageParam.showEditPage = false;
@@ -420,26 +429,50 @@
                         });
                     }
                 },
+                //关联文章选择弹窗关闭，回调事件
                 dialogFormClose:function(ids) {
-                    console.info(ids);
                     var _self = this;
                     var refIds = [];
                     if(commonUtils.isNotEmpty(_self.editForm.articleRefIds)) {
                         refIds = _self.editForm.articleRefIds.split(",");
                     }
-                    console.info("refIds = " + ids);
                     for(var i=0;i<ids.length;i++) {
                         var id = ids[i];
-                        if(!commonUtils.arrayContains(refIds, id)) {
+                        if(!refIds.contains(id)) {
                             refIds.push(id);
                         }
                     }
                     _self.editForm.articleRefIds = commonUtils.arrayToString(refIds);
                     _self.dialogFormVisible = false;
+                    _self.loadRefArticleData();//关联文章数据加载
                 },
+                //添加关联文章事件
                 addArticleRefClick:function() {
                     this.dialogFormVisible = true;
                 },
+                //删除关联文章
+                deleteRefClick:function(row) {
+                    var _self = this;
+                    var refIds = _self.editForm.articleRefIds.split(",");
+                    refIds.remove(row.id);
+                    _self.editForm.articleRefIds = commonUtils.arrayToString(refIds);
+                    _self.loadRefArticleData();//关联文章数据加载
+                },
+                //关联文章数据加载
+                loadRefArticleData:function() {
+                    var _self = this;
+                    $.ajax({
+                        url: '/api/admin/cms/cmsArticle/list.do',
+                        data: {ids: _self.editForm.articleRefIds},
+                        dataType: "json"
+                    }).done(function (res) {
+                        if (res.success) {
+                            _self.refTableData = res.data.list;
+                        } else {
+                            _self.$message.error(res.msg);//提示错误
+                        }
+                    });
+                }
             }
         });
 
