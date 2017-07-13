@@ -44,6 +44,8 @@ import java.util.List;
 @Component
 public class CmsArticleServiceImpl implements CmsArticleService {
 
+    public static final String SPRIT = ",";
+
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
@@ -219,6 +221,7 @@ public class CmsArticleServiceImpl implements CmsArticleService {
         List<CmsTags> tags = saveArticleTags(pageObj.getArticleTags());//保存文章标签
         connectArticleAndTags(article, tags);//文章与标签进行关联
         connectArticleAndRef(article, pageObj.getArticleRefIds());//文章与关联文章进行关联
+        cmsArticleDao.save(article);//保存文章的关联关系
         return article;
     }
 
@@ -238,9 +241,15 @@ public class CmsArticleServiceImpl implements CmsArticleService {
         if (CollectionUtils.isEmpty(articleTags)) {
             return list;
         }
-        for (String tag : articleTags) {
+        for (String tag : articleTags)
+        {
+            if (StringUtils.isEmpty(tag))
+            {
+                continue;
+            }
             CmsTags cmsTags = cmsTagsDao.findOne(CmsTagsSpecs.queryBy("name", tag, CmsTags.class));
-            if (cmsTags == null) {
+            if (cmsTags == null)
+            {
                 cmsTags = new CmsTags();
                 cmsTags.setCreateTime(new Date());
                 cmsTags.setUpdateTime(new Date());
@@ -306,16 +315,14 @@ public class CmsArticleServiceImpl implements CmsArticleService {
             cmsArticleTags.setTagsId(tag.getId());
             cmsArticleTagsDao.save(cmsArticleTags);
 
-            tagNames += tag.getName() + ",";
+            tagNames += tag.getName() + SPRIT;
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("tagId", tag.getId());
             jsonObject.put("tagName", tag.getName());
             array.add(jsonObject);
         }
-        CmsArticle dbObj = cmsArticleDao.findOne(article.getId());
-        dbObj.setTags(tagNames);
-        dbObj.setTagsJson(array.toJSONString());
-        cmsArticleDao.save(dbObj);
+        article.setTags(CommonUtils.subEndString(tagNames, SPRIT));
+        article.setTagsJson(array.toJSONString());
     }
 
     /**
@@ -330,12 +337,20 @@ public class CmsArticleServiceImpl implements CmsArticleService {
         cmsArticleRefDao.deleteByArticle(article.getId());//删除旧的关联关系
         Long[] ids = articleRefIds.toArray(new Long[articleRefIds.size()]);
         List<CmsArticle> list = cmsArticleDao.findByIds(ids);
-        for (CmsArticle cmsArticle : list) {
+        String refIds = "";
+        for (CmsArticle cmsArticle : list)
+        {
+            if (cmsArticle.getId().equals(article.getId()))
+            {
+                continue;//关联文章，不能关联自己
+            }
             CmsArticleRef ref = new CmsArticleRef();
             ref.setArticleId(article.getId());
             ref.setRefArticleId(cmsArticle.getId());
             cmsArticleRefDao.save(ref);//保存关联文章
+            refIds += cmsArticle.getId() + SPRIT;
         }
+        article.setRefIds(CommonUtils.subEndString(refIds, SPRIT));
     }
 
 }

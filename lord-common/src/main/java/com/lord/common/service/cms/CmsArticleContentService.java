@@ -69,4 +69,11 @@ public interface CmsArticleContentService {
      * @return
      */
     boolean isExist(Long id, String rowName, String rowValue);
+
+    /**
+     * 根据文章Id，查询文章内容
+     * @param articleId 文章Id
+     * @return  文章内容
+     */
+    CmsArticleContent getByArticleId(String articleId);
 }

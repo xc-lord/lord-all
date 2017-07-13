@@ -129,4 +129,10 @@ public class CmsArticleContentServiceImpl implements CmsArticleContentService {
         }
         return true;
     }
+
+    @Override
+    public CmsArticleContent getByArticleId(String articleId)
+    {
+        return cmsArticleContentDao.findOne(CmsArticleContentSpecs.queryBy("articleId", articleId, CmsArticleContent.class));
+    }
 }

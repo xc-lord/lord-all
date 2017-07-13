@@ -5,140 +5,271 @@
 -->
 
 <!-- UI界面 start -->
-<div id="cmsArticleEditView">
+<div id="cmsArticleAddView">
     <el-row>
-        <h3><i class="el-icon-edit"></i> <a href="#/cmsArticle">文章管理</a> / 编辑</h3>
+        <h3><i class="el-icon-edit"></i> <a href="#/cmsArticle">文章管理</a> / 编辑文章【{{editForm.id}} {{editForm.title}}】</h3>
     </el-row>
     <!--编辑界面-->
     <el-row type="flex" justify="center">
         <el-col :span="22">
             <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
-				<el-form-item label="ID" prop="id">
-                    <el-input v-model="editForm.id" auto-complete="off" :disabled="true"></el-input>
-                </el-form-item>
-                <el-form-item label="文章标题" prop="title">
-                    <el-input v-model="editForm.title" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="副标题" prop="titleSub">
-                    <el-input v-model="editForm.titleSub" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="封面" prop="coverImg">
-                    <el-upload
-                            class="avatar-uploader"
-                            action="/api/uploadFile.do"
-                            :show-file-list="false"
-                            :on-success="handleUploadCoverImgSuccess"
-                            :before-upload="beforeAvatarUpload">
-                        <img v-if="editForm.coverImg" :src="editForm.coverImg" class="avatar">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-                </el-form-item>
-                <el-form-item label="文章简介" prop="intro">
-                    <el-input v-model="editForm.intro" auto-complete="off"></el-input>
-                </el-form-item>
-				<el-form-item label="作者Id">
-                    <el-input-number v-model="editForm.authorId" :min="0"></el-input-number>
-                </el-form-item>
-                <el-form-item label="作者头像" prop="authorImg">
-                    <el-upload
-                            class="avatar-uploader"
-                            action="/api/uploadFile.do"
-                            :show-file-list="false"
-                            :on-success="handleUploadAuthorImgSuccess"
-                            :before-upload="beforeAvatarUpload">
-                        <img v-if="editForm.authorImg" :src="editForm.authorImg" class="avatar">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-                </el-form-item>
-                <el-form-item label="作者名称" prop="authorName">
-                    <el-input v-model="editForm.authorName" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="来源" prop="source">
-                    <el-input v-model="editForm.source" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="来源链接" prop="sourceUrl">
-                    <el-input v-model="editForm.sourceUrl" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="文章标签" prop="tags">
-                    <el-input v-model="editForm.tags" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="文章标签json" prop="tagsJson">
-                    <el-input v-model="editForm.tagsJson" auto-complete="off"></el-input>
-                </el-form-item>
-				<el-form-item label="站点id">
-                    <el-input-number v-model="editForm.siteId" :min="0"></el-input-number>
-                </el-form-item>
-				<el-form-item label="分类id">
-                    <el-input-number v-model="editForm.catId" :min="0"></el-input-number>
-                </el-form-item>
-                <el-form-item label="分类名称" prop="catName">
-                    <el-input v-model="editForm.catName" auto-complete="off"></el-input>
-                </el-form-item>
-				<el-form-item label="一级分类">
-                    <el-input-number v-model="editForm.catOneId" :min="0"></el-input-number>
-                </el-form-item>
-				<el-form-item label="二级分类">
-                    <el-input-number v-model="editForm.catTwoId" :min="0"></el-input-number>
-                </el-form-item>
-				<el-form-item label="三级分类">
-                    <el-input-number v-model="editForm.catThreeId" :min="0"></el-input-number>
-                </el-form-item>
-                <el-form-item label="审核状态" prop="checkState">
-                    <el-input v-model="editForm.checkState" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="文章状态" prop="state">
-                    <el-input v-model="editForm.state" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="样式" prop="style">
-                    <el-input v-model="editForm.style" auto-complete="off"></el-input>
-                </el-form-item>
-				<el-form-item label="发布时间">
-                    <el-date-picker type="datetime" 
-									placeholder="选择日期和时间"
-                                    v-model="editForm.publishTime">
-					</el-date-picker>
-                </el-form-item>
-				<el-form-item label="添加用户Id">
-                    <el-input-number v-model="editForm.misUserId" :min="0"></el-input-number>
-                </el-form-item>
-				<el-form-item label="用户Id">
-                    <el-input-number v-model="editForm.userId" :min="0"></el-input-number>
-                </el-form-item>
-				<el-form-item label="是否允许评论">
-                    <el-radio-group v-model="editForm.allowComment">
-                        <el-radio class="radio" :label="true">是</el-radio>
-                        <el-radio class="radio" :label="false">否</el-radio>
-                    </el-radio-group>
-                </el-form-item>
-				<el-form-item label="排序">
-                    <el-input-number v-model="editForm.orderValue" :min="0"></el-input-number>
-                </el-form-item>
-				<el-form-item label="创建时间">
-                    <el-date-picker type="datetime" 
-									placeholder="选择日期和时间"
-									:disabled="true"
-                                    v-model="editForm.createTime">
-					</el-date-picker>
-                </el-form-item>
-				<el-form-item label="更新时间">
-                    <el-date-picker type="datetime" 
-									placeholder="选择日期和时间"
-									:disabled="true"
-                                    v-model="editForm.updateTime">
-					</el-date-picker>
-                </el-form-item>
-				<!--removed不需要-->
-                <!--TODO:待修改-->
-				<!--<el-form-item label="状态">
-                    <el-select v-model="editForm.status" placeholder="请选择">
-                        <el-option
-                                v-for="item in cmsArticleStatus"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>-->
+                <el-tabs v-model="activeTabName" @tab-click="handleTabClick">
+                    <el-tab-pane label="基础信息" name="article_base">
+                        <el-form-item label="ID" prop="id">
+                            <el-input v-model="editForm.id" auto-complete="off" :disabled="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="文章标题" prop="title">
+                            <el-input v-model="editForm.title" auto-complete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="副标题" prop="titleSub">
+                            <el-input v-model="editForm.titleSub" auto-complete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="封面" prop="coverImg">
+                            <el-upload
+                                    class="avatar-uploader"
+                                    action="/api/uploadFile.do"
+                                    :show-file-list="false"
+                                    :on-success="handleUploadCoverImgSuccess"
+                                    :before-upload="beforeAvatarUpload">
+                                <img v-if="editForm.coverImg" :src="editForm.coverImg" class="avatar">
+                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                            </el-upload>
+                        </el-form-item>
+                        <el-form-item label="文章简介" prop="intro">
+                            <el-input v-model="editForm.intro" auto-complete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="作者头像" prop="authorImg">
+                            <el-upload
+                                    class="avatar-uploader"
+                                    action="/api/uploadFile.do"
+                                    :show-file-list="false"
+                                    :on-success="handleUploadAuthorImgSuccess"
+                                    :before-upload="beforeAvatarUpload">
+                                <img v-if="editForm.authorImg" :src="editForm.authorImg" class="avatar">
+                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                            </el-upload>
+                        </el-form-item>
+                        <el-form-item label="作者名称" prop="authorName">
+                            <el-input v-model="editForm.authorName" auto-complete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="来源" prop="source">
+                            <el-input v-model="editForm.source" auto-complete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="来源链接" prop="sourceUrl">
+                            <el-input v-model="editForm.sourceUrl" auto-complete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="文章标签" prop="tags">
+                            <el-select
+                                    v-model="tagValues"
+                                    multiple
+                                    filterable
+                                    allow-create
+                                    placeholder="请选择文章标签">
+                                <el-option
+                                        v-for="item in tagOptions"
+                                        :key="item.name"
+                                        :label="item.name"
+                                        :value="item.name">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="分类">
+                            <mis-cascader ref="cmpSelect" placeholder="请选择文章分类"
+                                          api-url="/api/admin/cms/cmsCategory/getOptions.do"
+                                          :default-one-value="editForm.catId +''" v-on:cascader-changed="getCategory"
+                                          :can-select-all="true">
+                            </mis-cascader>
+                        </el-form-item>
+                        <el-form-item label="样式" prop="style">
+                            <el-input v-model="editForm.style" auto-complete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="是否允许评论">
+                            <el-radio-group v-model="editForm.allowComment">
+                                <el-radio class="radio" :label="true">是</el-radio>
+                                <el-radio class="radio" :label="false">否</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                        <el-form-item label="排序">
+                            <el-input-number v-model="editForm.orderValue" :min="0"></el-input-number>
+                        </el-form-item>
+                        <el-form-item label="文章状态">
+                            <el-select v-model="editForm.state" placeholder="请选择" :disabled="true">
+                                <el-option
+                                        v-for="item in cmsArticleState"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="审核状态">
+                            <el-select v-model="editForm.checkState" placeholder="请选择" :disabled="true">
+                                <el-option
+                                        v-for="item in cmsArticleCheckState"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="创建时间">
+                            <el-date-picker type="datetime"
+                                            placeholder="选择日期和时间"
+                                            :disabled="true"
+                                            v-model="editForm.createTime">
+                            </el-date-picker>
+                        </el-form-item>
+                        <el-form-item label="更新时间">
+                            <el-date-picker type="datetime"
+                                            placeholder="选择日期和时间"
+                                            :disabled="true"
+                                            v-model="editForm.updateTime">
+                            </el-date-picker>
+                        </el-form-item>
+                    </el-tab-pane>
+                    <el-tab-pane label="文章内容" name="second">
+                        <el-tabs type="card">
+                            <el-tab-pane label="PC">
+                                <script id="articlePCContent" name="articlePCContent" type="text/plain"></script>
+                            </el-tab-pane>
+                            <el-tab-pane label="移动">
+                                <script id="articleMobileContent" name="articleMobileContent"
+                                        type="text/plain"></script>
+                            </el-tab-pane>
+                        </el-tabs>
+                    </el-tab-pane>
+                    <el-tab-pane label="关联文章" name="third">
+                        <!--列表顶部搜索和工具条-->
+                        <el-row>
+                            <el-form :inline="true" class="demo-form-inline">
+                                <el-form-item label="已关联的文章ID" prop="articleRefIds">
+                                    <el-input v-model="editForm.articleRefIds" auto-complete="off"></el-input>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button type="success" icon="plus" @click="addArticleRefClick">添加关联文章</el-button>
+                                </el-form-item>
+                            </el-form>
+                        </el-row>
+                        <!--列表-->
+                        <el-row>
+                            <el-table
+                                    :data="refTableData"
+                                    border
+                                    @selection-change="selectionChange"
+                                    style="width: 100%">
+                                <el-table-column
+                                        type="selection"
+                                        width="50">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="id"
+                                        label="ID"
+                                        width="80">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="title"
+                                        label="文章标题"
+                                        width="120">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="titleSub"
+                                        label="副标题"
+                                        width="120">
+                                </el-table-column>
+                                <el-table-column
+                                        label="封面"
+                                        width="135">
+                                    <template scope="scope">
+                                        <div class="el-table-img-div">
+                                            <img :src="scope.row.coverImg" class="el-table-img">
+                                        </div>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                        prop="intro"
+                                        label="文章简介"
+                                        width="120">
+                                </el-table-column>
+                                <el-table-column
+                                        label="作者头像"
+                                        width="135">
+                                    <template scope="scope">
+                                        <div class="el-table-img-div">
+                                            <img :src="scope.row.authorImg" class="el-table-img">
+                                        </div>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                        prop="authorName"
+                                        label="作者名称"
+                                        width="120">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="source"
+                                        label="来源"
+                                        width="120">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="tags"
+                                        label="文章标签"
+                                        width="120">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="catId"
+                                        label="分类id"
+                                        width="120">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="catName"
+                                        label="分类名称"
+                                        width="120">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="checkState"
+                                        label="审核状态"
+                                        width="120">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="state"
+                                        label="文章状态"
+                                        width="120">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="publishTime"
+                                        label="发布时间"
+                                        :formatter="dateFormat"
+                                        width="180">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="createTime"
+                                        label="创建时间"
+                                        :formatter="dateFormat"
+                                        width="180">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="updateTime"
+                                        label="更新时间"
+                                        :formatter="dateFormat"
+                                        width="180">
+                                </el-table-column>
+                                <el-table-column
+                                        fixed="right"
+                                        label="操作"
+                                        width="320">
+                                    <template scope="scope">
+                                        <el-button :plain="true" type="danger" size="small" icon="delete"
+                                                   @click="deleteRefClick(scope.row)">
+                                            删除
+                                        </el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </el-row>
+                        <el-dialog v-model="dialogFormVisible" @open="dialogFormOpen">
+                            <div id="dialogForm">...</div>
+                        </el-dialog>
+                    </el-tab-pane>
+                </el-tabs>
             </el-form>
         </el-col>
     </el-row>
@@ -152,11 +283,19 @@
 
 </div>
 <!-- UI界面 end -->
-
+<!-- 配置文件 -->
+<script type="text/javascript" src="/res/js/ueditor/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="/res/js/ueditor/ueditor.all.min.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="/res/js/ueditor/ueditor.parse.min.js"></script>
 <script type="text/javascript">
+    var searchCmsArticleParentView;
     $.getScript('/res/js/mis/cms/cmsArticle/cmsArticleForm.js', function () {
-        var cmsArticleEditView = new Vue({
-            el: '#cmsArticleEditView',
+        var pcUe, mobileUe;
+
+        var cmsArticleAddView = new Vue({
+            el: '#cmsArticleAddView',
             data: CmsArticleFromCommon.data,
             //数据初始化
             created: function () {
@@ -165,12 +304,34 @@
                 CmsArticleFromCommon.loadSelect(_self);
                 //根据Id,获取编辑的对象
                 $.ajax({
-                    async: true,
                     url: '/api/admin/cms/cmsArticle/' + pageParam.id + ".do",
                     dataType: "json"
                 }).done(function (res) {
                     if (res.success) {
                         _self.editForm = Object.assign(CmsArticleFromCommon.defaultModel, res.data);
+                        _self.tagValues = res.data.tags.split(",");//文章标签
+                        _self.editForm.articleRefIds = res.data.refIds;//关联文章
+                        _self.loadRefArticleData();//关联文章数据加载
+                    } else {
+                        _self.$message.error(res.msg);//提示错误
+                    }
+                });
+
+                //根据Id,获取文章内容
+                $.ajax({
+                    url: '/api/admin/cms/cmsArticleContent/get.do',
+                    data: {articleId: pageParam.id},
+                    dataType: "json"
+                }).done(function (res) {
+                    if (res.success) {
+                        pcUe = UE.getEditor('articlePCContent', {
+                            initialFrameHeight: 500,
+                            initialContent: res.data.contentEdit
+                        });
+                        mobileUe = UE.getEditor('articleMobileContent', {
+                            initialFrameHeight: 500,
+                            initialContent: res.data.mcontentEdit
+                        });
                     } else {
                         _self.$message.error(res.msg);//提示错误
                     }
@@ -180,10 +341,13 @@
                 //保存事件
                 editSubmit: function (formName) {
                     var _self = this;
-                    _self.$refs[formName].validate(function(valid){
+                    _self.editForm.content = pcUe.getContent();
+                    _self.editForm.mcontent = mobileUe.getContent();
+                    _self.editForm.articleTags = _self.tagValues.join(",");
+                    _self.$refs[formName].validate(function (valid) {
                         if (valid) {
                             CmsArticleFromCommon.saveAction(_self);
-                        } else{
+                        } else {
                             _self.$message.error("请正确填写表单！");
                         }
                     });
@@ -192,22 +356,112 @@
                 editFormCancel: function () {
                     CmsArticleFromCommon.cancelAction();
                 },
-                    //上传图片成功的回调事件
-                handleUploadCoverImgSuccess:function(res, file) {
+                //上传图片成功的回调事件
+                handleUploadCoverImgSuccess: function (res, file) {
                     var _self = this;
                     _self.editForm.coverImg = commonUtils.uploadImageSuccess(res, file, _self);
                 },
-                    //上传图片成功的回调事件
-                handleUploadAuthorImgSuccess:function(res, file) {
+                //上传图片成功的回调事件
+                handleUploadAuthorImgSuccess: function (res, file) {
                     var _self = this;
                     _self.editForm.authorImg = commonUtils.uploadImageSuccess(res, file, _self);
                 },
                 //上传图片前的验证事件
-                beforeAvatarUpload:function(file) {
+                beforeAvatarUpload: function (file) {
                     var _self = this;
                     commonUtils.uploadImageCheck(file, _self);
+                },
+                //选项卡切换事件
+                handleTabClick: function (tab, event) {
+                    //console.log(tab, event);
+                },
+                //分类级联选择，修改分类
+                getCategory: function (values) {
+                    var _self = this;
+                    this.categoryArr = values;
+                    _self.editForm.catId = values[values.length - 1];
+                },
+                //布尔值格式化
+                booleanFormat: function (row, column) {
+                    var columnName = column.property;
+                    var columnVal = row[columnName];
+                    if (columnVal) {
+                        return "是";
+                    }
+                    return "否";
+                },
+                //时间格式化
+                dateFormat: function (row, column) {
+                    var date = row[column.property];
+                    if (date == undefined) {
+                        return "";
+                    }
+                    return moment(date).format("YYYY-MM-DD HH:mm:ss");
+                },
+                //表格勾选事件
+                selectionChange: function (val) {
+                    this.multipleSelection = val;
+                },
+                //关联文章选择弹窗打开事件
+                dialogFormOpen: function () {
+                    var _self = this;
+                    pageParam.showEditPage = false;
+                    var dialogUrl = "/mis/cms/cmsArticle/cmsArticleList.html";
+                    if (commonUtils.isNotEmpty(dialogUrl)) {
+                        $.ajax({
+                            url: dialogUrl
+                        }).done(function (res) {
+                            $("#dialogForm").html(res);
+                        });
+                    }
+                },
+                //关联文章选择弹窗关闭，回调事件
+                dialogFormClose: function (ids) {
+                    var _self = this;
+                    var refIds = [];
+                    if (commonUtils.isNotEmpty(_self.editForm.articleRefIds)) {
+                        refIds = _self.editForm.articleRefIds.split(",");
+                    }
+                    for (var i = 0; i < ids.length; i++) {
+                        var id = ids[i];
+                        if (!refIds.contains(id)) {
+                            refIds.push(id);
+                        }
+                    }
+                    _self.editForm.articleRefIds = commonUtils.arrayToString(refIds);
+                    _self.dialogFormVisible = false;
+                    _self.loadRefArticleData();//关联文章数据加载
+                },
+                //添加关联文章事件
+                addArticleRefClick: function () {
+                    this.dialogFormVisible = true;
+                },
+                //删除关联文章
+                deleteRefClick: function (row) {
+                    var _self = this;
+                    var refIds = _self.editForm.articleRefIds.split(",");
+                    refIds.remove(row.id);
+                    _self.editForm.articleRefIds = commonUtils.arrayToString(refIds);
+                    _self.loadRefArticleData();//关联文章数据加载
+                },
+                //关联文章数据加载
+                loadRefArticleData: function () {
+                    var _self = this;
+                    $.ajax({
+                        url: '/api/admin/cms/cmsArticle/list.do',
+                        data: {ids: _self.editForm.articleRefIds},
+                        dataType: "json"
+                    }).done(function (res) {
+                        if (res.success) {
+                            _self.refTableData = res.data.list;
+                        } else {
+                            _self.$message.error(res.msg);//提示错误
+                        }
+                    });
                 }
             }
         });
+
+        searchCmsArticleParentView = cmsArticleAddView;
     });
 </script>

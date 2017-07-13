@@ -65,6 +65,14 @@ public class CmsArticleContentController {
         return Result.success("获取成功", dbObj);
     }
 
+    @ApiOperation(value="获取文章内容", notes="根据文章Id，获取文章内容")
+    @ApiImplicitParam(name = "articleId", value = "文章Id", required = true, dataType = "Long", paramType = "query")
+    @RequestMapping(value = "/api/admin/cms/cmsArticleContent/get", method = RequestMethod.GET)
+    public Result getByArticleId(String articleId) {
+        Preconditions.checkNotNull(articleId, "articleId不能为空");
+        CmsArticleContent dbObj = cmsArticleContentService.getByArticleId(articleId);
+        return Result.success("获取成功", dbObj);
+    }
 
     @ApiOperation(value = "判断记录是否存在", notes = "判断记录是否存在")
     @ApiImplicitParams({

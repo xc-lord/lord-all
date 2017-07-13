@@ -90,6 +90,12 @@ public class CmsArticle implements Serializable {
 	private String tagsJson;
 
 	/**
+	 * 关联文章Id
+	 */
+	@Column(name = "ref_ids", nullable = true, length = 200)
+	private String refIds;
+
+	/**
 	 * 站点id
 	 */
 	@Column(name = "site_id", nullable = true, length = 19)
@@ -285,6 +291,16 @@ public class CmsArticle implements Serializable {
 
 	public void setTagsJson(String tagsJson) {
 		this.tagsJson = tagsJson;
+	}
+
+	public String getRefIds()
+	{
+		return refIds;
+	}
+
+	public void setRefIds(String refIds)
+	{
+		this.refIds = refIds;
 	}
 
 	public Long getSiteId() {

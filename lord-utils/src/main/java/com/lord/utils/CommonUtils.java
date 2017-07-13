@@ -178,4 +178,23 @@ public class CommonUtils {
         return arr;
     }
 
+    /**
+     * 去掉末尾的字符串
+     * @param source    原字符串
+     * @param str       需要去掉的字符串
+     * @return  去掉末尾的新字符串
+     */
+    public static String subEndString(String source, String str)
+    {
+        if (StringUtils.isEmpty(source))
+        {
+            return source;
+        }
+        if (source.endsWith(str))
+        {
+            source = source.substring(0, source.length() - 1);
+        }
+        return source;
+    }
+
 }
