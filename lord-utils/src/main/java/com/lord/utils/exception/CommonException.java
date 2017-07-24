@@ -30,7 +30,7 @@ public class CommonException extends RuntimeException {
     public CommonException(Code code, String msg) {
         super("[" + code.getCode() + ":" + code.toString() +"]" + msg);
         this.code = code.getCode();
-        this.msg = code.getMsg();
+        this.msg = msg;
     }
 
     public int getCode() {

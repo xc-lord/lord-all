@@ -31,10 +31,7 @@ public class AuthAdminInterceptor implements HandlerInterceptor
         UserLoginOutput loginUser = UserHandler.getLoginUser(WebChannel.MIS, request, response);
         if(loginUser == null)
         {
-            Result r = new Result();
-            r.setCode(Code.ApiNotLogin.getCode());
-            r.setMsg(Code.ApiNotLogin.getMsg());
-            r.setSuccess(false);
+            Result r = new Result(Code.ApiNotLogin);
             WebUtil.writeJson(response, JSON.toJSONString(r));
             return false;
         }

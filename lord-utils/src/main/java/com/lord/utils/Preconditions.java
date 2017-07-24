@@ -1,5 +1,6 @@
 package com.lord.utils;
 
+import com.lord.utils.dto.Code;
 import com.lord.utils.exception.CommonException;
 import org.apache.commons.lang3.StringUtils;
 
@@ -14,7 +15,7 @@ public class Preconditions {
 
     /**
      * 检查condition是否为真，为真抛出异常
-     * @param condition
+     * @param condition 条件
      */
     public static void checkArgument(boolean condition) {
         checkArgument(condition,"参数错误");
@@ -22,36 +23,58 @@ public class Preconditions {
 
     /**
      * 检查condition是否为真，为真抛出异常
-     * @param condition
-     * @param msg
+     * @param condition 条件
+     * @param msg       错误消息
      */
-    public static void checkArgument(boolean condition, String msg) {
+    public static void checkArgument(boolean condition, String msg)
+    {
+        checkArgument(condition, msg, Code.ReqFailure);
+    }
+
+    /**
+     * 检查condition是否为真，为真抛出异常
+     * @param condition 条件
+     * @param msg       错误消息
+     * @param code      错误类型
+     */
+    public static void checkArgument(boolean condition, String msg, Code code) {
         if (condition) {
-            throw new CommonException(msg);
+            throw new CommonException(code, msg);
         }
     }
 
     /**
-     * 检查condition是否为空，为空抛出异常。
-     * @param condition
+     * 检查obj是否为空，为空抛出异常。
+     * @param obj   对象
      */
-    public static void checkNotNull(Object condition) {
-        checkNotNull(condition, "参数不能为空");
+    public static void checkNotNull(Object obj) {
+        checkNotNull(obj, "参数不能为空");
     }
 
     /**
      * 检查condition是否为空，为空抛出异常。
-     * @param condition
-     * @param msg
+     * @param obj   对象
+     * @param msg   错误消息
      */
-    public static void checkNotNull(Object condition, String msg) {
-        if (condition == null) {
-            throw new CommonException(msg);
+    public static void checkNotNull(Object obj, String msg)
+    {
+        checkNotNull(obj, msg, Code.ReqFailure);
+    }
+
+    /**
+     * 检查condition是否为空，为空抛出异常。
+     * @param obj   对象
+     * @param msg   错误消息
+     * @param code  错误类型
+     */
+    public static void checkNotNull(Object obj, String msg, Code code) {
+        if (obj == null) {
+            throw new CommonException(code, msg);
         }
-        if(condition instanceof String) {
-            String str = (String) condition;
+        if(obj instanceof String) {
+            String str = (String) obj;
             if (StringUtils.isEmpty(str)) {
-                throw new CommonException(msg);
+                throw new CommonException(code, msg);
             }
         }
     }

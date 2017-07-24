@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -100,6 +101,7 @@ public class UserHandler
      */
     private static String createSign(UserLoginOutput output, HttpServletRequest request)
     {
+        //用户换浏览器或者IP变更时，都需要重新登录，另外使用浏览器的F12功能切换到手机模式也需要重新登录
         String ip = WebUtil.getIP(request);
         String userAgent = request.getHeader("User-Agent");
         String str = "";
@@ -153,9 +155,14 @@ public class UserHandler
         return null;
     }
 
+    public static Set<String> onlineUser()
+    {
+        return getRedisTemplate().keys("LOGIN_USER_*");
+    }
+
     /**
      * 保存当前登录用户的信息到Redis中
-     * @param key
+     * @param key       redis的key
      * @param output    用户信息
      */
     private static void saveToRedis(String key, UserLoginOutput output)
