@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.io.File;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -23,6 +24,10 @@ public class TestEncryptUtils {
         System.out.println("原字符串：" + str);
         System.out.println("加密结果：" + encode);
         System.out.println("加密结果：" + EncryptUtils.base64Encode(encode));
+        System.out.println(System.currentTimeMillis());
+        System.out.println(new Date(0L));
+        System.out.println(new Date(1500000000000L));
+        System.out.println(100024706158L/(1000*60*60*24*365));
     }
 
     @Test

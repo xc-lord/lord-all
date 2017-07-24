@@ -1,11 +1,16 @@
 package com.lord.web.controller.mis;
 
+import com.lord.common.constant.WebChannel;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.QueryParams;
+import com.lord.common.dto.user.UserLoginInput;
+import com.lord.common.dto.user.UserLoginOutput;
 import com.lord.common.model.mis.MisUser;
 import com.lord.common.service.mis.MisUserService;
 import com.lord.utils.Preconditions;
 import com.lord.utils.dto.Result;
+import com.lord.web.handler.UserHandler;
+import com.lord.web.utils.WebUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -15,6 +20,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 功能：后台用户mis_user的Api
@@ -30,6 +38,40 @@ public class MisUserController {
 
     @Autowired
     private MisUserService misUserService;
+
+    @ApiOperation(value = "后台用户登录")
+    @RequestMapping(value = "/api/mis/login", method = {RequestMethod.GET, RequestMethod.POST})
+    public Result login(@ModelAttribute UserLoginInput input, HttpServletRequest request, HttpServletResponse response) {
+        Preconditions.checkArgument(input == null, "参数不能为空");
+        Preconditions.checkArgument(StringUtils.isEmpty(input.getUsername()), "用户名不能为空");
+        Preconditions.checkArgument(StringUtils.isEmpty(input.getPassword()), "密码不能为空");
+        Preconditions.checkArgument(input.getWebChannel() == null, "登录渠道不能为空");
+        input.setIp(WebUtil.getIP(request));//获取登录的IP
+        UserLoginOutput output = misUserService.login(input);//用户登录
+        UserHandler.loginSuccess(output, request, response);//登录成功的回调，设置cookie等信息
+        return Result.success("登录成功", output);
+    }
+
+    @ApiOperation(value = "获得当前登录的用户")
+    @RequestMapping(value = "/api/mis/getLoginUser", method = {RequestMethod.GET, RequestMethod.POST})
+    public Result getLoginUser(HttpServletRequest request, HttpServletResponse response)
+    {
+        //UserLoginOutput output = UserHandler.getLoginUser(WebChannel.MIS, request, response);
+        UserLoginOutput output = UserHandler.getLoginUser();
+        String serverName = request.getServerName();
+        logger.debug("当前域名为：" + serverName);
+        if (output == null) return Result.failure("用户未登录,内部咸鱼干");
+        return Result.success("登录成功", output);
+    }
+
+    @ApiOperation(value = "获得当前登录的用户")
+    @RequestMapping(value = "/api/admin/mis/getLoginAdmin", method = {RequestMethod.GET, RequestMethod.POST})
+    public Result getLoginAdmin(HttpServletRequest request, HttpServletResponse response)
+    {
+        UserLoginOutput output = UserHandler.getLoginUser();
+        if (output == null) return Result.failure("用户未登录，内部");
+        return Result.success("登录成功", output);
+    }
 
     @ApiOperation(value = "查询后台用户的列表")
     @RequestMapping(value = "/api/admin/mis/misUser/list", method = {RequestMethod.GET, RequestMethod.POST})

@@ -1,4 +1,5 @@
 var logger = require('log4js');
+var moment = require('moment');//时间格式化
 var infoLogger = logger.getLogger("INFO");
 var errorLogger = logger.getLogger("ERROR");
 var crypto = require('crypto');
@@ -14,6 +15,26 @@ var typeMap = {
 };
 
 var $ = CommonUtils = {
+    //判断字符串是否为空
+    isEmpty:function(str) {
+        if (str == null || str == undefined || str == '' || str == false) {
+            return true;
+        }
+        return false;
+    },
+    //判断字符串是否不为空
+    isNotEmpty:function(str) {
+        return !this.isEmpty(str);
+    },
+    //转换为时间戳
+    toTimestamp:function(time) {
+        if(typeof time == 'number') {
+            return time;
+        }
+        if(typeof time == 'object') {
+            return Date.parse(time);
+        }
+    },
     default: function (source,target) {
         var self = this;
         for(var key in source){
@@ -122,6 +143,15 @@ var $ = CommonUtils = {
     },
     timestamp:function(){
         return new Date().getTime()/1000;
+    },
+    dateFormat:function(date, pattern) {
+        if (date == undefined) {
+            return "";
+        }
+        if (pattern == undefined) {
+            pattern = "YYYY-MM-DD HH:mm:ss";//默认的时间格式
+        }
+        return moment(date).format(pattern);
     },
     each:function(arr,callback){
         if(!arr || arr.length ==0){

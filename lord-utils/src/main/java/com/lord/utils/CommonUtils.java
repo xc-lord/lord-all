@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 功能：公共工具类
@@ -195,6 +197,60 @@ public class CommonUtils {
             source = source.substring(0, source.length() - 1);
         }
         return source;
+    }
+
+    /**
+     * 获得正则表达式匹配的第一个字符串
+     * @param str   原字符串
+     * @param regx  正则表达式
+     * @return  匹配的第一个字符串
+     */
+    public static String matchedOne(String str, String regx)
+    {
+        List<String> list = matchedList(str, regx);
+        if(list.size() > 0)
+            return list.get(0);
+        return null;
+    }
+
+    /**
+     * 获得正则表达式匹配的字符串列表
+     * @param str   原字符串
+     * @param regx  正则表达式
+     * @return  匹配的字符串列表
+     */
+    public static List<String> matchedList(String str, String regx)
+    {
+        List<String> list = new ArrayList<>();
+        if(StringUtils.isEmpty(str) || StringUtils.isEmpty(regx)) return list;
+        //1.将正在表达式封装成对象Patten 类来实现
+        Pattern pattern = Pattern.compile(regx);
+        //2.将字符串和正则表达式相关联
+        Matcher matcher = pattern.matcher(str);
+        //3.String 对象中的matches 方法就是通过这个Matcher和pattern来实现的。
+        //查找符合规则的子串
+        while (matcher.find())
+        {
+            list.add(matcher.group());
+        }
+        return list;
+    }
+
+    /**
+     * 判断字符串是否匹配正则表达式
+     * @param str   原字符串
+     * @param regx  正则表达式
+     * @return  匹配、不匹配
+     */
+    public static boolean isMatched(String str, String regx)
+    {
+        if(StringUtils.isEmpty(str) || StringUtils.isEmpty(regx)) return false;
+        //1.将正在表达式封装成对象Patten 类来实现
+        Pattern pattern = Pattern.compile(regx);
+        //2.将字符串和正则表达式相关联
+        Matcher matcher = pattern.matcher(str);
+        //3.String 对象中的matches 方法就是通过这个Matcher和pattern来实现的。
+        return matcher.matches();
     }
 
 }

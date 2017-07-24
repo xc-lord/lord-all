@@ -3,6 +3,8 @@ package com.lord.common.service.mis;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
+import com.lord.common.dto.user.UserLoginInput;
+import com.lord.common.dto.user.UserLoginOutput;
 import com.lord.common.model.mis.MisUser;
 
 /**
@@ -88,4 +90,11 @@ public interface MisUserService {
      * @return
      */
     boolean isExist(Long id, String rowName, String rowValue);
+
+    /**
+     * 用户登录
+     * @param input
+     * @return
+     */
+    UserLoginOutput login(UserLoginInput input);
 }

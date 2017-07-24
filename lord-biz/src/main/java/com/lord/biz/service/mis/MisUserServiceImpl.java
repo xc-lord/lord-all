@@ -3,9 +3,12 @@ package com.lord.biz.service.mis;
 import com.lord.biz.dao.mis.MisUserDao;
 import com.lord.biz.dao.mis.specs.MisUserSpecs;
 import com.lord.biz.utils.ServiceUtils;
+import com.lord.common.constant.mis.UserStatus;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
+import com.lord.common.dto.user.UserLoginInput;
+import com.lord.common.dto.user.UserLoginOutput;
 import com.lord.common.model.mis.MisUser;
 import com.lord.common.service.mis.MisUserService;
 import com.lord.utils.EncryptUtils;
@@ -171,5 +174,29 @@ public class MisUserServiceImpl implements MisUserService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public UserLoginOutput login(UserLoginInput input)
+    {
+        MisUser user = misUserDao.findByUsername(input.getUsername());
+        Preconditions.checkArgument(user == null, "该用户未注册");
+        Preconditions.checkArgument(UserStatus.Invalid.equals(user.getStatus()), "该用户已无效");
+        Preconditions.checkArgument(UserStatus.Frozen.equals(user.getStatus()), "该用户已被冻结");
+        String pwd = EncryptUtils.passwordEncode(input.getPassword());
+        Preconditions.checkArgument(!pwd.equals(user.getPassword()), "输入的密码错误，请重新输入");
+
+        UserLoginOutput output = new UserLoginOutput();
+        output.setEmail(user.getEmail());
+        output.setIcon(user.getIcon());
+        output.setLoginTime(new Date());
+        output.setNickname(user.getNickName());
+        output.setUsername(user.getUsername());
+        output.setUserId(user.getId());
+        output.setSex(user.getSex());
+        output.setPhone(user.getPhone());
+        output.setIp(input.getIp());
+        output.setWebChannel(input.getWebChannel());
+        return output;
     }
 }

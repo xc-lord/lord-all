@@ -47,12 +47,12 @@
 			<el-table-column
                     prop="title"
                     label="文章标题"
-                    width="120">
+                    width="240">
             </el-table-column>
 			<el-table-column
                     prop="titleSub"
                     label="副标题"
-                    width="120">
+                    width="200">
             </el-table-column>
             <el-table-column
                     label="封面"
@@ -66,12 +66,7 @@
 			<el-table-column
                     prop="intro"
                     label="文章简介"
-                    width="120">
-            </el-table-column>
-			<el-table-column
-                    prop="authorId"
-                    label="作者Id"
-                    width="120">
+                    width="300">
             </el-table-column>
             <el-table-column
                     label="作者头像"
@@ -93,24 +88,9 @@
                     width="120">
             </el-table-column>
 			<el-table-column
-                    prop="sourceUrl"
-                    label="来源链接"
-                    width="120">
-            </el-table-column>
-			<el-table-column
                     prop="tags"
                     label="文章标签"
-                    width="120">
-            </el-table-column>
-			<el-table-column
-                    prop="tagsJson"
-                    label="文章标签json"
-                    width="120">
-            </el-table-column>
-			<el-table-column
-                    prop="siteId"
-                    label="站点id"
-                    width="120">
+                    width="320">
             </el-table-column>
 			<el-table-column
                     prop="catId"
@@ -123,28 +103,15 @@
                     width="120">
             </el-table-column>
 			<el-table-column
-                    prop="catOneId"
-                    label="一级分类"
-                    width="120">
-            </el-table-column>
-			<el-table-column
-                    prop="catTwoId"
-                    label="二级分类"
-                    width="120">
-            </el-table-column>
-			<el-table-column
-                    prop="catThreeId"
-                    label="三级分类"
-                    width="120">
-            </el-table-column>
-			<el-table-column
                     prop="checkState"
                     label="审核状态"
+                    :formatter="enumFormat"
                     width="120">
             </el-table-column>
 			<el-table-column
                     prop="state"
                     label="文章状态"
+                    :formatter="enumFormat"
                     width="120">
             </el-table-column>
 			<el-table-column
@@ -170,7 +137,7 @@
             </el-table-column>
 			<el-table-column
                     prop="allowComment"
-                    label="是否允许评论"
+                    label="允许评论"
                     :formatter="booleanFormat"
                     width="120">
             </el-table-column>
@@ -193,12 +160,6 @@
                     label="更新时间"
                     :formatter="dateFormat"
                     width="180">
-            </el-table-column>
-			<el-table-column
-                    prop="removed"
-                    label="是否删除"
-                    :formatter="booleanFormat"
-                    width="120">
             </el-table-column>
             <el-table-column v-if="showEditPage"
 				fixed="right"
@@ -285,7 +246,7 @@
                 _self.showEditPage = true;
             }
             //获取枚举类型
-            commonUtils.vueGetEnumType(_self, "mis_MisUserStatus");
+            commonUtils.vueGetEnumType(_self, "cms_CmsArticleState,CheckState");
             _self.loadingData();
         },
         methods: {
@@ -466,8 +427,12 @@
                 if (columnVal == undefined) {
                     return "";
                 }
-                if (columnName == 'status') {
-                    var mType = _self.enumType["mis_MisUserStatus"];
+                if (columnName == 'state') {
+                    var mType = _self.enumType["cms_CmsArticleState"];
+                    return mType[columnVal];
+                }
+                if (columnName == 'checkState') {
+                    var mType = _self.enumType["CheckState"];
                     return mType[columnVal];
                 }
                 return column;

@@ -49,32 +49,32 @@
 <div class="log">
     <div class="am-g">
         <div class="am-u-lg-3 am-u-md-6 am-u-sm-8 am-u-sm-centered log-content">
-            <h1 class="log-title am-animation-slide-top">AmazeUI</h1>
+            <h1 class="log-title am-animation-slide-top">网站后台管理系统</h1>
             <br>
             <form class="am-form" id="log-form">
                 <div class="am-input-group am-radius am-animation-slide-left">
-                    <input type="email" id="doc-vld-email-2-1" class="am-radius" data-validation-message="请输入正确邮箱地址" placeholder="邮箱" required/>
+                    <input type="text" name="username" class="am-radius" data-validation-message="请输入用户名" minlength="3" placeholder="用户名" required/>
                     <span class="am-input-group-label log-icon am-radius"><i class="am-icon-user am-icon-sm am-icon-fw"></i></span>
                 </div>
                 <br>
                 <div class="am-input-group am-animation-slide-left log-animation-delay">
-                    <input type="text" class="am-form-field am-radius log-input" placeholder="密码" minlength="11" required>
+                    <input type="password" name="password" class="am-form-field am-radius log-input" placeholder="密码" minlength="6" required>
                     <span class="am-input-group-label log-icon am-radius"><i class="am-icon-lock am-icon-sm am-icon-fw"></i></span>
                 </div>
                 <br>
                 <button type="submit" class="am-btn am-btn-primary am-btn-block am-btn-lg am-radius am-animation-slide-bottom log-animation-delay">登 录</button>
                 <p class="am-animation-slide-bottom log-animation-delay"><a href="#">忘记密码?</a></p>
-                <div class="am-btn-group  am-animation-slide-bottom log-animation-delay-b">
+                <!--<div class="am-btn-group  am-animation-slide-bottom log-animation-delay-b">
                     <p>使用第三方登录</p>
                     <a href="#" class="am-btn am-btn-secondary am-btn-sm"><i class="am-icon-github am-icon-sm"></i> Github</a>
                     <a href="#" class="am-btn am-btn-success am-btn-sm"><i class="am-icon-google-plus-square am-icon-sm"></i> Google+</a>
                     <a href="#" class="am-btn am-btn-primary am-btn-sm"><i class="am-icon-stack-overflow am-icon-sm"></i> stackOverflow</a>
-                </div>
+                </div>-->
             </form>
         </div>
     </div>
     <footer class="log-footer">
-        © 2017 AllMobilize, Inc. Licensed under MIT license.
+        © 2017 XiaoCheng, Inc. All rights reserved.
     </footer>
 </div>
 
@@ -88,27 +88,60 @@
 <script src="/res/js/jquery-2.1.4.min.js"></script>
 <!--<![endif]-->
 <script src="/res/js/amaze-ui-2.7.2/amazeui.min.js"></script>
+<script src="/res/js/mis/mis-common.js"></script>
 
 <script type="application/javascript">
+
+    function getfieldAlert($field) {
+        var $group = $field.closest('.am-input-group');
+        var $alert = $group.find('.am-alert');
+        if (!$alert.length) {
+            $alert = $('<div class="log-alert am-alert am-alert-danger am-radius"></div>').hide().appendTo($group);
+        }
+        return $alert;
+    }
+
     $(function() {
         $('#log-form').validator({
             onValid: function(validity) {
                 $(validity.field).closest('.am-input-group').find('.am-alert').hide();
             },
-
             onInValid: function(validity) {
                 var $field = $(validity.field);
-                var $group = $field.closest('.am-input-group');
-                var $alert = $group.find('.am-alert');
+                var $alert = getfieldAlert($field);
                 // 使用自定义的提示信息 或 插件内置的提示信息
                 var msg = $field.data('validationMessage') || this.getValidationMessage(validity);
-
-                if (!$alert.length) {
-                    $alert = $('<div class="log-alert am-alert am-alert-danger am-radius"></div>').hide().
-                            appendTo($group);
-                }
-
                 $alert.html(msg).show();
+            },
+            submit:function() {
+                var $field = $(":input[name='username']");
+                var $alert = getfieldAlert($field);
+                var formValidity = this.isFormValid();
+                if(!formValidity) {
+                    return false;
+                }
+                //提交表单
+                $.ajax({
+                    type: 'POST',
+                    url: "/api/mis/login.do",
+                    data: $("#log-form").serialize(),
+                    dataType: "json",
+                    success: function(res){
+                        if(res.success) {
+                            $alert.html(res.msg).show();
+                            var redirectUrl = commonUtils.getUrlParam("redirectUrl");
+                            if(commonUtils.isEmpty(redirectUrl)) {
+                                redirectUrl = "/mis/vueMain.html";
+                            }
+                            console.info(res.msg);
+                            console.info(redirectUrl);
+                            location.href=redirectUrl;
+                        } else {
+                            $alert.html(res.msg).show();
+                        }
+                    }
+                });
+                return false;
             }
         });
 

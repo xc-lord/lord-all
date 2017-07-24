@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
         logger.error("出现错误：" + e.getMessage(), e);
         Result r = new Result();
         r.setCode(e.getCode());
-        r.setMsg(e.getMessage());
+        r.setMsg(e.getMsg());
         r.setSuccess(false);
         return r;
     }

@@ -38,5 +38,6 @@ public interface MisUserDao extends JpaRepository<MisUser, Long>, JpaSpecificati
     @Query("update MisUser u set u.password = ?2 where u.id = ?1")
     void updatePassword(Long id, String password);
 
+    MisUser findByUsername(String username);
     //在此添加你的自定义方法...
 }

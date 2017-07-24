@@ -25,6 +25,16 @@ var commonUtils = {
         }
     },
     /**
+     * 获取当前Url的参数
+     * @param name
+     * @returns 参数值
+     */
+    getUrlParam: function(name) {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null) return  unescape(r[2]); return null;
+    },
+    /**
      * 验证表单的字段是否已经存在相同的记录
      * @param apiUrl    验证的APIUrl
      * @param rowName   属性名
@@ -141,6 +151,8 @@ var commonUtils = {
                     enumJson[key] = enumEle;
                     if(cls.indexOf(",") == -1) {
                         _self.enumTypeSelect = enumArr;
+                    } else {
+                        _self[key] = enumArr;
                     }
                 }
                 _self.enumType = enumJson;

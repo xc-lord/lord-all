@@ -25,8 +25,6 @@ var ViewTemplate = {
             if (pattern == undefined) {
                 pattern = "YYYY-MM-DD HH:mm:ss";//默认的时间格式
             }
-            var now = moment(date);
-            console.log("时间：" + now);
             return moment(date).format(pattern);
         });
         /*
