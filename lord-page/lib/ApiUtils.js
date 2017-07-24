@@ -123,56 +123,14 @@ var ApiUtils = {
             }
         }
     },
-    doAuth:function(req, res, next) {
-        if(CommonUtils.isEmpty(req.cookies.MIS_AUTH_KEY)) {
-            res.cookie('MIS_AUTH_KEY', 'MIS_AUTH_KEY_NOT_LOGIN', {expires: new Date(Date.now() + 900000)});
+    /**
+     * 后台用户是否登录过滤
+     */
+    doMisAdminAuth:function(req, res, next) {
+        if(CommonUtils.isEmpty(req.cookies.MIS_AUTH_SIGN) || CommonUtils.isEmpty(req.cookies.MIS_USER_ID)) {
             return res.redirect("/mis/login.html");
         }
-
-        var userId = req.cookies.MIS_AUTH_KEY;
-        var userKey = 'user_info_' + userId;
-        var userInfo = cache.get(userKey);
-        if(!userInfo || CommonUtils.isEmpty(userInfo.auth_token)) {
-            //去服务器获取token信息
-            console.log("去服务器获取token信息");
-
-            var userObj = {user_id:5,auth_token:"343434"};
-            cache.put(userKey, userObj, 60000, function(key, value) {
-                console.log(key + ' 删除缓存中的 ' + value);
-            });
-
-            res.cookie('MIS_AUTH_KEY', 'MIS_AUTH_KEY_NOT_LOGIN', {expires: new Date(Date.now() + 900000)});
-            return res.redirect("/mis/login.html");
-        }
-        var obj = {id:5,key:"343434"};
-        cache.put('houdini', obj, 5000, function(key, value) {
-            console.log(key + ' 删除缓存中的 ' + value);
-        });
-        console.log(cache.get('houdini'));
-
-        console.log('取得的IP:' + req.ip.match(/\d+\.\d+\.\d+\.\d+/));
-        console.log('取得的User-Agent:' + req.get("User-Agent"));
-        console.log('取得的cookie:' + req.cookies.MIS_AUTH_KEY);
-        console.log('取得的cookie:' + req.cookies.MIS_USER_ID);
-        console.log('取得的cookie:' + req.cookies.MIS_USER_NAME);
-        console.log('取得的userInfo.auth_token:' + userInfo.auth_token);
-
-        var authStr = "";
-        authStr += "ip=" + req.ip.match(/\d+\.\d+\.\d+\.\d+/) + "&";
-        authStr += "token=" + userInfo.auth_token + "&";
-        authStr += "user_id=" + req.cookies.MIS_USER_ID + "&";
-        authStr += "user_name=" + req.cookies.MIS_USER_NAME + "&";
-        authStr += "user_agent=" + req.get("User-Agent") + "&";
-        authStr += "day=" + CommonUtils.dateFormat(new Date(), "YYYY-MM-DD") + "&";
-
-        var authKey = CommonUtils.md5(authStr);
-        console.log('取得的authStr=' + authStr);
-        console.log('取得的authKey=' + authKey);
-        if(authKey == req.cookies.MIS_AUTH_KEY) {
-            next();
-        }
-        res.cookie('MIS_AUTH_KEY', 'MIS_AUTH_KEY_1323232_MIS_AUTH_KEY', {expires: new Date(Date.now() + 900000)});
-        return res.redirect("/mis/login.html");
+        next();
     }
 };
 

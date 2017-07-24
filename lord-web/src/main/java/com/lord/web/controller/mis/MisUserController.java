@@ -52,6 +52,13 @@ public class MisUserController {
         return Result.success("登录成功", output);
     }
 
+    @ApiOperation(value = "获得当前登录的所有用户")
+    @RequestMapping(value = "/api/mis/onlineUser", method = {RequestMethod.GET, RequestMethod.POST})
+    public Result logout(HttpServletRequest request, HttpServletResponse response)
+    {
+        return Result.success(UserHandler.onlineUser());
+    }
+
     @ApiOperation(value = "获得当前登录的用户")
     @RequestMapping(value = "/api/mis/getLoginUser", method = {RequestMethod.GET, RequestMethod.POST})
     public Result getLoginUser(HttpServletRequest request, HttpServletResponse response)

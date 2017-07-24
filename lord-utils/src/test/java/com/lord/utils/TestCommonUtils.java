@@ -22,5 +22,7 @@ public class TestCommonUtils
         System.out.println(CommonUtils.matchedOne("127.0.0.1", par));
         System.out.println(CommonUtils.matchedOne("localhost", par));
         System.out.println(CommonUtils.matchedOne("www.163.com", par));
+
+        System.out.println(CommonUtils.matchedOne("/mis3/login.html", "^/mis/\\w*"));
     }
 }

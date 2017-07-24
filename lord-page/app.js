@@ -35,8 +35,9 @@ app.use(cookieParser());
 //登录拦截器，需要拦截静态页面，需要放在express.static上面
 app.use(function (req, res, next) {
     var url = req.originalUrl;
-    if (url == "/mis/vueMain.html") {
-        return ApiUtils.doAuth(req,res,next);
+    var regx = "^/mis/\w*";
+    if (url.match(regx) && url != "/mis/login.html") {
+        return ApiUtils.doMisAdminAuth(req,res,next);
     }
     next();
 });
