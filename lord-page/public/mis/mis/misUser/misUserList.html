@@ -201,7 +201,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="passwordFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="modifyPasswodClick">确 定</el-button>
+            <el-button type="primary" @click="modifyPasswordClick">确 定</el-button>
         </div>
     </el-dialog>
 
@@ -370,7 +370,7 @@
                 _self.passwordFormVisible = true;
             },
             //修改密码确认事件
-            modifyPasswodClick:function(){
+            modifyPasswordClick:function(){
                 var _self = this;
                 var newPwd = _self.pwdForm.password;
                 if(commonUtils.isEmpty(newPwd)) {

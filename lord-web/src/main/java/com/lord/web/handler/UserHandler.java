@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
@@ -91,6 +92,37 @@ public class UserHandler
         cookieUtil.setCookie(output.getWebChannel() + "_USER_ICON", output.getIcon());
         cookieUtil.setCookie(output.getWebChannel() + "_AUTH_SIGN", sign);//用户是否登录，验证的签名，会话期间有效
         output.setToken(sign);
+    }
+
+    /**
+     * 用户注销登录
+     * @param channel   登录渠道
+     * @param request   请求
+     * @param response  响应
+     */
+    public static void logout(WebChannel channel, HttpServletRequest request, HttpServletResponse response)
+    {
+        CookieUtil cookieUtil = new CookieUtil(request, response);
+        Long userId = cookieUtil.getLong(channel + "_USER_ID");
+        if (userId != null)
+        {
+            final String key = String.format(LOGIN_USER_KEY, channel, userId);
+            getRedisTemplate().delete(key);//删缓存中的key
+        }
+        //删除cookie中的用户信息
+        cookieUtil.removeCookie(channel + "_USER_ID");
+        cookieUtil.removeCookie(channel + "_USER_NAME");
+        cookieUtil.removeCookie(channel + "_NICK_NAME");
+        cookieUtil.removeCookie(channel + "_USER_ICON");
+        cookieUtil.removeCookie(channel + "_AUTH_SIGN");
+        try
+        {
+            response.sendRedirect("/mis/login.html");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -179,4 +211,5 @@ public class UserHandler
             stringRedisTemplate = SpringUtils.getBean(StringRedisTemplate.class);
         return stringRedisTemplate;
     }
+
 }

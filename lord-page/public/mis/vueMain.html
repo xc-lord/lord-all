@@ -17,24 +17,21 @@
                     <img src="/res/img/mis/mis-logo.png" alt=""/>
                 </span>
             </el-col>
-            <el-col :span="18">
+            <el-col :span="16">
                 <el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
                          @select="handleSelect">
                     <el-menu-item :index="menu.letter" v-for="menu in menus" :key="menu.letter">{{menu.name}}</el-menu-item>
                 </el-menu>
             </el-col>
-            <el-col :span="3">
-                <el-dropdown>
+            <el-col :span="5" style="text-align:right">
+                <el-dropdown @command="clickRightMenu">
                       <span class="el-dropdown-link right-menu">
-                        欢迎你，admin&nbsp;<i class="el-icon-setting"></i> 设置 <i
+                        欢迎你，{{nickname}}&nbsp;<i class="el-icon-setting"></i> 设置 <i
                               class="el-icon-caret-bottom el-icon--right"></i>
                       </span>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>黄金糕</el-dropdown-item>
-                        <el-dropdown-item>狮子头</el-dropdown-item>
-                        <el-dropdown-item>螺蛳粉</el-dropdown-item>
-                        <el-dropdown-item disabled>双皮奶</el-dropdown-item>
-                        <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
+                        <el-dropdown-item command="modifyPassword">修改密码</el-dropdown-item>
+                        <el-dropdown-item command="logout" divided>退出</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </el-col>
@@ -67,10 +64,28 @@
         </el-col>
         <el-col :span="21">
             <el-row id="showView">
-                欢迎您，{{userName}}超级管理员！
+                欢迎您，{{nickname}}！
             </el-row>
         </el-col>
     </el-row>
+
+    <el-dialog title="修改我的密码" v-model="passwordFormVisible">
+        <el-form :model="pwdForm" label-position="right" :rules="pwdFormRules">
+            <el-form-item label="旧密码" prop="oldPassword">
+                <el-input v-model="pwdForm.oldPassword" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="新密码" prop="newPassword">
+                <el-input v-model="pwdForm.newPassword" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="checkPassword">
+                <el-input v-model="pwdForm.checkPassword" auto-complete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="passwordFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="modifyPasswordClick">确 定</el-button>
+        </div>
+    </el-dialog>
 </div>
 
 <script src="/res/js/vue/vue-2.2.0.js"></script>
@@ -90,7 +105,7 @@
     var app = new Vue({
         el: '#mainView',
         data: {
-            userName: 'xiaocheng',
+            nickname: '管理员',
             activeIndex: '1',
             activeIndex2: '1',
             items: [
@@ -100,10 +115,56 @@
             //一级菜单
             menus: [],
             //二级菜单
-            subMenus: []
+            subMenus: [],
+            //修改密码的表单
+            passwordFormVisible: false,
+            pwdForm:{
+                oldPassword:'',
+                newPassword:'',
+                checkPassword:''
+            },
+            pwdFormRules:{
+                oldPassword: [
+                    { required: true, message: '请输入旧密码', trigger: 'blur' },
+                    { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' }
+                ],
+                newPassword: [
+                    { required: true, message: '请输入新密码', trigger: 'blur' },
+                    { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' }
+                ],
+                checkPassword: [
+                    {   required: true,
+                        validator: function(rule, value, callback) {
+                            console.info(value);
+                            if (value === '') {
+                                callback(new Error('请再次输入密码'));
+                            } else if (value !== app.pwdForm.newPassword) {
+                                callback(new Error('两次输入密码不一致!'));
+                            } else {
+                                callback();
+                            }
+                        },
+                        trigger: 'blur' }
+                ],
+            }
         },
         created: function () {
             var _self = this;
+            //获取登录用户信息
+            $.ajax({
+                url: '/api/admin/mis/getLoginAdmin.do',
+                dataType: "json"
+            }).done(function (res) {
+                if (res.success) {
+                    _self.nickname = res.data.nickname;//一级菜单
+                }
+                else if(res.code == 401) {
+                    location.href = "/mis/login.html";//未登录跳转到登录页
+                }
+                else {
+                    _self.$message.error(res.msg);//提示错误
+                }
+            });
             //获取树的数据
             $.ajax({
                 url: '/api/admin/mis/misMenu/getTree.do',
@@ -147,7 +208,21 @@
             //左侧二级菜单关闭事件
             handleClose: function (key, keyPath) {
                 console.log("二级菜单关闭事件"  + key, keyPath);
-            }
+            },
+            clickRightMenu: function(command) {
+                if(command == 'logout') {
+                    location.href = "/api/mis/logout.do";//退出登录
+                }
+                else if(command == 'modifyPassword') {
+                    this.passwordFormVisible = true;
+                } else {
+                    this.$message('click on item ' + command);
+                }
+            },
+            modifyPasswordClick:function() {
+                var _self = this;
+                _self.passwordFormVisible = true;
+            },
         }
     });
 

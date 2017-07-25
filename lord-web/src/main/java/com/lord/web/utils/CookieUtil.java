@@ -94,24 +94,8 @@ public class CookieUtil
 				return;
 			}
 			Cookie cookie = new Cookie(name, URLEncoder.encode(value, "UTF-8"));
-			if (StringUtils.isNotEmpty(path))
-			{
-				cookie.setPath(path);
-			}
-			else
-			{
-				cookie.setPath("/");
-			}
-			if (StringUtils.isNotEmpty(domain))
-			{
-				cookie.setDomain(domain);
-			} else {
-				//获取网站的根域名
-				String serverName = request.getServerName();
-				String rootDomain = CommonUtils.matchedOne(serverName, RegularExpression.rootDomain);
-				if(rootDomain != null)
-					cookie.setDomain(rootDomain);
-			}
+			setPath(cookie, path);
+			setDomain(cookie, domain);
 			//如果在服务器端没有调用setMaxAge方法设置cookie的有效期，那么cookie的有效期只在一次会话过程中有效
 			if(cookieMaxAge != null)
 				cookie.setMaxAge(cookieMaxAge);
@@ -119,6 +103,32 @@ public class CookieUtil
 		} catch (Exception e) {
 			logger.error("设置cookie=" + name + "失败：" + e.getMessage(), e);
 		}
+	}
+
+	private void setPath(Cookie cookie, String path)
+	{
+		if (StringUtils.isNotEmpty(path))
+        {
+            cookie.setPath(path);
+        }
+        else
+        {
+            cookie.setPath("/");
+        }
+	}
+
+	private void setDomain(Cookie cookie, String domain)
+	{
+		if (StringUtils.isNotEmpty(domain))
+        {
+            cookie.setDomain(domain);
+        } else {
+            //获取网站的根域名
+            String serverName = request.getServerName();
+            String rootDomain = CommonUtils.matchedOne(serverName, RegularExpression.rootDomain);
+            if(rootDomain != null)
+                cookie.setDomain(rootDomain);
+        }
 	}
 
 	/**
@@ -129,14 +139,8 @@ public class CookieUtil
 	public void removeCookie(String name) {
 		try {
 			Cookie cookie = new Cookie(name, "");
-			if (StringUtils.isNotEmpty(path)) {
-				cookie.setPath(path);
-			} else {
-				cookie.setPath("/");
-			}
-			if (StringUtils.isNotEmpty(domain)) {
-				cookie.setDomain(domain);
-			}
+			setPath(cookie, path);
+			setDomain(cookie, domain);
 			cookie.setMaxAge(0);
 			response.addCookie(cookie);
 		} catch (Exception e)

@@ -39,7 +39,7 @@ public class MisUserController {
     @Autowired
     private MisUserService misUserService;
 
-    @ApiOperation(value = "后台用户登录")
+    @ApiOperation(value = "用户登录")
     @RequestMapping(value = "/api/mis/login", method = {RequestMethod.GET, RequestMethod.POST})
     public Result login(@ModelAttribute UserLoginInput input, HttpServletRequest request, HttpServletResponse response) {
         Preconditions.checkArgument(input == null, "参数不能为空");
@@ -52,11 +52,11 @@ public class MisUserController {
         return Result.success("登录成功", output);
     }
 
-    @ApiOperation(value = "获得当前登录的所有用户")
-    @RequestMapping(value = "/api/mis/onlineUser", method = {RequestMethod.GET, RequestMethod.POST})
-    public Result logout(HttpServletRequest request, HttpServletResponse response)
+    @ApiOperation(value = "用户注销登录")
+    @RequestMapping(value = "/api/mis/logout", method = {RequestMethod.GET, RequestMethod.POST})
+    public void logout(HttpServletRequest request, HttpServletResponse response)
     {
-        return Result.success(UserHandler.onlineUser());
+        UserHandler.logout(WebChannel.MIS, request, response);
     }
 
     @ApiOperation(value = "获得当前登录的用户")
