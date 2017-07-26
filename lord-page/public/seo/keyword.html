@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>百度关键字扩展</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="/res/css/vue/element-ui-1.2.8.css">
+</head>
+<body>
+
+<div id="tableView">
+    <h1 v-if="total>0">{{searchForm.name}}的关键字扩展，共有{{total}}条记录</h1>
+    <h1 v-else>百度关键字扩展</h1>
+    <!--列表顶部搜索和工具条-->
+    <el-row>
+        <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+            <el-form-item label="关键字">
+                <el-input v-model="searchForm.name" placeholder="关键字"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
+                <el-button type="success" icon="document" @click="downloadClick">下载Excel</el-button>
+            </el-form-item>
+        </el-form>
+    </el-row>
+    <!--列表-->
+    <el-row>
+        <el-table
+                :data="tableData"
+                v-loading.body="loading"
+                border
+                @selection-change="selectionChange"
+                style="width: 100%">
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    prop="word"
+                    label="关键字"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    prop="pv"
+                    label="PV"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="pcPV"
+                    label="电脑端PV"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="mobilePV"
+                    label="移动端PV"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="competition"
+                    label="竞争激烈程度"
+                    width="200">
+            </el-table-column>
+            <el-table-column
+                    prop="recBid"
+                    label="准入价"
+                    width="100">
+            </el-table-column>
+            <el-table-column
+                    prop="wordPackage"
+                    label="所属词包名"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="businessPoints"
+                    label="所属业务点名"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    prop="showReasons"
+                    label="展现理由"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    label="操作">
+                <template scope="scope">
+                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">编辑</el-button>
+                    <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </el-row>
+
+    <!--编辑界面-->
+    <el-dialog title="下载Excel文件" v-model="editFormVisible" :close-on-click-modal="false">
+        <el-form :model="searchForm" label-width="80px" :rules="editFormRules" ref="editForm">
+            <el-form-item label="关键字" prop="name">
+                <el-input v-model="searchForm.name" auto-complete="off" :disabled="true"></el-input>
+            </el-form-item>
+            <el-form-item label="文件名ID" prop="fileId">
+                <el-input v-model="fileId" auto-complete="off" :disabled="true"></el-input>
+            </el-form-item>
+            <el-form-item label="文件路径" prop="filePath">
+                <el-input v-model="filePath" auto-complete="off" :disabled="true"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click.native="editFormVisible = false">取消</el-button>
+            <el-button type="primary" @click.native="downloadFile" :loading="editLoading">下载文件</el-button>
+        </div>
+    </el-dialog>
+
+</div>
+
+<script src="/res/js/vue/vue-2.2.0.min.js"></script>
+<script src="/res/js/vue/element-ui-1.2.8.js"></script>
+<script src="/res/js/jquery-2.1.4.min.js"></script>
+
+<script type="text/javascript">
+    var tableView = new Vue({
+        el: '#tableView',
+        data: {
+            //列表数据
+            tableData: [],
+            //显示加载中样式
+            loading:false,
+            //搜索表单
+            searchForm: {
+                id: '',
+                name: '',
+                state: ''
+            },
+            //多选值
+            multipleSelection: [],
+            //当前页
+            currentPage:3,
+            //分页大小
+            pageSize:100,
+            //总记录数
+            total:0,
+            //删除的弹出框
+            deleteVisible:false,
+            //编辑界面是否显示
+            editFormVisible: false,
+            editLoading: false,
+            editFormRules: {
+                name: [
+                    { required: true, message: '请输入姓名', trigger: 'blur' }
+                ]
+            },
+            //编辑界面数据
+            editForm: {
+                id: 0,
+                name: '',
+                sex: -1,
+                age: 0,
+                birth: '',
+                address: ''
+            },
+            fileId:"",
+            filePath:"",
+        },
+        created:function () {
+            var _self = this;
+            _self.loadingData();
+        },
+        methods:{
+            //表格重新加载数据
+            loadingData:function() {
+                var _self = this;
+                if(!_self.searchForm.name)
+                    return;
+                _self.loading = true;
+                //搜索
+                $.ajax({
+                    url: '/baidu/getKRByQuery',
+                    data: {query:_self.searchForm.name},
+                    dataType: "json"
+                }).done(function (res, status, xhr) {
+                    if (res.body.data) {
+                        _self.tableData = res.body.data;
+                        _self.total = res.body.data.length;
+                    } else {
+                        _self.$message.error(res.header.desc);//提示错误
+                    }
+                    _self.loading = false;
+                });
+            },
+            //表格编辑事件
+            editClick:function(row) {
+                this.editFormVisible = true;
+                this.editForm = Object.assign({}, row);
+            },
+            //表格删除事件
+            deleteClick:function(row) {
+                var _self = this;
+                this.$confirm('确认删除' + row.name +'吗?', '提示', {
+                    type: 'warning'
+                }).then(function(){
+                    _self.$message({
+                        message: row.name + '删除成功',
+                        type: 'success'
+                    });
+                    _self.loadingData();//重新加载数据
+                }).catch(function(e){
+                    if(e != "cancel")
+                        console.log("出现错误：" + e);
+                });
+            },
+            //新建事件
+            downloadClick:function() {
+                var _self = this;
+                if(!_self.searchForm.name) {
+                    _self.$message.info("请输入关键字");//提示错误
+                    return;
+                }
+                //搜索
+                $.ajax({
+                    url: '/baidu/getKRFileIdByWords',
+                    data: {query:_self.searchForm.name},
+                    dataType: "json"
+                }).done(function (res, status, xhr) {
+                    if (res.body.data) {
+                        _self.fileId = res.body.data[0].fileId;
+                        _self.filePath = "";
+                        _self.editFormVisible = true;
+                    } else {
+                        _self.$message.error(res.header.desc);//提示错误
+                    }
+                });
+            },
+            //表格查询事件
+            searchClick:function() {
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //表格勾选事件
+            selectionChange:function(val) {
+                for(var i=0;i<val.length;i++) {
+                    var row = val[i];
+                }
+                this.multipleSelection = val;
+                console.info(val);
+            },
+            //删除所选，批量删除
+            removeSelection:function() {
+                var _self = this;
+                var multipleSelection = this.multipleSelection;
+                if(multipleSelection.length < 1) {
+                    _self.$message({
+                        message: '请至少选中一条记录',
+                        type: 'error'
+                    });
+                    return;
+                }
+                var ids = "";
+                for(var i=0;i<multipleSelection.length;i++) {
+                    var row = multipleSelection[i];
+                    ids += row.name + ","
+                }
+                this.$confirm('确认删除' + ids +'吗?', '提示', {
+                    type: 'warning'
+                }).then(function(){
+                    _self.$message({
+                        message: ids + '删除成功',
+                        type: 'success'
+                    });
+                    _self.loadingData();//重新加载数据
+                }).catch(function(e){
+                    if(e != "cancel")
+                        console.log("出现错误：" + e);
+                });
+            },
+            //分页大小修改事件
+            pageSizeChange:function(val) {
+                console.log('每页 ' + val +' 条');
+                this.pageSize = val;
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //当前页修改事件
+            currentPageChange:function(val) {
+                this.currentPage = val;
+                console.log('当前页: ' + val);
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //保存点击事件
+            downloadFile:function(){
+                var _self = this;
+                if(_self.editFormVisible && _self.filePath) {
+                    console.info("下载文件!!!");
+                    window.open(_self.filePath);
+                    return;
+                }
+                //获取文件路径
+                $.ajax({
+                    url: '/baidu/getFilePath',
+                    data: {fileId:_self.fileId},
+                    dataType: "json"
+                }).done(function (res, status, xhr) {
+                    if (res.body.data) {
+                        _self.filePath = res.body.data[0].filePath;
+                        setTimeout(function(){
+                            console.info("下载文件");
+                            window.open(_self.filePath);
+                        },300);
+                    } else {
+                        _self.$message.error(res.header.desc);//提示错误
+                    }
+                });
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

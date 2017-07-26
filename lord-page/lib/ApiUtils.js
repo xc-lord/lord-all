@@ -58,7 +58,7 @@ var ApiUtils = {
             tempObj = {
                 'key': key,
                 'opt': {url: api[key].url, req: req, data: api[key].data, headers: api[key].headers},
-                'fun': httpMethod,
+                'httpMethod': httpMethod,
                 'dataType': api[key].dataType
             };
             dealArrs.push(tempObj);
@@ -74,7 +74,7 @@ var ApiUtils = {
         async.map(dealArrs, function (item, item_callback) {
             item.dataType = item.dataType || "json";
             var api_url = item.opt.url;
-            item.fun(item.opt, item.dataType, function (err, response) {
+            item.httpMethod(item.opt, item.dataType, function (err, response) {
                 item_callback(null, {api_url: api_url, key: item.key, dataType: item.dataType, response: response});
             });
 

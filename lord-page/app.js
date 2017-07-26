@@ -10,6 +10,7 @@ var CommonUtils = require("./lib/CommonUtils");
 var ApiUtils = require("./lib/ApiUtils");
 
 var index = require('./routes/index');
+var baidu = require('./routes/baidu');
 var users = require('./routes/users');
 
 var app = express();
@@ -43,8 +44,9 @@ app.use(function (req, res, next) {
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
-
+//配置路由规则
 app.use('/', index);
+app.use('/baidu', baidu);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
