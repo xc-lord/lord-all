@@ -16,7 +16,7 @@
     <el-row>
         <el-form :inline="true" :model="searchForm" class="demo-form-inline">
             <el-form-item label="关键字">
-                <el-input v-model="searchForm.name" placeholder="关键字"></el-input>
+                <el-input type="textarea" v-model="searchForm.name" placeholder="关键字"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="search" @click="searchClick">查询</el-button>

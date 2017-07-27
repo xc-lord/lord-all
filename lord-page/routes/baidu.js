@@ -14,6 +14,11 @@ var postHeader = {
 router.get('/getKRByQuery', function (req, res, next) {
     var query = req.query.query;
     if(!query) query = "nodejs";
+    var words = query.split("\n");
+    if(words.length > 1) {
+        query = words[0];
+    }
+    console.info("拓展的关键字：" + query);
     var url = "https://api.baidu.com/json/sms/v4/KRService/getKRByQuery";
     var params = {
         "body":{"queryType":1,"query":query},
@@ -42,10 +47,14 @@ router.get('/getKRByQuery', function (req, res, next) {
 
 router.get('/getKRFileIdByWords', function (req, res, next) {
     var query = req.query.query;
-    if(!query) query = "nodejs";
+    if(!query)
+        query = ["nodejs"];
+    else
+        query = query.split("\n");
+    console.info("拓展的关键字列表：" + query);
     var url = "https://api.baidu.com/json/sms/v4/KRService/getKRFileIdByWords";
     var params = {
-        "body":{"seedWords":[query]},
+        "body":{"seedWords":query},
         "header":postHeader
     };
     var options = {
