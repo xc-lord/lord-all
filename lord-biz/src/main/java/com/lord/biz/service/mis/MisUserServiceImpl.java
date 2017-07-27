@@ -147,6 +147,7 @@ public class MisUserServiceImpl implements MisUserService {
     }
 
     @Override
+    @Transactional
     public void updatePassword(Long id, String password) {
         MisUser dbObj = misUserDao.findOne(id);
         Preconditions.checkNotNull(dbObj, "用户的记录不存在");
@@ -198,5 +199,20 @@ public class MisUserServiceImpl implements MisUserService {
         output.setIp(input.getIp());
         output.setWebChannel(input.getWebChannel());
         return output;
+    }
+
+    @Override
+    @Transactional
+    public void updateMyPassword(Long userId, String oldPassword, String newPassword)
+    {
+        MisUser user = misUserDao.findOne(userId);
+        Preconditions.checkArgument(user == null, "用户" + userId + "不存在");
+        String oldPwd = EncryptUtils.passwordEncode(oldPassword);//新密码
+        String newPwd = EncryptUtils.passwordEncode(newPassword);//新密码
+        Preconditions.checkArgument(!oldPwd.equals(user.getPassword()), "旧密码输入错误，请重新输入");
+        if (newPwd.equals(user.getPassword())) {
+            return;
+        }
+        misUserDao.updatePassword(userId, newPwd);
     }
 }

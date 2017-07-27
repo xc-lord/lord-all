@@ -31,9 +31,9 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result commonException(HttpServletRequest req, CommonException e) throws Exception {
         StackTraceElement[] stack = e.getStackTrace();
-        if(stack != null && stack.length > 0)
+        if(stack != null && stack.length > 2)
         {
-            logger.error("运行时错误：" + e.getMessage() + " -> " + e.getStackTrace()[0].toString());
+            logger.error("运行时错误：" + e.getMessage() + " -> " + e.getStackTrace()[2].toString());
         }
         Result r = new Result();
         r.setCode(e.getCode());

@@ -72,13 +72,13 @@
     <el-dialog title="修改我的密码" v-model="passwordFormVisible">
         <el-form :model="pwdForm" label-position="right" :rules="pwdFormRules">
             <el-form-item label="旧密码" prop="oldPassword">
-                <el-input v-model="pwdForm.oldPassword" auto-complete="off"></el-input>
+                <el-input type="password" v-model="pwdForm.oldPassword" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="新密码" prop="newPassword">
-                <el-input v-model="pwdForm.newPassword" auto-complete="off"></el-input>
+                <el-input type="password" v-model="pwdForm.newPassword" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="确认密码" prop="checkPassword">
-                <el-input v-model="pwdForm.checkPassword" auto-complete="off"></el-input>
+                <el-input type="password" v-model="pwdForm.checkPassword" auto-complete="off"></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -214,6 +214,11 @@
                     location.href = "/api/mis/logout.do";//退出登录
                 }
                 else if(command == 'modifyPassword') {
+                    this.pwdForm = {
+                        oldPassword:'',
+                        newPassword:'',
+                        checkPassword:''
+                    };
                     this.passwordFormVisible = true;
                 } else {
                     this.$message('click on item ' + command);
@@ -221,7 +226,20 @@
             },
             modifyPasswordClick:function() {
                 var _self = this;
-                _self.passwordFormVisible = true;
+                //修改密码
+                $.ajax({
+                    type:"POST",
+                    url: '/api/admin/mis/misUser/updateMyPassword.do',
+                    data: {oldPassword: _self.pwdForm.oldPassword, newPassword: _self.pwdForm.newPassword},
+                    dataType: "json"
+                }).done(function (res) {
+                    if (res.success) {
+                        _self.$message.success(res.msg);//提示成功
+                        _self.passwordFormVisible = false;
+                    } else {
+                        _self.$message.error(res.msg);//提示错误
+                    }
+                });
             },
         }
     });

@@ -139,6 +139,21 @@ public class MisUserController {
         return Result.success("更新成功");
     }
 
+    @ApiOperation(value="修改我的密码", notes="修改我的密码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "oldPassword", value = "旧密码", required = true, dataType = "String", paramType = "form"),
+            @ApiImplicitParam(name = "newPassword", value = "新密码", required = true, dataType = "String", paramType = "form")
+    })
+    @RequestMapping(value = "/api/admin/mis/misUser/updateMyPassword", method = RequestMethod.POST)
+    public Result updateMyPassword(String oldPassword, String newPassword)
+    {
+        Preconditions.checkArgument(StringUtils.isEmpty(oldPassword), "旧密码不能为空");
+        Preconditions.checkArgument(StringUtils.isEmpty(newPassword), "新密码不能为空");
+        UserLoginOutput output = UserHandler.getLoginUser();
+        misUserService.updateMyPassword(output.getUserId(), oldPassword, newPassword);
+        return Result.success("修改我的密码成功");
+    }
+
     @ApiOperation(value="修改用户的密码", notes="根据主键id，修改用户的密码")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "主键Id", required = true, dataType = "Long", paramType = "query"),

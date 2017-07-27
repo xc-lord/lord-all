@@ -97,4 +97,12 @@ public interface MisUserService {
      * @return
      */
     UserLoginOutput login(UserLoginInput input);
+
+    /**
+     * 修改用户自己的密码
+     * @param userId        用户ID
+     * @param oldPassword   旧密码
+     * @param newPassword   新密码
+     */
+    void updateMyPassword(Long userId, String oldPassword, String newPassword);
 }
