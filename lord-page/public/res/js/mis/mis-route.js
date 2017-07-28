@@ -37,6 +37,17 @@ var routes = {
         pageParam = Object.assign({}, {id: id});//设置页面参数
         $("#showView").load("/mis/mis/misMenu/misMenuEdit.html");
     },
+    //菜单权限
+    '/misMenuRight': function () {
+        $("#showView").load("/mis/mis/misMenuRight/misMenuRightList.html");
+    },
+    '/misMenuRight/add': function () {
+        $("#showView").load("/mis/mis/misMenuRight/misMenuRightAdd.html");
+    },
+    '/misMenuRight/edit/:id': function (id) {
+        pageParam = Object.assign({}, {id: id});//设置页面参数
+        $("#showView").load("/mis/mis/misMenuRight/misMenuRightEdit.html");
+    },
     //文件管理
     '/sysFile': function () {
         $("#showView").load("/mis/sys/sysFile/sysFileList.html");

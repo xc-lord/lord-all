@@ -1,0 +1,93 @@
+<!-- 
+	Desc: 	后台菜单的具体权限的新增界面
+	Author: xiaocheng
+	Date: 	2017年07月28日 18:03:31
+-->
+
+<!-- UI界面 start -->
+<div id="misMenuRightAddView">
+    <el-row>
+        <h3><i class="el-icon-edit"></i> <a href="#/misMenuRight">后台菜单的具体权限管理</a> / 新增</h3>
+    </el-row>
+    <!--编辑界面-->
+    <el-row type="flex" justify="center">
+        <el-col :span="22">
+            <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
+				<!--id不需要-->
+                <el-form-item label="权限名称" prop="name">
+                    <el-input v-model="editForm.name" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="权限code" prop="rightCode">
+                    <el-input v-model="editForm.rightCode" auto-complete="off"></el-input>
+                </el-form-item>
+				<el-form-item label="菜单Id">
+                    <el-input-number v-model="editForm.menuId" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="排序">
+                    <el-input-number v-model="editForm.orderValue" :min="0"></el-input-number>
+                </el-form-item>
+                <!--TODO:待修改-->
+                <!--<el-form-item label="状态">
+                    <el-select v-model="editForm.status" placeholder="请选择">
+                        <el-option
+                                v-for="item in misMenuRightStatus"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>-->
+            </el-form>
+        </el-col>
+    </el-row>
+
+    <el-row type="flex" justify="center">
+        <el-col :span="6">
+            <el-button @click="editFormCancel">取消</el-button>
+            <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading">提交</el-button>
+        </el-col>
+    </el-row>
+
+</div>
+<!-- UI界面 end -->
+
+<script type="text/javascript">
+    $.getScript('/res/js/mis/mis/misMenuRight/misMenuRightForm.js', function () {
+        //清空参数
+        pageParam = Object.assign({}, {});
+
+        var misMenuRightAddView = new Vue({
+            el: '#misMenuRightAddView',
+            data: MisMenuRightFromCommon.data,
+            //数据初始化
+            created: function () {
+                var _self = this;
+                //获取下拉框选项
+                MisMenuRightFromCommon.loadSelect(_self);
+                _self.editForm = Object.assign({}, MisMenuRightFromCommon.defaultModel);
+            },
+            methods: {
+                //保存事件
+                editSubmit: function (formName) {
+                    var _self = this;
+                    _self.$refs[formName].validate(function(valid){
+                        if (valid) {
+                            MisMenuRightFromCommon.saveAction(_self);
+                        } else{
+                            _self.$message.error("请正确填写表单！");
+                        }
+                    });
+                },
+                //取消事件
+                editFormCancel: function () {
+                    MisMenuRightFromCommon.cancelAction();
+                },
+                //上传图片前的验证事件
+                beforeAvatarUpload:function(file) {
+                    var _self = this;
+                    commonUtils.uploadImageCheck(file, _self);
+                }
+            }
+        });
+    });
+</script>
