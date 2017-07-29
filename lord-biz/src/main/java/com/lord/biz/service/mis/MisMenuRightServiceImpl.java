@@ -3,6 +3,7 @@ package com.lord.biz.service.mis;
 import com.lord.biz.dao.mis.MisMenuRightDao;
 import com.lord.biz.dao.mis.specs.MisMenuRightSpecs;
 import com.lord.biz.utils.ServiceUtils;
+import com.lord.common.constant.mis.MenuBaseRight;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
@@ -18,9 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 后台菜单的具体权限mis_menu_right的Service实现
@@ -51,7 +50,10 @@ public class MisMenuRightServiceImpl implements MisMenuRightService {
             logger.debug("保存" + pageObj);
 
         //验证字段的唯一性
-        Preconditions.checkArgument(isExist(pageObj.getId(), "name", pageObj.getName()), "名称[" + pageObj.getName() + "]已经存在");
+        Preconditions.checkArgument(isExist(pageObj.getId(), pageObj.getMenuId(), "name", pageObj.getName()),
+                "名称[" + pageObj.getName() + "]已经存在");
+        Preconditions.checkArgument(isExist(pageObj.getId(), pageObj.getMenuId(), "rightCode", pageObj.getRightCode()),
+                "权限编码[" + pageObj.getName() + "]已经存在");
 
         //新增记录
         if (pageObj.getId() == null) {
@@ -121,12 +123,13 @@ public class MisMenuRightServiceImpl implements MisMenuRightService {
     }
 
     @Override
-    public boolean isExist(Long id, String rowName, String rowValue) {
+    public boolean isExist(Long id, Long menuId, String rowName, String rowValue)
+    {
         List<String> rowList = new ArrayList<>();
         rowList.add("name");
-        rowList.add("username");
+        rowList.add("rightCode");
         Preconditions.checkArgument(!rowList.contains(rowName), "此字段不需要判断是否存在");
-        List<MisMenuRight> list = misMenuRightDao.findAll(MisMenuRightSpecs.queryBy(rowName, rowValue, MisMenuRight.class));
+        List<MisMenuRight> list = misMenuRightDao.findAll(MisMenuRightSpecs.queryByMenu(menuId, rowName, rowValue));
         if (list == null || list.size() < 1) {
             return false;
         }
@@ -136,5 +139,40 @@ public class MisMenuRightServiceImpl implements MisMenuRightService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public Pager<MisMenuRight> pageByMenu(String menuId)
+    {
+        PagerParam pagerParam = new PagerParam();
+        PageRequest pageRequest = new PageRequest(pagerParam.getPage() - 1, pagerParam.getPageSize());
+        Page<MisMenuRight> pageResult = misMenuRightDao.findAll(MisMenuRightSpecs.queryBy("menuId", menuId,
+                MisMenuRight.class), pageRequest);
+        return ServiceUtils.toPager(pageResult, pagerParam);
+    }
+
+    @Override
+    @Transactional
+    public void addDefaultRight(Long menuId)
+    {
+        List<MisMenuRight> list = misMenuRightDao.findByMenuId(menuId);
+        Map<String, String> defalutMap = MenuBaseRight.toMap();
+        for (MisMenuRight right : list)
+        {
+            if (defalutMap.get(right.getRightCode()) != null)
+            {
+                defalutMap.remove(right.getRightCode());
+            }
+        }
+        if(defalutMap.size() < 1) return;
+        for (String key : defalutMap.keySet())
+        {
+            MisMenuRight menuRight = new MisMenuRight();
+            menuRight.setMenuId(menuId);
+            menuRight.setName(defalutMap.get(key));
+            menuRight.setRightCode(key);
+            menuRight.setOrderValue(0L);
+            misMenuRightDao.save(menuRight);
+        }
     }
 }

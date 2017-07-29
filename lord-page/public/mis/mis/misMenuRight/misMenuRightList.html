@@ -12,116 +12,111 @@
     <!--列表顶部搜索和工具条-->
     <el-row>
         <el-form :inline="true" :model="searchForm" class="demo-form-inline">
-            <el-form-item label="ID">
-                <el-input v-model="searchForm.id" placeholder="ID"></el-input>
-            </el-form-item>
-            <el-form-item label="名称">
-                <el-input v-model="searchForm.name" placeholder="名称"></el-input>
-            </el-form-item>
-            <!--TODO:待修改-->
-            <el-form-item label="状态">
-                <el-select v-model="searchForm.state" placeholder="请选择">
-                    <el-option
-                            v-for="item in enumTypeSelect"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
             <el-form-item>
-                <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
-                <el-button v-if="showEditPage" type="success" icon="plus" @click="addClick">新增</el-button>
-                <el-button v-if="showEditPage" type="success" icon="plus" @click="dialogAddClick">弹窗新增</el-button>
+                <el-button v-if="showEditPage" type="success" icon="plus" @click="addDefaultRight">新增基本权限</el-button>
+                <el-button v-if="showEditPage" type="success" icon="plus" @click="resetEditForm">新增</el-button>
             </el-form-item>
         </el-form>
     </el-row>
     <!--列表-->
     <el-row>
-        <el-table
-                :data="tableData"
-                v-loading.body="loading"
-                border
-                @selection-change="selectionChange"
-                style="width: 100%">
-            <el-table-column
-                    type="selection"
-                    width="50">
-            </el-table-column>
-			<el-table-column
-                    prop="id"
-                    label="ID"
-                    width="80">
-            </el-table-column>
-			<el-table-column
-                    prop="name"
-                    label="权限名称"
-                    width="120">
-            </el-table-column>
-			<el-table-column
-                    prop="rightCode"
-                    label="权限code"
-                    width="120">
-            </el-table-column>
-			<el-table-column
-                    prop="menuId"
-                    label="菜单Id"
-                    width="120">
-            </el-table-column>
-			<el-table-column
-                    label="排序值"
-                    width="100">
-                <template scope="scope">
-                    <el-input v-model="scope.row.orderValue" placeholder="排序值" size="small" @blur="orderBlurEvent"
-                              :data-id="scope.row.id"></el-input>
-                </template>
-            </el-table-column>
-            <el-table-column v-if="showEditPage"
-				fixed="right"
-                label="操作"
-				width="320">
-                <template scope="scope">
-                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">
-                        编辑
-                    </el-button>
-                    <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">
-                        删除
-                    </el-button>
-                    <el-button :plain="true" type="success" size="small" icon="edit" @click="dialogEditClick(scope.row)">
-                        弹窗编辑
-                    </el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-    </el-row>
-
-    <!--列表底部工具条和分页符-->
-    <el-row style="margin-top: 20px" type="flex" justify="end">
-        <el-col :span="6">
-            <el-button v-if="showEditPage" :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>
-            <el-button v-if="!showEditPage" type="success" icon="plus" @click="selectSelection">选择</el-button>
+        <el-col :span="10">
+            <el-card class="box-card">
+                <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
+                    <el-form-item label="ID" prop="id">
+                        <el-input v-model="editForm.id" auto-complete="off" :disabled="true"></el-input>
+                    </el-form-item>
+                    <el-form-item label="名称" prop="name">
+                        <el-input v-model="editForm.name" auto-complete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="编码" prop="rightCode">
+                        <el-input v-model="editForm.rightCode" auto-complete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="菜单Id">
+                        <el-input-number v-model="editForm.menuId" :disabled="true"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="排序">
+                        <el-input-number v-model="editForm.orderValue"></el-input-number>
+                    </el-form-item>
+                </el-form>
+                <el-row type="flex" justify="center">
+                    <el-col :span="6">
+                        <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading">{{editFromBtnName}}</el-button>
+                    </el-col>
+                </el-row>
+            </el-card>
         </el-col>
-        <el-col :span="18">
-            <el-pagination
-                    style="float: right"
-                    @size-change="pageSizeChange"
-                    @current-change="currentPageChange"
-                    :current-page="currentPage"
-                    :page-sizes="[10, 20, 30, 50]"
-                    :page-size="pageSize"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="total">
-            </el-pagination>
+        <el-col :span="14">
+            <el-table
+                    :data="tableData"
+                    v-loading.body="loading"
+                    border
+                    style="width: 100%">
+                <el-table-column
+                        prop="id"
+                        label="ID"
+                        width="80">
+                </el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="名称"
+                        width="80">
+                </el-table-column>
+                <el-table-column
+                        prop="rightCode"
+                        label="code"
+                        width="80">
+                </el-table-column>
+                <el-table-column
+                        prop="menuId"
+                        label="菜单Id"
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        label="排序值"
+                        width="100">
+                    <template scope="scope">
+                        <el-input v-model="scope.row.orderValue" placeholder="排序值" size="small" @blur="orderBlurEvent"
+                                  :data-id="scope.row.id"></el-input>
+                    </template>
+                </el-table-column>
+                <el-table-column v-if="showEditPage"
+                    fixed="right"
+                    label="操作"
+                    width="200">
+                    <template scope="scope">
+                        <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">
+                            编辑
+                        </el-button>
+                        <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">
+                            删除
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
         </el-col>
     </el-row>
-
-    <el-dialog v-model="dialogFormVisible" @open="dialogFormOpen">
-        <div id="dialogForm">...</div>
-    </el-dialog>
 </div>
 <!-- UI界面 end -->
 
 <script type="text/javascript">
+    function misMenuRightRowIsExist(rowName, rule, value, callback) {
+        if (!value) {
+            return callback(new Error("此项不能为空"));
+        }
+        $.ajax({
+            method: "get",
+            url: "/api/admin/mis/misMenuRight/isExist.do",
+            data: {menuId:pageParam.menuId, rowValue:value, rowName:rowName},
+            dataType: "json"
+        }).done(function (res, status, xhr) {
+            if (res.success) {
+                return callback(new Error(res.msg));
+            } else {
+                callback();
+            }
+        });
+    }
     var misMenuRightView = new Vue({
         el: '#misMenuRightView',
         data: {
@@ -153,17 +148,41 @@
             dialogFormUrl: '',
             //弹窗表单是否显示
             dialogFormVisible: false,
+            editLoading:false,
+            editForm:{},
+            //表单验证规则
+            editFormRules: {
+                name: [
+                    {required: true, message: '名称不能为空', trigger: 'blur'},
+                    {
+                        validator: function(rule, value, callback){
+                            return misMenuRightRowIsExist("name", rule, value, callback);
+                        },
+                        trigger: 'blur'
+                    }
+                ],
+                rightCode: [
+                    {required: true, message: '名称不能为空', trigger: 'blur'},
+                    {
+                        validator: function(rule, value, callback){
+                            return misMenuRightRowIsExist("rightCode", rule, value, callback);
+                        },
+                        trigger: 'blur'
+                    }
+                ],
+            },
+            editFromBtnName:"添加",
         },
         //数据初始化
         created: function () {
             var _self = this;
-            //TODO:待修改
             if(pageParam.showEditPage) {
                 _self.showEditPage = true;
             }
             //获取枚举类型
             commonUtils.vueGetEnumType(_self, "mis_MisUserStatus");
             _self.loadingData();
+            _self.resetEditForm();
         },
         methods: {
             //表格重新加载数据
@@ -172,19 +191,11 @@
                 _self.loading = true;
 
                 var paramData = {
-                    pageSize: _self.pageSize,
-                    page: _self.currentPage
+                    menuId: pageParam.menuId
                 };
-                //搜索条件设置
-                if (commonUtils.isNotEmpty(_self.searchForm.id)) {
-                    paramData.id = _self.searchForm.id;
-                }
-                if (commonUtils.isNotEmpty(_self.searchForm.name)) {
-                    paramData.name = _self.searchForm.name;
-                }
                 //搜索
                 $.ajax({
-                    url: '/api/admin/mis/misMenuRight/list.do',
+                    url: '/api/admin/mis/misMenuRight/pageByMenu.do',
                     data: paramData,
                     dataType: "json"
                 }).done(function (res, status, xhr) {
@@ -196,10 +207,6 @@
                     }
                     _self.loading = false;
                 });
-            },
-            //表格查询事件
-            searchClick: function () {
-                this.loadingData();//重新加载数据
             },
             //排序值失去焦点事件
             orderBlurEvent: function (event) {
@@ -222,55 +229,49 @@
                     }
                 });
             },
-            //分页大小修改事件
-            pageSizeChange: function (val) {
+            //新增菜单的基础权限配置
+            addDefaultRight:function() {
                 var _self = this;
-                _self.pageSize = val;
-                _self.loadingData();//重新加载数据
-            },
-            //当前页修改事件
-            currentPageChange: function (val) {
-                var _self = this;
-                _self.currentPage = val;
-                _self.loadingData();//重新加载数据
+                $.ajax({
+                    url: '/api/admin/mis/misMenuRight/addDefaultRight.do',
+                    data:{menuId: pageParam.menuId},
+                    dataType: "json"
+                }).done(function (res) {
+                    if (res.success) {
+                        _self.$message.info(res.msg);
+                        _self.loadingData();
+                    } else {
+                        _self.$message.error(res.msg);//提示错误
+                    }
+                });
             },
             //新建事件
-            addClick: function () {
-                window.location.href = "#/misMenuRight/add";
+            resetEditForm: function () {
+                this.editForm = {
+                    id:'',
+                    name: '',		//权限名称
+                    rightCode: '',		//权限code
+                    menuId: pageParam.menuId,		//菜单Id
+                    orderValue: ''		//排序
+                };
+                this.editFromBtnName = "添加";
             },
             //表格编辑事件
             editClick: function (row) {
-                window.location.href = "#/misMenuRight/edit/" + row.id;
-            },
-            //弹窗新建事件
-            dialogAddClick: function () {
                 var _self = this;
-                _self.dialogFormVisible = true;
-                _self.dialogFormUrl = "/mis/mis/misMenuRight/misMenuRightAdd.html";
-            },
-            //表格弹窗编辑事件
-            dialogEditClick: function (row) {
-                var _self = this;
-                pageParam = Object.assign({}, {id: row.id});//设置页面参数
-                _self.dialogFormVisible = true;
-                _self.dialogFormUrl = "/mis/mis/misMenuRight/misMenuRightEdit.html";
-            },
-            //弹窗打开事件
-            dialogFormOpen:function() {
-                var _self = this;
-                if (commonUtils.isNotEmpty(_self.dialogFormUrl)) {
-                    $.ajax({
-                        url: _self.dialogFormUrl
-                    }).done(function (res) {
-                        $("#dialogForm").html(res);
-                    });
-                }
-            },
-            //弹窗关闭事件
-            dialogFormClose:function(){
-                var _self = this;
-                _self.dialogFormVisible = false;
-                _self.loadingData();//重新加载数据
+                _self.resetEditForm();
+                //根据Id,获取编辑的对象
+                $.ajax({
+                    url: '/api/admin/mis/misMenuRight/' + row.id + ".do",
+                    dataType: "json"
+                }).done(function (res) {
+                    if (res.success) {
+                        _self.editForm = Object.assign(_self.editForm, res.data);
+                        _self.editFromBtnName = "保存";
+                    } else {
+                        _self.$message.error(res.msg);//提示错误
+                    }
+                });
             },
             //表格勾选事件
             selectionChange: function (val) {
@@ -289,23 +290,6 @@
                 }
                 var ids = commonUtils.arrayToString(multipleSelection, "id");
                 _self.removeData(_self, ids, ids);
-            },
-            //搜索弹窗的选择事件，批量选择
-            selectSelection: function() {
-                var _self = this;
-                var multipleSelection = _self.multipleSelection;
-                if (multipleSelection.length < 1) {
-                    _self.$message({
-                        message: '请至少选中一条记录',
-                        type: 'error'
-                    });
-                    return;
-                }
-                //如果是弹窗模式，关闭弹窗
-                if(typeof(searchMisMenuRightParentView) !== 'undefined' && searchMisMenuRightParentView.dialogFormVisible) {
-                    var ids = commonUtils.arrayToSingleArray(multipleSelection, "id");
-                    searchMisMenuRightParentView.dialogFormClose(ids);
-                }
             },
             //表格删除事件
             deleteClick: function (row) {
@@ -369,7 +353,32 @@
                     return "";
                 }
                 return moment(date).format("YYYY-MM-DD HH:mm:ss");
-            }
+            },
+            //保存事件
+            editSubmit: function (formName) {
+                var _self = this;
+                _self.$refs[formName].validate(function(valid){
+                    if (valid) {
+                        $.ajax({
+                            method: "post",
+                            url: '/api/admin/mis/misMenuRight/saveOrUpdate.do',
+                            data: _self.editForm,
+                            dataType: "json"
+                        }).done(function (res, status, xhr) {
+                            if (res.success) {
+                                _self.$message.success(res.msg);//保存成功
+                                _self.resetEditForm();
+                                _self.loadingData();
+                            } else {
+                                _self.$message.error(res.msg);//提示错误
+                            }
+                            _self.loading = false;
+                        });
+                    } else{
+                        _self.$message.error("请正确填写表单！");
+                    }
+                });
+            },
         }
     });
 </script>

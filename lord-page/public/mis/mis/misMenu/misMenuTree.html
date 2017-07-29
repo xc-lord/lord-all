@@ -266,6 +266,13 @@
                 /*var newId = _self.baseId++;
                 store.append({ id: newId, name: '新节点' + newId, children: [] }, data);*/
             },
+            //树的权限管理事件
+            rightMannger: function (store, data) {
+                var _self = this;
+                pageParam = Object.assign({}, {menuId: data.id});//设置页面参数
+                _self.dialogFormVisible = true;
+                _self.dialogFormUrl = "/mis/mis/misMenuRight/misMenuRightList.html";
+            },
             //树的编辑事件
             treeEdit: function (store, data) {
                 var _self = this;
@@ -293,6 +300,13 @@
                                 _self.treeAppend(store, data);//添加事件
                             }
                         }},"添加"),
+                        createElement('el-button',{attrs:{
+                            size:"mini"
+                        },on:{
+                            click:function() {
+                                _self.rightMannger(store, data);//权限管理事件
+                            }
+                        }},"权限管理"),
                         createElement('el-button',{attrs:{
                             size:"mini"
                         },on:{

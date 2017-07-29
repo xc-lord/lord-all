@@ -32,4 +32,6 @@ public interface MisMenuRightDao extends JpaRepository<MisMenuRight, Long>, JpaS
     void updateOrderValue(Long id, Long orderValue);
 
 	//在此添加你的自定义方法...
+
+    List<MisMenuRight> findByMenuId(Long menuId);
 }

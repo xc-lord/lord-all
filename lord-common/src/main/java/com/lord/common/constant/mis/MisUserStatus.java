@@ -2,6 +2,9 @@ package com.lord.common.constant.mis;
 
 import com.lord.common.constant.BaseEnumType;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 功能：用户状态
  *
@@ -24,5 +27,16 @@ public enum MisUserStatus implements BaseEnumType {
     @Override
     public String getName() {
         return name;
+    }
+
+    public static Map<String,String> toMap()
+    {
+        Map<String, String> map = new HashMap<>();
+        MisUserStatus[] values = MisUserStatus.values();
+        for (MisUserStatus value : values)
+        {
+            map.put(value.toString(), value.getName());
+        }
+        return map;
     }
 }

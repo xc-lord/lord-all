@@ -42,4 +42,15 @@ public class MisMenuRightSpecs extends BaseSpecification {
         };
     }
 
+    public static Specification<MisMenuRight> queryByMenu(final Long menuId, final String rowName, final Object rowValue) {
+        return new Specification<MisMenuRight>() {
+            public Predicate toPredicate(Root<MisMenuRight> root, CriteriaQuery<?> query,
+                    CriteriaBuilder builder) {
+                Predicate predicate = builder.equal(root.get("menuId"), menuId);
+                predicate = builder.and(predicate, builder.equal(root.get(rowName), rowValue));
+                return predicate;
+            }
+        };
+    }
+
 }

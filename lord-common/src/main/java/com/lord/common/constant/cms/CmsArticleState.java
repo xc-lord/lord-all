@@ -2,6 +2,9 @@ package com.lord.common.constant.cms;
 
 import com.lord.common.constant.BaseEnumType;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 功能：文章的状态
  *
@@ -26,5 +29,16 @@ public enum CmsArticleState implements BaseEnumType {
     @Override
     public String getName() {
         return name;
+    }
+
+    public static Map<String,String> toMap()
+    {
+        Map<String, String> map = new HashMap<>();
+        CmsArticleState[] values = CmsArticleState.values();
+        for (CmsArticleState value : values)
+        {
+            map.put(value.toString(), value.getName());
+        }
+        return map;
     }
 }

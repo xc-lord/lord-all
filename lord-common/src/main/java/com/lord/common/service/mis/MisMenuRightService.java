@@ -69,11 +69,25 @@ public interface MisMenuRightService {
     void updateOrderValue(Long id, Long orderValue);
 
     /**
-     * 是否存在相同的记录
+     * 判断同一菜单下，是否存在相同的记录
      * @param id        主键Id
+     * @param menuId    菜单Id
      * @param rowName   属性名
      * @param rowValue  属性值
      * @return
      */
-    boolean isExist(Long id, String rowName, String rowValue);
+    boolean isExist(Long id, Long menuId, String rowName, String rowValue);
+
+    /**
+     * 根据菜单查询菜单的权限列表
+     * @param menuId    菜单Id
+     * @return  权限列表
+     */
+    Pager<MisMenuRight> pageByMenu(String menuId);
+
+    /**
+     * 根据菜单Id，新增菜单的基础权限配置
+     * @param menuId 菜单Id
+     */
+    void addDefaultRight(Long menuId);
 }

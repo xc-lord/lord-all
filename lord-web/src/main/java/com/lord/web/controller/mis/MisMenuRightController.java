@@ -40,6 +40,23 @@ public class MisMenuRightController {
         return Result.success("查询成功", pager);
     }
 
+    @ApiOperation(value = "查询后台菜单的具体权限的列表")
+    @RequestMapping(value = "/api/admin/mis/misMenuRight/pageByMenu", method = {RequestMethod.GET})
+    public Result pageByMenu(String menuId) {
+        Pager<MisMenuRight> pager = misMenuRightService.pageByMenu(menuId);
+        return Result.success("查询成功", pager);
+    }
+
+    @ApiOperation(value="新增菜单的基础权限配置", notes="根据菜单Id，新增菜单的基础权限配置")
+    @ApiImplicitParam(name = "menuId", value = "菜单Id", required = true, dataType = "Long", paramType = "query")
+    @RequestMapping(value = "/api/admin/mis/misMenuRight/addDefaultRight", method = RequestMethod.GET)
+    public Result addDefaultRight(Long menuId)
+    {
+        Preconditions.checkNotNull(menuId, "menuId不能为空");
+        misMenuRightService.addDefaultRight(menuId);
+        return Result.success("新增菜单的基础权限配置成功");
+    }
+
     @ApiOperation(value = "保存或更新后台菜单的具体权限")
     @RequestMapping(value = "/api/admin/mis/misMenuRight/saveOrUpdate", method = RequestMethod.POST)
     public Result saveOrUpdate(@ModelAttribute MisMenuRight pageObj) {
@@ -83,13 +100,15 @@ public class MisMenuRightController {
     @ApiOperation(value = "判断记录是否存在", notes = "判断记录是否存在")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "主键Id", dataType = "Long", paramType = "query"),
+            @ApiImplicitParam(name = "menuId", value = "菜单Id", dataType = "Long", paramType = "query"),
             @ApiImplicitParam(name = "rowName", value = "属性名", dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "rowValue", value = "属性值", dataType = "String", paramType = "query")})
     @RequestMapping(value = "/api/admin/mis/misMenuRight/isExist", method = RequestMethod.GET)
-    public Result isExist(Long id, String rowName, String rowValue) {
+    public Result isExist(Long id, Long menuId, String rowName, String rowValue) {
         Preconditions.checkNotNull(rowName, "rowName不能为空");
+        Preconditions.checkNotNull(rowValue, "menuId不能为空");
         Preconditions.checkNotNull(rowValue, "rowValue不能为空");
-        boolean isRepeat = misMenuRightService.isExist(id, rowName, rowValue);
+        boolean isRepeat = misMenuRightService.isExist(id, menuId, rowName, rowValue);
         if (isRepeat) {
             return Result.success("已经存在相同的记录", isRepeat);
         }
