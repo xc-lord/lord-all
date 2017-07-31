@@ -3,7 +3,7 @@ package com.lord.common.dto;
 import java.util.List;
 
 /**
- * 功能：
+ * 功能：树形节点
  *
  * @author xiaocheng
  * @version 1.0

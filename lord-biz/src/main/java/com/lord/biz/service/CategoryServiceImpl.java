@@ -30,7 +30,7 @@ public abstract class CategoryServiceImpl implements CategoryService {
         }
 
         long rootParentId = 0L;
-        Map<Long, List<Category>> parentMap = getCategoryMap(rootParentId, categoryList);
+        Map<Long, List<Category>> parentMap = getParentMap(rootParentId, categoryList);
 
         List<Category> rootList = parentMap.get(rootParentId);
         for (Category sub : rootList) {
@@ -49,7 +49,7 @@ public abstract class CategoryServiceImpl implements CategoryService {
         }
 
         long rootParentId = 0L;
-        Map<Long, List<Category>> parentMap = getCategoryMap(rootParentId, categoryList);
+        Map<Long, List<Category>> parentMap = getParentMap(rootParentId, categoryList);
 
         List<Category> rootList = parentMap.get(rootParentId);
         for (Category sub : rootList) {
@@ -139,7 +139,13 @@ public abstract class CategoryServiceImpl implements CategoryService {
         return false;
     }
 
-    private Map<Long, List<Category>> getCategoryMap(long rootParentId, List<Category> categoryList) {
+    /**
+     * 获得父节点Id对应的所有子节点Map集合
+     * @param rootParentId  根节点ID
+     * @param categoryList  所有的节点
+     * @return Map集合
+     */
+    private Map<Long, List<Category>> getParentMap(long rootParentId, List<Category> categoryList) {
         Map<Long, List<Category>> parentMap = new HashMap<>();
         for (Category category : categoryList) {
             Long parentId = category.getParentId();
