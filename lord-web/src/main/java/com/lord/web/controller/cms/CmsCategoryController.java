@@ -1,9 +1,9 @@
 package com.lord.web.controller.cms;
 
-import com.lord.common.dto.OptionNode;
+import com.lord.common.dto.cat.OptionNode;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.QueryParams;
-import com.lord.common.dto.TreeNode;
+import com.lord.common.dto.cat.TreeNode;
 import com.lord.common.model.cms.CmsCategory;
 import com.lord.common.service.cms.CmsCategoryService;
 import com.lord.utils.Preconditions;

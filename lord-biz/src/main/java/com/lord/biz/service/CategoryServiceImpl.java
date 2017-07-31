@@ -1,8 +1,8 @@
 package com.lord.biz.service;
 
-import com.lord.common.dto.Category;
-import com.lord.common.dto.OptionNode;
-import com.lord.common.dto.TreeNode;
+import com.lord.common.dto.cat.Category;
+import com.lord.common.dto.cat.OptionNode;
+import com.lord.common.dto.cat.TreeNode;
 import com.lord.common.service.CategoryService;
 import com.lord.utils.Preconditions;
 import org.apache.commons.lang3.StringUtils;

@@ -5,6 +5,7 @@ import com.lord.biz.dao.cms.specs.CmsCategorySpecs;
 import com.lord.biz.service.CategoryServiceImpl;
 import com.lord.biz.utils.ServiceUtils;
 import com.lord.common.dto.*;
+import com.lord.common.dto.cat.Category;
 import com.lord.common.model.cms.CmsCategory;
 import com.lord.common.service.cms.CmsCategoryService;
 import com.lord.utils.Preconditions;

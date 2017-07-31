@@ -1,4 +1,4 @@
-package com.lord.common.dto;
+package com.lord.common.dto.cat;
 
 /**
  * 功能：通用的分类属性接口

@@ -2,7 +2,7 @@ package com.lord.web.controller.mis;
 
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.QueryParams;
-import com.lord.common.dto.TreeNode;
+import com.lord.common.dto.cat.TreeNode;
 import com.lord.common.model.mis.MisMenu;
 import com.lord.common.service.mis.MisMenuService;
 import com.lord.utils.Preconditions;
@@ -36,6 +36,19 @@ public class MisMenuController {
     @ApiOperation(value = "查询系统菜单的树形列表")
     @RequestMapping(value = "/api/admin/mis/misMenu/getTree", method = {RequestMethod.GET, RequestMethod.POST})
     public Result getTree(@ModelAttribute QueryParams queryParams) {
+        MisMenu param = new MisMenu();
+        if (queryParams != null) {
+            //TODO:待修改
+            param.setId(queryParams.getLongId());
+            param.setName(queryParams.getName());
+        }
+        List<TreeNode> treeNodes = misMenuService.getTreeNodes();
+        return Result.success("查询成功", treeNodes);
+    }
+
+    @ApiOperation(value = "查询系统菜单的权限树形列表")
+    @RequestMapping(value = "/api/admin/mis/misMenu/getRightTree", method = {RequestMethod.GET, RequestMethod.POST})
+    public Result getRightTree(@ModelAttribute QueryParams queryParams) {
         MisMenu param = new MisMenu();
         if (queryParams != null) {
             //TODO:待修改

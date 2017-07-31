@@ -4,7 +4,7 @@ import java.util.*;
 import javax.persistence.*;
 import java.io.Serializable;
 
-import com.lord.common.dto.Category;
+import com.lord.common.dto.cat.Category;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 /**

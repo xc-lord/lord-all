@@ -3,11 +3,8 @@ package com.lord.common.service.mis;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
-import com.lord.common.dto.TreeNode;
 import com.lord.common.model.mis.MisMenu;
 import com.lord.common.service.CategoryService;
-
-import java.util.List;
 
 /**
  * 系统菜单mis_menu的Service

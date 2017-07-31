@@ -5,6 +5,7 @@ import com.lord.biz.dao.mis.specs.MisMenuSpecs;
 import com.lord.biz.service.CategoryServiceImpl;
 import com.lord.biz.utils.ServiceUtils;
 import com.lord.common.dto.*;
+import com.lord.common.dto.cat.Category;
 import com.lord.common.model.mis.MisMenu;
 import com.lord.common.service.mis.MisMenuService;
 import com.lord.utils.Preconditions;

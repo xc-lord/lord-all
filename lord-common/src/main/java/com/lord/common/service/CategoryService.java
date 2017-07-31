@@ -1,7 +1,7 @@
 package com.lord.common.service;
 
-import com.lord.common.dto.OptionNode;
-import com.lord.common.dto.TreeNode;
+import com.lord.common.dto.cat.OptionNode;
+import com.lord.common.dto.cat.TreeNode;
 
 import java.util.List;
 
