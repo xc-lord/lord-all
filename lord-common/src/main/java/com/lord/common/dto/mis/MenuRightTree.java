@@ -12,22 +12,22 @@ import java.util.List;
 public class MenuRightTree
 {
     /**
-     * 已经选择的key
+     * 已经选择的菜单Id
      */
-    private List<String> selectkeys;
+    private List<Long> selectMenuIds;
     /**
      * 树形结构的节点数据
      */
     private List<MenuRightNode> treeNodes;
 
-    public List<String> getSelectkeys()
+    public List<Long> getSelectMenuIds()
     {
-        return selectkeys;
+        return selectMenuIds;
     }
 
-    public void setSelectkeys(List<String> selectkeys)
+    public void setSelectMenuIds(List<Long> selectMenuIds)
     {
-        this.selectkeys = selectkeys;
+        this.selectMenuIds = selectMenuIds;
     }
 
     public List<MenuRightNode> getTreeNodes()

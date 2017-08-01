@@ -35,16 +35,17 @@ public class MisMenuController {
     private MisMenuService misMenuService;
 
     @ApiOperation(value = "查询系统菜单的树形列表")
-    @RequestMapping(value = "/api/admin/mis/misMenu/getTree", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/api/admin/mis/misMenu/getTree", method = RequestMethod.GET)
     public Result getTree() {
         List<TreeNode> treeNodes = misMenuService.getTreeNodes();
         return Result.success("查询成功", treeNodes);
     }
 
     @ApiOperation(value = "查询系统菜单的权限树形列表")
-    @RequestMapping(value = "/api/admin/mis/misMenu/getMenuRightTree", method = {RequestMethod.GET, RequestMethod.POST})
-    public Result getMenuRightTree() {
-        MenuRightTree tree = misMenuService.getMenuRightTree();
+    @RequestMapping(value = "/api/admin/mis/misMenu/getMenuRightTree", method = RequestMethod.GET)
+    public Result getMenuRightTree(Long roleId) {
+        Preconditions.checkNotNull(roleId, "roleId不能为空");
+        MenuRightTree tree = misMenuService.getMenuRightTree(roleId);
         return Result.success("查询成功", tree);
     }
 

@@ -69,6 +69,9 @@
                     <el-button :plain="true" type="success" size="small" icon="edit" @click="dialogEditClick(scope.row)">
                         编辑
                     </el-button>
+                    <el-button :plain="true" type="success" size="small" icon="edit" @click="dialogRightClick(scope.row)">
+                        权限管理
+                    </el-button>
                     <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">
                         删除
                     </el-button>
@@ -224,6 +227,13 @@
                 pageParam = Object.assign({}, {id: row.id});//设置页面参数
                 _self.dialogFormVisible = true;
                 _self.dialogFormUrl = "/mis/mis/misRole/misRoleEdit.html";
+            },
+            //表格权限管理事件
+            dialogRightClick: function (row) {
+                var _self = this;
+                pageParam = {roleId: row.id, roleName:row.name};//设置页面参数
+                _self.dialogFormVisible = true;
+                _self.dialogFormUrl = "/mis/mis/misMenu/misMenuRight.html";
             },
             //弹窗打开事件
             dialogFormOpen:function() {

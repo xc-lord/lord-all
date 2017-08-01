@@ -166,6 +166,27 @@ public class CommonUtils {
     }
 
     /**
+     * 字符串转换为Long列表
+     * @param idStr 字符串
+     * @param idStr 分隔符
+     * @return Long列表
+     */
+    public static List<Long> parseLongList(String idStr,String spliter)
+    {
+        if(StringUtils.isEmpty(idStr)) return null;
+        String[] arr = idStr.split(spliter);
+        List<Long> list = new ArrayList<>();
+        for (String s : arr)
+        {
+            if(StringUtils.isNotEmpty(s))
+            {
+                list.add(Long.parseLong(s));
+            }
+        }
+        return list;
+    }
+
+    /**
      * 字符串list转换为Long数组
      * @param ids 字符串list
      * @return Long数组

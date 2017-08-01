@@ -15,7 +15,7 @@ public class MenuRightNode
 {
     private Long id;
     private String name;
-    private List<MisMenuRight> rights;
+    private List<MenuRight> rights;
     private List<MenuRightNode> children;
 
     public Long getId()
@@ -38,12 +38,12 @@ public class MenuRightNode
         this.name = name;
     }
 
-    public List<MisMenuRight> getRights()
+    public List<MenuRight> getRights()
     {
         return rights;
     }
 
-    public void setRights(List<MisMenuRight> rights)
+    public void setRights(List<MenuRight> rights)
     {
         this.rights = rights;
     }

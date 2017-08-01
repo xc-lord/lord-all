@@ -2,18 +2,22 @@ package com.lord.biz.service.mis;
 
 import com.lord.biz.dao.mis.MisMenuDao;
 import com.lord.biz.dao.mis.MisMenuRightDao;
+import com.lord.biz.dao.mis.MisRoleRightDao;
 import com.lord.biz.dao.mis.specs.MisMenuSpecs;
 import com.lord.biz.service.CategoryServiceImpl;
 import com.lord.biz.utils.ServiceUtils;
 import com.lord.common.dto.*;
 import com.lord.common.dto.cat.Category;
 import com.lord.common.dto.cat.TreeNode;
+import com.lord.common.dto.mis.MenuRight;
 import com.lord.common.dto.mis.MenuRightNode;
 import com.lord.common.dto.mis.MenuRightTree;
 import com.lord.common.model.mis.MisMenu;
 import com.lord.common.model.mis.MisMenuRight;
+import com.lord.common.model.mis.MisRoleRight;
 import com.lord.common.service.mis.MisMenuService;
 import com.lord.utils.Preconditions;
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +46,9 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
 
     @Autowired
     private MisMenuRightDao misMenuRightDao;
+
+    @Autowired
+    private MisRoleRightDao misRoleRightDao;
 
     @Override
     public MisMenu getMisMenu(Long id) {
@@ -166,26 +173,48 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
     }
 
     @Override
-    public MenuRightTree getMenuRightTree()
+    public MenuRightTree getMenuRightTree(Long roleId)
     {
-        List<MisMenuRight> rightList = misMenuRightDao.findAll();
-        Map<Long, List<MisMenuRight>> map = new HashMap<>();
-        for (MisMenuRight menuRight : rightList)
+        try
         {
-            List<MisMenuRight> list = map.get(menuRight.getMenuId());
-            if(list == null)
-                list = new ArrayList<>();
-            list.add(menuRight);
-            map.put(menuRight.getMenuId(), list);
+            //角色的权限查询
+            List<MisRoleRight> roleRights = misRoleRightDao.findByRoleId(roleId);
+            List<Long> selectList = new ArrayList<>();//已选择的菜单
+            Map<Long, Boolean> rightMap = new HashMap<>();//已选择的权限
+            for (MisRoleRight roleRight : roleRights)
+            {
+                if(roleRight.isMenuRight())
+                    selectList.add(roleRight.getMenuId());
+                if(roleRight.getRightId() != null)
+                    rightMap.put(roleRight.getRightId(), true);
+            }
+
+            List<MisMenuRight> rightList = misMenuRightDao.findAll();
+            Map<Long, List<MisMenuRight>> map = new HashMap<>();//菜单对应的权限
+            for (MisMenuRight menuRight : rightList)
+            {
+                List<MisMenuRight> list = map.get(menuRight.getMenuId());
+                if(list == null)
+                    list = new ArrayList<>();
+                list.add(menuRight);
+                map.put(menuRight.getMenuId(), list);
+            }
+            List<TreeNode> treeNodes = getTreeNodes();//菜单的树形结构
+            List<MenuRightNode> rightNodes = getRightTree(map, treeNodes, rightMap);
+            MenuRightTree tree = new MenuRightTree();
+            tree.setSelectMenuIds(selectList);
+            tree.setTreeNodes(rightNodes);
+            return tree;
         }
-        List<TreeNode> treeNodes = getTreeNodes();
-        List<MenuRightNode> rightNodes = getRightTree(map, treeNodes);
-        MenuRightTree tree = new MenuRightTree();
-        tree.setTreeNodes(rightNodes);
-        return tree;
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            logger.error("获得菜单的权限管理的树形结构，出错：" + e.getMessage(), e);
+        }
+        return null;
     }
 
-    private List<MenuRightNode> getRightTree(Map<Long, List<MisMenuRight>> map, List<TreeNode> treeNodes)
+    private List<MenuRightNode> getRightTree(Map<Long, List<MisMenuRight>> map, List<TreeNode> treeNodes, Map<Long, Boolean> rightMap) throws Exception
     {
         if(treeNodes == null) return null;
         List<MenuRightNode> rightNodes = new ArrayList<>();
@@ -196,8 +225,21 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
             node.setName(treeNode.getName());
             List<MisMenuRight> rightList = map.get(treeNode.getId());
             if(rightList != null)
-                node.setRights(rightList);
-            List<MenuRightNode> children = getRightTree(map, treeNode.getChildren());
+            {
+                List<MenuRight> menuRights = new ArrayList<>();
+                for (MisMenuRight right : rightList)
+                {
+                    MenuRight menuRight = new MenuRight();
+                    BeanUtils.copyProperties(menuRight, right);
+                    if (rightMap.get(menuRight.getId()) != null)
+                    {
+                        menuRight.setChecked(true);
+                    }
+                    menuRights.add(menuRight);
+                }
+                node.setRights(menuRights);
+            }
+            List<MenuRightNode> children = getRightTree(map, treeNode.getChildren(), rightMap);
             node.setChildren(children);
             rightNodes.add(node);
         }

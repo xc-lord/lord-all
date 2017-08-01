@@ -81,7 +81,8 @@ public interface MisMenuService extends CategoryService {
 
     /**
      * 获得菜单的权限管理的树形结构
+     * @param roleId        角色Id
      * @return 树
      */
-    MenuRightTree getMenuRightTree();
+    MenuRightTree getMenuRightTree(Long roleId);
 }

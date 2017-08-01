@@ -1,14 +1,23 @@
 package com.lord.biz.service.mis;
 
+import com.lord.biz.dao.mis.MisMenuDao;
+import com.lord.biz.dao.mis.MisMenuRightDao;
 import com.lord.biz.dao.mis.MisRoleDao;
+import com.lord.biz.dao.mis.MisRoleRightDao;
 import com.lord.biz.dao.mis.specs.MisRoleSpecs;
 import com.lord.biz.utils.ServiceUtils;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
+import com.lord.common.model.mis.MisMenu;
+import com.lord.common.model.mis.MisMenuRight;
 import com.lord.common.model.mis.MisRole;
+import com.lord.common.model.mis.MisRoleRight;
 import com.lord.common.service.mis.MisRoleService;
+import com.lord.utils.CommonUtils;
 import com.lord.utils.Preconditions;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +27,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 用户角色mis_role的Service实现
@@ -36,6 +43,15 @@ public class MisRoleServiceImpl implements MisRoleService {
 
     @Autowired
     private MisRoleDao misRoleDao;
+
+    @Autowired
+    private MisRoleRightDao misRoleRightDao;
+
+    @Autowired
+    private MisMenuDao misMenuDao;
+
+    @Autowired
+    private MisMenuRightDao misMenuRightDao;
 
     @Override
     public MisRole getMisRole(Long id) {
@@ -136,6 +152,66 @@ public class MisRoleServiceImpl implements MisRoleService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    @Transactional
+    public void saveRight(Long roleId, Long rightId, Boolean check)
+    {
+        MisRole role = misRoleDao.findOne(roleId);
+        Preconditions.checkArgument(role == null, "角色不存在");
+        MisMenuRight menuRight = misMenuRightDao.findOne(rightId);
+        Preconditions.checkArgument(menuRight == null, "权限不存在");
+        MisMenu misMenu = misMenuDao.findOne(menuRight.getMenuId());
+        Preconditions.checkArgument(misMenu == null, "菜单不存在");
+        misRoleRightDao.deleteByRightId(rightId);//先删除，再添加
+        if(check)
+        {
+            MisRoleRight right = new MisRoleRight();
+            right.setRightCode(misMenu.getLetter() + "." + menuRight.getRightCode());
+            right.setRoleId(roleId);
+            right.setMenuId(misMenu.getId());
+            right.setRightId(rightId);
+            right.setMenuRight(false);
+            misRoleRightDao.save(right);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void saveMenuRight(Long roleId, Long[] menuIds)
+    {
+        MisRole role = misRoleDao.findOne(roleId);
+        Preconditions.checkArgument(role == null, "角色不存在");
+        List<MisMenu> misMenus = misMenuDao.findByIds(menuIds);
+        Preconditions.checkArgument(CollectionUtils.isEmpty(misMenus), "未选择菜单");
+
+        //父菜单也要加入权限配置
+        /*Map<Long, Boolean> map = new HashMap<>();
+        for (MisMenu misMenu : misMenus)
+        {
+            map.put(misMenu.getId(), true);
+            List<Long> parentIds = CommonUtils.parseLongList(misMenu.getParentIds(), ",");
+            if(parentIds == null) continue;
+
+            for (Long parentId : parentIds)
+            {
+                map.put(parentId, true);
+            }
+        }
+        menuIds = map.keySet().toArray(new Long[map.keySet().size()]);
+        misMenus = misMenuDao.findByIds(menuIds);*/
+
+        misRoleRightDao.deleteMenuRight(roleId);
+        for (MisMenu misMenu : misMenus)
+        {
+            MisRoleRight right = new MisRoleRight();
+            right.setRightCode(misMenu.getLetter());
+            right.setRoleId(roleId);
+            right.setMenuRight(true);
+            right.setMenuId(misMenu.getId());
+            misRoleRightDao.save(right);
+        }
     }
 
 }

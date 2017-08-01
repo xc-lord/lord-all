@@ -74,4 +74,20 @@ public interface MisRoleService {
      * @return
      */
     boolean isExist(Long id, String rowName, String rowValue);
+
+    /**
+     * 保存用户角色的权限
+     * @param roleId    角色Id
+     * @param rightId   权限Id
+     * @param check     是否添加
+     */
+    void saveRight(Long roleId, Long rightId, Boolean check);
+
+    /**
+     * 保存用户角色的菜单权限
+     * @param roleId    角色Id
+     * @param menuIds   菜单Id列表
+     */
+    void saveMenuRight(Long roleId, Long[] menuIds);
+
 }

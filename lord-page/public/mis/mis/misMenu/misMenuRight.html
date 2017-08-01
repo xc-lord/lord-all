@@ -7,7 +7,7 @@
 <!-- UI界面 start -->
 <div id="misMenuView">
     <el-row>
-        <h3><i class="el-icon-share"></i> 系统菜单管理</h3>
+        <h3><i class="el-icon-share"></i> {{roleName}}的菜单权限管理</h3>
     </el-row>
     <!--列表顶部搜索和工具条-->
     <el-row>
@@ -51,6 +51,10 @@
                 name: '',
                 state: ''
             },
+            //角色Id
+            roleId:'',
+            //角色名称
+            roleName:'',
             searchState: false,
             //多选值
             multipleSelection: [],
@@ -71,6 +75,7 @@
             baseId:1000,
             //分类的树形数据
             categoryData: [],
+            selectMenuIds:[],
             defaultProps: {
                 children: 'children',
                 label: 'name'
@@ -79,6 +84,8 @@
         //数据初始化
         created: function () {
             var _self = this;
+            _self.roleId = pageParam.roleId;
+            _self.roleName = pageParam.roleName;
             _self.loadingData();
         },
         methods: {
@@ -88,10 +95,14 @@
                 //获取树的数据
                 $.ajax({
                     url: '/api/admin/mis/misMenu/getMenuRightTree.do',
+                    data:{roleId:_self.roleId},
                     dataType: "json"
                 }).done(function (res) {
                     if (res.success) {
                         _self.categoryData = res.data.treeNodes;
+                        _self.selectMenuIds = res.data.selectMenuIds;
+                        console.info(_self.selectMenuIds);
+                        _self.$refs.rightTree.setCheckedKeys(_self.selectMenuIds);
                     } else {
                         _self.$message.error(res.msg);//提示错误
                     }
@@ -99,7 +110,22 @@
             },
             //保存选择的菜单
             saveClick:function() {
-                console.log(this.$refs.rightTree.getCheckedKeys());
+                var _self = this;
+                var menuIds = _self.$refs.rightTree.getCheckedKeys();
+                var ids = commonUtils.arrayToString(menuIds);
+                //保存记录
+                $.ajax({
+                    type:"POST",
+                    url: '/api/admin/mis/misRole/saveMenuRight.do',
+                    data: {roleId:_self.roleId, menuIds: ids},
+                    dataType: "json"
+                }).done(function (res) {
+                    if (res.success) {
+                        _self.$message.success(res.msg);
+                    } else {
+                        _self.$message.error(res.msg);//提示错误
+                    }
+                });
             },
             //弹窗新建事件
             dialogAddClick: function () {
@@ -220,6 +246,20 @@
             rightSelected:function(id, checked) {
                 var _self = this;
                 console.info(id + " -> " + checked);
+
+                //保存记录
+                $.ajax({
+                    type:"POST",
+                    url: '/api/admin/mis/misRole/saveRight.do',
+                    data: {roleId:_self.roleId, rightId: id, check:checked},
+                    dataType: "json"
+                }).done(function (res) {
+                    if (res.success) {
+                        _self.$message.success(res.msg);
+                    } else {
+                        _self.$message.error(res.msg);//提示错误
+                    }
+                });
             },
             //树的操作按钮渲染
             renderContent:function(createElement, { node, data, store }) {
@@ -231,7 +271,7 @@
                         var e = createElement('el-checkbox',{
                             attrs:{
                                 label:right.id,
-                                checked:true
+                                checked:right.checked
                             },
                             on:{
                                 change:function(event) {

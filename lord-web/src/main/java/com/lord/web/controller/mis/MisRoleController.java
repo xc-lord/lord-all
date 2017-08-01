@@ -42,6 +42,35 @@ public class MisRoleController {
         return Result.success("查询成功", pager);
     }
 
+    @ApiOperation(value="保存用户角色的权限", notes="保存用户角色的权限")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "roleId", value = "角色Id", required = true, dataType = "Long", paramType = "form"),
+            @ApiImplicitParam(name = "rightIds", value = "权限Ids", required = true, dataType = "Long", paramType = "form"),
+            @ApiImplicitParam(name = "check", value = "是否添加", required = true, dataType = "Boolean", paramType = "form"),
+    })
+    @RequestMapping(value = "/api/admin/mis/misRole/saveRight", method = RequestMethod.POST)
+    public Result saveRight(Long roleId, Long rightId, Boolean check) {
+        Preconditions.checkNotNull(roleId, "roleId不能为空");
+        Preconditions.checkNotNull(rightId, "rightId不能为空");
+        Preconditions.checkNotNull(check, "check不能为空");
+        misRoleService.saveRight(roleId, rightId, check);
+        String msg = check ? "添加" : "删除";
+        return Result.success(msg + "权限成功");
+    }
+
+    @ApiOperation(value="保存用户角色的菜单权限", notes="保存用户角色的菜单权限")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "roleId", value = "角色Id", required = true, dataType = "Long", paramType = "form"),
+            @ApiImplicitParam(name = "menuIds", value = "菜单Ids", required = true, dataType = "Long", paramType = "form"),
+    })
+    @RequestMapping(value = "/api/admin/mis/misRole/saveMenuRight", method = RequestMethod.POST)
+    public Result saveMenuRight(Long roleId, Long[] menuIds) {
+        Preconditions.checkNotNull(roleId, "roleId不能为空");
+        Preconditions.checkNotNull(menuIds, "menuIds不能为空");
+        misRoleService.saveMenuRight(roleId, menuIds);
+        return Result.success("保存菜单权限成功");
+    }
+
     @ApiOperation(value = "保存或更新用户角色")
     @RequestMapping(value = "/api/admin/mis/misRole/saveOrUpdate", method = RequestMethod.POST)
     public Result saveOrUpdate(@ModelAttribute MisRole pageObj) {
