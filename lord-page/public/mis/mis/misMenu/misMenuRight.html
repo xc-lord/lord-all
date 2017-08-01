@@ -13,13 +13,14 @@
     <el-row>
         <el-form :inline="true" :model="searchForm" class="demo-form-inline">
             <el-form-item>
-                <el-button type="success" icon="plus" @click="dialogAddClick">新增一级菜单</el-button>
+                <el-button type="success" icon="plus" @click="saveClick">保存配置</el-button>
             </el-form-item>
         </el-form>
     </el-row>
     <!--列表-->
     <el-row>
         <el-tree
+                ref="rightTree"
                 :data="categoryData"
                 :props="defaultProps"
                 show-checkbox
@@ -86,15 +87,19 @@
                 var _self = this;
                 //获取树的数据
                 $.ajax({
-                    url: '/api/admin/mis/misMenu/getTree.do',
+                    url: '/api/admin/mis/misMenu/getMenuRightTree.do',
                     dataType: "json"
                 }).done(function (res) {
                     if (res.success) {
-                        _self.categoryData = res.data;
+                        _self.categoryData = res.data.treeNodes;
                     } else {
                         _self.$message.error(res.msg);//提示错误
                     }
                 });
+            },
+            //保存选择的菜单
+            saveClick:function() {
+                console.log(this.$refs.rightTree.getCheckedKeys());
             },
             //弹窗新建事件
             dialogAddClick: function () {
@@ -211,73 +216,37 @@
                 }
                 return moment(date).format("YYYY-MM-DD HH:mm:ss");
             },
-            //树的添加事件
-            treeAppend:function(store, data) {
+            //权限的选择事件
+            rightSelected:function(id, checked) {
                 var _self = this;
-                console.info("点击了节点" + data.id + "的添加按钮");
-                pageParam.parentId = data.id;//父节点Id
-                _self.dialogFormVisible = true;
-                _self.dialogFormUrl = "/mis/mis/misMenu/misMenuAdd.html";
-
-                /*var newId = _self.baseId++;
-                store.append({ id: newId, name: '新节点' + newId, children: [] }, data);*/
-            },
-            //树的权限管理事件
-            rightMannger: function (store, data) {
-                var _self = this;
-                pageParam = Object.assign({}, {menuId: data.id});//设置页面参数
-                _self.dialogFormVisible = true;
-                _self.dialogFormUrl = "/mis/mis/misMenuRight/misMenuRightList.html";
-            },
-            //树的编辑事件
-            treeEdit: function (store, data) {
-                var _self = this;
-                pageParam = Object.assign({}, {id: data.id});//设置页面参数
-                _self.dialogFormVisible = true;
-                _self.dialogFormUrl = "/mis/mis/misMenu/misMenuEdit.html";
-            },
-            //树的删除事件
-            treeRemove:function(store, data) {
-                var _self = this;
-                _self.removeData(_self, data.name, data.id)
+                console.info(id + " -> " + checked);
             },
             //树的操作按钮渲染
             renderContent:function(createElement, { node, data, store }) {
                 var _self = this;
+                var checkArr = [];
+                if(data.rights) {
+                    for(var i=0;i<data.rights.length;i++) {
+                        var right = data.rights[i];
+                        var e = createElement('el-checkbox',{
+                            attrs:{
+                                label:right.id,
+                                checked:true
+                            },
+                            on:{
+                                change:function(event) {
+                                    _self.rightSelected(event.target._value, event.target.checked);
+                                }
+                            }
+                        }, right.name);
+                        checkArr.push(e);
+                    }
+                }
                 return createElement('span', [
                     createElement('span', node.label),
                     createElement('span', {attrs:{
                         style:"float: right; margin-right: 20px"
-                    }},[
-                        createElement('el-button',{attrs:{
-                            size:"mini"
-                        },on:{
-                            click:function() {
-                                _self.treeAppend(store, data);//添加事件
-                            }
-                        }},"添加"),
-                        createElement('el-button',{attrs:{
-                            size:"mini"
-                        },on:{
-                            click:function() {
-                                _self.rightMannger(store, data);//权限管理事件
-                            }
-                        }},"权限管理"),
-                        createElement('el-button',{attrs:{
-                            size:"mini"
-                        },on:{
-                            click:function() {
-                                _self.treeEdit(store, data);//添加事件
-                            }
-                        }},"编辑"),
-                        createElement('el-button',{attrs:{
-                            size:"mini"
-                        },on:{
-                            click:function() {
-                                _self.treeRemove(store, data);//删除事件
-                            }
-                        }},"删除"),
-                    ]),
+                    }},checkArr)
                 ]);
             }
         }

@@ -19,6 +19,9 @@ var routes = {
     '/misRole': function () {
         $("#showView").load("/mis/mis/misRole/misRoleList.html");
     },
+    '/misRoleRight': function () {
+        $("#showView").load("/mis/mis/misMenu/misMenuRight.html");
+    },
     '/misRole/add': function () {
         $("#showView").load("/mis/mis/misRole/misRoleAdd.html");
     },

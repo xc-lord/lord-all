@@ -3,6 +3,7 @@ package com.lord.common.service.mis;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
+import com.lord.common.dto.mis.MenuRightTree;
 import com.lord.common.model.mis.MisMenu;
 import com.lord.common.service.CategoryService;
 
@@ -78,4 +79,9 @@ public interface MisMenuService extends CategoryService {
      */
     boolean isExist(Long id, String rowName, String rowValue);
 
+    /**
+     * 获得菜单的权限管理的树形结构
+     * @return 树
+     */
+    MenuRightTree getMenuRightTree();
 }

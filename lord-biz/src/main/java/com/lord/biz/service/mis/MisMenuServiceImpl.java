@@ -1,12 +1,17 @@
 package com.lord.biz.service.mis;
 
 import com.lord.biz.dao.mis.MisMenuDao;
+import com.lord.biz.dao.mis.MisMenuRightDao;
 import com.lord.biz.dao.mis.specs.MisMenuSpecs;
 import com.lord.biz.service.CategoryServiceImpl;
 import com.lord.biz.utils.ServiceUtils;
 import com.lord.common.dto.*;
 import com.lord.common.dto.cat.Category;
+import com.lord.common.dto.cat.TreeNode;
+import com.lord.common.dto.mis.MenuRightNode;
+import com.lord.common.dto.mis.MenuRightTree;
 import com.lord.common.model.mis.MisMenu;
+import com.lord.common.model.mis.MisMenuRight;
 import com.lord.common.service.mis.MisMenuService;
 import com.lord.utils.Preconditions;
 import org.slf4j.Logger;
@@ -18,9 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 系统菜单mis_menu的Service实现
@@ -36,6 +39,9 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
 
     @Autowired
     private MisMenuDao misMenuDao;
+
+    @Autowired
+    private MisMenuRightDao misMenuRightDao;
 
     @Override
     public MisMenu getMisMenu(Long id) {
@@ -157,6 +163,45 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
             return false;
         }
         return true;
+    }
+
+    @Override
+    public MenuRightTree getMenuRightTree()
+    {
+        List<MisMenuRight> rightList = misMenuRightDao.findAll();
+        Map<Long, List<MisMenuRight>> map = new HashMap<>();
+        for (MisMenuRight menuRight : rightList)
+        {
+            List<MisMenuRight> list = map.get(menuRight.getMenuId());
+            if(list == null)
+                list = new ArrayList<>();
+            list.add(menuRight);
+            map.put(menuRight.getMenuId(), list);
+        }
+        List<TreeNode> treeNodes = getTreeNodes();
+        List<MenuRightNode> rightNodes = getRightTree(map, treeNodes);
+        MenuRightTree tree = new MenuRightTree();
+        tree.setTreeNodes(rightNodes);
+        return tree;
+    }
+
+    private List<MenuRightNode> getRightTree(Map<Long, List<MisMenuRight>> map, List<TreeNode> treeNodes)
+    {
+        if(treeNodes == null) return null;
+        List<MenuRightNode> rightNodes = new ArrayList<>();
+        for (TreeNode treeNode : treeNodes)
+        {
+            MenuRightNode node = new MenuRightNode();
+            node.setId(treeNode.getId());
+            node.setName(treeNode.getName());
+            List<MisMenuRight> rightList = map.get(treeNode.getId());
+            if(rightList != null)
+                node.setRights(rightList);
+            List<MenuRightNode> children = getRightTree(map, treeNode.getChildren());
+            node.setChildren(children);
+            rightNodes.add(node);
+        }
+        return rightNodes;
     }
 
 }
