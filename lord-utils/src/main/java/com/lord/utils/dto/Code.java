@@ -21,8 +21,8 @@ public enum Code {
     ApiNotFound(404, "API接口不存在"),
     ApiStop(405, "API已停用"),
     ApiUnavailable(406, "服务不可用"),
-    ApiTimeOut(407, "用户权限不足"),
-    ApiNotPermissions(408, "请求超时"),
+    ApiTimeOut(407, "请求超时"),
+    ApiNotPermissions(408, "用户权限不足"),
     ApiCallLimited(409, "超过调用次数"),
     ApiInvalidSign(410, "签名错误"),
 

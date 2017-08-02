@@ -1,5 +1,7 @@
 package com.lord.web.controller.cms;
 
+import com.lord.common.constant.auth.AuthCode;
+import com.lord.common.constant.auth.AuthValidate;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.QueryParams;
 import com.lord.common.dto.cms.CmsArticleDto;
@@ -31,6 +33,7 @@ public class CmsArticleController {
     @Autowired
     private CmsArticleService cmsArticleService;
 
+    @AuthValidate(AuthCode.CmsArticleSearch)
     @ApiOperation(value = "查询文章的列表")
     @RequestMapping(value = "/api/admin/cms/cmsArticle/list", method = {RequestMethod.GET, RequestMethod.POST})
     public Result list(@ModelAttribute QueryParams queryParams) {

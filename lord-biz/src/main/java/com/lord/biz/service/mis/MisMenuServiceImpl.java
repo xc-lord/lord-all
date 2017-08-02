@@ -6,22 +6,24 @@ import com.lord.biz.dao.mis.MisRoleRightDao;
 import com.lord.biz.dao.mis.specs.MisMenuSpecs;
 import com.lord.biz.service.CategoryServiceImpl;
 import com.lord.biz.utils.ServiceUtils;
-import com.lord.common.dto.*;
+import com.lord.common.dto.Pager;
+import com.lord.common.dto.PagerParam;
+import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.cat.Category;
 import com.lord.common.dto.cat.TreeNode;
 import com.lord.common.dto.mis.MenuRight;
 import com.lord.common.dto.mis.MenuRightNode;
 import com.lord.common.dto.mis.MenuRightTree;
+import com.lord.common.dto.mis.UserMenu;
 import com.lord.common.dto.user.LoginUser;
 import com.lord.common.model.mis.MisMenu;
 import com.lord.common.model.mis.MisMenuRight;
 import com.lord.common.model.mis.MisRoleRight;
+import com.lord.common.service.RedisService;
 import com.lord.common.service.mis.MisMenuService;
 import com.lord.utils.CommonUtils;
 import com.lord.utils.Preconditions;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 系统菜单mis_menu的Service实现
@@ -53,6 +56,9 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
 
     @Autowired
     private MisRoleRightDao misRoleRightDao;
+
+    @Autowired
+    private RedisService redisService;
 
     @Override
     public MisMenu getMisMenu(Long id) {
@@ -126,21 +132,36 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
      */
     private List<Category> findCategoryByUser(LoginUser loginUser)
     {
+        UserMenu userMenu = getUserMenu(loginUser.getRoleId(), loginUser.getSuperAdmin());
+        List<Category> categories = new ArrayList<>();
+        categories.addAll(userMenu.getMenus());
+        return categories;
+    }
+
+    public UserMenu getUserMenu(Long roleId, Boolean superAdmin)
+    {
+        final String cacheKey = MIS_MENU_ROLE + roleId;
+        UserMenu cacheObj = redisService.get(cacheKey, UserMenu.class);
+        if(cacheObj != null)
+            return cacheObj;
+        logger.debug("从数据库中，查询" + cacheKey);
+        UserMenu userMenu = new UserMenu();
+        List<MisMenu> notRightMenus = new ArrayList<>();//无权限的菜单
         List<MisMenu> categoryList = misMenuDao.findAll(new Sort(new Sort.Order(Sort.Direction.ASC, "level"),
                 new Sort.Order(Sort.Direction.ASC, "orderValue")));
         //超级管理员具有所有菜单权限
-        /*if(loginUser.getSuperAdmin())
+        /*if(superAdmin)
         {
-            List<Category> categories = new ArrayList<>();
-            categories.addAll(categoryList);
-            return categories;
+            userMenu.setMenus(categoryList);
+            userMenu.setNotRightMenus(notRightMenus);
+            return userMenu;
         }*/
 
-        List<MisRoleRight> rights = misRoleRightDao.findByRoleId(loginUser.getRoleId());
+        List<MisRoleRight> rights = misRoleRightDao.findByRoleId(roleId);
         Map<Long, Boolean> map = new HashMap<>();
         for (MisRoleRight right : rights)
         {
-            if(right.isMenuRight())
+            if (right.isMenuRight())
             {
                 map.put(right.getMenuId(), true);
             }
@@ -149,32 +170,37 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
         while (iterator.hasNext())
         {
             MisMenu misMenu = iterator.next();
-            if(map.get(misMenu.getId()) != null) continue;//菜单有权限
+            if (map.get(misMenu.getId()) != null)
+                continue;//菜单有权限
             List<Long> chilren = CommonUtils.parseLongList(misMenu.getChildrenIds(), ",");
             boolean isContain = false;
-            if(chilren != null) {
+            if (chilren != null)
+            {
                 for (Long menuId : chilren)
                 {
-                    if(map.get(menuId) != null) {
+                    if (map.get(menuId) != null)
+                    {
                         isContain = true;
                         break;
                     }
                 }
             }
-            if(isContain) continue;//子菜单有权限
+            if (isContain)
+                continue;//子菜单有权限
             iterator.remove();//没有权限，从列表中删除
+            notRightMenus.add(misMenu);
         }
+        userMenu.setMenus(categoryList);
+        userMenu.setNotRightMenus(notRightMenus);
 
-        List<Category> categories = new ArrayList<>();
-        categories.addAll(categoryList);
-        return categories;
+        redisService.set(cacheKey, userMenu, 30, TimeUnit.MINUTES);
+        return userMenu;
     }
 
     @Override
     public Pager<MisMenu> pageMisMenu(MisMenu param, int page, int pageSize) {
         PagerParam pagerParam = new PagerParam(page, pageSize);
         return pageMisMenu(param, pagerParam);
-
     }
 
     @Override
@@ -343,19 +369,25 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
     }
 
     @Override
-    public Map<String, Boolean> getRightMap(LoginUser loginUser)
+    public Map<String, Boolean> getRightMap(Long roleId, Boolean superAdmin)
     {
+        final String cacheKey = MIS_RIGHT_ROLE + roleId;
+        Map<String, Boolean> cacheObj = redisService.get(cacheKey, Map.class);
+        if(cacheObj != null)
+            return cacheObj;
+        logger.debug("从数据库中，查询" + cacheKey);
         Map<String, Boolean> map = new HashMap<>();
-        List<MisRoleRight> list = misRoleRightDao.findByRoleId(loginUser.getRoleId());
+        List<MisRoleRight> list = misRoleRightDao.findByRoleId(roleId);
         for (MisRoleRight roleRight : list)
         {
             if(!roleRight.isMenuRight())
                 map.put(roleRight.getRightCode(), true);
         }
-        if (loginUser.getSuperAdmin())
+        if (superAdmin)
         {
             map.put("SuperAdmin", true);
         }
+        redisService.set(cacheKey, map, 30, TimeUnit.MINUTES);
         return map;
     }
 }

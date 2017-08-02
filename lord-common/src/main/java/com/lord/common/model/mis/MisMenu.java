@@ -87,8 +87,14 @@ public class MisMenu implements Serializable,Category {
 	/**
 	 * 菜单链接
 	 */
-	@Column(name = "url", nullable = true, length = 40)
+	@Column(name = "url", nullable = true, length = 100)
 	private String url;
+
+	/**
+	 * 服务端地址
+	 */
+	@Column(name = "server_url", nullable = true, length = 100)
+	private String serverUrl;
 
 	/**
 	 * 创建时间
@@ -199,6 +205,16 @@ public class MisMenu implements Serializable,Category {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public String getServerUrl()
+	{
+		return serverUrl;
+	}
+
+	public void setServerUrl(String serverUrl)
+	{
+		this.serverUrl = serverUrl;
 	}
 
 	public Date getCreateTime() {

@@ -5,6 +5,7 @@ import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.cat.TreeNode;
 import com.lord.common.dto.mis.MenuRightTree;
+import com.lord.common.dto.mis.UserMenu;
 import com.lord.common.dto.user.LoginUser;
 import com.lord.common.model.mis.MisMenu;
 import com.lord.common.service.CategoryService;
@@ -20,6 +21,9 @@ import java.util.Map;
  * @Date 2017年05月10日 15:51:31
  */
 public interface MisMenuService extends CategoryService {
+
+    String MIS_MENU_ROLE = "MIS_MENU_ROLE_";
+    String MIS_RIGHT_ROLE = "MIS_RIGHT_ROLE_";
 
     /**
      * 根据主键Id查询
@@ -99,9 +103,18 @@ public interface MisMenuService extends CategoryService {
     List<TreeNode> getMenus(LoginUser loginUser);
 
     /**
-     * 获得权限列表
-     * @param loginUser 当前用户
+     * 获得菜单按钮的权限
+     * @param roleId        角色Id
+     * @param superAdmin    是否超级管理员
+     * @return 权限Map
+     */
+    Map<String,Boolean> getRightMap(Long roleId, Boolean superAdmin);
+
+    /**
+     * 获得菜单的权限
+     * @param roleId        角色Id
+     * @param superAdmin    是否超级管理员
      * @return 权限
      */
-    Map<String,Boolean> getRightMap(LoginUser loginUser);
+    UserMenu getUserMenu(Long roleId, Boolean superAdmin);
 }

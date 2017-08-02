@@ -105,7 +105,6 @@
             return callback(new Error("此项不能为空"));
         }
         $.ajax({
-            : "get",
             url: "/api/admin/mis/misMenuRight/isExist.do",
             data: {menuId:pageParam.menuId, rowValue:value, rowName:rowName},
             dataType: "json"
@@ -364,7 +363,7 @@
                 _self.$refs[formName].validate(function(valid){
                     if (valid) {
                         $.ajax({
-                            method: "post",
+                            type: "POST",
                             url: '/api/admin/mis/misMenuRight/saveOrUpdate.do',
                             data: _self.editForm,
                             dataType: "json"

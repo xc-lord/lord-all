@@ -3,13 +3,13 @@ package com.lord.web.handler;
 import com.alibaba.fastjson.JSON;
 import com.lord.common.constant.WebChannel;
 import com.lord.common.dto.user.LoginUser;
+import com.lord.common.service.RedisService;
 import com.lord.utils.CommonUtils;
 import com.lord.utils.EncryptUtils;
 import com.lord.web.config.SpringUtils;
 import com.lord.web.utils.CookieUtil;
 import com.lord.web.utils.WebUtil;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,7 +34,7 @@ public class UserHandler
     /** 保存当前登录的用户 */
     private static ThreadLocal<LoginUser> userHolder = new ThreadLocal<LoginUser>();
 
-    private static StringRedisTemplate stringRedisTemplate;
+    private static RedisService redisService;
 
     /**
      * 获得当前登录的用户
@@ -107,7 +107,7 @@ public class UserHandler
         if (userId != null)
         {
             final String key = String.format(LOGIN_USER_KEY, channel, userId);
-            getRedisTemplate().delete(key);//删缓存中的key
+            getRedisService().delete(key);//删缓存中的key
         }
         //删除cookie中的用户信息
         cookieUtil.removeCookie(channel + "_USER_ID");
@@ -163,7 +163,7 @@ public class UserHandler
         if(StringUtils.isEmpty(cookieSign) || userId == null)
             return null;
         final String key = String.format(LOGIN_USER_KEY, channel, userId);
-        String redisJson = getRedisTemplate().opsForValue().get(key);
+        String redisJson = getRedisService().get(key);
         if(StringUtils.isEmpty(redisJson))
             return null;
         LoginUser output = JSON.parseObject(redisJson, LoginUser.class);
@@ -189,7 +189,7 @@ public class UserHandler
 
     public static Set<String> onlineUser()
     {
-        return getRedisTemplate().keys("LOGIN_USER_*");
+        return getRedisService().keys("LOGIN_USER_*");
     }
 
     /**
@@ -203,13 +203,13 @@ public class UserHandler
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.HOUR, timeOut);
         output.setExpireTime(calendar.getTime());
-        getRedisTemplate().opsForValue().set(key, JSON.toJSONString(output), timeOut, TimeUnit.HOURS);
+        getRedisService().set(key, output, timeOut, TimeUnit.HOURS);
     }
 
-    private static StringRedisTemplate getRedisTemplate() {
-        if(stringRedisTemplate == null)
-            stringRedisTemplate = SpringUtils.getBean(StringRedisTemplate.class);
-        return stringRedisTemplate;
+    private static RedisService getRedisService() {
+        if(redisService == null)
+            redisService = SpringUtils.getBean(RedisService.class);
+        return redisService;
     }
 
 }

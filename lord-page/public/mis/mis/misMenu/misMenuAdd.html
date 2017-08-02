@@ -20,6 +20,12 @@
                 <el-form-item label="编码" prop="letter">
                     <el-input v-model="editForm.letter" auto-complete="off"></el-input>
                 </el-form-item>
+                <el-form-item label="菜单链接" prop="url">
+                    <el-input v-model="editForm.url" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="服务端地址" prop="serverUrl">
+                    <el-input v-model="editForm.serverUrl" auto-complete="off"></el-input>
+                </el-form-item>
                 <el-form-item label="菜单图标" prop="icon">
                     <el-select v-model="editForm.icon" placeholder="请选择">
                         <el-option
@@ -33,9 +39,6 @@
                 </el-form-item>
                 <el-form-item label="排序">
                     <el-input-number v-model="editForm.orderValue" :min="0"></el-input-number>
-                </el-form-item>
-                <el-form-item label="菜单链接" prop="url">
-                    <el-input v-model="editForm.url" auto-complete="off"></el-input>
                 </el-form-item>
 				<el-form-item label="等级" :disabled="true">
                     <el-input-number v-model="editForm.level" :disabled="true" :min="1"></el-input-number>
@@ -88,6 +91,7 @@
 			childrenIds: '',		//所有子节点Id
 			orderValue: 0,		//排序
 			url: '',		//菜单链接
+            serverUrl: '',		//服务端地址
 			createTime: '',		//创建时间
 			updateTime: '',		//更新时间
         };

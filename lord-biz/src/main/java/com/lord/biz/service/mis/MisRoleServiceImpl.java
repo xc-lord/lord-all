@@ -13,11 +13,11 @@ import com.lord.common.model.mis.MisMenu;
 import com.lord.common.model.mis.MisMenuRight;
 import com.lord.common.model.mis.MisRole;
 import com.lord.common.model.mis.MisRoleRight;
+import com.lord.common.service.RedisService;
+import com.lord.common.service.mis.MisMenuService;
 import com.lord.common.service.mis.MisRoleService;
-import com.lord.utils.CommonUtils;
 import com.lord.utils.Preconditions;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 用户角色mis_role的Service实现
@@ -52,6 +54,9 @@ public class MisRoleServiceImpl implements MisRoleService {
 
     @Autowired
     private MisMenuRightDao misMenuRightDao;
+
+    @Autowired
+    private RedisService redisService;
 
     @Override
     public MisRole getMisRole(Long id) {
@@ -213,6 +218,9 @@ public class MisRoleServiceImpl implements MisRoleService {
             right.setMenuId(misMenu.getId());
             misRoleRightDao.save(right);
         }
+        //删除缓存
+        redisService.delete(MisMenuService.MIS_MENU_ROLE + roleId);
+        redisService.delete(MisMenuService.MIS_RIGHT_ROLE + roleId);
     }
 
 }

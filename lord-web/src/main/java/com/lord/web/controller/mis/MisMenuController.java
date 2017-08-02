@@ -51,7 +51,7 @@ public class MisMenuController {
         LoginUser loginUser = UserHandler.getLoginUser();
         JSONObject json = new JSONObject();
         List<TreeNode> treeNodes = misMenuService.getMenus(loginUser);
-        Map<String, Boolean> rightMap = misMenuService.getRightMap(loginUser);
+        Map<String, Boolean> rightMap = misMenuService.getRightMap(loginUser.getRoleId(), loginUser.getSuperAdmin());
         json.put("menus", treeNodes);
         json.put("rightMap", rightMap);
         return Result.success("查询成功", json);

@@ -26,6 +26,15 @@ public class Result implements Serializable {
         this.msg = code.getMsg();
     }
 
+    public Result(Code code, String msg) {
+        if (code == null) return;
+        this.code = code.getCode();
+        if (!Code.ReqSuccess.equals(code)) {
+            this.success = false;
+        }
+        this.msg = msg;
+    }
+
     public Result(Code code, String msg, Object data) {
         if (code == null) return;
         this.code = code.getCode();
