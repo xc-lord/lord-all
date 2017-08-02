@@ -23,15 +23,16 @@ public interface MisMenuRightDao extends JpaRepository<MisMenuRight, Long>, JpaS
     @Query("delete from MisMenuRight where id in ?1")
     void deleteMisMenuRight(Long... ids);
 
-    @Query("select u from MisMenuRight u where u.id in ?1")
-    List<MisMenuRight> findByIds(Long... ids);
-
-
     @Modifying
     @Query("update MisMenuRight u set u.orderValue = ?2 where u.id = ?1")
     void updateOrderValue(Long id, Long orderValue);
 
-	//在此添加你的自定义方法...
+    @Modifying
+    @Query("delete from MisMenuRight where menuId in ?1")
+    void deleteByMenuIds(Long[] ids);
+
+    @Query("select u from MisMenuRight u where u.id in ?1")
+    List<MisMenuRight> findByIds(Long... ids);
 
     List<MisMenuRight> findByMenuId(Long menuId);
 }

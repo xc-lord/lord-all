@@ -127,6 +127,7 @@ public class MisRoleServiceImpl implements MisRoleService {
     @Override
     @Transactional
     public void deleteMisRole(Long... ids) {
+        misRoleRightDao.deleteByRoleIds(ids);
         misRoleDao.deleteMisRole(ids);
     }
 

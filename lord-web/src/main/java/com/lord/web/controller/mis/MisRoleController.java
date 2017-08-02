@@ -83,7 +83,7 @@ public class MisRoleController {
     @RequestMapping(value = "/api/admin/mis/misRole/remove", method = RequestMethod.GET)
     public Result remove(Long[] ids) {
         Preconditions.checkNotNull(ids, "ids不能为空");
-        misRoleService.removeMisRole(ids);//逻辑删除
+        misRoleService.deleteMisRole(ids);//逻辑删除
         return Result.success("删除成功");
     }
 

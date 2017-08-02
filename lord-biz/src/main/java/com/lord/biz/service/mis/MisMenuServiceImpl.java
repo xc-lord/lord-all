@@ -12,12 +12,15 @@ import com.lord.common.dto.cat.TreeNode;
 import com.lord.common.dto.mis.MenuRight;
 import com.lord.common.dto.mis.MenuRightNode;
 import com.lord.common.dto.mis.MenuRightTree;
+import com.lord.common.dto.user.LoginUser;
 import com.lord.common.model.mis.MisMenu;
 import com.lord.common.model.mis.MisMenuRight;
 import com.lord.common.model.mis.MisRoleRight;
 import com.lord.common.service.mis.MisMenuService;
+import com.lord.utils.CommonUtils;
 import com.lord.utils.Preconditions;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,6 +106,34 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
         return categories;
     }
 
+    private List<Category> findCategoryByUser(LoginUser loginUser)
+    {
+        List<MisMenu> categoryList = misMenuDao.findAll(new Sort(new Sort.Order(Sort.Direction.ASC, "level"),
+                new Sort.Order(Sort.Direction.ASC, "orderValue")));
+        List<MisRoleRight> rights = misRoleRightDao.findByRoleId(loginUser.getRoleId());
+        Map<Long, Boolean> map = new HashMap<>();
+        for (MisRoleRight right : rights)
+        {
+            if(right.isMenuRight())
+            {
+                map.put(right.getMenuId(), true);
+            }
+        }
+        Iterator<MisMenu> iterator = categoryList.iterator();
+        while (iterator.hasNext())
+        {
+            MisMenu misMenu = iterator.next();
+            if(map.get(misMenu.getId()) != null) continue;
+            List<Long> chilren = CommonUtils.parseLongList(misMenu.getChildrenIds(), ",");
+            if(chilren != null && chilren.contains(misMenu.getId())) continue;
+            categoryList.remove(misMenu);
+        }
+
+        List<Category> categories = new ArrayList<>();
+        categories.addAll(categoryList);
+        return categories;
+    }
+
     @Override
     public Pager<MisMenu> pageMisMenu(MisMenu param, int page, int pageSize) {
         PagerParam pagerParam = new PagerParam(page, pageSize);
@@ -139,9 +170,10 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
     public void deleteMisMenu(Long... ids) {
         List<MisMenu> parents = misMenuDao.findParentByIds(ids);
         Preconditions.checkArgument(parents != null && parents.size() > 0, "存在子菜单，不能删除");
+        misMenuRightDao.deleteByMenuIds(ids);
+        misRoleRightDao.deleteByMenuIds(ids);
         misMenuDao.deleteMisMenu(ids);
     }
-
 
     @Override
     @Transactional
@@ -158,7 +190,7 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
     public boolean isExist(Long id, String rowName, String rowValue) {
         List<String> rowList = new ArrayList<>();
         rowList.add("name");
-        rowList.add("username");
+        rowList.add("letter");
         Preconditions.checkArgument(!rowList.contains(rowName), "此字段不需要判断是否存在");
         List<MisMenu> list = misMenuDao.findAll(MisMenuSpecs.queryBy(rowName, rowValue, MisMenu.class));
         if (list == null || list.size() < 1) {
@@ -212,6 +244,25 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
             logger.error("获得菜单的权限管理的树形结构，出错：" + e.getMessage(), e);
         }
         return null;
+    }
+
+    @Override
+    public List<TreeNode> getMenuTree(LoginUser loginUser)
+    {
+        List<TreeNode> list = new ArrayList<>();
+        List<Category> categoryList = findCategoryByUser(loginUser);
+        if (categoryList == null || categoryList.size() < 1) {
+            return list;
+        }
+        long rootParentId = 0L;
+        Map<Long, List<Category>> parentMap = getParentMap(rootParentId, categoryList);
+
+        List<Category> rootList = parentMap.get(rootParentId);
+        for (Category sub : rootList) {
+            TreeNode treeNode = setTreeNode(sub, parentMap);
+            list.add(treeNode);
+        }
+        return list;
     }
 
     private List<MenuRightNode> getRightTree(Map<Long, List<MisMenuRight>> map, List<TreeNode> treeNodes, Map<Long, Boolean> rightMap) throws Exception

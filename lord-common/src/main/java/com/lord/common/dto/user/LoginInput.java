@@ -9,7 +9,7 @@ import com.lord.common.constant.WebChannel;
  * @version 1.0
  * @Date 2017年07月22日 10:01
  */
-public class UserLoginInput
+public class LoginInput
 {
     /** 用户名 */
     private String username;

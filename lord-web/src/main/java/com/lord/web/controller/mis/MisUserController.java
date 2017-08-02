@@ -3,8 +3,8 @@ package com.lord.web.controller.mis;
 import com.lord.common.constant.WebChannel;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.QueryParams;
-import com.lord.common.dto.user.UserLoginInput;
-import com.lord.common.dto.user.UserLoginOutput;
+import com.lord.common.dto.user.LoginInput;
+import com.lord.common.dto.user.LoginUser;
 import com.lord.common.model.mis.MisUser;
 import com.lord.common.service.mis.MisUserService;
 import com.lord.utils.Preconditions;
@@ -41,13 +41,13 @@ public class MisUserController {
 
     @ApiOperation(value = "用户登录")
     @RequestMapping(value = "/api/mis/login", method = {RequestMethod.GET, RequestMethod.POST})
-    public Result login(@ModelAttribute UserLoginInput input, HttpServletRequest request, HttpServletResponse response) {
+    public Result login(@ModelAttribute LoginInput input, HttpServletRequest request, HttpServletResponse response) {
         Preconditions.checkArgument(input == null, "参数不能为空");
         Preconditions.checkArgument(StringUtils.isEmpty(input.getUsername()), "用户名不能为空");
         Preconditions.checkArgument(StringUtils.isEmpty(input.getPassword()), "密码不能为空");
         Preconditions.checkArgument(input.getWebChannel() == null, "登录渠道不能为空");
         input.setIp(WebUtil.getIP(request));//获取登录的IP
-        UserLoginOutput output = misUserService.login(input);//用户登录
+        LoginUser output = misUserService.login(input);//用户登录
         UserHandler.loginSuccess(output, request, response);//登录成功的回调，设置cookie等信息
         return Result.success("登录成功", output);
     }
@@ -64,7 +64,7 @@ public class MisUserController {
     public Result getLoginUser(HttpServletRequest request, HttpServletResponse response)
     {
         //UserLoginOutput output = UserHandler.getLoginUser(WebChannel.MIS, request, response);
-        UserLoginOutput output = UserHandler.getLoginUser();
+        LoginUser output = UserHandler.getLoginUser();
         String serverName = request.getServerName();
         logger.debug("当前域名为：" + serverName);
         if (output == null) return Result.failure("用户未登录,内部咸鱼干");
@@ -82,7 +82,7 @@ public class MisUserController {
     @RequestMapping(value = "/api/admin/mis/getLoginAdmin", method = {RequestMethod.GET, RequestMethod.POST})
     public Result getLoginAdmin(HttpServletRequest request, HttpServletResponse response)
     {
-        UserLoginOutput output = UserHandler.getLoginUser();
+        LoginUser output = UserHandler.getLoginUser();
         if (output == null) return Result.failure("用户未登录，内部");
         return Result.success("登录成功", output);
     }
@@ -149,7 +149,7 @@ public class MisUserController {
     {
         Preconditions.checkArgument(StringUtils.isEmpty(oldPassword), "旧密码不能为空");
         Preconditions.checkArgument(StringUtils.isEmpty(newPassword), "新密码不能为空");
-        UserLoginOutput output = UserHandler.getLoginUser();
+        LoginUser output = UserHandler.getLoginUser();
         misUserService.updateMyPassword(output.getUserId(), oldPassword, newPassword);
         return Result.success("修改我的密码成功");
     }

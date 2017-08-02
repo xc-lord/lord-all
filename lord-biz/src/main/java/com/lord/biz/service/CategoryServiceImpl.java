@@ -145,7 +145,7 @@ public abstract class CategoryServiceImpl implements CategoryService {
      * @param categoryList  所有的节点
      * @return Map集合
      */
-    private Map<Long, List<Category>> getParentMap(long rootParentId, List<Category> categoryList) {
+    public Map<Long, List<Category>> getParentMap(long rootParentId, List<Category> categoryList) {
         Map<Long, List<Category>> parentMap = new HashMap<>();
         for (Category category : categoryList) {
             Long parentId = category.getParentId();
@@ -160,7 +160,7 @@ public abstract class CategoryServiceImpl implements CategoryService {
         return parentMap;
     }
 
-    private TreeNode setTreeNode(Category sub, Map<Long, List<Category>> parentMap) {
+    public TreeNode setTreeNode(Category sub, Map<Long, List<Category>> parentMap) {
         TreeNode treeNode = parseTreeNode(sub);
         List<Category> subList = parentMap.get(sub.getId());
         if (subList != null && subList.size() > 0) {

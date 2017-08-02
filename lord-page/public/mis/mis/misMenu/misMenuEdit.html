@@ -19,7 +19,7 @@
                 <el-form-item label="名称" prop="name">
                     <el-input v-model="editForm.name" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="拼音" prop="letter">
+                <el-form-item label="编码" prop="letter">
                     <el-input v-model="editForm.letter" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="菜单图标" prop="icon">
@@ -74,17 +74,6 @@
                                     v-model="editForm.updateTime">
 					</el-date-picker>
                 </el-form-item>
-                <!--TODO:待修改-->
-				<!--<el-form-item label="状态">
-                    <el-select v-model="editForm.status" placeholder="请选择">
-                        <el-option
-                                v-for="item in misMenuStatus"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>-->
             </el-form>
         </el-col>
     </el-row>

@@ -2,7 +2,7 @@ package com.lord.web.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.lord.common.constant.WebChannel;
-import com.lord.common.dto.user.UserLoginOutput;
+import com.lord.common.dto.user.LoginUser;
 import com.lord.utils.CommonUtils;
 import com.lord.utils.EncryptUtils;
 import com.lord.web.config.SpringUtils;
@@ -32,7 +32,7 @@ public class UserHandler
     public static final String LOGIN_USER_KEY = "LOGIN_USER_%s_%s";
 
     /** 保存当前登录的用户 */
-    private static ThreadLocal<UserLoginOutput> userHolder = new ThreadLocal<UserLoginOutput>();
+    private static ThreadLocal<LoginUser> userHolder = new ThreadLocal<LoginUser>();
 
     private static StringRedisTemplate stringRedisTemplate;
 
@@ -40,17 +40,17 @@ public class UserHandler
      * 获得当前登录的用户
      * @return 当前登录的用户
      */
-    public static UserLoginOutput getLoginUser() {
+    public static LoginUser getLoginUser() {
         return userHolder.get();
     }
 
     /**
      * 设置当前登录的用户
-     * @param userLoginOutput 用户
+     * @param loginUser 用户
      */
-    public static void setLoginUser(UserLoginOutput userLoginOutput)
+    public static void setLoginUser(LoginUser loginUser)
     {
-        userHolder.set(userLoginOutput);
+        userHolder.set(loginUser);
     }
 
     /**
@@ -73,7 +73,7 @@ public class UserHandler
      * @param request   请求
      * @param response  响应
      */
-    public static void loginSuccess(UserLoginOutput output, HttpServletRequest request, HttpServletResponse response)
+    public static void loginSuccess(LoginUser output, HttpServletRequest request, HttpServletResponse response)
     {
         if (WebChannel.APP.equals(output.getWebChannel()))
         {
@@ -131,7 +131,7 @@ public class UserHandler
      * @param request   当前请求
      * @return  签名
      */
-    private static String createSign(UserLoginOutput output, HttpServletRequest request)
+    private static String createSign(LoginUser output, HttpServletRequest request)
     {
         //用户换浏览器或者IP变更时，都需要重新登录，另外使用浏览器的F12功能切换到手机模式也需要重新登录
         String ip = WebUtil.getIP(request);
@@ -153,7 +153,7 @@ public class UserHandler
      * @param response  响应
      * @return  当前登录的用户，为空则未登录
      */
-    public static UserLoginOutput getLoginUser(WebChannel channel, HttpServletRequest request, HttpServletResponse response)
+    public static LoginUser getLoginUser(WebChannel channel, HttpServletRequest request, HttpServletResponse response)
     {
         if(UserHandler.getLoginUser() != null)
             return UserHandler.getLoginUser();
@@ -166,7 +166,7 @@ public class UserHandler
         String redisJson = getRedisTemplate().opsForValue().get(key);
         if(StringUtils.isEmpty(redisJson))
             return null;
-        UserLoginOutput output = JSON.parseObject(redisJson, UserLoginOutput.class);
+        LoginUser output = JSON.parseObject(redisJson, LoginUser.class);
         if(output == null)
             return null;
         String sign = createSign(output, request);
@@ -197,7 +197,7 @@ public class UserHandler
      * @param key       redis的key
      * @param output    用户信息
      */
-    private static void saveToRedis(String key, UserLoginOutput output)
+    private static void saveToRedis(String key, LoginUser output)
     {
         int timeOut = 1;
         Calendar calendar = Calendar.getInstance();

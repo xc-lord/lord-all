@@ -4,10 +4,12 @@ import com.lord.common.dto.Pager;
 import com.lord.common.dto.QueryParams;
 import com.lord.common.dto.cat.TreeNode;
 import com.lord.common.dto.mis.MenuRightTree;
+import com.lord.common.dto.user.LoginUser;
 import com.lord.common.model.mis.MisMenu;
 import com.lord.common.service.mis.MisMenuService;
 import com.lord.utils.Preconditions;
 import com.lord.utils.dto.Result;
+import com.lord.web.handler.UserHandler;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -38,6 +40,14 @@ public class MisMenuController {
     @RequestMapping(value = "/api/admin/mis/misMenu/getTree", method = RequestMethod.GET)
     public Result getTree() {
         List<TreeNode> treeNodes = misMenuService.getTreeNodes();
+        return Result.success("查询成功", treeNodes);
+    }
+
+    @ApiOperation(value = "查询系统菜单的树形列表")
+    @RequestMapping(value = "/api/admin/mis/misMenu/getMenuTree", method = RequestMethod.GET)
+    public Result getMenuTree() {
+        LoginUser loginUser = UserHandler.getLoginUser();
+        List<TreeNode> treeNodes = misMenuService.getMenuTree(loginUser);
         return Result.success("查询成功", treeNodes);
     }
 

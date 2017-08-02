@@ -253,16 +253,16 @@
                             size:"mini"
                         },on:{
                             click:function() {
-                                _self.treeAppend(store, data);//添加事件
+                                _self.rightMannger(store, data);//权限管理事件
                             }
-                        }},"添加"),
+                        }},"权限管理"),
                         createElement('el-button',{attrs:{
                             size:"mini"
                         },on:{
                             click:function() {
-                                _self.rightMannger(store, data);//权限管理事件
+                                _self.treeAppend(store, data);//添加事件
                             }
-                        }},"权限管理"),
+                        }},"添加"),
                         createElement('el-button',{attrs:{
                             size:"mini"
                         },on:{

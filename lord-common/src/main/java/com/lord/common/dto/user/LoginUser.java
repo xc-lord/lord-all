@@ -11,7 +11,7 @@ import java.util.Date;
  * @version 1.0
  * @Date 2017年07月22日 10:01
  */
-public class UserLoginOutput
+public class LoginUser
 {
     /** 用户Id */
     private Long userId;
@@ -39,6 +39,10 @@ public class UserLoginOutput
     private WebChannel webChannel;
     /** 证书 */
     private String token;
+    /** 角色Id */
+    private Long roleId;
+    /** 是否超级管理员 */
+    private Boolean superAdmin;
 
     public Long getUserId()
     {
@@ -168,5 +172,25 @@ public class UserLoginOutput
     public void setToken(String token)
     {
         this.token = token;
+    }
+
+    public Long getRoleId()
+    {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId)
+    {
+        this.roleId = roleId;
+    }
+
+    public Boolean getSuperAdmin()
+    {
+        return superAdmin;
+    }
+
+    public void setSuperAdmin(Boolean superAdmin)
+    {
+        this.superAdmin = superAdmin;
     }
 }

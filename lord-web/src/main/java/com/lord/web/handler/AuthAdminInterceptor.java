@@ -2,7 +2,7 @@ package com.lord.web.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.lord.common.constant.WebChannel;
-import com.lord.common.dto.user.UserLoginOutput;
+import com.lord.common.dto.user.LoginUser;
 import com.lord.utils.dto.Code;
 import com.lord.utils.dto.Result;
 import com.lord.web.utils.WebUtil;
@@ -28,7 +28,7 @@ public class AuthAdminInterceptor implements HandlerInterceptor
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception
     {
         //在请求处理之前进行调用（Controller方法调用之前）
-        UserLoginOutput loginUser = UserHandler.getLoginUser(WebChannel.MIS, request, response);
+        LoginUser loginUser = UserHandler.getLoginUser(WebChannel.MIS, request, response);
         if(loginUser == null)
         {
             Result r = new Result(Code.ApiNotLogin);

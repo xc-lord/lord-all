@@ -35,4 +35,12 @@ public interface MisRoleRightDao extends JpaRepository<MisRoleRight, Long>, JpaS
     void deleteByRightId(Long rightId);
 
     List<MisRoleRight> findByRoleId(Long roleId);
+
+    @Modifying
+    @Query("delete from MisRoleRight where menuId in ?1")
+    void deleteByMenuIds(Long[] ids);
+
+    @Modifying
+    @Query("delete from MisRoleRight where roleId in ?1")
+    void deleteByRoleIds(Long[] ids);
 }

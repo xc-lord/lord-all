@@ -17,6 +17,15 @@ var MisMenuFromCommon = {
                     trigger: 'blur'
                 }
             ],
+            letter: [
+                {required: true, message: '编码不能为空', trigger: 'blur'},
+                {
+                    validator: function(rule, value, callback){
+                        return commonUtils.formRowIsExist('/api/admin/mis/misMenu/isExist',"letter",rule, value, callback);
+                    },
+                    trigger: 'blur'
+                }
+            ],
             phone: [
                 {required: true, message: '手机号不能为空', trigger: 'blur'}
             ],

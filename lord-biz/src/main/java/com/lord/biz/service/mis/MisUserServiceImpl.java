@@ -7,8 +7,8 @@ import com.lord.common.constant.mis.UserStatus;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
-import com.lord.common.dto.user.UserLoginInput;
-import com.lord.common.dto.user.UserLoginOutput;
+import com.lord.common.dto.user.LoginInput;
+import com.lord.common.dto.user.LoginUser;
 import com.lord.common.model.mis.MisUser;
 import com.lord.common.service.mis.MisUserService;
 import com.lord.utils.EncryptUtils;
@@ -178,7 +178,7 @@ public class MisUserServiceImpl implements MisUserService {
     }
 
     @Override
-    public UserLoginOutput login(UserLoginInput input)
+    public LoginUser login(LoginInput input)
     {
         MisUser user = misUserDao.findByUsername(input.getUsername());
         Preconditions.checkArgument(user == null, "用户" + input.getUsername() + "未注册");
@@ -187,7 +187,7 @@ public class MisUserServiceImpl implements MisUserService {
         String pwd = EncryptUtils.passwordEncode(input.getPassword());
         Preconditions.checkArgument(!pwd.equals(user.getPassword()), "输入的密码错误，请重新输入");
 
-        UserLoginOutput output = new UserLoginOutput();
+        LoginUser output = new LoginUser();
         output.setEmail(user.getEmail());
         output.setIcon(user.getIcon());
         output.setLoginTime(new Date());
@@ -198,6 +198,8 @@ public class MisUserServiceImpl implements MisUserService {
         output.setPhone(user.getPhone());
         output.setIp(input.getIp());
         output.setWebChannel(input.getWebChannel());
+        output.setRoleId(user.getRoleId());
+        output.setSuperAdmin(user.getSuperAdmin());
         return output;
     }
 
