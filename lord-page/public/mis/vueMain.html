@@ -169,11 +169,12 @@
             });
             //获取树的数据
             $.ajax({
-                url: '/api/admin/mis/misMenu/getTree.do',
+                url: '/api/admin/mis/misMenu/getMenus.do',
                 dataType: "json"
             }).done(function (res) {
                 if (res.success) {
-                    _self.menus = res.data;//一级菜单
+                    misRightMap = res.data.rightMap;//权限信息
+                    _self.menus = res.data.menus;//一级菜单
                     if (_self.menus && _self.menus[0].children) {
                         //默认的二级菜单
                         _self.subMenus = _self.menus[0].children;

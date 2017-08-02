@@ -23,7 +23,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
-                <el-button type="success" icon="plus" @click="addClick" v-if="showEditPage" >新增</el-button>
+                <el-button type="success" icon="plus" @click="addClick" v-if="showEditPage && hasRight('cmsArticle.Add')" >新增</el-button>
             </el-form-item>
         </el-form>
     </el-row>
@@ -166,10 +166,10 @@
                 label="操作"
 				width="320">
                 <template scope="scope">
-                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">
+                    <el-button v-if="hasRight('cmsArticle.Update')" :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">
                         编辑
                     </el-button>
-                    <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">
+                    <el-button v-if="hasRight('cmsArticle.Delete')" :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">
                         删除
                     </el-button>
                 </template>
@@ -180,7 +180,7 @@
     <!--列表底部工具条和分页符-->
     <el-row style="margin-top: 20px" type="flex" justify="end">
         <el-col :span="6">
-            <el-button v-if="showEditPage" :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>
+            <el-button v-if="showEditPage && hasRight('cmsArticle.Delete')" :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>
             <el-button v-if="!showEditPage" type="success" icon="plus" @click="selectSelection">选择</el-button>
         </el-col>
         <el-col :span="18">
@@ -250,6 +250,10 @@
             _self.loadingData();
         },
         methods: {
+            //是否具有权限
+            hasRight: function(rightCode) {
+                commonUtils.hasRight(rightCode);
+            },
             //表格重新加载数据
             loadingData: function () {
                 var _self = this;
@@ -456,7 +460,7 @@
             },
             getOptions:function(values) {
                 this.categoryArr = values;
-            }
+            },
         }
     });
 </script>

@@ -1,5 +1,6 @@
 package com.lord.web.controller.mis;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.QueryParams;
 import com.lord.common.dto.cat.TreeNode;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 功能：系统菜单mis_menu的Api
@@ -44,11 +46,15 @@ public class MisMenuController {
     }
 
     @ApiOperation(value = "查询系统菜单的树形列表")
-    @RequestMapping(value = "/api/admin/mis/misMenu/getMenuTree", method = RequestMethod.GET)
-    public Result getMenuTree() {
+    @RequestMapping(value = "/api/admin/mis/misMenu/getMenus", method = RequestMethod.GET)
+    public Result getMenus() {
         LoginUser loginUser = UserHandler.getLoginUser();
-        List<TreeNode> treeNodes = misMenuService.getMenuTree(loginUser);
-        return Result.success("查询成功", treeNodes);
+        JSONObject json = new JSONObject();
+        List<TreeNode> treeNodes = misMenuService.getMenus(loginUser);
+        Map<String, Boolean> rightMap = misMenuService.getRightMap(loginUser);
+        json.put("menus", treeNodes);
+        json.put("rightMap", rightMap);
+        return Result.success("查询成功", json);
     }
 
     @ApiOperation(value = "查询系统菜单的权限树形列表")

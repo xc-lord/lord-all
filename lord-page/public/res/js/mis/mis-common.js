@@ -1,6 +1,10 @@
 var globalConfig = {
     apiUrl : ""
 };
+//页面的参数存储
+var pageParam = {};
+//权限信息
+var misRightMap = {};
 
 //公共方法定义
 var commonUtils = {
@@ -161,10 +165,18 @@ var commonUtils = {
             }
         });
     },
+    /**
+     * 是否具有权限
+     * @param rightCode 权限编码
+     */
+    hasRight: function(rightCode) {
+        if(!misRightMap) return false;
+        if(misRightMap[rightCode]) {
+            return true;
+        }
+        return false;
+    }
 };
-
-//页面的参数存储
-var pageParam = {};
 
 //JS的元素对象属性扩展
 Array.prototype.indexOf = function(val) {

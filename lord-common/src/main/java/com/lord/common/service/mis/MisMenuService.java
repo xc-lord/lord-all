@@ -10,6 +10,7 @@ import com.lord.common.model.mis.MisMenu;
 import com.lord.common.service.CategoryService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 系统菜单mis_menu的Service
@@ -90,5 +91,17 @@ public interface MisMenuService extends CategoryService {
      */
     MenuRightTree getMenuRightTree(Long roleId);
 
-    List<TreeNode> getMenuTree(LoginUser loginUser);
+    /**
+     * 获得菜单树形列表
+     * @param loginUser 当前用户
+     * @return 菜单
+     */
+    List<TreeNode> getMenus(LoginUser loginUser);
+
+    /**
+     * 获得权限列表
+     * @param loginUser 当前用户
+     * @return 权限
+     */
+    Map<String,Boolean> getRightMap(LoginUser loginUser);
 }

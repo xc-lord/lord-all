@@ -119,10 +119,23 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
         return categories;
     }
 
+    /**
+     * 根据当前登录的用户，获得该用户有权限的菜单
+     * @param loginUser 当前用户
+     * @return  菜单树形结构
+     */
     private List<Category> findCategoryByUser(LoginUser loginUser)
     {
         List<MisMenu> categoryList = misMenuDao.findAll(new Sort(new Sort.Order(Sort.Direction.ASC, "level"),
                 new Sort.Order(Sort.Direction.ASC, "orderValue")));
+        //超级管理员具有所有菜单权限
+        /*if(loginUser.getSuperAdmin())
+        {
+            List<Category> categories = new ArrayList<>();
+            categories.addAll(categoryList);
+            return categories;
+        }*/
+
         List<MisRoleRight> rights = misRoleRightDao.findByRoleId(loginUser.getRoleId());
         Map<Long, Boolean> map = new HashMap<>();
         for (MisRoleRight right : rights)
@@ -136,7 +149,7 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
         while (iterator.hasNext())
         {
             MisMenu misMenu = iterator.next();
-            if(map.get(misMenu.getId()) != null) continue;
+            if(map.get(misMenu.getId()) != null) continue;//菜单有权限
             List<Long> chilren = CommonUtils.parseLongList(misMenu.getChildrenIds(), ",");
             boolean isContain = false;
             if(chilren != null) {
@@ -148,9 +161,8 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
                     }
                 }
             }
-            if(isContain) continue;
-            System.out.println(misMenu.getName() + " -> 没有权限");
-            iterator.remove();
+            if(isContain) continue;//子菜单有权限
+            iterator.remove();//没有权限，从列表中删除
         }
 
         List<Category> categories = new ArrayList<>();
@@ -276,25 +288,9 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
         return null;
     }
 
-    @Override
-    public List<TreeNode> getMenuTree(LoginUser loginUser)
-    {
-        List<TreeNode> list = new ArrayList<>();
-        List<Category> categoryList = findCategoryByUser(loginUser);
-        if (categoryList == null || categoryList.size() < 1) {
-            return list;
-        }
-        long rootParentId = 0L;
-        Map<Long, List<Category>> parentMap = getParentMap(rootParentId, categoryList);
-
-        List<Category> rootList = parentMap.get(rootParentId);
-        for (Category sub : rootList) {
-            TreeNode treeNode = setTreeNode(sub, parentMap);
-            list.add(treeNode);
-        }
-        return list;
-    }
-
+    /**
+     * 递归获取每个菜单的权限信息
+     */
     private List<MenuRightNode> getRightTree(Map<Long, List<MisMenuRight>> map, List<TreeNode> treeNodes, Map<Long, Boolean> rightMap) throws Exception
     {
         if(treeNodes == null) return null;
@@ -327,4 +323,39 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
         return rightNodes;
     }
 
+    @Override
+    public List<TreeNode> getMenus(LoginUser loginUser)
+    {
+        List<TreeNode> list = new ArrayList<>();
+        List<Category> categoryList = findCategoryByUser(loginUser);
+        if (categoryList == null || categoryList.size() < 1) {
+            return list;
+        }
+        long rootParentId = 0L;
+        Map<Long, List<Category>> parentMap = getParentMap(rootParentId, categoryList);
+
+        List<Category> rootList = parentMap.get(rootParentId);
+        for (Category sub : rootList) {
+            TreeNode treeNode = setTreeNode(sub, parentMap);
+            list.add(treeNode);
+        }
+        return list;
+    }
+
+    @Override
+    public Map<String, Boolean> getRightMap(LoginUser loginUser)
+    {
+        Map<String, Boolean> map = new HashMap<>();
+        List<MisRoleRight> list = misRoleRightDao.findByRoleId(loginUser.getRoleId());
+        for (MisRoleRight roleRight : list)
+        {
+            if(!roleRight.isMenuRight())
+                map.put(roleRight.getRightCode(), true);
+        }
+        if (loginUser.getSuperAdmin())
+        {
+            map.put("SuperAdmin", true);
+        }
+        return map;
+    }
 }
