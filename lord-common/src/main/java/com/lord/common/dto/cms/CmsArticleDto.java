@@ -1,7 +1,6 @@
 package com.lord.common.dto.cms;
 
 import com.lord.common.model.cms.CmsArticle;
-import com.lord.common.model.cms.CmsArticleContent;
 
 import java.util.List;
 

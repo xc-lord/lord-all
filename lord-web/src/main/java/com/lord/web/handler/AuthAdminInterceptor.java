@@ -2,7 +2,6 @@ package com.lord.web.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.lord.common.constant.WebChannel;
-import com.lord.common.constant.auth.AuthCode;
 import com.lord.common.constant.auth.AuthValidate;
 import com.lord.common.dto.mis.UserMenu;
 import com.lord.common.dto.user.LoginUser;
@@ -10,7 +9,6 @@ import com.lord.common.model.mis.MisMenu;
 import com.lord.common.service.mis.MisMenuService;
 import com.lord.utils.dto.Code;
 import com.lord.utils.dto.Result;
-import com.lord.utils.exception.CommonException;
 import com.lord.web.utils.WebUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -21,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

@@ -2,11 +2,7 @@ package com.lord.web.controller.ueditor.define;
 
 import com.lord.web.controller.ueditor.Encoder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 多状态集合状态

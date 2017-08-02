@@ -2,7 +2,6 @@ package com.lord.biz.dao.mis.specs;
 
 import com.lord.biz.utils.BaseSpecification;
 import com.lord.common.model.mis.MisRoleRight;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;

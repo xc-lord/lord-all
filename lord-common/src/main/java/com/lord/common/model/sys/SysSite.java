@@ -1,11 +1,11 @@
 package com.lord.common.model.sys;
 
-import java.util.*;
-import javax.persistence.*;
-import java.io.Serializable;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 /**
  * 站点sys_site的JPA对象
  *

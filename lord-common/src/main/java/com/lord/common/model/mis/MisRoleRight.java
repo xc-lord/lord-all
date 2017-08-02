@@ -1,11 +1,10 @@
 package com.lord.common.model.mis;
 
-import java.util.*;
-import javax.persistence.*;
-import java.io.Serializable;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import javax.persistence.*;
+import java.io.Serializable;
 /**
  * 角色权限管理mis_role_right的JPA对象
  *

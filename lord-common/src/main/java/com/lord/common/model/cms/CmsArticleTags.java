@@ -1,11 +1,10 @@
 package com.lord.common.model.cms;
 
-import java.util.*;
-import javax.persistence.*;
-import java.io.Serializable;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import javax.persistence.*;
+import java.io.Serializable;
 /**
  * 文章标签关联表cms_article_tags的JPA对象
  *

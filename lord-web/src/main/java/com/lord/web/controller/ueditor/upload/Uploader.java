@@ -1,8 +1,9 @@
 package com.lord.web.controller.ueditor.upload;
 
 import com.lord.web.controller.ueditor.define.State;
-import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 public class Uploader {
 	private HttpServletRequest request = null;

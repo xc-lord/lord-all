@@ -1,7 +1,5 @@
 package com.lord.common.dto.mis;
 
-import com.lord.common.model.mis.MisMenuRight;
-
 import java.util.List;
 
 /**

@@ -8,10 +8,9 @@ import com.lord.web.controller.ueditor.define.AppInfo;
 import com.lord.web.controller.ueditor.define.BaseState;
 import com.lord.web.controller.ueditor.define.FileType;
 import com.lord.web.controller.ueditor.define.State;
+import org.apache.commons.codec.binary.Base64;
 
 import java.util.Map;
-
-import org.apache.commons.codec.binary.Base64;
 
 public final class Base64Uploader {
 

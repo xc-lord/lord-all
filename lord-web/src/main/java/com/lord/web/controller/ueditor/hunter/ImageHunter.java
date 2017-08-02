@@ -1,5 +1,9 @@
 package com.lord.web.controller.ueditor.hunter;
 
+import com.lord.web.controller.ueditor.PathFormat;
+import com.lord.web.controller.ueditor.define.*;
+import com.lord.web.controller.ueditor.upload.StorageManager;
+
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URL;
@@ -7,14 +11,6 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
-import com.lord.web.controller.ueditor.PathFormat;
-import com.lord.web.controller.ueditor.define.AppInfo;
-import com.lord.web.controller.ueditor.define.BaseState;
-import com.lord.web.controller.ueditor.define.MIMEType;
-import com.lord.web.controller.ueditor.define.MultiState;
-import com.lord.web.controller.ueditor.define.State;
-import com.lord.web.controller.ueditor.upload.StorageManager;
 
 /**
  * 图片抓取器
