@@ -173,7 +173,7 @@ public class CommonUtils {
      */
     public static List<Long> parseLongList(String idStr,String spliter)
     {
-        if(StringUtils.isEmpty(idStr)) return null;
+        if(StringUtils.isEmpty(idStr)) return new ArrayList<>();
         String[] arr = idStr.split(spliter);
         List<Long> list = new ArrayList<>();
         for (String s : arr)

@@ -21,6 +21,7 @@ import com.lord.utils.CommonUtils;
 import com.lord.utils.Preconditions;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,7 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
         //父节点
         MisMenu parent = null;
         //新增记录
+        boolean isAdd = true;
         if (pageObj.getId() == null) {
             //设置默认属性
             pageObj.setCreateTime(new Date());
@@ -89,12 +91,23 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
             }
             super.setUpdateCategory(pageObj, parent, dbObj);//更新时不能修改的公共属性
             misMenuDao.save(pageObj);//更新
+            isAdd = false;
         }
-        //是否需要修改父节点
-        if (super.needUpdateParent(pageObj, parent)) {
-            misMenuDao.save(parent);
-        }
+        //更新父节点
+        if(isAdd) updateParents(pageObj);
         return pageObj;
+    }
+
+    @Override
+    protected void updateChildrenIds(String chilrenStr, boolean isLeaf, Long parentId)
+    {
+        misMenuDao.updateChildrenIds(chilrenStr, isLeaf, parentId);
+    }
+
+    @Override
+    protected List<Long> findAllChildrenIdsLike(String parentIds)
+    {
+        return misMenuDao.findAllChildrenIdsLike(parentIds);
     }
 
     @Override
@@ -125,8 +138,19 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
             MisMenu misMenu = iterator.next();
             if(map.get(misMenu.getId()) != null) continue;
             List<Long> chilren = CommonUtils.parseLongList(misMenu.getChildrenIds(), ",");
-            if(chilren != null && chilren.contains(misMenu.getId())) continue;
-            categoryList.remove(misMenu);
+            boolean isContain = false;
+            if(chilren != null) {
+                for (Long menuId : chilren)
+                {
+                    if(map.get(menuId) != null) {
+                        isContain = true;
+                        break;
+                    }
+                }
+            }
+            if(isContain) continue;
+            System.out.println(misMenu.getName() + " -> 没有权限");
+            iterator.remove();
         }
 
         List<Category> categories = new ArrayList<>();
@@ -168,11 +192,17 @@ public class MisMenuServiceImpl extends CategoryServiceImpl implements MisMenuSe
     @Override
     @Transactional
     public void deleteMisMenu(Long... ids) {
-        List<MisMenu> parents = misMenuDao.findParentByIds(ids);
-        Preconditions.checkArgument(parents != null && parents.size() > 0, "存在子菜单，不能删除");
-        misMenuRightDao.deleteByMenuIds(ids);
-        misRoleRightDao.deleteByMenuIds(ids);
-        misMenuDao.deleteMisMenu(ids);
+        List<MisMenu> children = misMenuDao.findParentByIds(ids);
+        Preconditions.checkArgument(children != null && children.size() > 0, "存在子菜单，不能删除");
+        misMenuRightDao.deleteByMenuIds(ids);//删除菜单的权限
+        misRoleRightDao.deleteByMenuIds(ids);//删除关联角色的权限
+        List<MisMenu> list = misMenuDao.findByIds(ids);
+        misMenuDao.deleteMisMenu(ids);//删除数据
+        for (MisMenu category : list)
+        {
+            //更新父节点信息
+            super.updateParents(category);
+        }
     }
 
     @Override

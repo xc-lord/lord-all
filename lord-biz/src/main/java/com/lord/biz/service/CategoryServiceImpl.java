@@ -4,6 +4,7 @@ import com.lord.common.dto.cat.Category;
 import com.lord.common.dto.cat.OptionNode;
 import com.lord.common.dto.cat.TreeNode;
 import com.lord.common.service.CategoryService;
+import com.lord.utils.CommonUtils;
 import com.lord.utils.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 
@@ -81,6 +82,27 @@ public abstract class CategoryServiceImpl implements CategoryService {
             pageObj.setParentName(parent.getName());
         }
     }
+
+    public void updateParents(Category pageObj) {
+        List<Long> parentIds = CommonUtils.parseLongList(pageObj.getParentIds(), ",");
+        for (Long parentId : parentIds)
+        {
+            List<Long> chilrenIds = findAllChildrenIdsLike("%" + parentId + ",%");
+            String chilrenStr = "";
+            for (Long chilrenId : chilrenIds)
+            {
+                chilrenStr += chilrenId + ",";
+            }
+            boolean isLeaf = false;
+            if (org.apache.commons.lang.StringUtils.isEmpty(chilrenStr))
+                isLeaf = true;
+            updateChildrenIds(chilrenStr, isLeaf, parentId);
+        }
+    }
+
+    protected abstract void updateChildrenIds(String chilrenStr, boolean isLeaf, Long parentId);
+
+    protected abstract List<Long> findAllChildrenIdsLike(String parentIds);
 
     /**
      * 设置更新分类的公共属性

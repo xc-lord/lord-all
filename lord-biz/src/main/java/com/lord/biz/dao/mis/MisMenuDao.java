@@ -33,5 +33,10 @@ public interface MisMenuDao extends JpaRepository<MisMenu, Long>, JpaSpecificati
     @Query("update MisMenu u set u.orderValue = ?2 where u.id = ?1")
     void updateOrderValue(Long id, Long orderValue);
 
-	//在此添加你的自定义方法...
+    @Query("select u.id from MisMenu u where u.parentIds like ?1")
+    List<Long> findAllChildrenIdsLike(String parentIdStr);
+
+    @Modifying
+    @Query("update MisMenu u set u.childrenIds = ?1, u.leaf = ?2 where u.id = ?3")
+    void updateChildrenIds(String childrenIds, boolean isLeaf, Long parentId);
 }

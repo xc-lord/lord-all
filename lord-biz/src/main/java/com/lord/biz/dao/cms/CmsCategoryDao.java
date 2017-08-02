@@ -26,13 +26,18 @@ public interface CmsCategoryDao extends JpaRepository<CmsCategory, Long>, JpaSpe
     @Query("select u from CmsCategory u where u.id in ?1")
     List<CmsCategory> findByIds(Long... ids);
 
-
     @Modifying
     @Query("update CmsCategory u set u.orderValue = ?2 where u.id = ?1")
     void updateOrderValue(Long id, Long orderValue);
+
     @Modifying
     @Query("update CmsCategory u set u.removed = true where u.id in ?1")
     void removeCmsCategory(Long... id);
 
-	//在此添加你的自定义方法...
+    @Query("select u.id from CmsCategory u where u.parentIds like ?1")
+    List<Long> findAllChildrenIdsLike(String parentIdStr);
+
+    @Modifying
+    @Query("update CmsCategory u set u.childrenIds = ?1, u.leaf = ?2 where u.id = ?3")
+    void updateChildrenIds(String childrenIds, boolean isLeaf, Long parentId);
 }

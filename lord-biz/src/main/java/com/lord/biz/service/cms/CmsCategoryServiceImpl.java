@@ -52,6 +52,7 @@ public class CmsCategoryServiceImpl extends CategoryServiceImpl implements CmsCa
         //父节点
         CmsCategory parent = null;
         //新增记录
+        boolean isAdd = true;
         if (pageObj.getId() == null) {
             //设置默认属性
             pageObj.setCreateTime(new Date());
@@ -73,12 +74,23 @@ public class CmsCategoryServiceImpl extends CategoryServiceImpl implements CmsCa
             }
             super.setUpdateCategory(pageObj, parent, dbObj);//更新时不能修改的公共属性
             cmsCategoryDao.save(pageObj);//更新
+            isAdd = false;
         }
-        //是否需要修改父节点
-        if (super.needUpdateParent(pageObj, parent)) {
-            cmsCategoryDao.save(parent);
-        }
+        //更新父节点
+        if(isAdd) updateParents(pageObj);
         return pageObj;
+    }
+
+    @Override
+    protected void updateChildrenIds(String chilrenStr, boolean isLeaf, Long parentId)
+    {
+        cmsCategoryDao.updateChildrenIds(chilrenStr, isLeaf, parentId);
+    }
+
+    @Override
+    protected List<Long> findAllChildrenIdsLike(String parentIds)
+    {
+        return cmsCategoryDao.findAllChildrenIdsLike(parentIds);
     }
 
     @Override
@@ -124,7 +136,13 @@ public class CmsCategoryServiceImpl extends CategoryServiceImpl implements CmsCa
     @Override
     @Transactional
     public void deleteCmsCategory(Long... ids) {
-        cmsCategoryDao.deleteCmsCategory(ids);
+        List<CmsCategory> list = cmsCategoryDao.findByIds(ids);
+        cmsCategoryDao.deleteCmsCategory(ids);//删除数据
+        for (CmsCategory category : list)
+        {
+            //更新父节点信息
+            super.updateParents(category);
+        }
     }
 
 
