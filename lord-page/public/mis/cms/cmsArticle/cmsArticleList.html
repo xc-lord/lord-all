@@ -166,7 +166,7 @@
                 label="操作"
 				width="320">
                 <template scope="scope">
-                    <el-button v-if="hasRight('cmsArticle.Update')" :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">
+                    <el-button v-if="hasRight('cmsArticle.View')" :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">
                         编辑
                     </el-button>
                     <el-button v-if="hasRight('cmsArticle.Delete')" :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">
@@ -252,7 +252,7 @@
         methods: {
             //是否具有权限
             hasRight: function(rightCode) {
-                commonUtils.hasRight(rightCode);
+                return commonUtils.hasRight(rightCode);
             },
             //表格重新加载数据
             loadingData: function () {

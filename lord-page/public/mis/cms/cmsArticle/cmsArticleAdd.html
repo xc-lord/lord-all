@@ -241,7 +241,7 @@
     <el-row type="flex" justify="center">
         <el-col :span="6">
             <el-button @click="editFormCancel">取消</el-button>
-            <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading">提交</el-button>
+            <el-button v-if="hasRight('cmsArticle.Add')" type="primary" @click="editSubmit('editForm')" :loading="editLoading">提交</el-button>
         </el-col>
     </el-row>
 
@@ -276,7 +276,7 @@
             methods: {
                 //是否具有权限
                 hasRight: function(rightCode) {
-                    commonUtils.hasRight(rightCode);
+                    return commonUtils.hasRight(rightCode);
                 },
                 //保存事件
                 editSubmit: function (formName) {

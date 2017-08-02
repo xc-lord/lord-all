@@ -175,6 +175,7 @@
                 if (res.success) {
                     misRightMap = res.data.rightMap;//权限信息
                     _self.menus = res.data.menus;//一级菜单
+                    console.info(misRightMap);
                     if (_self.menus && _self.menus[0].children) {
                         //默认的二级菜单
                         _self.subMenus = _self.menus[0].children;
