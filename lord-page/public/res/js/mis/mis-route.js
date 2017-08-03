@@ -111,6 +111,28 @@ var routes = {
         pageParam = Object.assign({}, {id: id});//设置页面参数
         $("#showView").load("/mis/cms/cmsCategory/cmsCategoryEdit.html");
     },
+    //页面管理
+    '/adsPage': function () {
+        $("#showView").load("/mis/ads/adsPage/adsPageList.html");
+    },
+    '/adsPage/add': function () {
+        $("#showView").load("/mis/ads/adsPage/adsPageAdd.html");
+    },
+    '/adsPage/edit/:id': function (id) {
+        pageParam = Object.assign({}, {id: id});//设置页面参数
+        $("#showView").load("/mis/ads/adsPage/adsPageEdit.html");
+    },
+    //广告位管理
+    '/adsSpace': function () {
+        $("#showView").load("/mis/ads/adsSpace/adsSpaceTree.html");
+    },
+    '/adsSpace/add': function () {
+        $("#showView").load("/mis/ads/adsSpace/adsSpaceAdd.html");
+    },
+    '/adsSpace/edit/:id': function (id) {
+        pageParam = Object.assign({}, {id: id});//设置页面参数
+        $("#showView").load("/mis/ads/adsSpace/adsSpaceEdit.html");
+    },
 };
 var router = Router(routes);
 router.init();

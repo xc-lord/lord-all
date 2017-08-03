@@ -1,0 +1,252 @@
+<!-- 
+	Desc: 	广告位的列表界面
+	Author: xiaocheng
+	Date: 	2017年08月03日 11:12:10
+-->
+
+<!-- UI界面 start -->
+<div id="adsSpaceView">
+    <el-row>
+        <h3><i class="el-icon-share"></i> 广告位管理</h3>
+    </el-row>
+    <!--列表顶部搜索和工具条-->
+    <el-row>
+        <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+            <el-form-item>
+                <el-button type="success" icon="plus" @click="dialogAddClick">新增一级广告位</el-button>
+            </el-form-item>
+        </el-form>
+    </el-row>
+    <!--列表-->
+    <el-row>
+        <el-tree
+                :data="categoryData"
+                :props="defaultProps"
+                show-checkbox
+                node-key="id"
+                default-expand-all
+                :expand-on-click-node="false"
+                :render-content="renderContent">
+        </el-tree>
+    </el-row>
+
+    <el-dialog v-model="dialogFormVisible" @open="dialogFormOpen">
+        <div id="dialogForm">...</div>
+    </el-dialog>
+</div>
+<!-- UI界面 end -->
+
+<script type="text/javascript">
+    var adsSpaceView = new Vue({
+        el: '#adsSpaceView',
+        data: {
+            //列表数据
+            tableData: [],
+            //显示加载中样式
+            loading: false,
+            //搜索表单
+            searchForm: {
+                id: '',
+                name: '',
+                state: ''
+            },
+            searchState: false,
+            //多选值
+            multipleSelection: [],
+            //当前页
+            currentPage: 1,
+            //分页大小
+            pageSize: 10,
+            //总记录数
+            total: 800,
+            //枚举类型
+            enumType: {},
+            //枚举下拉选择框
+            enumTypeSelect:{},
+            //弹窗表单的Url
+            dialogFormUrl: '',
+            //弹窗表单是否显示
+            dialogFormVisible: false,
+            baseId:1000,
+            //分类的树形数据
+            categoryData: [],
+            defaultProps: {
+                children: 'children',
+                label: 'name'
+            }
+        },
+        //数据初始化
+        created: function () {
+            var _self = this;
+            _self.loadingData();
+        },
+        methods: {
+            //是否具有权限
+            hasRight: function(rightCode) {
+                return commonUtils.hasRight(rightCode);
+            },
+            //表格重新加载数据
+            loadingData: function () {
+                var _self = this;
+                //获取树的数据
+                $.ajax({
+                    url: '/api/admin/ads/adsSpace/getTree.do',
+                    dataType: "json"
+                }).done(function (res) {
+                    if (res.success) {
+                        _self.categoryData = res.data;
+                    } else {
+                        _self.$message.error(res.msg);//提示错误
+                    }
+                });
+            },
+            //弹窗新建事件
+            dialogAddClick: function () {
+                var _self = this;
+                _self.dialogFormVisible = true;
+                _self.dialogFormUrl = "/mis/ads/adsSpace/adsSpaceAdd.html";
+            },
+            //表格弹窗编辑事件
+            dialogEditClick: function (row) {
+                var _self = this;
+                pageParam = Object.assign({}, {id: row.id});//设置页面参数
+                _self.dialogFormVisible = true;
+                _self.dialogFormUrl = "/mis/ads/adsSpace/adsSpaceEdit.html";
+            },
+            //弹窗打开事件
+            dialogFormOpen:function() {
+                var _self = this;
+                if (commonUtils.isNotEmpty(_self.dialogFormUrl)) {
+                    $.ajax({
+                        url: _self.dialogFormUrl
+                    }).done(function (res) {
+                        $("#dialogForm").html(res);
+                    });
+                }
+            },
+            //弹窗关闭事件
+            dialogFormClose:function(){
+                var _self = this;
+                _self.dialogFormVisible = false;
+                _self.loadingData();//重新加载数据
+            },
+            //表格删除事件
+            deleteClick: function (row) {
+                var _self = this;
+                var rowName = '[' + row.id + ']' + row.name;
+                _self.removeData(_self, rowName, row.id);
+            },
+            //删除数据的方法
+            removeData:function(_self, rowName, ids) {
+                _self.$confirm('确认删除' + rowName + '吗?', '提示', {
+                    type: 'warning'
+                }).then(function () {
+                    //删除记录
+                    $.ajax({
+                        url: '/api/admin/ads/adsSpace/remove.do',
+                        data: {ids: ids},
+                        dataType: "json"
+                    }).done(function (res) {
+                        if (res.success) {
+                            _self.$message({
+                                message: rowName + '删除成功',
+                                type: 'success'
+                            });
+                            _self.loadingData();//重新加载数据
+                        } else {
+                            _self.$message.error(res.msg);//提示错误
+                        }
+                    });
+                }).catch(function (e) {
+                    if (e != "cancel")
+                        console.log("出现错误：" + e);
+                });
+            },
+            //枚举类型格式化
+            enumFormat: function (row, column) {
+                var _self = this;
+                var columnName = column.property;
+                var columnVal = row[columnName];
+                if (columnVal == undefined) {
+                    return "";
+                }
+                if (columnName == 'status') {
+                    var mType = _self.enumType["mis_MisUserStatus"];
+                    return mType[columnVal];
+                }
+                return column;
+            },
+            //布尔值格式化
+            booleanFormat: function (row, column) {
+                var columnName = column.property;
+                var columnVal = row[columnName];
+                if (columnVal) {
+                    return "是";
+                }
+                return "否";
+            },
+            //时间格式化
+            dateFormat: function (row, column) {
+                var date = row[column.property];
+                if (date == undefined) {
+                    return "";
+                }
+                return moment(date).format("YYYY-MM-DD HH:mm:ss");
+            },
+            //树的添加事件
+            treeAppend:function(store, data) {
+                var _self = this;
+                console.info("点击了节点" + data.id + "的添加按钮");
+                pageParam.parentId = data.id;//父节点Id
+                _self.dialogFormVisible = true;
+                _self.dialogFormUrl = "/mis/ads/adsSpace/adsSpaceAdd.html";
+            },
+            //树的编辑事件
+            treeEdit: function (store, data) {
+                var _self = this;
+                pageParam = Object.assign({}, {id: data.id});//设置页面参数
+                _self.dialogFormVisible = true;
+                _self.dialogFormUrl = "/mis/ads/adsSpace/adsSpaceEdit.html";
+            },
+            //树的删除事件
+            treeRemove:function(store, data) {
+                var _self = this;
+                _self.removeData(_self, data.name, data.id)
+            },
+            //树的操作按钮渲染
+            renderContent:function(createElement, { node, data, store }) {
+                var _self = this;
+                return createElement('span', [
+                    createElement('span', node.label),
+                    createElement('span', {attrs:{
+                        style:"float: right; margin-right: 20px"
+                    }},[
+                        createElement('el-button',{attrs:{
+                            size:"mini"
+                        },on:{
+                            click:function() {
+                                _self.treeAppend(store, data);//添加事件
+                            }
+                        }},"添加"),
+                        createElement('el-button',{attrs:{
+                            size:"mini"
+                        },on:{
+                            click:function() {
+                                _self.treeEdit(store, data);//添加事件
+                            }
+                        }},"编辑"),
+                        createElement('el-button',{attrs:{
+                            size:"mini"
+                        },on:{
+                            click:function() {
+                                _self.treeRemove(store, data);//删除事件
+                            }
+                        }},"删除"),
+                    ]),
+                ]);
+            }
+        }
+    });
+</script>
+
+

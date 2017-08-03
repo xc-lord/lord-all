@@ -2,7 +2,7 @@ package com.lord.biz.service.cms;
 
 import com.lord.biz.dao.cms.CmsCategoryDao;
 import com.lord.biz.dao.cms.specs.CmsCategorySpecs;
-import com.lord.biz.service.CategoryServiceImpl;
+import com.lord.biz.service.cat.CategoryServiceImpl;
 import com.lord.biz.utils.ServiceUtils;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
@@ -79,7 +79,7 @@ public class CmsCategoryServiceImpl extends CategoryServiceImpl implements CmsCa
             isAdd = false;
         }
         //更新父节点
-        if(isAdd) updateParents(pageObj);
+        if(isAdd) super.updateParents(pageObj);
         return pageObj;
     }
 

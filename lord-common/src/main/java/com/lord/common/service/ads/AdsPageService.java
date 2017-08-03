@@ -1,33 +1,33 @@
-package com.lord.common.service.cms;
+package com.lord.common.service.ads;
 
+import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
-import com.lord.common.dto.PagerSort;
-import com.lord.common.model.cms.CmsCategory;
-import com.lord.common.service.cat.CategoryService;
+import com.lord.common.dto.ads.AdsPageQuery;
+import com.lord.common.model.ads.AdsPage;
 
 /**
- * 文章分类cms_category的Service
+ * 页面ads_page的Service
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2017年07月01日 16:25:37
+ * @Date 2017年08月03日 09:13:24
  */
-public interface CmsCategoryService extends CategoryService {
+public interface AdsPageService {
 
     /**
      * 根据主键Id查询
      * @param id    主键Id
      * @return  数据库对象
      */
-    CmsCategory getCmsCategory(Long id);
+    AdsPage getAdsPage(Long id);
 
     /**
      * 新增或者更新
      * @param pageObj   页面传参
      * @return  数据库对象
      */
-    CmsCategory saveOrUpdate(CmsCategory pageObj);
+    AdsPage saveOrUpdate(AdsPage pageObj);
 
     /**
      * 分页查询
@@ -36,7 +36,7 @@ public interface CmsCategoryService extends CategoryService {
      * @param pageSize  分页大小
      * @return  分页结果
      */
-    Pager<CmsCategory> pageCmsCategory(CmsCategory param, int page, int pageSize);
+    Pager<AdsPage> pageAdsPage(AdsPage param, int page, int pageSize);
 
     /**
      * 分页查询
@@ -44,7 +44,7 @@ public interface CmsCategoryService extends CategoryService {
      * @param pagerParam    分页参数
      * @return  分页结果
      */
-    Pager<CmsCategory> pageCmsCategory(CmsCategory param, PagerParam pagerParam);
+    Pager<AdsPage> pageAdsPage(AdsPage param, PagerParam pagerParam);
 
     /**
      * 分页查询
@@ -53,13 +53,13 @@ public interface CmsCategoryService extends CategoryService {
      * @param sorts         排序字段
      * @return  分页结果
      */
-    Pager<CmsCategory> pageCmsCategory(CmsCategory param, PagerParam pagerParam, PagerSort... sorts);
+    Pager<AdsPage> pageAdsPage(AdsPage param, PagerParam pagerParam, PagerSort... sorts);
 
     /**
      * 物理删除
      * @param ids    主键ID
      */
-    void deleteCmsCategory(Long... ids);
+    void deleteAdsPage(Long... ids);
 
 
     /**
@@ -68,11 +68,6 @@ public interface CmsCategoryService extends CategoryService {
      * @param orderValue    排序值
      */
     void updateOrderValue(Long id, Long orderValue);
-    /**
-     * 逻辑删除
-     * @param ids    主键ID
-     */
-    void removeCmsCategory(Long... ids);
 
     /**
      * 是否存在相同的记录
@@ -82,4 +77,6 @@ public interface CmsCategoryService extends CategoryService {
      * @return
      */
     boolean isExist(Long id, String rowName, String rowValue);
+
+    Pager<AdsPage> pageAdsPage(AdsPageQuery query);
 }

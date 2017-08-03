@@ -1,4 +1,4 @@
-package com.lord.common.service;
+package com.lord.common.service.cat;
 
 import com.lord.common.dto.cat.OptionNode;
 import com.lord.common.dto.cat.TreeNode;

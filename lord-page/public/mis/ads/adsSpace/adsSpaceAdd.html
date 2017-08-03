@@ -1,0 +1,145 @@
+<!-- 
+	Desc: 	广告位的新增界面
+	Author: xiaocheng
+	Date: 	2017年08月03日 11:12:10
+-->
+
+<!-- UI界面 start -->
+<div id="adsSpaceAddView">
+    <el-row>
+        <h3><i class="el-icon-edit"></i> <a href="#/adsSpace">广告位管理</a> / 新增</h3>
+    </el-row>
+    <!--编辑界面-->
+    <el-row type="flex" justify="center">
+        <el-col :span="22">
+            <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
+				<!--id不需要-->
+                <el-form-item label="名称" prop="name">
+                    <el-input v-model="editForm.name" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="关键字" prop="keyword">
+                    <el-input v-model="editForm.keyword" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="子关键字" prop="subKeyword">
+                    <el-input v-model="editForm.subKeyword" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="图片、文字、商品、文章" prop="adsType">
+                    <el-input v-model="editForm.adsType" auto-complete="off"></el-input>
+                </el-form-item>
+				<el-form-item label="元素的数量，0不限制数量">
+                    <el-input-number v-model="editForm.adsNum" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="显示1、隐藏0">
+                    <el-radio-group v-model="editForm.showState">
+                        <el-radio class="radio" :label="true">是</el-radio>
+                        <el-radio class="radio" :label="false">否</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="图片" prop="spaceImg">
+                    <el-upload
+                            class="avatar-uploader"
+                            action="/api/uploadFile.do"
+                            :show-file-list="false"
+                            :on-success="handleUploadSpaceImgSuccess"
+                            :before-upload="beforeAvatarUpload">
+                        <img v-if="editForm.spaceImg" :src="editForm.spaceImg" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
+                <el-form-item label="链接" prop="spaceUrl">
+                    <el-input v-model="editForm.spaceUrl" auto-complete="off"></el-input>
+                </el-form-item>
+				<el-form-item label="等级">
+                    <el-input-number v-model="editForm.level" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="父节点Id">
+                    <el-input-number v-model="editForm.parentId" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="页面id">
+                    <el-input-number v-model="editForm.pageId" :min="0"></el-input-number>
+                </el-form-item>
+                <el-form-item label="备注" prop="remark">
+                    <el-input v-model="editForm.remark" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="介绍" prop="intro">
+                    <el-input v-model="editForm.intro" auto-complete="off"></el-input>
+                </el-form-item>
+				<!--createTime不需要-->
+				<!--updateTime不需要-->
+				<el-form-item label="排序">
+                    <el-input-number v-model="editForm.orderValue" :min="0"></el-input-number>
+                </el-form-item>
+                <!--TODO:待修改-->
+                <!--<el-form-item label="状态">
+                    <el-select v-model="editForm.status" clearable placeholder="请选择">
+                        <el-option
+                                v-for="item in adsSpaceStatus"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>-->
+            </el-form>
+        </el-col>
+    </el-row>
+
+    <el-row type="flex" justify="center">
+        <el-col :span="6">
+            <el-button @click="editFormCancel">取消</el-button>
+            <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading">提交</el-button>
+        </el-col>
+    </el-row>
+
+</div>
+<!-- UI界面 end -->
+
+<script type="text/javascript">
+    $.getScript('/res/js/mis/ads/adsSpace/adsSpaceForm.js', function () {
+        //清空参数
+        pageParam = Object.assign({}, {});
+
+        var adsSpaceAddView = new Vue({
+            el: '#adsSpaceAddView',
+            data: AdsSpaceFromCommon.data,
+            //数据初始化
+            created: function () {
+                var _self = this;
+                //获取下拉框选项
+                AdsSpaceFromCommon.loadSelect(_self);
+                _self.editForm = Object.assign({}, AdsSpaceFromCommon.defaultModel);
+            },
+            methods: {
+                //是否具有权限
+                hasRight: function(rightCode) {
+                    return commonUtils.hasRight(rightCode);
+                },
+                //保存事件
+                editSubmit: function (formName) {
+                    var _self = this;
+                    _self.$refs[formName].validate(function(valid){
+                        if (valid) {
+                            AdsSpaceFromCommon.saveAction(_self);
+                        } else{
+                            _self.$message.error("请正确填写表单！");
+                        }
+                    });
+                },
+                //取消事件
+                editFormCancel: function () {
+                    AdsSpaceFromCommon.cancelAction();
+                },
+                //上传图片成功的回调事件
+                handleUploadSpaceImgSuccess:function(res, file) {
+                    var _self = this;
+                    _self.editForm.spaceImg = commonUtils.uploadImageSuccess(res, file, _self);
+                },
+                //上传图片前的验证事件
+                beforeAvatarUpload:function(file) {
+                    var _self = this;
+                    commonUtils.uploadImageCheck(file, _self);
+                }
+            }
+        });
+    });
+</script>

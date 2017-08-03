@@ -8,7 +8,7 @@ import com.lord.common.dto.mis.MenuRightTree;
 import com.lord.common.dto.mis.UserMenu;
 import com.lord.common.dto.user.LoginUser;
 import com.lord.common.model.mis.MisMenu;
-import com.lord.common.service.CategoryService;
+import com.lord.common.service.cat.CategoryService;
 
 import java.util.List;
 import java.util.Map;

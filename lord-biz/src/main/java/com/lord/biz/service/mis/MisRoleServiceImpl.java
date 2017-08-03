@@ -181,6 +181,7 @@ public class MisRoleServiceImpl implements MisRoleService {
             right.setMenuRight(false);
             misRoleRightDao.save(right);
         }
+        redisService.delete(MisMenuService.MIS_RIGHT_ROLE + roleId);
     }
 
     @Override

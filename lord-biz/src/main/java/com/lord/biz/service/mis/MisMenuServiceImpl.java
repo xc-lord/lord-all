@@ -4,7 +4,7 @@ import com.lord.biz.dao.mis.MisMenuDao;
 import com.lord.biz.dao.mis.MisMenuRightDao;
 import com.lord.biz.dao.mis.MisRoleRightDao;
 import com.lord.biz.dao.mis.specs.MisMenuSpecs;
-import com.lord.biz.service.CategoryServiceImpl;
+import com.lord.biz.service.cat.CategoryServiceImpl;
 import com.lord.biz.utils.ServiceUtils;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;

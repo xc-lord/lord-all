@@ -10,7 +10,7 @@ import java.io.File;
 public class CodeGenerator {
 
     public static void main(String[] args) throws Exception {
-        String tableName = "mis_menu_right";
+        String tableName = "ads_space";
         GeneratorFacade facade = new GeneratorFacade();
         String path = CodeGenerator.class.getClassLoader().getResource("template").getPath();
         facade.getGenerator().addTemplateRootDir(new File(path));

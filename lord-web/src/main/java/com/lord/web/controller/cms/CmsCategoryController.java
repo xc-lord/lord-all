@@ -37,12 +37,6 @@ public class CmsCategoryController {
     @ApiOperation(value = "查询系统菜单的树形列表")
     @RequestMapping(value = "/api/admin/cms/cmsCategory/getTree", method = {RequestMethod.GET, RequestMethod.POST})
     public Result getTree(@ModelAttribute QueryParams queryParams) {
-        CmsCategory param = new CmsCategory();
-        if (queryParams != null) {
-            //TODO:待修改
-            param.setId(queryParams.getLongId());
-            param.setName(queryParams.getName());
-        }
         List<TreeNode> treeNodes = cmsCategoryService.getTreeNodes();
         return Result.success("查询成功", treeNodes);
     }

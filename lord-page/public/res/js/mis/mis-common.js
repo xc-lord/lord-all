@@ -19,6 +19,14 @@ var commonUtils = {
     isNotEmpty:function(str) {
         return !this.isEmpty(str);
     },
+    //将表单不为空的字段放入Json对象中
+    putFormData:function(paramData, jsonObj) {
+        for(var p in jsonObj) {
+            if (this.isNotEmpty(jsonObj[p])) {
+                paramData[p] = jsonObj[p];
+            }
+        }
+    },
     //转换为时间戳
     toTimestamp:function(time) {
         if(typeof time == 'number') {

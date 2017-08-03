@@ -1,15 +1,13 @@
-<#assign className = table.className>
-<#assign classNameLower = className?uncap_first>
 <!-- 
-	Desc: 	${bizName}的列表界面
+	Desc: 	广告位的列表界面
 	Author: xiaocheng
-	Date: 	${now?string('yyyy年MM月dd日 HH:mm:ss')}
+	Date: 	2017年08月03日 11:12:10
 -->
 
 <!-- UI界面 start -->
-<div id="${classNameLower}View">
+<div id="adsSpaceView">
     <el-row v-if="showEditPage">
-        <h3><i class="el-icon-share"></i> ${bizName}管理</h3>
+        <h3><i class="el-icon-share"></i> 广告位管理</h3>
     </el-row>
     <!--列表顶部搜索和工具条-->
     <el-row>
@@ -50,38 +48,93 @@
                     type="selection"
                     width="50">
             </el-table-column>
-			<#list table.columns as column>
-			<#if column.pk>
 			<el-table-column
-                    prop="${column.columnNameLower}"
+                    prop="id"
                     label="ID"
                     width="80">
             </el-table-column>
-			<#elseif column.javaType == 'java.lang.Boolean'>
 			<el-table-column
-                    prop="${column.columnNameLower}"
-                    label="${column.remarks}"
+                    prop="name"
+                    label="名称"
+                    width="120">
+            </el-table-column>
+			<el-table-column
+                    prop="keyword"
+                    label="关键字"
+                    width="120">
+            </el-table-column>
+			<el-table-column
+                    prop="subKeyword"
+                    label="子关键字"
+                    width="120">
+            </el-table-column>
+			<el-table-column
+                    prop="adsType"
+                    label="图片、文字、商品、文章"
+                    width="120">
+            </el-table-column>
+			<el-table-column
+                    prop="adsNum"
+                    label="元素的数量，0不限制数量"
+                    width="120">
+            </el-table-column>
+			<el-table-column
+                    prop="showState"
+                    label="显示1、隐藏0"
                     :formatter="booleanFormat"
                     width="120">
             </el-table-column>
-			<#elseif column.javaType == 'java.util.Date'>
-			<el-table-column
-                    prop="${column.columnNameLower}"
-                    label="${column.remarks}"
-                    :formatter="dateFormat"
-                    width="180">
-            </el-table-column>
-			<#elseif column.sqlName?contains("img") || column.sqlName?contains("icon")>
             <el-table-column
-                    label="${column.remarks}"
+                    label="图片"
                     width="135">
                 <template scope="scope">
                     <div class="el-table-img-div">
-                        <img :src="scope.row.${column.columnNameLower}" class="el-table-img">
+                        <img :src="scope.row.spaceImg" class="el-table-img">
                     </div>
                 </template>
             </el-table-column>
-			<#elseif column.columnNameLower == 'orderValue'>
+			<el-table-column
+                    prop="spaceUrl"
+                    label="链接"
+                    width="120">
+            </el-table-column>
+			<el-table-column
+                    prop="level"
+                    label="等级"
+                    width="120">
+            </el-table-column>
+			<el-table-column
+                    prop="parentId"
+                    label="父节点Id"
+                    width="120">
+            </el-table-column>
+			<el-table-column
+                    prop="pageId"
+                    label="页面id"
+                    width="120">
+            </el-table-column>
+			<el-table-column
+                    prop="remark"
+                    label="备注"
+                    width="120">
+            </el-table-column>
+			<el-table-column
+                    prop="intro"
+                    label="介绍"
+                    width="120">
+            </el-table-column>
+			<el-table-column
+                    prop="createTime"
+                    label="创建时间"
+                    :formatter="dateFormat"
+                    width="180">
+            </el-table-column>
+			<el-table-column
+                    prop="updateTime"
+                    label="最后修改时间"
+                    :formatter="dateFormat"
+                    width="180">
+            </el-table-column>
 			<el-table-column
                     label="排序值"
                     width="100">
@@ -90,14 +143,6 @@
                               :data-id="scope.row.id"></el-input>
                 </template>
             </el-table-column>
-			<#else>
-			<el-table-column
-                    prop="${column.columnNameLower}"
-                    label="${column.remarks}"
-                    width="120">
-            </el-table-column>
-			</#if>
-			</#list>
             <el-table-column v-if="showEditPage"
 				fixed="right"
                 label="操作"
@@ -144,8 +189,8 @@
 <!-- UI界面 end -->
 
 <script type="text/javascript">
-    var ${classNameLower}View = new Vue({
-        el: '#${classNameLower}View',
+    var adsSpaceView = new Vue({
+        el: '#adsSpaceView',
         data: {
             //列表数据
             tableData: [],
@@ -205,7 +250,7 @@
                 commonUtils.putFormData(paramData, _self.searchForm);
                 //搜索
                 $.ajax({
-                    url: '/api/admin/${bizPackage}/${classNameLower}/list.do',
+                    url: '/api/admin/ads/adsSpace/list.do',
                     data: paramData,
                     dataType: "json"
                 }).done(function (res, status, xhr) {
@@ -232,7 +277,7 @@
                 }
                 //修改排序值
                 $.ajax({
-                    url: '/api/admin/${bizPackage}/${classNameLower}/updateOrderValue.do',
+                    url: '/api/admin/ads/adsSpace/updateOrderValue.do',
                     data: {id: id, orderValue: orderValue},
                     dataType: "json"
                 }).done(function (res) {
@@ -257,24 +302,24 @@
             },
             //新建事件
             addClick: function () {
-                window.location.href = "#/${classNameLower}/add";
+                window.location.href = "#/adsSpace/add";
             },
             //表格编辑事件
             editClick: function (row) {
-                window.location.href = "#/${classNameLower}/edit/" + row.id;
+                window.location.href = "#/adsSpace/edit/" + row.id;
             },
             //弹窗新建事件
             dialogAddClick: function () {
                 var _self = this;
                 _self.dialogFormVisible = true;
-                _self.dialogFormUrl = "/mis/${bizPackage}/${classNameLower}/${classNameLower}Add.html";
+                _self.dialogFormUrl = "/mis/ads/adsSpace/adsSpaceAdd.html";
             },
             //表格弹窗编辑事件
             dialogEditClick: function (row) {
                 var _self = this;
                 pageParam = Object.assign({}, {id: row.id});//设置页面参数
                 _self.dialogFormVisible = true;
-                _self.dialogFormUrl = "/mis/${bizPackage}/${classNameLower}/${classNameLower}Edit.html";
+                _self.dialogFormUrl = "/mis/ads/adsSpace/adsSpaceEdit.html";
             },
             //弹窗打开事件
             dialogFormOpen:function() {
@@ -323,9 +368,9 @@
                     return;
                 }
                 //如果是弹窗模式，关闭弹窗
-                if(typeof(search${className}ParentView) !== 'undefined' && search${className}ParentView.dialogFormVisible) {
+                if(typeof(searchAdsSpaceParentView) !== 'undefined' && searchAdsSpaceParentView.dialogFormVisible) {
                     var ids = commonUtils.arrayToSingleArray(multipleSelection, "id");
-                    search${className}ParentView.dialogFormClose(ids);
+                    searchAdsSpaceParentView.dialogFormClose(ids);
                 }
             },
             //表格删除事件
@@ -341,7 +386,7 @@
                 }).then(function () {
                     //删除记录
                     $.ajax({
-                        url: '/api/admin/${bizPackage}/${classNameLower}/remove.do',
+                        url: '/api/admin/ads/adsSpace/remove.do',
                         data: {ids: ids},
                         dataType: "json"
                     }).done(function (res) {
