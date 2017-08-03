@@ -1,5 +1,6 @@
 package com.lord.biz.service.ads;
 
+import com.lord.biz.dao.ads.AdsPageDao;
 import com.lord.biz.dao.ads.AdsSpaceDao;
 import com.lord.biz.dao.ads.specs.AdsSpaceSpecs;
 import com.lord.biz.service.cat.CategorySimpleServiceImpl;
@@ -8,10 +9,11 @@ import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.cat.CategorySimple;
-import com.lord.common.dto.cat.TreeNode;
+import com.lord.common.model.ads.AdsPage;
 import com.lord.common.model.ads.AdsSpace;
 import com.lord.common.service.ads.AdsSpaceService;
 import com.lord.utils.Preconditions;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,9 @@ public class AdsSpaceServiceImpl extends CategorySimpleServiceImpl implements Ad
     @Autowired
     private AdsSpaceDao adsSpaceDao;
 
+    @Autowired
+    private AdsPageDao adsPageDao;
+
     @Override
     public AdsSpace getAdsSpace(Long id) {
         return adsSpaceDao.findOne(id);
@@ -49,24 +54,42 @@ public class AdsSpaceServiceImpl extends CategorySimpleServiceImpl implements Ad
     @Transactional
     public AdsSpace saveOrUpdate(AdsSpace pageObj) {
         Preconditions.checkNotNull(pageObj, "保存对象不能为空");
+        Preconditions.checkArgument(StringUtils.isEmpty(pageObj.getName()), "名称不能为空");
+        Preconditions.checkArgument(StringUtils.isEmpty(pageObj.getSubKeyword()), "子关键字不能为空");
+        Preconditions.checkArgument(StringUtils.isEmpty(pageObj.getAdsType()), "类型不能为空");
 
         if(logger.isDebugEnabled())
             logger.debug("保存" + pageObj);
 
         //验证字段的唯一性
-        Preconditions.checkArgument(isExist(pageObj.getId(), "name", pageObj.getName()), "名称[" + pageObj.getName() + "]已经存在");
-
+        Preconditions.checkArgument(
+                isExist(pageObj.getId(), pageObj.getPageId(), pageObj.getParentId(), "name", pageObj.getName()),
+                "名称[" + pageObj.getName() + "]已经存在");
+        Preconditions.checkArgument(
+                isExist(pageObj.getId(), pageObj.getPageId(), pageObj.getParentId(), "subKeyword", pageObj.getSubKeyword()),
+                "子关键字[" + pageObj.getName() + "]已经存在");
         //父节点
         AdsSpace parent = null;
         //新增记录
-        if (pageObj.getId() == null) {
+        if (pageObj.getId() == null)
+        {
             //设置默认属性
             pageObj.setCreateTime(new Date());
             pageObj.setUpdateTime(new Date());
-            if (pageObj.getParentId() != null) {
+            if (pageObj.getParentId() != null)
+            {
                 parent = adsSpaceDao.findOne(pageObj.getParentId());
+                super.setAddCategory(pageObj, parent);//设置分类的公共属性
             }
-            super.setAddCategory(pageObj, parent);//设置分类的公共属性
+            if (parent != null)
+            {
+                pageObj.setKeyword(parent.getKeyword() + "/" + pageObj.getSubKeyword());
+            } else {
+                Preconditions.checkArgument(pageObj.getPageId() == null, "页面不能为空");
+                AdsPage adsPage = adsPageDao.findOne(pageObj.getPageId());
+                Preconditions.checkArgument(adsPage == null, "页面不存在");
+                pageObj.setKeyword(adsPage.getPageCode() + "/" + pageObj.getSubKeyword());
+            }
             adsSpaceDao.save(pageObj);//新增
             return pageObj;
         }
@@ -79,8 +102,10 @@ public class AdsSpaceServiceImpl extends CategorySimpleServiceImpl implements Ad
         pageObj.setUpdateTime(new Date());//更新时间
         if (dbObj.getParentId() != null) {
             parent = adsSpaceDao.findOne(dbObj.getParentId());
+            super.setUpdateCategory(pageObj, parent, dbObj);//更新时不能修改的公共属性
         }
-        super.setUpdateCategory(pageObj, parent, dbObj);//更新时不能修改的公共属性
+        pageObj.setKeyword(dbObj.getKeyword());
+        pageObj.setSubKeyword(dbObj.getSubKeyword());
 
         adsSpaceDao.save(pageObj);//更新
 
@@ -121,6 +146,8 @@ public class AdsSpaceServiceImpl extends CategorySimpleServiceImpl implements Ad
     @Override
     @Transactional
     public void deleteAdsSpace(Long... ids) {
+        List<AdsSpace> children = adsSpaceDao.findParentByIds(ids);
+        Preconditions.checkArgument(children != null && children.size() > 0, "存在子分类，不能删除");
         adsSpaceDao.deleteAdsSpace(ids);
     }
 
@@ -137,12 +164,12 @@ public class AdsSpaceServiceImpl extends CategorySimpleServiceImpl implements Ad
     }
 
     @Override
-    public boolean isExist(Long id, String rowName, String rowValue) {
+    public boolean isExist(Long id, Long pageId, Long parentId, String rowName, String rowValue) {
         List<String> rowList = new ArrayList<>();
         rowList.add("name");
-        rowList.add("username");
+        rowList.add("subKeyword");
         Preconditions.checkArgument(!rowList.contains(rowName), "此字段不需要判断是否存在");
-        List<AdsSpace> list = adsSpaceDao.findAll(AdsSpaceSpecs.queryBy(rowName, rowValue, AdsSpace.class));
+        List<AdsSpace> list = adsSpaceDao.findAll(AdsSpaceSpecs.queryBy(pageId, parentId, rowName, rowValue, AdsSpace.class));
         if (list == null || list.size() < 1) {
             return false;
         }

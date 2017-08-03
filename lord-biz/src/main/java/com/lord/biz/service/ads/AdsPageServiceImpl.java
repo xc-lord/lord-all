@@ -1,6 +1,7 @@
 package com.lord.biz.service.ads;
 
 import com.lord.biz.dao.ads.AdsPageDao;
+import com.lord.biz.dao.ads.AdsSpaceDao;
 import com.lord.biz.dao.ads.specs.AdsPageSpecs;
 import com.lord.biz.utils.ServiceUtils;
 import com.lord.common.dto.Pager;
@@ -37,6 +38,9 @@ public class AdsPageServiceImpl implements AdsPageService {
 
     @Autowired
     private AdsPageDao adsPageDao;
+
+    @Autowired
+    private AdsSpaceDao adsSpaceDao;
 
     @Override
     public AdsPage getAdsPage(Long id) {
@@ -110,7 +114,10 @@ public class AdsPageServiceImpl implements AdsPageService {
 
     @Override
     @Transactional
-    public void deleteAdsPage(Long... ids) {
+    public void deleteAdsPage(Long... ids)
+    {
+        long count = adsSpaceDao.countByAdsPageIds(ids);
+        Preconditions.checkArgument(count > 0, "存在广告位，不能删除页面");
         adsPageDao.deleteAdsPage(ids);
     }
 

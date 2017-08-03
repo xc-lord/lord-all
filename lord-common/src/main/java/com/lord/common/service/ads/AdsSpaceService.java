@@ -75,10 +75,11 @@ public interface AdsSpaceService extends CategorySimpleService {
     /**
      * 是否存在相同的记录
      * @param id        主键Id
+     * @param pageId
+     * @param parentId
      * @param rowName   属性名
-     * @param rowValue  属性值
-     * @return
-     */
-    boolean isExist(Long id, String rowName, String rowValue);
+     * @param rowValue  属性值   @return
+     * */
+    boolean isExist(Long id, Long pageId, Long parentId, String rowName, String rowValue);
 
 }

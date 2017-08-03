@@ -123,7 +123,8 @@ var routes = {
         $("#showView").load("/mis/ads/adsPage/adsPageEdit.html");
     },
     //广告位管理
-    '/adsSpace': function () {
+    '/adsSpace/tree/:pageId': function (pageId) {
+        pageParam = Object.assign({}, {pageId: pageId});//设置页面参数
         $("#showView").load("/mis/ads/adsSpace/adsSpaceTree.html");
     },
     '/adsSpace/add': function () {

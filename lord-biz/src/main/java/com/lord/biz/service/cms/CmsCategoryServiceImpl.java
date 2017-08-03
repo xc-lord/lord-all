@@ -138,6 +138,8 @@ public class CmsCategoryServiceImpl extends CategoryServiceImpl implements CmsCa
     @Override
     @Transactional
     public void deleteCmsCategory(Long... ids) {
+        List<CmsCategory> children = cmsCategoryDao.findParentByIds(ids);
+        Preconditions.checkArgument(children != null && children.size() > 0, "存在子分类，不能删除");
         List<CmsCategory> list = cmsCategoryDao.findByIds(ids);
         cmsCategoryDao.deleteCmsCategory(ids);//删除数据
         for (CmsCategory category : list)

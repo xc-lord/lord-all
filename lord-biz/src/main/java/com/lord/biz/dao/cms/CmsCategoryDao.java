@@ -40,4 +40,7 @@ public interface CmsCategoryDao extends JpaRepository<CmsCategory, Long>, JpaSpe
     @Modifying
     @Query("update CmsCategory u set u.childrenIds = ?1, u.leaf = ?2 where u.id = ?3")
     void updateChildrenIds(String childrenIds, boolean isLeaf, Long parentId);
+
+    @Query("select u from CmsCategory u where u.parentId in ?1")
+    List<CmsCategory> findParentByIds(Long[] parentIds);
 }

@@ -12,7 +12,7 @@ var AdsSpaceFromCommon = {
         subKeyword: '',		//子关键字
         adsType: '',		//图片、文字、商品、文章
         adsNum: 0,		//元素的数量，0不限制数量
-        showState: false,	//显示1、隐藏0
+        showState: true,	//显示1、隐藏0
         spaceImg: '',		//图片
         spaceUrl: '',		//链接
         level: 0,		//等级
@@ -31,8 +31,17 @@ var AdsSpaceFromCommon = {
             name: [
                 {required: true, message: '名称不能为空', trigger: 'blur'},
                 {
-                    validator: function(rule, value, callback){
-                        return commonUtils.formRowIsExist('/api/admin/ads/adsSpace/isExist.do',"name",rule, value, callback);
+                    validator: function(rule, value, callback) {
+                        return checkAdsSpaceFromIsExist("name", rule, value, callback);
+                    },
+                    trigger: 'blur'
+                }
+            ],
+            subKeyword: [
+                {required: true, message: '子关键字不能为空', trigger: 'blur'},
+                {
+                    validator: function(rule, value, callback) {
+                        return checkAdsSpaceFromIsExist("subKeyword", rule, value, callback);
                     },
                     trigger: 'blur'
                 }
@@ -44,18 +53,19 @@ var AdsSpaceFromCommon = {
         //编辑界面数据
         editForm: {},
         //状态
-        adsSpaceStatus: []
+        ads_AdsSpaceType: [],
+        parentId:"",
     },
     //加载下拉框的数据
     loadSelect: function (_self) {
         //获取下拉框选项
         $.ajax({
             url: '/api/mis/getEnumType.do',
-            data: {cls: "mis_MisUserStatus"},
+            data: {cls: "ads_AdsSpaceType"},
             dataType: "json"
         }).done(function (res) {
             if (res.success) {
-                _self.adsSpaceStatus = res.data.mis_MisUserStatus;
+                _self.ads_AdsSpaceType = res.data.ads_AdsSpaceType;
             } else {
                 _self.$message.error(res.msg);//提示错误
             }
@@ -95,5 +105,22 @@ var AdsSpaceFromCommon = {
         if(typeof(adsSpaceView) !== 'undefined' && adsSpaceView.dialogFormVisible) {			
 			adsSpaceView.dialogFormClose();
 		}
-    }
+    },
 };
+
+function checkAdsSpaceFromIsExist(rowName, rule, value, callback) {
+    if (!value) {
+        return callback(new Error("此项不能为空"));
+    }
+    $.ajax({
+        url: "/api/admin/ads/adsSpace/isExist.do",
+        data: {id:pageParam.id, pageId:pageParam.pageId, parentId:pageParam.parentId, rowValue:value, rowName:rowName},
+        dataType: "json"
+    }).done(function (res, status, xhr) {
+        if (res.success) {
+            return callback(new Error(res.msg));
+        } else {
+            callback();
+        }
+    });
+}

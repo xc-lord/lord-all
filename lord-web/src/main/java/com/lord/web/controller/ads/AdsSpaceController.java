@@ -93,13 +93,15 @@ public class AdsSpaceController {
     @ApiOperation(value = "判断记录是否存在", notes = "判断记录是否存在")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "主键Id", dataType = "Long", paramType = "query"),
+            @ApiImplicitParam(name = "pageId", value = "页面Id", dataType = "Long", paramType = "query"),
+            @ApiImplicitParam(name = "parentId", value = "父节点Id", dataType = "Long", paramType = "query"),
             @ApiImplicitParam(name = "rowName", value = "属性名", dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "rowValue", value = "属性值", dataType = "String", paramType = "query")})
     @RequestMapping(value = "/api/admin/ads/adsSpace/isExist", method = RequestMethod.GET)
-    public Result isExist(Long id, String rowName, String rowValue) {
+    public Result isExist(Long id, Long pageId, Long parentId, String rowName, String rowValue) {
         Preconditions.checkNotNull(rowName, "rowName不能为空");
         Preconditions.checkNotNull(rowValue, "rowValue不能为空");
-        boolean isRepeat = adsSpaceService.isExist(id, rowName, rowValue);
+        boolean isRepeat = adsSpaceService.isExist(id, pageId, parentId, rowName, rowValue);
         if (isRepeat) {
             return Result.success("已经存在相同的记录", isRepeat);
         }

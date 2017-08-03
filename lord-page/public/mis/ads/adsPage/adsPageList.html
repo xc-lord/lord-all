@@ -170,6 +170,9 @@
                 label="操作"
 				width="320">
                 <template scope="scope">
+                    <el-button :plain="true" type="success" size="small" icon="edit" @click="adsSpaceClick(scope.row)">
+                        广告位管理
+                    </el-button>
                     <el-button :plain="true" type="success" size="small" icon="edit" @click="dialogEditClick(scope.row)">
                         编辑
                     </el-button>
@@ -329,8 +332,8 @@
                 window.location.href = "#/adsPage/add";
             },
             //表格编辑事件
-            editClick: function (row) {
-                window.location.href = "#/adsPage/edit/" + row.id;
+            adsSpaceClick: function (row) {
+                window.location.href = "#/adsSpace/tree/" + row.id;
             },
             //弹窗新建事件
             dialogAddClick: function () {

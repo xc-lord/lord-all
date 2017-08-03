@@ -19,19 +19,23 @@
                 <el-form-item label="名称" prop="name">
                     <el-input v-model="editForm.name" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="关键字" prop="keyword">
-                    <el-input v-model="editForm.keyword" auto-complete="off"></el-input>
-                </el-form-item>
                 <el-form-item label="子关键字" prop="subKeyword">
                     <el-input v-model="editForm.subKeyword" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="图片、文字、商品、文章" prop="adsType">
-                    <el-input v-model="editForm.adsType" auto-complete="off"></el-input>
+                <el-form-item label="广告位类型" prop="adsType">
+                    <el-select v-model="editForm.adsType" clearable placeholder="请选择">
+                        <el-option
+                                v-for="item in ads_AdsSpaceType"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
-				<el-form-item label="元素的数量，0不限制数量">
+                <el-form-item label="元素的数量">
                     <el-input-number v-model="editForm.adsNum" :min="0"></el-input-number>
                 </el-form-item>
-				<el-form-item label="显示1、隐藏0">
+                <el-form-item label="是否显示">
                     <el-radio-group v-model="editForm.showState">
                         <el-radio class="radio" :label="true">是</el-radio>
                         <el-radio class="radio" :label="false">否</el-radio>
@@ -51,20 +55,26 @@
                 <el-form-item label="链接" prop="spaceUrl">
                     <el-input v-model="editForm.spaceUrl" auto-complete="off"></el-input>
                 </el-form-item>
-				<el-form-item label="等级">
-                    <el-input-number v-model="editForm.level" :min="0"></el-input-number>
-                </el-form-item>
-				<el-form-item label="父节点Id">
-                    <el-input-number v-model="editForm.parentId" :min="0"></el-input-number>
-                </el-form-item>
-				<el-form-item label="页面id">
-                    <el-input-number v-model="editForm.pageId" :min="0"></el-input-number>
-                </el-form-item>
                 <el-form-item label="备注" prop="remark">
                     <el-input v-model="editForm.remark" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="介绍" prop="intro">
                     <el-input v-model="editForm.intro" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="排序">
+                    <el-input-number v-model="editForm.orderValue" :min="0"></el-input-number>
+                </el-form-item>
+                <el-form-item label="关键字" prop="keyword">
+                    <el-input v-model="editForm.keyword" :disabled="true" auto-complete="off"></el-input>
+                </el-form-item>
+				<el-form-item label="等级">
+                    <el-input-number v-model="editForm.level" :disabled="true" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="父节点Id">
+                    <el-input-number v-model="editForm.parentId" :disabled="true" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="页面id">
+                    <el-input-number v-model="editForm.pageId" :disabled="true" :min="0"></el-input-number>
                 </el-form-item>
 				<el-form-item label="创建时间">
                     <el-date-picker type="datetime" 
@@ -80,20 +90,6 @@
                                     v-model="editForm.updateTime">
 					</el-date-picker>
                 </el-form-item>
-				<el-form-item label="排序">
-                    <el-input-number v-model="editForm.orderValue" :min="0"></el-input-number>
-                </el-form-item>
-                <!--TODO:待修改-->
-				<!--<el-form-item label="状态">
-                    <el-select v-model="editForm.status" clearable placeholder="请选择">
-                        <el-option
-                                v-for="item in adsSpaceStatus"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>-->
             </el-form>
         </el-col>
     </el-row>
@@ -125,6 +121,7 @@
                 }).done(function (res) {
                     if (res.success) {
                         _self.editForm = Object.assign(AdsSpaceFromCommon.defaultModel, res.data);
+                        pageParam.parentId = res.data.parentId;
                     } else {
                         _self.$message.error(res.msg);//提示错误
                     }

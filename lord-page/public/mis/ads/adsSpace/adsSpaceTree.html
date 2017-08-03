@@ -7,7 +7,7 @@
 <!-- UI界面 start -->
 <div id="adsSpaceView">
     <el-row>
-        <h3><i class="el-icon-share"></i> 广告位管理</h3>
+        <h3><i class="el-icon-share"></i> <a href="#/adsPage">页面管理</a> / {{adsPage.name}}的广告位管理</h3>
     </el-row>
     <!--列表顶部搜索和工具条-->
     <el-row>
@@ -50,6 +50,7 @@
                 name: '',
                 state: ''
             },
+            adsPage:{},
             searchState: false,
             //多选值
             multipleSelection: [],
@@ -78,6 +79,16 @@
         //数据初始化
         created: function () {
             var _self = this;
+            $.ajax({
+                url: '/api/admin/ads/adsPage/' + pageParam.pageId + ".do",
+                dataType: "json"
+            }).done(function (res) {
+                if (res.success) {
+                    _self.adsPage = res.data;
+                } else {
+                    _self.$message.error(res.msg);//提示错误
+                }
+            });
             _self.loadingData();
         },
         methods: {
@@ -104,6 +115,7 @@
             dialogAddClick: function () {
                 var _self = this;
                 _self.dialogFormVisible = true;
+                pageParam.parentId = '';
                 _self.dialogFormUrl = "/mis/ads/adsSpace/adsSpaceAdd.html";
             },
             //表格弹窗编辑事件
@@ -196,7 +208,6 @@
             //树的添加事件
             treeAppend:function(store, data) {
                 var _self = this;
-                console.info("点击了节点" + data.id + "的添加按钮");
                 pageParam.parentId = data.id;//父节点Id
                 _self.dialogFormVisible = true;
                 _self.dialogFormUrl = "/mis/ads/adsSpace/adsSpaceAdd.html";
@@ -204,7 +215,7 @@
             //树的编辑事件
             treeEdit: function (store, data) {
                 var _self = this;
-                pageParam = Object.assign({}, {id: data.id});//设置页面参数
+                pageParam.id = data.id;//设置页面参数
                 _self.dialogFormVisible = true;
                 _self.dialogFormUrl = "/mis/ads/adsSpace/adsSpaceEdit.html";
             },

@@ -3,6 +3,7 @@ package com.lord.biz.dao.ads.specs;
 import com.lord.biz.utils.BaseSpecification;
 import com.lord.common.model.ads.AdsSpace;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
@@ -43,4 +44,24 @@ public class AdsSpaceSpecs extends BaseSpecification {
         };
     }
 
+    public static <T> Specification<T> queryBy(final Long pageId, final Long parentId, final String rowName, final Object rowValue, final Class<T> t) {
+        return new Specification<T>() {
+            public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query,
+                    CriteriaBuilder builder) {
+                Path row = root.get(rowName);
+                Predicate predicate = builder.equal(row, rowValue);
+                if (pageId == null) {
+                    predicate = builder.and(predicate, builder.isNull(root.get("pageId")));
+                } else {
+                    predicate = builder.and(predicate, builder.equal(root.get("pageId"), pageId));
+                }
+                if (parentId == null) {
+                    predicate = builder.and(predicate, builder.isNull(root.get("parentId")));
+                } else {
+                    predicate = builder.and(predicate, builder.equal(root.get("parentId"), parentId));
+                }
+                return predicate;
+            }
+        };
+    }
 }

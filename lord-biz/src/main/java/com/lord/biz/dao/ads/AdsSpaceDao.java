@@ -31,5 +31,11 @@ public interface AdsSpaceDao extends JpaRepository<AdsSpace, Long>, JpaSpecifica
     @Query("update AdsSpace u set u.orderValue = ?2 where u.id = ?1")
     void updateOrderValue(Long id, Long orderValue);
 
-	//在此添加你的自定义方法...
+    @Query("select u from AdsSpace u where u.parentId in ?1")
+    List<AdsSpace> findParentByIds(Long[] ids);
+
+    @Query("select count(1) from AdsSpace u where u.pageId in ?1")
+    long countByAdsPageIds(Long[] ids);
+
+    //在此添加你的自定义方法...
 }
