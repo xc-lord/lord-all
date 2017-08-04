@@ -3,34 +3,30 @@ package com.lord.common.service.ads;
 import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
-import com.lord.common.dto.cat.TreeNode;
-import com.lord.common.model.ads.AdsSpace;
-import com.lord.common.service.cat.CategorySimpleService;
-
-import java.util.List;
+import com.lord.common.model.ads.AdsElement;
 
 /**
- * 广告位ads_space的Service
+ * 广告位的元素ads_element的Service
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2017年08月03日 11:12:10
+ * @Date 2017年08月03日 16:18:22
  */
-public interface AdsSpaceService extends CategorySimpleService {
+public interface AdsElementService {
 
     /**
      * 根据主键Id查询
      * @param id    主键Id
      * @return  数据库对象
      */
-    AdsSpace getAdsSpace(Long id);
+    AdsElement getAdsElement(Long id);
 
     /**
      * 新增或者更新
      * @param pageObj   页面传参
      * @return  数据库对象
      */
-    AdsSpace saveOrUpdate(AdsSpace pageObj);
+    AdsElement saveOrUpdate(AdsElement pageObj);
 
     /**
      * 分页查询
@@ -39,7 +35,7 @@ public interface AdsSpaceService extends CategorySimpleService {
      * @param pageSize  分页大小
      * @return  分页结果
      */
-    Pager<AdsSpace> pageAdsSpace(AdsSpace param, int page, int pageSize);
+    Pager<AdsElement> pageAdsElement(AdsElement param, int page, int pageSize);
 
     /**
      * 分页查询
@@ -47,7 +43,7 @@ public interface AdsSpaceService extends CategorySimpleService {
      * @param pagerParam    分页参数
      * @return  分页结果
      */
-    Pager<AdsSpace> pageAdsSpace(AdsSpace param, PagerParam pagerParam);
+    Pager<AdsElement> pageAdsElement(AdsElement param, PagerParam pagerParam);
 
     /**
      * 分页查询
@@ -56,13 +52,13 @@ public interface AdsSpaceService extends CategorySimpleService {
      * @param sorts         排序字段
      * @return  分页结果
      */
-    Pager<AdsSpace> pageAdsSpace(AdsSpace param, PagerParam pagerParam, PagerSort... sorts);
+    Pager<AdsElement> pageAdsElement(AdsElement param, PagerParam pagerParam, PagerSort... sorts);
 
     /**
      * 物理删除
      * @param ids    主键ID
      */
-    void deleteAdsSpace(Long... ids);
+    void deleteAdsElement(Long... ids);
 
 
     /**
@@ -75,18 +71,9 @@ public interface AdsSpaceService extends CategorySimpleService {
     /**
      * 是否存在相同的记录
      * @param id        主键Id
-     * @param pageId
-     * @param parentId
      * @param rowName   属性名
-     * @param rowValue  属性值   @return
-     * */
-    boolean isExist(Long id, Long pageId, Long parentId, String rowName, String rowValue);
-
-    /**
-     * 根据页面查找，页面的所有广告位树形结构
-     * @param pageId    页面Id
-     * @return 树
+     * @param rowValue  属性值
+     * @return
      */
-    List<TreeNode> getTreeByPageId(Long pageId);
-
+    boolean isExist(Long id, String rowName, String rowValue);
 }

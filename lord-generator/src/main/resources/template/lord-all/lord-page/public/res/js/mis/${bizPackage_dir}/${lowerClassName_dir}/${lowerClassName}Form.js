@@ -20,27 +20,29 @@ var ${className}FromCommon = {
     </#if>
     </#list>
     },
-    data: {
-		editLoading:false,
-        //表单验证规则
-        editFormRules: {
-            name: [
-                {required: true, message: '名称不能为空', trigger: 'blur'},
-                {
-                    validator: function(rule, value, callback){
-                        return commonUtils.formRowIsExist('/api/admin/${bizPackage}/${classNameLower}/isExist.do',"name",rule, value, callback);
-                    },
-                    trigger: 'blur'
-                }
-            ],
-            phone: [
-                {required: true, message: '手机号不能为空', trigger: 'blur'}
-            ],
-        },
-        //编辑界面数据
-        editForm: {},
-        //状态
-        ${classNameLower}Status: []
+    data: function(){
+        return {
+           editLoading:false,
+           //表单验证规则
+           editFormRules: {
+               name: [
+                   {required: true, message: '名称不能为空', trigger: 'blur'},
+                   {
+                       validator: function(rule, value, callback){
+                           return commonUtils.formRowIsExist('/api/admin/${bizPackage}/${classNameLower}/isExist.do',"name",rule, value, callback);
+                       },
+                       trigger: 'blur'
+                   }
+               ],
+               phone: [
+                   {required: true, message: '手机号不能为空', trigger: 'blur'}
+               ],
+           },
+           //编辑界面数据
+           editForm: {},
+           //状态
+           ${classNameLower}Status: []
+        };
     },
     //加载下拉框的数据
     loadSelect: function (_self) {
@@ -84,7 +86,7 @@ var ${className}FromCommon = {
         });
     },
     //取消事件
-    cancelAction: function () {
+    cancelAction: function (_self) {
         window.location.href = "#/${classNameLower}";//跳转到列表页面
         this.closeDialogForm();//关闭弹窗
     },

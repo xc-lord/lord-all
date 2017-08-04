@@ -134,6 +134,18 @@ var routes = {
         pageParam = Object.assign({}, {id: id});//设置页面参数
         $("#showView").load("/mis/ads/adsSpace/adsSpaceEdit.html");
     },
+    //广告位的元素管理
+    '/adsElement/list/:spaceId': function (spaceId) {
+        pageParam = Object.assign({}, {spaceId: spaceId});//设置页面参数
+        $("#showView").load("/mis/ads/adsElement/adsElementList.html");
+    },
+    '/adsElement/add': function () {
+        $("#showView").load("/mis/ads/adsElement/adsElementAdd.html");
+    },
+    '/adsElement/edit/:id': function (id) {
+        pageParam = Object.assign({}, {id: id});//设置页面参数
+        $("#showView").load("/mis/ads/adsElement/adsElementEdit.html");
+    },
 };
 var router = Router(routes);
 router.init();

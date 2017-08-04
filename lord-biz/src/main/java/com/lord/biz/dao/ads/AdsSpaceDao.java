@@ -26,7 +26,6 @@ public interface AdsSpaceDao extends JpaRepository<AdsSpace, Long>, JpaSpecifica
     @Query("select u from AdsSpace u where u.id in ?1")
     List<AdsSpace> findByIds(Long... ids);
 
-
     @Modifying
     @Query("update AdsSpace u set u.orderValue = ?2 where u.id = ?1")
     void updateOrderValue(Long id, Long orderValue);
@@ -36,6 +35,9 @@ public interface AdsSpaceDao extends JpaRepository<AdsSpace, Long>, JpaSpecifica
 
     @Query("select count(1) from AdsSpace u where u.pageId in ?1")
     long countByAdsPageIds(Long[] ids);
+
+    @Query("select u from AdsSpace u where u.pageId = ?1 order by u.level, u.orderValue")
+    List<AdsSpace> findAllByPageId(Long pageId);
 
     //在此添加你的自定义方法...
 }

@@ -122,6 +122,8 @@
                     if (res.success) {
                         _self.editForm = Object.assign(AdsSpaceFromCommon.defaultModel, res.data);
                         pageParam.parentId = res.data.parentId;
+                        _self.parentId = res.data.parentId;
+                        _self.pageId = res.data.pageId;
                     } else {
                         _self.$message.error(res.msg);//提示错误
                     }
@@ -145,7 +147,7 @@
                 },
                 //取消事件
                 editFormCancel: function () {
-                    AdsSpaceFromCommon.cancelAction();
+                    AdsSpaceFromCommon.cancelAction(this);
                 },
                     //上传图片成功的回调事件
                 handleUploadSpaceImgSuccess:function(res, file) {

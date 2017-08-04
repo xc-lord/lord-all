@@ -1,9 +1,12 @@
 package com.lord.web.controller.ads;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.QueryParams;
 import com.lord.common.dto.cat.TreeNode;
+import com.lord.common.model.ads.AdsPage;
 import com.lord.common.model.ads.AdsSpace;
+import com.lord.common.service.ads.AdsPageService;
 import com.lord.common.service.ads.AdsSpaceService;
 import com.lord.utils.Preconditions;
 import com.lord.utils.dto.Result;
@@ -30,10 +33,14 @@ public class AdsSpaceController {
     @Autowired
     private AdsSpaceService adsSpaceService;
 
+    @Autowired
+    private AdsPageService adsPageService;
+
     @ApiOperation(value = "查询广告位的树形列表")
     @RequestMapping(value = "/api/admin/ads/adsSpace/getTree", method = {RequestMethod.GET, RequestMethod.POST})
-    public Result getTree(@ModelAttribute QueryParams queryParams) {
-        List<TreeNode> treeNodes = adsSpaceService.getTreeNodes();
+    public Result getTree(Long pageId) {
+        Preconditions.checkArgument(pageId == null, "pageId不能为空");
+        List<TreeNode> treeNodes = adsSpaceService.getTreeByPageId(pageId);
         return Result.success("查询成功", treeNodes);
     }
 
@@ -74,6 +81,20 @@ public class AdsSpaceController {
         Preconditions.checkNotNull(id, "id不能为空");
         AdsSpace dbObj = adsSpaceService.getAdsSpace(id);
         return Result.success("获取成功", dbObj);
+    }
+
+    @ApiOperation(value="获取广告位", notes="根据主键id，获取广告位")
+    @ApiImplicitParam(name = "spaceId", value = "主键Id", required = true, dataType = "Long", paramType = "query")
+    @RequestMapping(value = "/api/admin/ads/adsSpace/getInfo", method = RequestMethod.GET)
+    public Result getInfo(Long spaceId) {
+        Preconditions.checkNotNull(spaceId, "spaceId不能为空");
+        AdsSpace adsSpace = adsSpaceService.getAdsSpace(spaceId);
+        Preconditions.checkNotNull(adsSpace, "广告位不存在");
+        AdsPage adsPage = adsPageService.getAdsPage(adsSpace.getPageId());
+        JSONObject json = new JSONObject();
+        json.put("adsPage", adsPage);
+        json.put("adsSpace", adsSpace);
+        return Result.success("获取成功", json);
     }
 
     @ApiOperation(value="更新广告位的排序值", notes="根据主键id，更新广告位的排序值")

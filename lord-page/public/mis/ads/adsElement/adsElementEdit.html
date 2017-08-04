@@ -1,0 +1,186 @@
+<!-- 
+	Desc: 	广告位的元素的编辑界面
+	Author: xiaocheng
+	Date: 	2017年08月03日 16:18:22
+-->
+
+<!-- UI界面 start -->
+<div id="adsElementEditView">
+    <el-row>
+        <h3><i class="el-icon-edit"></i> <a href="#/adsElement">广告位的元素管理</a> / 编辑</h3>
+    </el-row>
+    <!--编辑界面-->
+    <el-row type="flex" justify="center">
+        <el-col :span="22">
+            <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
+                <el-form-item label="ID" prop="id">
+                    <el-input v-model="editForm.id" auto-complete="off" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="元素类型" prop="targetType">
+                    <el-select v-model="editForm.targetType" :disabled="true" placeholder="请选择">
+                        <el-option
+                                v-for="item in ads_AdsElementType"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="元素id" prop="targetId">
+                    <el-input v-model="editForm.targetId" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="名称" prop="name">
+                    <el-input v-model="editForm.name" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="标题" prop="title">
+                    <el-input v-model="editForm.title" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="子标题" prop="subTitle">
+                    <el-input v-model="editForm.subTitle" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="图片地址" prop="adsImg">
+                    <el-upload
+                            class="avatar-uploader"
+                            action="/api/uploadFile.do"
+                            :show-file-list="false"
+                            :on-success="handleUploadAdsImgSuccess"
+                            :before-upload="beforeAvatarUpload">
+                        <img v-if="editForm.adsImg" :src="editForm.adsImg" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
+                <el-form-item label="跳转的链接" prop="adsUrl">
+                    <el-input v-model="editForm.adsUrl" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="标签" prop="tags">
+                    <el-input v-model="editForm.tags" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="扩展属性" prop="extension">
+                    <el-input v-model="editForm.extension" auto-complete="off"></el-input>
+                </el-form-item>
+				<el-form-item label="开始时间">
+                    <el-date-picker type="datetime" 
+									placeholder="选择日期和时间"
+                                    v-model="editForm.startTime">
+					</el-date-picker>
+                </el-form-item>
+				<el-form-item label="结束时间">
+                    <el-date-picker type="datetime" 
+									placeholder="选择日期和时间"
+                                    v-model="editForm.endTime">
+					</el-date-picker>
+                </el-form-item>
+				<el-form-item label="排序值">
+                    <el-input-number v-model="editForm.orderValue" :min="0"></el-input-number>
+                </el-form-item>
+                <el-form-item label="关键字" prop="keyword">
+                    <el-input v-model="editForm.keyword" :disabled="true" auto-complete="off"></el-input>
+                </el-form-item>
+				<el-form-item label="页面id">
+                    <el-input-number v-model="editForm.pageId" :disabled="true" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="广告位Id">
+                    <el-input-number v-model="editForm.spaceId" :disabled="true" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="大文本">
+                    <el-input type="textarea" v-model="editForm.tex"></el-input>
+                </el-form-item>
+				<el-form-item label="是否高亮">
+                    <el-radio-group v-model="editForm.fouce">
+                        <el-radio class="radio" :label="true">是</el-radio>
+                        <el-radio class="radio" :label="false">否</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+				<el-form-item label="是否新窗口打开">
+                    <el-radio-group v-model="editForm.target">
+                        <el-radio class="radio" :label="true">是</el-radio>
+                        <el-radio class="radio" :label="false">否</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+				<el-form-item label="创建时间">
+                    <el-date-picker type="datetime" 
+									placeholder="选择日期和时间"
+									:disabled="true"
+                                    v-model="editForm.createTime">
+					</el-date-picker>
+                </el-form-item>
+				<el-form-item label="最后修改时间">
+                    <el-date-picker type="datetime" 
+									placeholder="选择日期和时间"
+									:disabled="true"
+                                    v-model="editForm.updateTime">
+					</el-date-picker>
+                </el-form-item>
+            </el-form>
+        </el-col>
+    </el-row>
+
+    <el-row type="flex" justify="center">
+        <el-col :span="6">
+            <el-button @click="editFormCancel">取消</el-button>
+            <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading">提交</el-button>
+        </el-col>
+    </el-row>
+
+</div>
+<!-- UI界面 end -->
+
+<script type="text/javascript">
+    $.getScript('/res/js/mis/ads/adsElement/adsElementForm.js', function () {
+        var adsElementEditView = new Vue({
+            el: '#adsElementEditView',
+            data: AdsElementFromCommon.data,
+            //数据初始化
+            created: function () {
+                var _self = this;
+                //获取下拉框选项
+                AdsElementFromCommon.loadSelect(_self);
+                //根据Id,获取编辑的对象
+                $.ajax({
+                    url: '/api/admin/ads/adsElement/' + pageParam.id + ".do",
+                    dataType: "json"
+                }).done(function (res) {
+                    if (res.success) {
+                        _self.editForm = Object.assign(AdsElementFromCommon.defaultModel, res.data);
+                    } else {
+                        _self.$message.error(res.msg);//提示错误
+                    }
+                });
+                _self.adsPage = adsElementView.adsPage;
+                _self.adsSpace = adsElementView.adsSpace;
+            },
+            methods: {
+                //是否具有权限
+                hasRight: function(rightCode) {
+                    return commonUtils.hasRight(rightCode);
+                },
+                //保存事件
+                editSubmit: function (formName) {
+                    var _self = this;
+                    _self.$refs[formName].validate(function(valid){
+                        if (valid) {
+                            AdsElementFromCommon.saveAction(_self);
+                        } else{
+                            _self.$message.error("请正确填写表单！");
+                        }
+                    });
+                },
+                //取消事件
+                editFormCancel: function () {
+                    var _self = this;
+                    AdsElementFromCommon.cancelAction(_self.adsSpace.id);
+                },
+                    //上传图片成功的回调事件
+                handleUploadAdsImgSuccess:function(res, file) {
+                    var _self = this;
+                    _self.editForm.adsImg = commonUtils.uploadImageSuccess(res, file, _self);
+                },
+                //上传图片前的验证事件
+                beforeAvatarUpload:function(file) {
+                    var _self = this;
+                    commonUtils.uploadImageCheck(file, _self);
+                }
+            }
+        });
+    });
+</script>

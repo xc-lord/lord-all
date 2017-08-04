@@ -9,6 +9,7 @@ import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.cat.CategorySimple;
+import com.lord.common.dto.cat.TreeNode;
 import com.lord.common.model.ads.AdsPage;
 import com.lord.common.model.ads.AdsSpace;
 import com.lord.common.service.ads.AdsSpaceService;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 广告位ads_space的Service实现
@@ -189,5 +191,24 @@ public class AdsSpaceServiceImpl extends CategorySimpleServiceImpl implements Ad
         List<CategorySimple> categories = new ArrayList<>();
         categories.addAll(categoryList);
         return categories;
+    }
+
+    public List<TreeNode> getTreeByPageId(Long pageId) {
+        List<TreeNode> list = new ArrayList<>();
+        List<AdsSpace> adsSpaces = adsSpaceDao.findAllByPageId(pageId);
+        List<CategorySimple> categoryList = new ArrayList<>();
+        categoryList.addAll(adsSpaces);
+        if (categoryList.size() < 1) {
+            return list;
+        }
+        long rootParentId = 0L;
+        Map<Long, List<CategorySimple>> parentMap = getParentMap(rootParentId, categoryList);
+
+        List<CategorySimple> rootList = parentMap.get(rootParentId);
+        for (CategorySimple sub : rootList) {
+            TreeNode treeNode = setTreeNode(sub, parentMap);
+            list.add(treeNode);
+        }
+        return list;
     }
 }

@@ -38,4 +38,8 @@ public interface CategorySimple
 
     /** 排序值 */
     void setOrderValue(Long orderValue);
+
+    String getAdsType();
+
+    void setAdsType(String adsType);
 }

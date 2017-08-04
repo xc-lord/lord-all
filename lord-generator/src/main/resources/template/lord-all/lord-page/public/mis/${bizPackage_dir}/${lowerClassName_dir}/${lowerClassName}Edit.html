@@ -130,7 +130,7 @@
                 },
                 //取消事件
                 editFormCancel: function () {
-                    ${className}FromCommon.cancelAction();
+                    ${className}FromCommon.cancelAction(this);
                 },
                 <#list table.columns as column>
                 <#if column.sqlName?contains("img") || column.sqlName?contains("icon")>

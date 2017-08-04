@@ -31,6 +31,9 @@ public class QueryParams implements Serializable {
     /** 当前页数 */
     private Integer page = 1;
 
+    /** 扩展Id */
+    private Long expandId;
+
     public String getId() {
         return id;
     }
@@ -78,5 +81,15 @@ public class QueryParams implements Serializable {
 
     public void setPage(Integer page) {
         this.page = page;
+    }
+
+    public Long getExpandId()
+    {
+        return expandId;
+    }
+
+    public void setExpandId(Long expandId)
+    {
+        this.expandId = expandId;
     }
 }

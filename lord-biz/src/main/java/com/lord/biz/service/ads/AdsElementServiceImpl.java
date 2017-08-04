@@ -1,0 +1,155 @@
+package com.lord.biz.service.ads;
+
+import com.lord.biz.dao.ads.AdsElementDao;
+import com.lord.biz.dao.ads.AdsSpaceDao;
+import com.lord.biz.dao.ads.specs.AdsElementSpecs;
+import com.lord.biz.utils.ServiceUtils;
+import com.lord.common.dto.Pager;
+import com.lord.common.dto.PagerParam;
+import com.lord.common.dto.PagerSort;
+import com.lord.common.model.ads.AdsElement;
+import com.lord.common.model.ads.AdsSpace;
+import com.lord.common.service.ads.AdsElementService;
+import com.lord.utils.Preconditions;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * 广告位的元素ads_element的Service实现
+ *
+ * @author xiaocheng
+ * @version 1.0
+ * @Date 2017年08月03日 16:18:22
+ */
+@Component
+public class AdsElementServiceImpl implements AdsElementService {
+
+    protected Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    private AdsElementDao adsElementDao;
+
+    @Autowired
+    private AdsSpaceDao adsSpaceDao;
+
+    @Override
+    public AdsElement getAdsElement(Long id) {
+        return adsElementDao.findOne(id);
+    }
+
+    @Override
+    @Transactional
+    public AdsElement saveOrUpdate(AdsElement pageObj) {
+        Preconditions.checkNotNull(pageObj, "保存对象不能为空");
+        Preconditions.checkArgument(pageObj.getSpaceId() == null, "广告位Id不能为空");
+        Preconditions.checkArgument(StringUtils.isEmpty(pageObj.getTargetType()), "类型不能为空");
+        Preconditions.checkArgument(StringUtils.isEmpty(pageObj.getName()), "名称不能为空");
+
+        AdsSpace adsSpace = adsSpaceDao.findOne(pageObj.getSpaceId());
+        Preconditions.checkArgument(adsSpace == null, "广告位不存在");
+        pageObj.setKeyword(adsSpace.getKeyword());
+        pageObj.setPageId(adsSpace.getPageId());
+
+        if(logger.isDebugEnabled())
+            logger.debug("保存" + pageObj);
+
+        //新增记录
+        if (pageObj.getId() == null) {
+            //设置默认属性
+            pageObj.setCreateTime(new Date());
+            pageObj.setUpdateTime(new Date());
+
+            adsElementDao.save(pageObj);//新增
+            return pageObj;
+        }
+
+        //更新记录
+        AdsElement dbObj = adsElementDao.findOne(pageObj.getId());
+        Preconditions.checkNotNull(dbObj, "更新的记录不存在");
+        //不能修改的字段
+        pageObj.setCreateTime(dbObj.getCreateTime());
+        pageObj.setUpdateTime(new Date());//更新时间
+
+        adsElementDao.save(pageObj);//更新
+
+        return pageObj;
+    }
+
+    @Override
+    public Pager<AdsElement> pageAdsElement(AdsElement param, int page, int pageSize) {
+        PagerParam pagerParam = new PagerParam(page, pageSize);
+        return pageAdsElement(param, pagerParam);
+
+    }
+
+    @Override
+    public Pager<AdsElement> pageAdsElement(AdsElement param, PagerParam pagerParam) {
+        PageRequest pageRequest = new PageRequest(pagerParam.getPage() - 1, pagerParam.getPageSize());
+        Page<AdsElement> pageResult = adsElementDao.findAll(AdsElementSpecs.queryByAdsElement(param), pageRequest);
+        return ServiceUtils.toPager(pageResult, pagerParam);
+    }
+
+    @Override
+    public Pager<AdsElement> pageAdsElement(AdsElement param, PagerParam pagerParam, PagerSort... sorts) {
+        Sort sort = ServiceUtils.parseSort(sorts);
+        Page<AdsElement> pageResult = null;
+        //ID存在时，按ID进行查询
+        if (param != null && param.getId() != null) {
+            AdsElement obj = adsElementDao.findOne(param.getId());
+            return ServiceUtils.toPager(obj, pagerParam);
+        }
+        if(sort != null) {
+            pageResult = adsElementDao.findAll(new PageRequest(pagerParam.getPage() - 1, pagerParam.getPageSize(), sort));
+        } else {
+            pageResult = adsElementDao.findAll(new PageRequest(pagerParam.getPage() - 1, pagerParam.getPageSize()));
+        }
+        return ServiceUtils.toPager(pageResult, pagerParam);
+    }
+
+    @Override
+    @Transactional
+    public void deleteAdsElement(Long... ids) {
+        adsElementDao.deleteAdsElement(ids);
+    }
+
+
+    @Override
+    @Transactional
+    public void updateOrderValue(Long id, Long orderValue) {
+        AdsElement dbObj = adsElementDao.findOne(id);
+        Preconditions.checkNotNull(dbObj, "更新排序的记录不存在");
+        if (orderValue.equals(dbObj.getOrderValue())) {
+            return;
+        }
+        adsElementDao.updateOrderValue(id, orderValue);
+    }
+
+    @Override
+    public boolean isExist(Long id, String rowName, String rowValue) {
+        List<String> rowList = new ArrayList<>();
+        rowList.add("name");
+        rowList.add("username");
+        Preconditions.checkArgument(!rowList.contains(rowName), "此字段不需要判断是否存在");
+        List<AdsElement> list = adsElementDao.findAll(AdsElementSpecs.queryBy(rowName, rowValue, AdsElement.class));
+        if (list == null || list.size() < 1) {
+            return false;
+        }
+        AdsElement dbObj = list.get(0);
+        //编辑时，此字段跟数据库记录一致，不认为重复
+        if (dbObj.getId().equals(id)) {
+            return false;
+        }
+        return true;
+    }
+}

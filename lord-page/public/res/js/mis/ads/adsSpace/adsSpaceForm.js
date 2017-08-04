@@ -55,6 +55,7 @@ var AdsSpaceFromCommon = {
         //状态
         ads_AdsSpaceType: [],
         parentId:"",
+        pageId:"",
     },
     //加载下拉框的数据
     loadSelect: function (_self) {
@@ -86,7 +87,7 @@ var AdsSpaceFromCommon = {
         }).done(function (res, status, xhr) {
             if (res.success) {
                 _self.$message.success(res.msg);//保存成功
-                window.location.href = "#/adsSpace";//跳转到列表页面
+                window.location.href = "#/adsSpace/tree/" + _self.pageId;//跳转到列表页面
                 formSelf.closeDialogForm();//关闭弹窗
             } else {
                 _self.$message.error(res.msg);//提示错误
@@ -95,8 +96,8 @@ var AdsSpaceFromCommon = {
         });
     },
     //取消事件
-    cancelAction: function () {
-        window.location.href = "#/adsSpace";//跳转到列表页面
+    cancelAction: function (_self) {
+        window.location.href = "#/adsSpace/tree/" + _self.pageId;//跳转到列表页面
         this.closeDialogForm();//关闭弹窗
     },
     //关闭父组件的弹窗

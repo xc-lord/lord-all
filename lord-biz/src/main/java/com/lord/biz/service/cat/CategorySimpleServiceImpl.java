@@ -158,6 +158,7 @@ public abstract class CategorySimpleServiceImpl implements CategorySimpleService
         TreeNode treeNode = new TreeNode();
         treeNode.setId(sub.getId());
         treeNode.setName(sub.getName());
+        treeNode.setLetter(sub.getAdsType());
         return treeNode;
     }
 

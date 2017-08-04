@@ -102,6 +102,7 @@
                 //获取树的数据
                 $.ajax({
                     url: '/api/admin/ads/adsSpace/getTree.do',
+                    data:{pageId:pageParam.pageId},
                     dataType: "json"
                 }).done(function (res) {
                     if (res.success) {
@@ -205,6 +206,10 @@
                 }
                 return moment(date).format("YYYY-MM-DD HH:mm:ss");
             },
+            //树的广告位元素管理
+            treeAdsElement:function(store, data) {
+                window.location.href = "#/adsElement/list/" + data.id;
+            },
             //树的添加事件
             treeAppend:function(store, data) {
                 var _self = this;
@@ -227,33 +232,43 @@
             //树的操作按钮渲染
             renderContent:function(createElement, { node, data, store }) {
                 var _self = this;
+                var btnArr = [];
+                if(data.letter != "Model") {
+                    btnArr.push(createElement('el-button',{attrs:{
+                        size:"mini"
+                    },on:{
+                        click:function() {
+                            _self.treeAdsElement(store, data);//元素管理
+                        }
+                    }},"元素管理"));
+                }
+                btnArr.push(createElement('el-button',{attrs:{
+                    size:"mini"
+                },on:{
+                    click:function() {
+                        _self.treeAppend(store, data);//添加事件
+                    }
+                }},"添加"));
+                btnArr.push(createElement('el-button',{attrs:{
+                    size:"mini"
+                },on:{
+                    click:function() {
+                        _self.treeEdit(store, data);//添加事件
+                    }
+                }},"编辑"));
+                btnArr.push(createElement('el-button',{attrs:{
+                    size:"mini"
+                },on:{
+                    click:function() {
+                        _self.treeRemove(store, data);//删除事件
+                    }
+                }},"删除"));
+
                 return createElement('span', [
                     createElement('span', node.label),
                     createElement('span', {attrs:{
                         style:"float: right; margin-right: 20px"
-                    }},[
-                        createElement('el-button',{attrs:{
-                            size:"mini"
-                        },on:{
-                            click:function() {
-                                _self.treeAppend(store, data);//添加事件
-                            }
-                        }},"添加"),
-                        createElement('el-button',{attrs:{
-                            size:"mini"
-                        },on:{
-                            click:function() {
-                                _self.treeEdit(store, data);//添加事件
-                            }
-                        }},"编辑"),
-                        createElement('el-button',{attrs:{
-                            size:"mini"
-                        },on:{
-                            click:function() {
-                                _self.treeRemove(store, data);//删除事件
-                            }
-                        }},"删除"),
-                    ]),
+                    }},btnArr),
                 ]);
             }
         }

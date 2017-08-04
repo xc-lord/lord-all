@@ -92,6 +92,8 @@
                 var _self = this;
                 //获取下拉框选项
                 AdsSpaceFromCommon.loadSelect(_self);
+                _self.parentId = pageParam.parentId;
+                _self.pageId = pageParam.pageId;
                 _self.editForm = Object.assign({}, AdsSpaceFromCommon.defaultModel);
                 _self.editForm.parentId = pageParam.parentId;//设置父节点Id
                 _self.editForm.pageId = pageParam.pageId;//设置页面Id
@@ -114,7 +116,7 @@
                 },
                 //取消事件
                 editFormCancel: function () {
-                    AdsSpaceFromCommon.cancelAction();
+                    AdsSpaceFromCommon.cancelAction(this);
                 },
                 //上传图片成功的回调事件
                 handleUploadSpaceImgSuccess:function(res, file) {
