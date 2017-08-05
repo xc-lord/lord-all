@@ -167,7 +167,10 @@ public class AdsPageServiceImpl implements AdsPageService {
     public AdsPage getAndCreate(String page_code, String page_name)
     {
         AdsPage adsPage = adsPageDao.findByPageCode(page_code);
-        if(adsPage != null && adsPage.getId() != null) return adsPage;
+        if(adsPage != null && adsPage.getId() != null) {
+            logger.info("页面" + adsPage.getId() + "的数据已经存在不需要再导入");
+            return adsPage;
+        }
         adsPage = new AdsPage();
         adsPage.setName(page_name);
         adsPage.setPageCode(page_code);

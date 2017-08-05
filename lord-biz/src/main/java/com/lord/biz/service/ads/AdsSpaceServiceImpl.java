@@ -224,7 +224,10 @@ public class AdsSpaceServiceImpl extends CategorySimpleServiceImpl implements Ad
         else
             adsSpace = adsSpaceDao.findByParentIdAndSubKeyword(pageObj.getParentId(), pageObj.getSubKeyword());
 
-        if(adsSpace != null) return adsSpace;
+        if(adsSpace != null) {
+            logger.info("广告位" + adsSpace.getKeyword() + "的数据已经存在不需要再导入");
+            return adsSpace;
+        }
         pageObj.setCreateTime(new Date());
         pageObj.setUpdateTime(new Date());
         return adsSpaceDao.save(pageObj);

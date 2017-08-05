@@ -168,7 +168,10 @@ public class AdsElementServiceImpl implements AdsElementService {
         Date now = new Date();
         List<AdsElement> adsElementList = adsElementDao.listEffectElement(adsSpace.getId(), now);
         if(CollectionUtils.isNotEmpty(adsElementList))
+        {
+            logger.info("广告位" + adsSpace.getId() + "的元素数据已经存在不需要再导入");
             return;
+        }
         List<AdsElement> adsElements = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, 3);
