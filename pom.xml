@@ -130,6 +130,13 @@
                 <version>2.5.1</version>
             </dependency>
             <!--拼音工具类 end-->
+            <!--XML解析 start-->
+            <dependency>
+                <groupId>dom4j</groupId>
+                <artifactId>dom4j</artifactId>
+                <version>1.6.1</version>
+            </dependency>
+            <!--XML解析 end-->
         </dependencies>
     </dependencyManagement>
 

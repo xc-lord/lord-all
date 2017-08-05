@@ -31,5 +31,7 @@ public interface AdsPageDao extends JpaRepository<AdsPage, Long>, JpaSpecificati
     @Query("update AdsPage u set u.orderValue = ?2 where u.id = ?1")
     void updateOrderValue(Long id, Long orderValue);
 
-	//在此添加你的自定义方法...
+    AdsPage findByPageCode(String page_code);
+
+    //在此添加你的自定义方法...
 }

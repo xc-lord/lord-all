@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,5 +32,10 @@ public interface AdsElementDao extends JpaRepository<AdsElement, Long>, JpaSpeci
     @Query("update AdsElement u set u.orderValue = ?2 where u.id = ?1")
     void updateOrderValue(Long id, Long orderValue);
 
-	//在此添加你的自定义方法...
+    @Query("select u from AdsElement u where u.spaceId = ?1 and u.startTime < ?2 and u.endTime > ?2")
+    List<AdsElement> listEffectElement(Long spaceId, Date now);
+
+    List<AdsElement> findBySpaceId(Long spaceId);
+
+    //在此添加你的自定义方法...
 }

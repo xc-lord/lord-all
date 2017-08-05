@@ -91,6 +91,7 @@ public class AdsSpaceServiceImpl extends CategorySimpleServiceImpl implements Ad
                 AdsPage adsPage = adsPageDao.findOne(pageObj.getPageId());
                 Preconditions.checkArgument(adsPage == null, "页面不存在");
                 pageObj.setKeyword(adsPage.getPageCode() + "/" + pageObj.getSubKeyword());
+                pageObj.setLevel(1);
             }
             adsSpaceDao.save(pageObj);//新增
             return pageObj;
@@ -210,5 +211,22 @@ public class AdsSpaceServiceImpl extends CategorySimpleServiceImpl implements Ad
             list.add(treeNode);
         }
         return list;
+    }
+
+    @Override
+    @Transactional
+    public AdsSpace getAndCreate(AdsSpace pageObj)
+    {
+        if(pageObj == null) return null;
+        AdsSpace adsSpace = null;
+        if(pageObj.getParentId() == null)
+            adsSpace = adsSpaceDao.findByPageIdAndSubKeyword(pageObj.getPageId(), pageObj.getSubKeyword());
+        else
+            adsSpace = adsSpaceDao.findByParentIdAndSubKeyword(pageObj.getParentId(), pageObj.getSubKeyword());
+
+        if(adsSpace != null) return adsSpace;
+        pageObj.setCreateTime(new Date());
+        pageObj.setUpdateTime(new Date());
+        return adsSpaceDao.save(pageObj);
     }
 }

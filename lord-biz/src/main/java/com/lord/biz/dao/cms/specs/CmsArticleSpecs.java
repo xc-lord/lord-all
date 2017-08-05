@@ -40,4 +40,17 @@ public class CmsArticleSpecs extends BaseSpecification {
         };
     }
 
+    public static Specification<CmsArticle> queryAll() {
+        return new Specification<CmsArticle>() {
+            public Predicate toPredicate(Root<CmsArticle> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+                Path id = root.get("id");
+                //存在逻辑删除判断
+                Path removed = root.get("removed");
+                Predicate predicate = builder.equal(removed, false);
+                query.where(predicate);
+                query.orderBy(builder.desc(root.get("orderValue")), builder.desc(root.get("createTime")));
+                return null;
+            }
+        };
+    }
 }

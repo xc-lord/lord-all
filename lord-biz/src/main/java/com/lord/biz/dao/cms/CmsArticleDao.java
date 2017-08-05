@@ -26,13 +26,11 @@ public interface CmsArticleDao extends JpaRepository<CmsArticle, Long>, JpaSpeci
     @Query("select u from CmsArticle u where u.id in ?1")
     List<CmsArticle> findByIds(Long... ids);
 
-
     @Modifying
     @Query("update CmsArticle u set u.orderValue = ?2 where u.id = ?1")
     void updateOrderValue(Long id, Long orderValue);
+
     @Modifying
     @Query("update CmsArticle u set u.removed = true where u.id in ?1")
     void removeCmsArticle(Long... id);
-
-	//在此添加你的自定义方法...
 }

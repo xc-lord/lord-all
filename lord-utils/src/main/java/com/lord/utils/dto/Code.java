@@ -27,14 +27,14 @@ public enum Code {
     ApiInvalidSign(410, "签名错误"),
 
     //常见错误码
-    ErrSystem(500, "服务器内部错误"),
-    ErrFormat(501, "格式错误"),
-    ErrType(502, "类型错误"),
-    ErrOverLength(503, "超过规定长度"),
-    ErrEmail(504, "邮箱格式错误"),
-    ErrPhone(505, "手机号码格式错误"),
-    ErrPageCode(506, "图形验证码错误"),
-    ErrPhoneCode(507, "手机验证码错误"),
+    ErrorSystem(500, "服务器内部错误"),
+    ErrorFormat(501, "格式错误"),
+    ErrorType(502, "类型错误"),
+    ErrorOverLength(503, "超过规定长度"),
+    ErrorEmail(504, "邮箱格式错误"),
+    ErrorPhone(505, "手机号码格式错误"),
+    ErrorPageCode(506, "图形验证码错误"),
+    ErrorPhoneCode(507, "手机验证码错误"),
 
     //业务级别错误码
     SmsOrIPLimited(1101, "号码或ip距离上次发送的消息的时间太短"),

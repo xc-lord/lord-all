@@ -5,6 +5,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -58,6 +59,17 @@ public class CommonUtils {
             }
         }
         return property;
+    }
+
+    /**
+     * 获得classPath下的文件路径
+     * @param filePath 文件路径
+     * @return 文件路径
+     */
+    public static String getClassPathFilePath(String filePath) {
+        URL url = CommonUtils.class.getClassLoader().getResource(filePath);
+        if(url!=null) return url.getPath();
+        return null;
     }
 
     /**

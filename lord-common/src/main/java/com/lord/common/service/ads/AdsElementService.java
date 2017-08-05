@@ -4,6 +4,7 @@ import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.model.ads.AdsElement;
+import com.lord.common.model.ads.AdsSpace;
 
 /**
  * 广告位的元素ads_element的Service
@@ -76,4 +77,10 @@ public interface AdsElementService {
      * @return
      */
     boolean isExist(Long id, String rowName, String rowValue);
+
+    /**
+     * 批量创建广告位元素数据，已存在则不创建
+     * @param adsSpace   广告位
+     */
+    void batchCreateElement(AdsSpace adsSpace);
 }

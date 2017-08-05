@@ -4,6 +4,8 @@ import com.lord.biz.dao.ads.AdsPageDao;
 import com.lord.biz.dao.ads.AdsSpaceDao;
 import com.lord.biz.dao.ads.specs.AdsPageSpecs;
 import com.lord.biz.utils.ServiceUtils;
+import com.lord.common.constant.ads.AdsPageState;
+import com.lord.common.constant.ads.AdsPageType;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
@@ -158,5 +160,20 @@ public class AdsPageServiceImpl implements AdsPageService {
         PageRequest pageRequest = new PageRequest(pagerParam.getPage() - 1, pagerParam.getPageSize());
         Page<AdsPage> pageResult = adsPageDao.findAll(AdsPageSpecs.queryByAdsPage(query), pageRequest);
         return ServiceUtils.toPager(pageResult, pagerParam);
+    }
+
+    @Override
+    @Transactional
+    public AdsPage getAndCreate(String page_code, String page_name)
+    {
+        AdsPage adsPage = adsPageDao.findByPageCode(page_code);
+        if(adsPage != null && adsPage.getId() != null) return adsPage;
+        adsPage = new AdsPage();
+        adsPage.setName(page_name);
+        adsPage.setPageCode(page_code);
+        adsPage.setPageType(AdsPageType.Normal.toString());
+        adsPage.setPageState(AdsPageState.Show.toString());
+        adsPage.setOrderValue(0L);
+        return saveOrUpdate(adsPage);
     }
 }

@@ -4,13 +4,18 @@ import com.lord.biz.dao.ads.AdsElementDao;
 import com.lord.biz.dao.ads.AdsSpaceDao;
 import com.lord.biz.dao.ads.specs.AdsElementSpecs;
 import com.lord.biz.utils.ServiceUtils;
+import com.lord.common.constant.ads.AdsElementType;
+import com.lord.common.constant.ads.AdsSpaceType;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
 import com.lord.common.model.ads.AdsElement;
 import com.lord.common.model.ads.AdsSpace;
 import com.lord.common.service.ads.AdsElementService;
+import com.lord.common.service.cms.CmsArticleService;
+import com.lord.utils.CommonUtils;
 import com.lord.utils.Preconditions;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +26,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 广告位的元素ads_element的Service实现
@@ -37,11 +40,16 @@ public class AdsElementServiceImpl implements AdsElementService {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
+    private static Map<String, List<String>> elementDataMap = new HashMap<>();
+
     @Autowired
     private AdsElementDao adsElementDao;
 
     @Autowired
     private AdsSpaceDao adsSpaceDao;
+
+    @Autowired
+    private CmsArticleService cmsArticleService;
 
     @Override
     public AdsElement getAdsElement(Long id) {
@@ -123,7 +131,6 @@ public class AdsElementServiceImpl implements AdsElementService {
         adsElementDao.deleteAdsElement(ids);
     }
 
-
     @Override
     @Transactional
     public void updateOrderValue(Long id, Long orderValue) {
@@ -151,5 +158,96 @@ public class AdsElementServiceImpl implements AdsElementService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void batchCreateElement(AdsSpace adsSpace)
+    {
+        if(adsSpace == null || AdsSpaceType.Model.toString().equals(adsSpace.getAdsType()) || adsSpace.getAdsNum() == null)
+            return;
+        Date now = new Date();
+        List<AdsElement> adsElementList = adsElementDao.listEffectElement(adsSpace.getId(), now);
+        if(CollectionUtils.isNotEmpty(adsElementList))
+            return;
+        List<AdsElement> adsElements = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, 3);
+        for (int i = 0; i < adsSpace.getAdsNum(); i++)
+        {
+            String name = adsSpace.getName() + "_" + (i+1) + "_";
+            AdsElement adsElement = new AdsElement();
+            adsElement.setSpaceId(adsSpace.getId());
+            adsElement.setKeyword(adsSpace.getKeyword());
+            adsElement.setPageId(adsSpace.getPageId());
+            adsElement.setTargetType(adsSpace.getAdsType());
+            adsElement.setUpdateTime(now);
+            adsElement.setCreateTime(now);
+            adsElement.setStartTime(now);
+            adsElement.setEndTime(calendar.getTime());
+            adsElement.setFouce(false);
+            adsElement.setOrderValue(i + 1L);
+            adsElement.setName(name + "名称");
+            adsElement.setTitle(name + "标题");
+            adsElement.setSubTitle(name + "子标题");
+            putElementInfo(adsElement, adsSpace, name);//设置元素类型对应的数据
+            adsElements.add(adsElement);
+        }
+        adsElementDao.save(adsElements);//批量保存
+    }
+
+    private void putElementInfo(AdsElement adsElement, AdsSpace adsSpace, String name)
+    {
+        String adsType = adsSpace.getAdsType();
+        if (AdsElementType.BigText.toString().equals(adsType))
+        {
+            adsElement.setTex("<a>" + name + "大文本内容</a>");
+        } else if (AdsElementType.TextLink.toString().equals(adsType)) {
+            adsElement.setAdsUrl(randomData(AdsElementType.TextLink.toString()));//链接
+        } else if (AdsElementType.ImageLink.toString().equals(adsType)) {
+            adsElement.setAdsImg(randomData(AdsElementType.ImageLink.toString()));//图片
+            adsElement.setAdsUrl(randomData(AdsElementType.TextLink.toString()));//链接
+        } else {
+            adsElement.setTargetId(randomData(adsType));
+        }
+    }
+
+    private String randomData(String type)
+    {
+        List<String> list = elementDataMap.get(type);
+        if(CollectionUtils.isEmpty(list))
+        {
+            list = new ArrayList<>();
+            if (AdsElementType.TextLink.toString().equals(type)) {
+                //链接
+                list.add("http://blog.csdn.net/x_lord");
+                list.add("http://www.linshimuye.com/");
+                list.add("http://www.baidu.com/");
+                list.add("http://www.jd.com/");
+                list.add("http://www.tmall.com/");
+                list.add("http://www.qq.com/");
+                list.add("http://www.163.com/");
+                list.add("http://www.gome.com.cn/");
+                list.add("http://m.jd.com/");
+                list.add("http://m.tmall.com/");
+                list.add("http://m.qq.com/");
+                list.add("http://m.163.com/");
+                list.add("http://m.gome.com.cn/");
+                list.add("http://m.baidu.com/");
+                list.add("http://m.linshimuye.com/");
+            }
+            else if (AdsElementType.ImageLink.toString().equals(type)) {
+                for (int i = 0; i < 22; i++)
+                {
+                    list.add("/image/2017/08/05/" + CommonUtils.fillZero(i + 1, 2) + ".jpg");//图片
+                }
+            }
+            else if (AdsElementType.Article.toString().equals(type))
+            {
+                List<String> ids = cmsArticleService.listArticleIds(1, 10);//文章Id
+                list.addAll(ids);
+            }
+            elementDataMap.put(type, list);
+        }
+        return list.get(CommonUtils.genRandom(0, list.size() - 1));
     }
 }

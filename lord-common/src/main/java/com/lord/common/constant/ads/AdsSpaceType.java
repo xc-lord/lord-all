@@ -41,4 +41,15 @@ public enum AdsSpaceType implements BaseEnumType {
         }
         return map;
     }
+
+    public static Map<String,String> toNameMap()
+    {
+        Map<String, String> map = new HashMap<>();
+        AdsSpaceType[] values = AdsSpaceType.values();
+        for (AdsSpaceType value : values)
+        {
+            map.put(value.getName(), value.toString());
+        }
+        return map;
+    }
 }

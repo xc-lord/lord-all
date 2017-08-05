@@ -231,6 +231,18 @@ public class CmsArticleServiceImpl implements CmsArticleService {
         return cmsArticleDao.findByIds(CommonUtils.parseLongArray(ids));
     }
 
+    @Override
+    public List<String> listArticleIds(int page, int pageSize)
+    {
+        Page<CmsArticle> pageResult = cmsArticleDao.findAll(CmsArticleSpecs.queryAll(), new PageRequest(page - 1, pageSize));
+        List<String> ids = new ArrayList<>();
+        for (CmsArticle article : pageResult)
+        {
+            ids.add(article.getId() + "");
+        }
+        return ids;
+    }
+
     /**
      * 保存文章标签
      * @param articleTags

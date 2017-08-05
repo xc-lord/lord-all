@@ -78,5 +78,18 @@ public interface AdsPageService {
      */
     boolean isExist(Long id, String rowName, String rowValue);
 
+    /**
+     * 根据条件查询页面
+     * @param query
+     * @return
+     */
     Pager<AdsPage> pageAdsPage(AdsPageQuery query);
+
+    /**
+     * 根据编码和页面名称，获得页面信息，不存在则自动创建
+     * @param page_code 页面编码
+     * @param page_name 页面名称
+     * @return 页面
+     */
+    AdsPage getAndCreate(String page_code, String page_name);
 }

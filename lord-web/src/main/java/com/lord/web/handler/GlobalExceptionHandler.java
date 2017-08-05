@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result allException(HttpServletRequest req, Exception e) throws Exception {
         logger.error("出现错误：" + e.getMessage(), e);
-        return new Result(Code.ErrSystem);
+        return new Result(Code.ErrorSystem);
     }
 
     @ExceptionHandler(CommonException.class)

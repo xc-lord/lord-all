@@ -1,5 +1,6 @@
 package com.lord.web.redis;
 
+import com.lord.biz.utils.AdsTemplateUtils;
 import com.lord.common.constant.FileType;
 import com.lord.utils.CommonUtils;
 import org.junit.Test;
@@ -53,5 +54,18 @@ public class TestUtils {
         System.out.println("读取classpath下的文件");
         String filePath = "ueditor-config.json";
         System.out.println(CommonUtils.readClassPathFile(filePath));
+    }
+
+    @Test
+    public void testReadXml()
+    {
+        System.out.println("/image/2017/08/05/" + CommonUtils.fillZero(1, 2) + ".jpg");
+        String xsdPath = CommonUtils.getClassPathFilePath("page_template.xsd");
+        System.out.println("xsdPath = " + xsdPath);
+
+        String xml = CommonUtils.readClassPathFile("page/Example.xml");
+        boolean isXml = AdsTemplateUtils.validateXml(xml);
+        System.out.println(xml);
+        System.out.println("验证结果：" + isXml);
     }
 }

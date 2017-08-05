@@ -89,4 +89,5 @@ public interface AdsSpaceService extends CategorySimpleService {
      */
     List<TreeNode> getTreeByPageId(Long pageId);
 
+    AdsSpace getAndCreate(AdsSpace pageObj);
 }

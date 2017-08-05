@@ -39,5 +39,9 @@ public interface AdsSpaceDao extends JpaRepository<AdsSpace, Long>, JpaSpecifica
     @Query("select u from AdsSpace u where u.pageId = ?1 order by u.level, u.orderValue")
     List<AdsSpace> findAllByPageId(Long pageId);
 
+    AdsSpace findByPageIdAndSubKeyword(Long id, String subKeyword);
+
+    AdsSpace findByParentIdAndSubKeyword(Long parentId, String subKeyword);
+
     //在此添加你的自定义方法...
 }

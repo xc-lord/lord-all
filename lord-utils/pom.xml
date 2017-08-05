@@ -114,6 +114,12 @@
             <artifactId>pinyin4j</artifactId>
         </dependency>
         <!--拼音工具类 end-->
+        <!--XML解析 start-->
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+        </dependency>
+        <!--XML解析 end-->
     </dependencies>
 
     <build>

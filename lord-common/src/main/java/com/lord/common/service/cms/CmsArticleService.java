@@ -98,4 +98,6 @@ public interface CmsArticleService {
      * @return
      */
     List<CmsArticle> listByIds(List<String> ids);
+
+    List<String> listArticleIds(int page, int pageSize);
 }

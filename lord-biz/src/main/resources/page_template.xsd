@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.xiaocheng.xyz"
+        xmlns="http://www.xiaocheng.xyz"
+        elementFormDefault="qualified"
+        >
+
+    <!-- 简易元素定义 -->
+    <xs:element name="template_num" type="xs:int"></xs:element><!-- 创建的模板个数 -->
+    <xs:element name="page_name" type="xs:string"></xs:element><!-- 页面名称 -->
+    <xs:element name="page_code" type="xs:string"></xs:element><!-- 页面关键字 -->
+    <xs:element name="keyword" type="xs:string"></xs:element><!-- 模板关键字 -->
+    <xs:element name="name" type="xs:string"></xs:element><!-- 模板名称 -->
+    <xs:element name="intro" type="xs:string"></xs:element><!-- 配置说明 -->
+    <xs:element name="type"><!-- 模板类型 -->
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="模板"></xs:enumeration>
+                <xs:enumeration value="图片链接"></xs:enumeration>
+                <xs:enumeration value="文字链接"></xs:enumeration>
+                <xs:enumeration value="大文本"></xs:enumeration>
+                <xs:enumeration value="文章"></xs:enumeration>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name="count" type="xs:int"></xs:element><!-- 模板内容的元素个数 -->
+    <xs:element name="choose" type="xs:boolean" default="false"></xs:element><!-- 查询模板的子模板时是否需要根据配置进行筛选 -->
+    <xs:element name="isDefault" type="xs:boolean" default="true"></xs:element><!-- 筛选子模板时，该模板是否默认的选项 -->
+
+    <!-- 复合元素定义 -->
+    <xs:element name="template">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="name"></xs:element>
+                <xs:element ref="keyword"></xs:element>
+                <xs:element ref="type"></xs:element>
+                <xs:element ref="intro" minOccurs="0"></xs:element>
+                <xs:element ref="template_num" minOccurs="0"></xs:element>
+                <xs:element ref="count" minOccurs="0"></xs:element>
+                <xs:element ref="choose" minOccurs="0"></xs:element>
+                <xs:element ref="isDefault" minOccurs="0"></xs:element>
+                <xs:element name="children" maxOccurs="1" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="template" maxOccurs="unbounded"></xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="page_template">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="page_name" type="xs:string"></xs:element>
+                <xs:element name="page_code" type="xs:string"></xs:element>
+                <xs:element ref="choose" minOccurs="0"></xs:element>
+                <xs:element name="children">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="template" maxOccurs="unbounded"></xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
