@@ -92,4 +92,18 @@ public interface AdsPageService {
      * @return 页面
      */
     AdsPage getAndCreate(String page_code, String page_name);
+
+    /**
+     * 根据页面编码查找页面
+     * @param pageCode
+     * @return
+     */
+    AdsPage loadAdsPage(String pageCode);
+
+    /**
+     * 更新页面的xml配置
+     * @param id    页面Id
+     * @param xml   xml配置
+     */
+    void updatePageConfig(Long id, String xml);
 }

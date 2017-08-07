@@ -43,5 +43,7 @@ public interface AdsSpaceDao extends JpaRepository<AdsSpace, Long>, JpaSpecifica
 
     AdsSpace findByParentIdAndSubKeyword(Long parentId, String subKeyword);
 
+    List<AdsSpace> findByPageIdAndParentIdAndKeywordLike(Long pageId, Long spaceId, String keyword);
+
     //在此添加你的自定义方法...
 }

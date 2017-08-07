@@ -3,7 +3,9 @@ package com.lord.web.controller.ads;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.QueryParams;
 import com.lord.common.model.ads.AdsElement;
+import com.lord.common.service.RedisService;
 import com.lord.common.service.ads.AdsElementService;
+import com.lord.common.service.ads.AdsTemplateService;
 import com.lord.utils.Preconditions;
 import com.lord.utils.dto.Result;
 import io.swagger.annotations.*;
@@ -27,6 +29,9 @@ public class AdsElementController {
     @Autowired
     private AdsElementService adsElementService;
 
+    @Autowired
+    private RedisService redisService;
+
     @ApiOperation(value = "查询广告位的元素的列表")
     @RequestMapping(value = "/api/admin/ads/adsElement/list", method = {RequestMethod.GET, RequestMethod.POST})
     public Result list(@ModelAttribute QueryParams queryParams) {
@@ -45,6 +50,7 @@ public class AdsElementController {
     @RequestMapping(value = "/api/admin/ads/adsElement/saveOrUpdate", method = RequestMethod.POST)
     public Result saveOrUpdate(@ModelAttribute AdsElement pageObj) {
         AdsElement dbObj = adsElementService.saveOrUpdate(pageObj);
+        redisService.delete(AdsTemplateService.ADS_ALL_SPACE + dbObj.getSpaceId());//更新广告位的缓存
         return Result.success("保存成功", dbObj);
     }
 

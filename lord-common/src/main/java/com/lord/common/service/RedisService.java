@@ -17,6 +17,8 @@ public interface RedisService
 
     void set(String key, Object obj, long timeout, TimeUnit timeUnit);
 
+    void set(String key, Object obj, long timeout);
+
     String get(String key);
 
     <T> T get(String key, Class<T> clz);
@@ -25,5 +27,8 @@ public interface RedisService
 
     void delete(String key);
 
+    void expire(String key, Long timeOut);
+
     Set<String> keys(String pattern);
+
 }

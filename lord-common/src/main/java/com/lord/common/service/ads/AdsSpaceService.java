@@ -3,11 +3,14 @@ package com.lord.common.service.ads;
 import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
+import com.lord.common.dto.ads.AdsSpaceInfo;
 import com.lord.common.dto.cat.TreeNode;
+import com.lord.common.model.ads.AdsPage;
 import com.lord.common.model.ads.AdsSpace;
 import com.lord.common.service.cat.CategorySimpleService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 广告位ads_space的Service
@@ -89,5 +92,20 @@ public interface AdsSpaceService extends CategorySimpleService {
      */
     List<TreeNode> getTreeByPageId(Long pageId);
 
+    /**
+     * 获得广告位，不存在则创建
+     * @param pageObj   页面对象
+     * @return 广告位
+     */
     AdsSpace getAndCreate(AdsSpace pageObj);
+
+    /**
+     * 根据页面，获得所有广告位和对应的元素
+     *
+     * @param adsPage 页面对象
+     * @return 广告位
+     */
+    Map<String, AdsSpaceInfo> loadAllSpaceAndElementData(AdsPage adsPage);
+
+    List<AdsSpace> listSpaceByKeywordStart(Long pageId, Long spaceId, String keyword);
 }

@@ -11,8 +11,11 @@ import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.ads.AdsPageQuery;
 import com.lord.common.model.ads.AdsPage;
+import com.lord.common.service.RedisService;
 import com.lord.common.service.ads.AdsPageService;
+import com.lord.common.service.ads.AdsTemplateService;
 import com.lord.utils.Preconditions;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 页面ads_page的Service实现
@@ -43,6 +47,9 @@ public class AdsPageServiceImpl implements AdsPageService {
 
     @Autowired
     private AdsSpaceDao adsSpaceDao;
+
+    @Autowired
+    private RedisService redisService;
 
     @Override
     public AdsPage getAdsPage(Long id) {
@@ -178,5 +185,27 @@ public class AdsPageServiceImpl implements AdsPageService {
         adsPage.setPageState(AdsPageState.Show.toString());
         adsPage.setOrderValue(0L);
         return saveOrUpdate(adsPage);
+    }
+
+    @Override
+    public AdsPage loadAdsPage(String pageCode)
+    {
+        if (StringUtils.isEmpty(pageCode))
+            return null;
+        final String cacheKey = AdsTemplateService.ADS_ALL_PAGE_CODE + pageCode;
+        AdsPage cacheObj = redisService.get(cacheKey, AdsPage.class);
+        if(cacheObj != null)
+            return cacheObj;
+        AdsPage adsPage = adsPageDao.findByPageCode(pageCode);
+        redisService.set(cacheKey, adsPage, 30, TimeUnit.MINUTES);
+        return adsPage;
+    }
+
+    @Override
+    @Transactional
+    public void updatePageConfig(Long id, String xml)
+    {
+        if(id == null || StringUtils.isEmpty(xml)) return;
+        adsPageDao.updatePageConfig(id, xml);
     }
 }

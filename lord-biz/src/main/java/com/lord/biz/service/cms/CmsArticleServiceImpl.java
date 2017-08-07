@@ -30,9 +30,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 文章cms_article的Service实现
@@ -241,6 +239,19 @@ public class CmsArticleServiceImpl implements CmsArticleService {
             ids.add(article.getId() + "");
         }
         return ids;
+    }
+
+    @Override
+    public Map<String, CmsArticle> findMapByIds(List<String> ids)
+    {
+        Long[] list = CommonUtils.parseLongArray(ids);
+        List<CmsArticle> articles = cmsArticleDao.findByIds(list);
+        Map<String, CmsArticle> map = new HashMap<>();
+        for (CmsArticle article : articles)
+        {
+            map.put(article.getId() + "", article);
+        }
+        return map;
     }
 
     /**

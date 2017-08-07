@@ -6,8 +6,10 @@ import com.lord.common.dto.QueryParams;
 import com.lord.common.dto.cat.TreeNode;
 import com.lord.common.model.ads.AdsPage;
 import com.lord.common.model.ads.AdsSpace;
+import com.lord.common.service.RedisService;
 import com.lord.common.service.ads.AdsPageService;
 import com.lord.common.service.ads.AdsSpaceService;
+import com.lord.common.service.ads.AdsTemplateService;
 import com.lord.utils.Preconditions;
 import com.lord.utils.dto.Result;
 import io.swagger.annotations.*;
@@ -36,6 +38,9 @@ public class AdsSpaceController {
     @Autowired
     private AdsPageService adsPageService;
 
+    @Autowired
+    private RedisService redisService;
+
     @ApiOperation(value = "查询广告位的树形列表")
     @RequestMapping(value = "/api/admin/ads/adsSpace/getTree", method = {RequestMethod.GET, RequestMethod.POST})
     public Result getTree(Long pageId) {
@@ -61,6 +66,7 @@ public class AdsSpaceController {
     @RequestMapping(value = "/api/admin/ads/adsSpace/saveOrUpdate", method = RequestMethod.POST)
     public Result saveOrUpdate(@ModelAttribute AdsSpace pageObj) {
         AdsSpace dbObj = adsSpaceService.saveOrUpdate(pageObj);
+        redisService.delete(AdsTemplateService.ADS_ALL_PAGE + dbObj.getPageId());//更新缓存
         return Result.success("保存成功", dbObj);
     }
 

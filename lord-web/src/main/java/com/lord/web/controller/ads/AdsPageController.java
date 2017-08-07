@@ -4,7 +4,9 @@ import com.lord.common.dto.Pager;
 import com.lord.common.dto.QueryParams;
 import com.lord.common.dto.ads.AdsPageQuery;
 import com.lord.common.model.ads.AdsPage;
+import com.lord.common.service.RedisService;
 import com.lord.common.service.ads.AdsPageService;
+import com.lord.common.service.ads.AdsTemplateService;
 import com.lord.utils.Preconditions;
 import com.lord.utils.dto.Result;
 import io.swagger.annotations.*;
@@ -28,6 +30,9 @@ public class AdsPageController {
     @Autowired
     private AdsPageService adsPageService;
 
+    @Autowired
+    private RedisService redisService;
+
     @ApiOperation(value = "查询页面的列表")
     @RequestMapping(value = "/api/admin/ads/adsPage/list", method = { RequestMethod.GET, RequestMethod.POST })
     public Result list(@ModelAttribute AdsPageQuery query)
@@ -40,6 +45,7 @@ public class AdsPageController {
     @RequestMapping(value = "/api/admin/ads/adsPage/saveOrUpdate", method = RequestMethod.POST)
     public Result saveOrUpdate(@ModelAttribute AdsPage pageObj) {
         AdsPage dbObj = adsPageService.saveOrUpdate(pageObj);
+        redisService.delete(AdsTemplateService.ADS_ALL_PAGE_CODE + dbObj.getPageCode());//更新缓存
         return Result.success("保存成功", dbObj);
     }
 

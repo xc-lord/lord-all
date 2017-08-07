@@ -1,19 +1,31 @@
 package com.lord.biz.service.ads;
 
+import com.alibaba.fastjson.JSON;
+import com.lord.biz.dao.ads.AdsElementDao;
 import com.lord.biz.dao.ads.AdsPageDao;
 import com.lord.biz.dao.ads.AdsSpaceDao;
 import com.lord.biz.dao.ads.specs.AdsSpaceSpecs;
 import com.lord.biz.service.cat.CategorySimpleServiceImpl;
 import com.lord.biz.utils.ServiceUtils;
+import com.lord.common.constant.ads.AdsElementType;
+import com.lord.common.constant.ads.AdsSpaceType;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
+import com.lord.common.dto.ads.AdsArticle;
+import com.lord.common.dto.ads.AdsSpaceInfo;
 import com.lord.common.dto.cat.CategorySimple;
 import com.lord.common.dto.cat.TreeNode;
+import com.lord.common.model.ads.AdsElement;
 import com.lord.common.model.ads.AdsPage;
 import com.lord.common.model.ads.AdsSpace;
+import com.lord.common.model.cms.CmsArticle;
+import com.lord.common.service.RedisService;
 import com.lord.common.service.ads.AdsSpaceService;
+import com.lord.common.service.ads.AdsTemplateService;
+import com.lord.common.service.cms.CmsArticleService;
 import com.lord.utils.Preconditions;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,10 +36,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 广告位ads_space的Service实现
@@ -45,7 +55,16 @@ public class AdsSpaceServiceImpl extends CategorySimpleServiceImpl implements Ad
     private AdsSpaceDao adsSpaceDao;
 
     @Autowired
+    private AdsElementDao adsElementDao;
+
+    @Autowired
     private AdsPageDao adsPageDao;
+
+    @Autowired
+    private CmsArticleService cmsArticleService;
+
+    @Autowired
+    private RedisService redisService;
 
     @Override
     public AdsSpace getAdsSpace(Long id) {
@@ -151,7 +170,18 @@ public class AdsSpaceServiceImpl extends CategorySimpleServiceImpl implements Ad
     public void deleteAdsSpace(Long... ids) {
         List<AdsSpace> children = adsSpaceDao.findParentByIds(ids);
         Preconditions.checkArgument(children != null && children.size() > 0, "存在子分类，不能删除");
+
+        List<AdsSpace> list = adsSpaceDao.findByIds(ids);
+        Map<Long, Boolean> map = new HashMap<>();
+        for (AdsSpace space : list)
+        {
+            map.put(space.getPageId(), true);
+        }
         adsSpaceDao.deleteAdsSpace(ids);
+        for (Long pageId : map.keySet())
+        {
+            redisService.expire(AdsTemplateService.ADS_ALL_PAGE + pageId, 3000L);//更新缓存
+        }
     }
 
 
@@ -196,7 +226,7 @@ public class AdsSpaceServiceImpl extends CategorySimpleServiceImpl implements Ad
 
     public List<TreeNode> getTreeByPageId(Long pageId) {
         List<TreeNode> list = new ArrayList<>();
-        List<AdsSpace> adsSpaces = adsSpaceDao.findAllByPageId(pageId);
+        List<AdsSpace> adsSpaces = loadAllSpace(pageId);
         List<CategorySimple> categoryList = new ArrayList<>();
         categoryList.addAll(adsSpaces);
         if (categoryList.size() < 1) {
@@ -231,5 +261,152 @@ public class AdsSpaceServiceImpl extends CategorySimpleServiceImpl implements Ad
         pageObj.setCreateTime(new Date());
         pageObj.setUpdateTime(new Date());
         return adsSpaceDao.save(pageObj);
+    }
+
+    @Override
+    public Map<String, AdsSpaceInfo> loadAllSpaceAndElementData(AdsPage adsPage)
+    {
+        Map<String, AdsSpaceInfo> map = new TreeMap<>();
+        List<AdsSpace> spacesList = loadAllSpace(adsPage.getId());
+        for (AdsSpace adsSpace : spacesList)
+        {
+            AdsSpaceInfo info = new AdsSpaceInfo();
+            info.setSpace(adsSpace);
+            List elements = loadElementData(adsSpace);
+            info.setElements(elements);
+            map.put(adsSpace.getKeyword(), info);
+        }
+        return map;
+    }
+
+    private List<AdsSpace> loadAllSpace(Long id)
+    {
+        final String cacheKey = AdsTemplateService.ADS_ALL_PAGE + id;
+        List<AdsSpace> cacheList = redisService.getList(cacheKey, AdsSpace.class);
+        if (cacheList != null)
+            return cacheList;
+        cacheList = adsSpaceDao.findAllByPageId(id);
+        redisService.set(cacheKey, cacheList, 30, TimeUnit.MINUTES);
+        return cacheList;
+    }
+
+    private List loadElementData(AdsSpace adsSpace)
+    {
+        final String cacheKey = AdsTemplateService.ADS_ALL_SPACE + adsSpace.getId();
+        String adsType = adsSpace.getAdsType();
+        List cacheList = getCacheElements(cacheKey, adsType);
+        if (cacheList != null)
+            return cacheList;
+
+        List<AdsElement> elements = adsElementDao.listEffectElement(adsSpace.getId(), new Date());
+        if(elements.size() < 1)
+        {
+            return putElementToRedis(cacheKey, null, null);
+        }
+        Date minTime = null;
+        List<String> ids = new ArrayList<>();
+        for (AdsElement element : elements)
+        {
+            element.setCreateTime(null);
+            element.setUpdateTime(null);
+            element.setOrderValue(null);
+            if(!AdsElementType.BigText.toString().equals(element.getTargetType()))
+                element.setTex(null);
+            String targetId = element.getTargetId();
+            if (StringUtils.isNotEmpty(targetId))
+            {
+                ids.add(targetId);
+            }
+            if(minTime == null)
+            {
+                minTime = element.getEndTime();
+            } else if (element.getEndTime().before(minTime))
+            {
+                minTime = element.getEndTime();
+            }
+        }
+        if (AdsSpaceType.ImageLink.toString().equals(adsType) || AdsSpaceType.TextLink.toString().equals(adsType) ||
+                AdsSpaceType.BigText.toString().equals(adsType) || AdsSpaceType.Model.toString().equals(adsType))
+        {
+            return putElementToRedis(cacheKey, elements, minTime);
+        }
+
+        if(ids.size() < 1)
+            return putElementToRedis(cacheKey, elements, minTime);
+        try
+        {
+            if (AdsSpaceType.Article.toString().equals(adsType))
+            {
+                List list = listArticleElement(elements, ids);
+                return putElementToRedis(cacheKey, list, minTime);
+            }
+        }
+        catch (Exception e)
+        {
+            logger.error("获取广告位元素时，转换对象出错：" + e.getMessage(), e);
+        }
+        return putElementToRedis(cacheKey, null, minTime);
+    }
+
+    private List putElementToRedis(String cacheKey, List elements, Date minTime)
+    {
+        if(elements == null || elements.size() < 1)
+            redisService.set(cacheKey, new ArrayList<>(), 30000);
+        else if(minTime != null)
+        {
+            long exTime = minTime.getTime() - new Date().getTime();
+            if(exTime <= 1000)
+                exTime = 30000;
+            redisService.set(cacheKey, elements, exTime);
+        }
+        return elements;
+    }
+
+    private List getCacheElements(String cacheKey, String adsType)
+    {
+        String cacheStr = redisService.get(cacheKey);
+        if(StringUtils.isNotEmpty(cacheStr))
+        {
+            if (AdsSpaceType.ImageLink.toString().equals(adsType) || AdsSpaceType.TextLink.toString().equals(adsType) ||
+                    AdsSpaceType.BigText.toString().equals(adsType) || AdsSpaceType.Model.toString().equals(adsType))
+            {
+                List<AdsElement> elements = JSON.parseArray(cacheStr, AdsElement.class);
+                return elements;
+            }
+            else if (AdsSpaceType.Article.toString().equals(adsType))
+            {
+                List<AdsArticle> elements = JSON.parseArray(cacheStr, AdsArticle.class);
+                return elements;
+            }
+        }
+        return null;
+    }
+
+    private List listArticleElement(List<AdsElement> elements, List<String> ids) throws Exception
+    {
+        Map<String, CmsArticle> dataMap = cmsArticleService.findMapByIds(ids);
+        List<AdsArticle> list = new ArrayList<>();
+        for (AdsElement element : elements)
+        {
+            AdsArticle obj = new AdsArticle();
+            BeanUtils.copyProperties(obj, element);
+            CmsArticle data = dataMap.get(element.getTargetId());
+            if(data == null) continue;
+            if(StringUtils.isEmpty(obj.getTitle())) obj.setTitle(data.getTitle());//标题
+            if(StringUtils.isEmpty(obj.getSubTitle())) obj.setSubTitle(data.getTitleSub());//副标题
+            if(StringUtils.isEmpty(obj.getAdsImg())) obj.setAdsImg(data.getCoverImg());//封面
+            obj.setDesc(data.getIntro());//简介
+            list.add(obj);
+        }
+        return list;
+    }
+
+    @Override
+    public List<AdsSpace> listSpaceByKeywordStart(Long pageId, Long spaceId, String keyword)
+    {
+        if(StringUtils.isEmpty(keyword))
+            return new ArrayList<>();
+        keyword = keyword + "%";
+        return adsSpaceDao.findByPageIdAndParentIdAndKeywordLike(pageId, spaceId, keyword);
     }
 }

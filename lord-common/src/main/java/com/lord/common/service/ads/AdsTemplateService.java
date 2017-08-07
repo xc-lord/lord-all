@@ -1,5 +1,7 @@
 package com.lord.common.service.ads;
 
+import com.lord.common.dto.ads.AdsPageInfo;
+
 /**
  * 功能：广告位模板服务
  *
@@ -9,5 +11,11 @@ package com.lord.common.service.ads;
  */
 public interface AdsTemplateService
 {
+    String ADS_ALL_PAGE_CODE = "ADS_ALL_PAGE_CODE_";
+    String ADS_ALL_PAGE = "ADS_ALL_PAGE_";
+    String ADS_ALL_SPACE = "ADS_ALL_SPACE_";
+
     void importData(String xml);
+
+    AdsPageInfo getPageInfo(String pageCode);
 }

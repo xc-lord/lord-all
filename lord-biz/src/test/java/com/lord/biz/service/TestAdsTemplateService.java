@@ -1,9 +1,11 @@
 package com.lord.biz.service;
 
+import com.alibaba.fastjson.JSON;
 import com.lord.biz.BizApplication;
 import com.lord.biz.dao.cms.CmsArticleDao;
 import com.lord.biz.dao.cms.specs.CmsArticleSpecs;
 import com.lord.biz.utils.AdsTemplateUtils;
+import com.lord.common.dto.ads.AdsPageInfo;
 import com.lord.common.model.cms.CmsArticle;
 import com.lord.common.service.ads.AdsTemplateService;
 import com.lord.utils.CommonUtils;
@@ -54,6 +56,13 @@ public class TestAdsTemplateService
     }
 
     @Test
+    public void testGetPageInfo()
+    {
+        AdsPageInfo pageInfo = adsTemplateService.getPageInfo("WapIndex");
+        System.out.println(JSON.toJSONString(pageInfo));
+    }
+
+    @Test
     public void testDao() {
         Page<CmsArticle> page = cmsArticleDao.findAll(CmsArticleSpecs.queryAll(), new PageRequest(0, 10));
         List<String> ids = new ArrayList<>();
@@ -63,4 +72,5 @@ public class TestAdsTemplateService
         }
         System.out.println(ids);
     }
+
 }

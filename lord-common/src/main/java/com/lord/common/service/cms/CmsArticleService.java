@@ -7,6 +7,7 @@ import com.lord.common.dto.cms.CmsArticleDto;
 import com.lord.common.model.cms.CmsArticle;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 文章cms_article的Service
@@ -100,4 +101,6 @@ public interface CmsArticleService {
     List<CmsArticle> listByIds(List<String> ids);
 
     List<String> listArticleIds(int page, int pageSize);
+
+    Map<String,CmsArticle> findMapByIds(List<String> ids);
 }

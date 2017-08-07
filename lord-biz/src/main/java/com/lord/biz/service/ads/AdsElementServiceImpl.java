@@ -11,7 +11,9 @@ import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
 import com.lord.common.model.ads.AdsElement;
 import com.lord.common.model.ads.AdsSpace;
+import com.lord.common.service.RedisService;
 import com.lord.common.service.ads.AdsElementService;
+import com.lord.common.service.ads.AdsTemplateService;
 import com.lord.common.service.cms.CmsArticleService;
 import com.lord.utils.CommonUtils;
 import com.lord.utils.Preconditions;
@@ -50,6 +52,9 @@ public class AdsElementServiceImpl implements AdsElementService {
 
     @Autowired
     private CmsArticleService cmsArticleService;
+
+    @Autowired
+    private RedisService redisService;
 
     @Override
     public AdsElement getAdsElement(Long id) {
@@ -127,8 +132,19 @@ public class AdsElementServiceImpl implements AdsElementService {
 
     @Override
     @Transactional
-    public void deleteAdsElement(Long... ids) {
+    public void deleteAdsElement(Long... ids)
+    {
+        List<AdsElement> list = adsElementDao.findByIds(ids);
+        Map<Long, Boolean> map = new HashMap<>();
+        for (AdsElement adsElement : list)
+        {
+            map.put(adsElement.getSpaceId(), true);
+        }
         adsElementDao.deleteAdsElement(ids);
+        for (Long spaceId : map.keySet())
+        {
+            redisService.expire(AdsTemplateService.ADS_ALL_SPACE + spaceId, 3000L);//更新广告位的缓存
+        }
     }
 
     @Override
@@ -140,6 +156,7 @@ public class AdsElementServiceImpl implements AdsElementService {
             return;
         }
         adsElementDao.updateOrderValue(id, orderValue);
+        redisService.expire(AdsTemplateService.ADS_ALL_SPACE + dbObj.getSpaceId(), 3000L);//更新广告位的缓存
     }
 
     @Override
