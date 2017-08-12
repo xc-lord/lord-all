@@ -1,11 +1,13 @@
 package com.lord.utils;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -152,7 +154,7 @@ public class CommonUtils {
      * @return 格式化的结果
      */
     public static String dateFormat(Date date, String format) {
-        if (StringUtils.isEmpty(format)) {
+        if (org.apache.commons.lang3.StringUtils.isEmpty(format)) {
             format = dateFormat;
         }
         SimpleDateFormat sdformat = new SimpleDateFormat(format);
@@ -178,6 +180,36 @@ public class CommonUtils {
     }
 
     /**
+     * 字符串转为时间对象
+     * @param str      字符串
+     * @return 格式化的结果
+     */
+    public static Date parseDate(String str) {
+        return parseDate(str, null);
+    }
+
+    /**
+     * 字符串转为时间对象
+     * @param str      字符串
+     * @param format   时间格式
+     * @return 格式化的结果
+     */
+    public static Date parseDate(String str, String format) {
+        if (org.apache.commons.lang3.StringUtils.isEmpty(str)) {
+            return null;
+        }
+        if(org.apache.commons.lang3.StringUtils.isEmpty(format))
+            format = dateFormat;
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        try {
+            return sdf.parse(str);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 字符串转换为Long列表
      * @param idStr 字符串
      * @param idStr 分隔符
@@ -185,12 +217,12 @@ public class CommonUtils {
      */
     public static List<Long> parseLongList(String idStr,String spliter)
     {
-        if(StringUtils.isEmpty(idStr)) return new ArrayList<>();
+        if(org.apache.commons.lang3.StringUtils.isEmpty(idStr)) return new ArrayList<>();
         String[] arr = idStr.split(spliter);
         List<Long> list = new ArrayList<>();
         for (String s : arr)
         {
-            if(StringUtils.isNotEmpty(s))
+            if(org.apache.commons.lang3.StringUtils.isNotEmpty(s))
             {
                 list.add(Long.parseLong(s));
             }
@@ -221,7 +253,7 @@ public class CommonUtils {
      */
     public static String subEndString(String source, String str)
     {
-        if (StringUtils.isEmpty(source))
+        if (org.apache.commons.lang3.StringUtils.isEmpty(source))
         {
             return source;
         }
@@ -255,7 +287,7 @@ public class CommonUtils {
     public static List<String> matchedList(String str, String regx)
     {
         List<String> list = new ArrayList<>();
-        if(StringUtils.isEmpty(str) || StringUtils.isEmpty(regx)) return list;
+        if(org.apache.commons.lang3.StringUtils.isEmpty(str) || org.apache.commons.lang3.StringUtils.isEmpty(regx)) return list;
         //1.将正在表达式封装成对象Patten 类来实现
         Pattern pattern = Pattern.compile(regx);
         //2.将字符串和正则表达式相关联
@@ -277,13 +309,31 @@ public class CommonUtils {
      */
     public static boolean isMatched(String str, String regx)
     {
-        if(StringUtils.isEmpty(str) || StringUtils.isEmpty(regx)) return false;
+        if(org.apache.commons.lang3.StringUtils.isEmpty(str) || org.apache.commons.lang3.StringUtils.isEmpty(regx)) return false;
         //1.将正在表达式封装成对象Patten 类来实现
         Pattern pattern = Pattern.compile(regx);
         //2.将字符串和正则表达式相关联
         Matcher matcher = pattern.matcher(str);
         //3.String 对象中的matches 方法就是通过这个Matcher和pattern来实现的。
         return matcher.matches();
+    }
+
+    /**
+     * 将list转为字符串
+     * @param list   字符串列表
+     * @param s      分隔符
+     * @return
+     */
+    public static String parseArrayString(List<String> list, String s) {
+        if (CollectionUtils.isEmpty(list)) {
+            return null;
+        }
+        String str = "";
+        for (String column : list) {
+            str += column + s;
+        }
+        str = subEndString(str, s);
+        return str;
     }
 
 }

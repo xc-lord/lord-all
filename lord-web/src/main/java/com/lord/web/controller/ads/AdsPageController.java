@@ -2,6 +2,7 @@ package com.lord.web.controller.ads;
 
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.QueryParams;
+import com.lord.common.dto.ads.AdsPageInfo;
 import com.lord.common.dto.ads.AdsPageQuery;
 import com.lord.common.model.ads.AdsPage;
 import com.lord.common.service.RedisService;
@@ -28,10 +29,22 @@ public class AdsPageController {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
+    private AdsTemplateService adsTemplateService;
+
+    @Autowired
     private AdsPageService adsPageService;
 
     @Autowired
     private RedisService redisService;
+
+    @ApiOperation(value="获得页面数据", notes="根据页面编码，获得页面数据")
+    @ApiImplicitParam(name = "pageCode", value = "页面编码", required = true, dataType = "Long", paramType = "query")
+    @RequestMapping(value = "/api/ads/getPage", method = RequestMethod.GET)
+    public Result getPage(String pageCode) {
+        Preconditions.checkNotNull(pageCode, "pageCode不能为空");
+        AdsPageInfo pageInfo = adsTemplateService.getPageInfo(pageCode);
+        return Result.success("获取成功", pageInfo);
+    }
 
     @ApiOperation(value = "查询页面的列表")
     @RequestMapping(value = "/api/admin/ads/adsPage/list", method = { RequestMethod.GET, RequestMethod.POST })

@@ -14,6 +14,7 @@
         <el-form :inline="true" :model="searchForm" class="demo-form-inline">
             <el-form-item>
                 <el-button type="success" icon="plus" @click="dialogAddClick">新增一级广告位</el-button>
+                <el-button type="primary" icon="search" @click="viewDataClick">查看数据</el-button>
             </el-form-item>
         </el-form>
     </el-row>
@@ -111,6 +112,10 @@
                         _self.$message.error(res.msg);//提示错误
                     }
                 });
+            },
+            //查看数据
+            viewDataClick:function() {
+                window.open("/api/ads/getPage?pageCode=" + this.adsPage.pageCode, "_blank");
             },
             //弹窗新建事件
             dialogAddClick: function () {
