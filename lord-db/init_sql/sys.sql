@@ -15,46 +15,46 @@ drop table if exists sys_dict_group;
 /*==============================================================*/
 create table sys_config
 (
-   id                   bigint not null AUTO_INCREMENT comment 'Ö÷¼üId',
-   name                 varchar(40) not null comment 'ÅäÖÃÃû³Æ',
-   config_key           varchar(100) not null comment 'ÅäÖÃkey',
-   config_value         varchar(500) comment 'ÅäÖÃvalue',
-   order_value          bigint comment 'ÅÅĞò',
-   parent_id            bigint comment '¸¸ÅäÖÃ',
-   level                bit comment 'µÈ¼¶',
+   id                   bigint not null AUTO_INCREMENT comment 'ä¸»é”®Id',
+   name                 varchar(40) not null comment 'é…ç½®åç§°',
+   config_key           varchar(100) not null comment 'é…ç½®key',
+   config_value         varchar(500) comment 'é…ç½®value',
+   order_value          bigint comment 'æ’åº',
+   parent_id            bigint comment 'çˆ¶é…ç½®',
+   level                bit comment 'ç­‰çº§',
    primary key (id)
 );
 
-alter table sys_config comment 'ÏµÍ³ÅäÖÃ±í';
+alter table sys_config comment 'ç³»ç»Ÿé…ç½®è¡¨';
 
 /*==============================================================*/
 /* Table: sys_dict                                              */
 /*==============================================================*/
 create table sys_dict
 (
-   id                   bigint not null AUTO_INCREMENT comment 'Ö÷¼üId',
-   name                 varchar(40) comment 'Ãû³Æ',
-   dict_key             varchar(100) not null comment '×Öµäkey',
-   dict_value           varchar(200) comment '×Öµävalue',
-   group_id             bigint not null comment '·Ö×éId',
-   dict_code            varchar(100) not null comment '·Ö×écode',
-   order_value          bigint comment 'ÅÅĞò',
+   id                   bigint not null AUTO_INCREMENT comment 'ä¸»é”®Id',
+   name                 varchar(40) comment 'åç§°',
+   dict_key             varchar(100) not null comment 'å­—å…¸key',
+   dict_value           varchar(200) comment 'å­—å…¸value',
+   group_id             bigint not null comment 'åˆ†ç»„Id',
+   dict_code            varchar(100) not null comment 'åˆ†ç»„code',
+   order_value          bigint comment 'æ’åº',
    primary key (id)
 );
 
-alter table sys_dict comment 'ÏµÍ³Êı¾İ×Öµä±í';
+alter table sys_dict comment 'ç³»ç»Ÿæ•°æ®å­—å…¸è¡¨';
 
 /*==============================================================*/
 /* Table: sys_dict_group                                        */
 /*==============================================================*/
 create table sys_dict_group
 (
-   id                   bigint not null AUTO_INCREMENT comment 'Ö÷¼üId',
-   name                 varchar(40) not null comment 'Ãû³Æ',
-   dict_code            varchar(100) not null comment '·Ö×écode',
-   order_value          bigint comment 'ÅÅĞò',
+   id                   bigint not null AUTO_INCREMENT comment 'ä¸»é”®Id',
+   name                 varchar(40) not null comment 'åç§°',
+   dict_code            varchar(100) not null comment 'åˆ†ç»„code',
+   order_value          bigint comment 'æ’åº',
    primary key (id)
 );
 
-alter table sys_dict_group comment 'ÏµÍ³Êı¾İ×Öµä·Ö×é±í';
+alter table sys_dict_group comment 'ç³»ç»Ÿæ•°æ®å­—å…¸åˆ†ç»„è¡¨';
 
