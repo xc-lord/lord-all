@@ -2,14 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>管理后台</title>
+    <title>林氏木业门店系统</title>
     <!-- 引入样式 -->
-    <link rel="stylesheet" href="/res/css/vue/element-ui-1.2.8.css">
+    <link rel="stylesheet" href="/res/css/vue/element-ui-2.2.1.css">
     <link rel="stylesheet" href="/res/css/mis/vue-main.css">
 </head>
 <body>
 
 <div id="mainView">
+    <el-row style="display:none;">
+        <el-col :span="6" :offset="6">
+            <mis-lookup api-url="/queryStudent.do" 
+                namekey="nickName" 
+                valuekey="id"
+                coloums='[{"attr":"realName","title":"真名"},{"attr":"nickName","title":"花名"},{"attr":"sex","title":"性别"},{"attr":"remark","title":"备注"}]'
+                @confirm="lookupCallback"
+                placeholder="点击右边放大镜进行查询选择">
+            </mis-lookup>
+        </el-col>
+    </el-row>
+
     <div class="mainHeader">
         <el-row>
             <el-col :span="3">
@@ -18,7 +30,10 @@
                 </span>
             </el-col>
             <el-col :span="16">
-                <el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
+                <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
+                         background-color="#545c64"
+                         text-color="#fff"
+                         active-text-color="#ffd04b"
                          @select="handleSelect">
                     <el-menu-item :index="menu.letter" v-for="menu in menus" :key="menu.letter">{{menu.name}}</el-menu-item>
                 </el-menu>
@@ -42,11 +57,9 @@
         <el-col :span="3">
             <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
                      @select="handleMenuSelect">
-                <el-menu-item index="misUser"><i class="el-icon-setting"></i>后台用户管理</el-menu-item>
-                <el-menu-item index="misRole"><i class="el-icon-setting"></i>用户角色</el-menu-item>
-                <el-menu-item index="misMenu"><i class="el-icon-setting"></i>系统菜单</el-menu-item>
-                <el-menu-item index="adsPage"><i class="el-icon-setting"></i>页面管理</el-menu-item>
-                <el-menu-item index="adsSpace/tree/1"><i class="el-icon-setting"></i>广告位管理</el-menu-item>
+                <el-menu-item index="misUser">
+                    <i class="el-icon-setting"></i>用户管理
+                </el-menu-item>
                 <template v-for="subMenu in subMenus">
                     <template v-if="!subMenu.children">
                         <!--没有子菜单-->
@@ -54,10 +67,10 @@
                     </template>
                     <template v-else>
                         <!--存在3级菜单-->
-                        <el-submenu :index="subMenu.code">
+                        <el-submenu :index="subMenu.letter">
                             <template slot="title"><i class="el-icon-menu"></i>{{subMenu.name}}</template>
-                            <el-menu-item :index="thirdMenu.url" v-for="thirdMenu in subMenu.children"
-                                          :key="thirdMenu.url"><i :class="thirdMenu.icon"></i>{{thirdMenu.name}}
+                            <el-menu-item :index="thirdMenu.letter" v-for="thirdMenu in subMenu.children"
+                                          :key="thirdMenu.letter"><i :class="thirdMenu.icon"></i>{{thirdMenu.name}}
                             </el-menu-item>
                         </el-submenu>
                     </template>
@@ -71,7 +84,7 @@
         </el-col>
     </el-row>
 
-    <el-dialog title="修改我的密码" v-model="passwordFormVisible">
+    <el-dialog title="修改我的密码" :visible.sync="passwordFormVisible">
         <el-form :model="pwdForm" label-position="right" :rules="pwdFormRules">
             <el-form-item label="旧密码" prop="oldPassword">
                 <el-input type="password" v-model="pwdForm.oldPassword" auto-complete="off"></el-input>
@@ -90,8 +103,8 @@
     </el-dialog>
 </div>
 
-<script src="/res/js/vue/vue-2.2.0.js"></script>
-<script src="/res/js/vue/element-ui-1.2.8.js"></script>
+<script src="/res/js/vue/vue-2.5.16.min.js"></script>
+<script src="/res/js/vue/element-ui-2.2.1.js"></script>
 <script src="/res/js/vue/custom/vueFilter.js"></script>
 <script src="/res/js/vue/custom/vueComponent.js"></script>
 
@@ -107,6 +120,7 @@
     var app = new Vue({
         el: '#mainView',
         data: {
+            dialogFormVisible: false,
             nickname: '管理员',
             activeIndex: '1',
             activeIndex2: '1',
@@ -186,6 +200,9 @@
             });
         },
         methods: {
+            lookupCallback: function(row) {
+                console.log(row);
+            },
             //顶部一级菜单点击事件
             handleSelect: function (key, keyPath) {
                 var _self = this;

@@ -30,7 +30,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
+                <el-button type="primary" icon="el-icon-search" @click="searchClick">查询</el-button>
                 <el-button type="success" icon="plus" @click="addClick">新增</el-button>
                 <el-button type="success" icon="plus" @click="dialogAddClick">弹窗新增</el-button>
             </el-form-item>
@@ -118,13 +118,13 @@
                 label="操作"
 				width="320">
                 <template scope="scope">
-                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">
+                    <el-button :plain="true" type="success" size="small" icon="el-icon-edit" @click="editClick(scope.row)">
                         编辑
                     </el-button>
-                    <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">
+                    <el-button :plain="true" type="danger" size="small" icon="el-icon-delete" @click="deleteClick(scope.row)">
                         删除
                     </el-button>
-                    <el-button :plain="true" type="success" size="small" icon="edit" @click="dialogEditClick(scope.row)">
+                    <el-button :plain="true" type="success" size="small" icon="el-icon-edit" @click="dialogEditClick(scope.row)">
                         弹窗编辑
                     </el-button>
                 </template>
@@ -135,7 +135,7 @@
     <!--列表底部工具条和分页符-->
     <el-row style="margin-top: 20px" type="flex" justify="end">
         <el-col :span="6">
-            <el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>
+            <el-button :plain="true" type="danger" size="small" icon="el-icon-delete" @click="removeSelection">删除所选</el-button>
         </el-col>
         <el-col :span="18">
             <el-pagination
@@ -151,7 +151,7 @@
         </el-col>
     </el-row>
 
-    <el-dialog v-model="dialogFormVisible" @open="dialogFormOpen">
+    <el-dialog :visible.sync="dialogFormVisible" @open="dialogFormOpen">
         <div id="dialogForm">...</div>
     </el-dialog>
 </div>

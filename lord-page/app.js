@@ -1,3 +1,39 @@
+(function() {
+    'use strict';
+
+    var path = require('path');
+    var logger = require('./lib/logger')(path.basename(__filename));
+    var common = require('./lib/common');
+    var template = require('art-template');
+    var templateHelper = require('./lib/templateHelper');
+    var express = require('express');
+
+    var app = express();
+
+    app.engine('html', require('express-art-template'));
+    app.set('view engine', 'html');
+    app.set('view options', {
+        debug: process.env.NODE_ENV !== 'Production',
+        escape: false,  // 是否开启对模板输出语句自动编码功能。为 false 则关闭编码输出功能
+        extname: '.html',  // 默认后缀名。如果没有后缀名，则会自动添加 extname
+        bail: false,  // bail 如果为 true，编译错误与运行时错误都会抛出异常
+        onerror: function(error, options) {
+            // 错误事件。仅在 bail 为 false 时生效
+            logger.error(error);
+        }
+    });
+
+    templateHelper.imports(template);
+
+    app.use(express.static(path.join(__dirname, 'public')));
+    app.use(common.interceptor);
+
+    common.loadRoutes(app);
+
+    module.exports = app;
+})();
+
+/*
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -68,3 +104,4 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
+*/

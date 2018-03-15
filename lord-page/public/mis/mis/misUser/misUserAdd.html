@@ -7,7 +7,7 @@
 <!-- UI界面 start -->
 <div id="misUserAddView">
     <el-row>
-        <h3><i class="el-icon-edit"></i> <a href="#/misUser">后台用户管理</a> / 新增</h3>
+        <h3><i class="el-icon-edit"></i> <a href="#/misUser">用户管理</a> / 新增</h3>
     </el-row>
     <!--编辑界面-->
     <el-row type="flex" justify="center">
@@ -41,6 +41,12 @@
                 </el-form-item>
                 <el-form-item label="邮箱" prop="email">
                     <el-input v-model="editForm.email" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="用户工号" prop="employeeNumber">
+                    <el-input v-model="editForm.employeeNumber" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="经销商Id" prop="dealerId">
+                    <el-input v-model="editForm.dealerId" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="头像" prop="icon">
                     <el-upload

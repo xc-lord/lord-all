@@ -13,8 +13,8 @@
     <el-row>
         <el-form :inline="true" :model="searchForm" class="demo-form-inline">
             <el-form-item>
-                <el-button v-if="showEditPage" type="success" icon="plus" @click="addDefaultRight">新增基本权限</el-button>
-                <el-button v-if="showEditPage" type="success" icon="plus" @click="resetEditForm">新增</el-button>
+                <el-button v-if="showEditPage" type="success" icon="el-icon-plus" @click="addDefaultRight">新增基本权限</el-button>
+                <el-button v-if="showEditPage" type="success" icon="el-icon-plus" @click="resetEditForm">新增</el-button>
             </el-form-item>
         </el-form>
     </el-row>
@@ -85,10 +85,10 @@
                     label="操作"
                     width="200">
                     <template scope="scope">
-                        <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">
+                        <el-button :plain="true" type="success" size="small" icon="el-icon-edit" @click="editClick(scope.row)">
                             编辑
                         </el-button>
-                        <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">
+                        <el-button :plain="true" type="danger" size="small" icon="el-icon-delete" @click="deleteClick(scope.row)">
                             删除
                         </el-button>
                     </template>

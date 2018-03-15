@@ -31,7 +31,7 @@
         </el-tree>
     </el-row>
 
-    <el-dialog v-model="dialogFormVisible" @open="dialogFormOpen">
+    <el-dialog :visible.sync="dialogFormVisible" @open="dialogFormOpen">
         <div id="dialogForm">...</div>
     </el-dialog>
 </div>

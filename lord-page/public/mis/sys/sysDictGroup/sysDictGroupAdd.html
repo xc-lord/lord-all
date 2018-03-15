@@ -1,0 +1,105 @@
+<!-- 
+	Desc: 	数据字典分组的新增界面
+	Author: James
+	Date: 	2018年01月17日 17:28:10
+-->
+
+<!-- UI界面 start -->
+<div id="sysDictGroupAddView">
+    <el-row>
+        <h3><i class="el-icon-edit"></i> 数据字典分组管理 / 新增</h3>
+    </el-row>
+    <!--编辑界面-->
+    <el-row type="flex" justify="center">
+        <el-col :span="22">
+            <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
+				<!--id不需要-->
+                <el-form-item label="名称" prop="name">
+                    <el-input v-model="editForm.name" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="分组code" prop="code">
+                    <el-input v-model="editForm.code" auto-complete="off"></el-input>
+                </el-form-item>
+				<el-form-item label="排序">
+                    <el-input-number v-model="editForm.orderValue" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="创建人id" style="display:none;">
+                    <el-input-number v-model="editForm.createId" :min="0"></el-input-number>
+                </el-form-item>
+				<!--createTime不需要-->
+				<el-form-item label="状态">
+                    <el-input-number v-model="editForm.status" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="状态时间">
+                    <el-date-picker type="datetime" placeholder="选择日期和时间"
+                                    v-model="editForm.statusTime"></el-date-picker>
+                </el-form-item>
+                <!--TODO:待修改-->
+                <!--<el-form-item label="状态">
+                    <el-select v-model="editForm.status" clearable placeholder="请选择">
+                        <el-option
+                                v-for="item in sysDictGroupStatus"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>-->
+            </el-form>
+        </el-col>
+    </el-row>
+
+    <el-row type="flex" justify="center">
+        <el-col :span="6">
+            <el-button @click="editFormCancel">取消</el-button>
+            <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading">提交</el-button>
+        </el-col>
+    </el-row>
+
+</div>
+<!-- UI界面 end -->
+
+<script type="text/javascript">
+    $.getScript('/res/js/mis/sys/sysDictGroup/sysDictGroupForm.js', function () {
+        //清空参数
+        pageParam = Object.assign({}, {});
+
+        var sysDictGroupAddView = new Vue({
+            el: '#sysDictGroupAddView',
+            data: SysDictGroupFromCommon.data,
+            //数据初始化
+            created: function () {
+                var _self = this;
+                //获取下拉框选项
+                SysDictGroupFromCommon.loadSelect(_self);
+                _self.editForm = Object.assign({}, SysDictGroupFromCommon.defaultModel);
+            },
+            methods: {
+                //是否具有权限
+                hasRight: function(rightCode) {
+                    return commonUtils.hasRight(rightCode);
+                },
+                //保存事件
+                editSubmit: function (formName) {
+                    var _self = this;
+                    _self.$refs[formName].validate(function(valid){
+                        if (valid) {
+                            SysDictGroupFromCommon.saveAction(_self);
+                        } else{
+                            _self.$message.error("请正确填写表单！");
+                        }
+                    });
+                },
+                //取消事件
+                editFormCancel: function () {
+                    SysDictGroupFromCommon.cancelAction(this);
+                },
+                //上传图片前的验证事件
+                beforeAvatarUpload:function(file) {
+                    var _self = this;
+                    commonUtils.uploadImageCheck(file, _self);
+                }
+            }
+        });
+    });
+</script>

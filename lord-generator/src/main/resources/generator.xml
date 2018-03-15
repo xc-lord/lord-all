@@ -29,6 +29,8 @@
 	<entry key="bizPackage">ads</entry>
 	<!-- 表的变量名 -->
 	<entry key="lowerClassName">adsElement</entry>
+	<!-- 作者名称 -->
+	<entry key="authorName">xiaocheng</entry>
 
 	<!-- 自定义属性 end -->
 

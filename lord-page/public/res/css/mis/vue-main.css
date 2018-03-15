@@ -11,7 +11,7 @@ html, body {
     display:table;
     text-align:center;
     width: 100%;
-    background-color: #324157;
+    background-color: #545c64;
     color: #5cb85c;
 }
 .mainHeader .logo {
@@ -98,4 +98,13 @@ ul.thumbnails.image_picker_selector li .thumbnail.selected {
 .el-table-img-div {
     text-align:center;
     padding-top: 5px;
+}
+
+.custom-tree-node {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    padding-right: 8px;
 }

@@ -30,7 +30,7 @@
         </el-tree>
     </el-row>
 
-    <el-dialog v-model="dialogFormVisible" @open="dialogFormOpen">
+    <el-dialog :visible.sync="dialogFormVisible" @open="dialogFormOpen">
         <div id="dialogForm">...</div>
     </el-dialog>
 </div>
@@ -264,10 +264,14 @@
             //树的操作按钮渲染
             renderContent:function(createElement, { node, data, store }) {
                 var _self = this;
-                return createElement('span', [
+                return createElement('span', {
+                    attrs: {
+                        class: "custom-tree-node"
+                    }
+                }, [
                     createElement('span', node.label),
                     createElement('span', {attrs:{
-                        style:"float: right; margin-right: 20px"
+                        //style:"float: right; margin-right: 20px"
                     }},[
                         createElement('el-button',{attrs:{
                             size:"mini"

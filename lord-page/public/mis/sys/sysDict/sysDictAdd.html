@@ -1,0 +1,135 @@
+<!-- 
+	Desc: 	数据字典的新增界面
+	Author: James
+	Date: 	2018年01月18日 18:02:59
+-->
+
+<!-- UI界面 start -->
+<div id="sysDictAddView">
+    <el-row>
+        <h3><i class="el-icon-edit"></i> 数据字典管理 / 新增</h3>
+    </el-row>
+    <!--编辑界面-->
+    <el-row type="flex" justify="center">
+        <el-col :span="22">
+            <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
+				<!--id不需要-->
+                <el-form-item label="名称" prop="name">
+                    <el-input v-model="editForm.name" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="字典key" prop="dictKey">
+                    <el-input v-model="editForm.dictKey" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="字典value" prop="dictValue">
+                    <el-input v-model="editForm.dictValue" auto-complete="off"></el-input>
+                </el-form-item>
+<!-- 
+				<el-form-item label="分组Id">
+                    <el-input-number v-model="editForm.groupId" :min="0"></el-input-number>
+                </el-form-item>
+ -->
+                <el-form-item label="分组Id">
+                    <el-select v-model="editForm.groupId" placeholder="请选择">
+                        <el-option v-for="item in editForm.groupIdOptions"
+                            :key="item.id"
+                            :value="item.id"
+                            :label="item.name">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+				<el-form-item label="排序">
+                    <el-input-number v-model="editForm.orderValue" :min="0"></el-input-number>
+                </el-form-item>
+                <el-form-item label="备注" prop="remark">
+                    <el-input v-model="editForm.remark" auto-complete="off"></el-input>
+                </el-form-item>
+				<el-form-item label="创建人id">
+                    <el-input-number v-model="editForm.createId" :min="0"></el-input-number>
+                </el-form-item>
+				<!--createTime不需要-->
+				<el-form-item label="状态">
+                    <el-input-number v-model="editForm.status" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="状态时间">
+                    <el-date-picker type="datetime" placeholder="选择日期和时间"
+                                    v-model="editForm.statusTime"></el-date-picker>
+                </el-form-item>
+                <!--TODO:待修改-->
+                <!--<el-form-item label="状态">
+                    <el-select v-model="editForm.status" clearable placeholder="请选择">
+                        <el-option
+                                v-for="item in sysDictStatus"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>-->
+            </el-form>
+        </el-col>
+    </el-row>
+
+    <el-row type="flex" justify="center">
+        <el-col :span="6">
+            <el-button @click="editFormCancel">取消</el-button>
+            <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading">提交</el-button>
+        </el-col>
+    </el-row>
+
+</div>
+<!-- UI界面 end -->
+
+<script type="text/javascript">
+    $.getScript('/res/js/mis/sys/sysDict/sysDictForm.js', function () {
+        //清空参数
+        pageParam = Object.assign({}, {});
+
+        var sysDictAddView = new Vue({
+            el: '#sysDictAddView',
+            data: SysDictFromCommon.data,
+            //数据初始化
+            created: function () {
+                var _self = this;
+                //获取下拉框选项
+                SysDictFromCommon.loadSelect(_self);
+
+                _self.editForm = Object.assign({}, SysDictFromCommon.defaultModel, {groupIdOptions: []});
+                _self.editForm.groupId = null;
+
+                $.get('/api/admin/sys/sysDictGroup/listAll', function(res) {
+                    if(res.success) {
+                        _self.editForm.groupIdOptions = res.data;
+                    }
+                });
+            },
+            methods: {
+                //是否具有权限
+                hasRight: function(rightCode) {
+                    return commonUtils.hasRight(rightCode);
+                },
+                //保存事件
+                editSubmit: function (formName) {
+                    var _self = this;
+                    _self.$refs[formName].validate(function(valid){
+                        if (valid) {
+                            SysDictFromCommon.saveAction(_self);
+                        } else{
+                            _self.$message.error("请正确填写表单！");
+                        }
+                    });
+                },
+                //取消事件
+                editFormCancel: function () {
+                    SysDictFromCommon.cancelAction(this);
+                },
+                //上传图片前的验证事件
+                beforeAvatarUpload:function(file) {
+                    var _self = this;
+                    commonUtils.uploadImageCheck(file, _self);
+                }
+            }
+        });
+
+        window.sysDictAddView = sysDictAddView;
+    });
+</script>
