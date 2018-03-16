@@ -111,6 +111,28 @@ var routes = {
         pageParam = Object.assign({}, {id: id});//设置页面参数
         $("#showView").load("/mis/cms/cmsCategory/cmsCategoryEdit.html");
     },
+    //Excel分类
+    '/excelCategory': function () {
+        $("#showView").load("/mis/excel/excelCategory/excelCategoryList.html");
+    },
+    '/excelCategory/add': function () {
+        $("#showView").load("/mis/excel/excelCategory/excelCategoryAdd.html");
+    },
+    '/excelCategory/edit/:id': function (id) {
+        pageParam = Object.assign({}, {id: id});//设置页面参数
+        $("#showView").load("/mis/excel/excelCategory/excelCategoryEdit.html");
+    },
+    //Excel模板
+    '/excelTemplate': function () {
+        $("#showView").load("/mis/excel/excelTemplate/excelTemplateList.html");
+    },
+    '/excelTemplate/add': function () {
+        $("#showView").load("/mis/excel/excelTemplate/excelTemplateAdd.html");
+    },
+    '/excelTemplate/edit/:id': function (id) {
+        pageParam = Object.assign({}, {id: id});//设置页面参数
+        $("#showView").load("/mis/excel/excelTemplate/excelTemplateEdit.html");
+    },
     //页面管理
     '/adsPage': function () {
         $("#showView").load("/mis/ads/adsPage/adsPageList.html");
