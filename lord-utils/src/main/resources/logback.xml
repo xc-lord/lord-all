@@ -13,7 +13,7 @@
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
 			<pattern>%d |-%p %class:%line - %m%n</pattern><!-- 此处设置输出格式 -->
-			<charset>GBK</charset> <!-- 此处设置字符集 -->
+			<charset>UTF-8</charset> <!-- 此处设置字符集 -->
 		</encoder>
 	</appender>
 	<appender name="fileLogger"
