@@ -31,14 +31,7 @@ public class ExcelTemplateController {
     @ApiOperation(value = "查询Excel模板配置的列表")
     @RequestMapping(value = "/api/admin/excel/excelTemplate/list", method = {RequestMethod.GET, RequestMethod.POST})
     public Result list(@ModelAttribute ExcelQueryParams queryParams) {
-        ExcelTemplate param = new ExcelTemplate();
-        if (queryParams != null) {
-            param.setId(queryParams.getLongId());
-            param.setCategoryId(queryParams.getCategoryId());
-            param.setExcelName(queryParams.getExcelName());
-            param.setTableName(queryParams.getTableName());
-        }
-        Pager<ExcelTemplate> pager = excelTemplateService.pageExcelTemplate(param, queryParams.getPage(), queryParams.getPageSize());
+        Pager<ExcelTemplate> pager = excelTemplateService.pageExcelTemplate(queryParams, queryParams.getPage(), queryParams.getPageSize());
         return Result.success("查询成功", pager);
     }
 

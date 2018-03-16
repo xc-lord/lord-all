@@ -25,8 +25,26 @@
 				<el-form-item label="Excel起始行">
                     <el-input-number v-model="editForm.excelStartRow" :min="0"></el-input-number>
                 </el-form-item>
-                <el-form-item label="导入方式" prop="importWay">
-                    <el-input v-model="editForm.importWay" auto-complete="off"></el-input>
+                <el-form-item label="支持全量导入">
+                    <el-switch
+                            v-model="editForm.coverAll"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949">
+                    </el-switch>
+                </el-form-item>
+                <el-form-item label="支持覆盖导入">
+                    <el-switch
+                            v-model="editForm.coverOld"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949">
+                    </el-switch>
+                </el-form-item>
+                <el-form-item label="支持追加导入">
+                    <el-switch
+                            v-model="editForm.coverAppend"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949">
+                    </el-switch>
                 </el-form-item>
                 <el-form-item label="标识字段组" prop="identifyColumn">
                     <el-input v-model="editForm.identifyColumn" auto-complete="off"></el-input>
@@ -34,14 +52,14 @@
                 <el-form-item label="Excel样例" prop="excelExample">
                     <el-input v-model="editForm.excelExample" auto-complete="off"></el-input>
                 </el-form-item>
-				<el-form-item label="分类Id">
-                    <el-input-number v-model="editForm.categoryId" :min="0"></el-input-number>
+				<el-form-item label="分类">
+                    <el-input v-model="editForm.category.name" :disabled="true"></el-input>
                 </el-form-item>
 				<el-form-item label="排序">
                     <el-input-number v-model="editForm.orderValue" :min="0"></el-input-number>
                 </el-form-item>
 				<el-form-item label="创建人">
-                    <el-input-number v-model="editForm.creater" :min="0"></el-input-number>
+                    <el-input v-model="editForm.creater.name" :disabled="true"></el-input>
                 </el-form-item>
 				<el-form-item label="创建时间">
                     <el-date-picker type="datetime" 
@@ -51,7 +69,7 @@
 					</el-date-picker>
                 </el-form-item>
 				<el-form-item label="更新人">
-                    <el-input-number v-model="editForm.modifier" :min="0"></el-input-number>
+                    <el-input v-model="editForm.modifier.name" :disabled="true"></el-input>
                 </el-form-item>
 				<el-form-item label="更新时间">
                     <el-date-picker type="datetime" 

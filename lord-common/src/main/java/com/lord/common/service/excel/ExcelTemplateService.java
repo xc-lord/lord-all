@@ -3,6 +3,7 @@ package com.lord.common.service.excel;
 import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
+import com.lord.common.dto.excel.ExcelQueryParams;
 import com.lord.common.model.excel.ExcelTemplate;
 
 /**
@@ -35,7 +36,7 @@ public interface ExcelTemplateService {
      * @param pageSize  分页大小
      * @return  分页结果
      */
-    Pager<ExcelTemplate> pageExcelTemplate(ExcelTemplate param, int page, int pageSize);
+    Pager<ExcelTemplate> pageExcelTemplate(ExcelQueryParams param, int page, int pageSize);
 
     /**
      * 分页查询
@@ -43,7 +44,7 @@ public interface ExcelTemplateService {
      * @param pagerParam    分页参数
      * @return  分页结果
      */
-    Pager<ExcelTemplate> pageExcelTemplate(ExcelTemplate param, PagerParam pagerParam);
+    Pager<ExcelTemplate> pageExcelTemplate(ExcelQueryParams param, PagerParam pagerParam);
 
     /**
      * 分页查询
@@ -52,7 +53,7 @@ public interface ExcelTemplateService {
      * @param sorts         排序字段
      * @return  分页结果
      */
-    Pager<ExcelTemplate> pageExcelTemplate(ExcelTemplate param, PagerParam pagerParam, PagerSort... sorts);
+    Pager<ExcelTemplate> pageExcelTemplate(ExcelQueryParams param, PagerParam pagerParam, PagerSort... sorts);
 
     /**
      * 物理删除

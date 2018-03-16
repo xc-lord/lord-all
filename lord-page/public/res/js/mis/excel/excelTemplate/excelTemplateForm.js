@@ -10,14 +10,16 @@ var ExcelTemplateFromCommon = {
         excelName: '',		//Excel名称
         tableName: '',		//数据库表名
         excelStartRow: 0,		//Excel起始行
-        importWay: '',		//导入方式
         identifyColumn: '',		//标识字段组
         excelExample: '',		//Excel样例
-        categoryId: 0,		//分类Id
+        category: {},		//分类Id
+        coverAll:false,//支持全量导入
+        coverOld:true,//支持覆盖导入
+        coverAppend:true,//支持追加导入
         orderValue: 0,		//排序
-        creater: 0,		//创建人
+        creater: {},		//创建人
         createTime: '',		//创建时间
-        modifier: 0,		//更新人
+        modifier: {},		//更新人
         updateTime: '',		//更新时间
     },
     data: function(){

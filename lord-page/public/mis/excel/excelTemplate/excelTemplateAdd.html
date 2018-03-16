@@ -23,9 +23,6 @@
 				<el-form-item label="Excel起始行">
                     <el-input-number v-model="editForm.excelStartRow" :min="0"></el-input-number>
                 </el-form-item>
-                <el-form-item label="导入方式" prop="importWay">
-                    <el-input v-model="editForm.importWay" auto-complete="off"></el-input>
-                </el-form-item>
                 <el-form-item label="标识字段组" prop="identifyColumn">
                     <el-input v-model="editForm.identifyColumn" auto-complete="off"></el-input>
                 </el-form-item>
@@ -34,6 +31,27 @@
                 </el-form-item>
 				<el-form-item label="分类Id">
                     <el-input-number v-model="editForm.categoryId" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="支持全量导入">
+                    <el-switch
+                            v-model="editForm.coverAll"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949">
+                    </el-switch>
+                </el-form-item>
+				<el-form-item label="支持覆盖导入">
+                    <el-switch
+                            v-model="editForm.coverOld"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949">
+                    </el-switch>
+                </el-form-item>
+				<el-form-item label="支持追加导入">
+                    <el-switch
+                            v-model="editForm.coverAppend"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949">
+                    </el-switch>
                 </el-form-item>
 				<el-form-item label="排序">
                     <el-input-number v-model="editForm.orderValue" :min="0"></el-input-number>

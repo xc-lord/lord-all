@@ -1,6 +1,7 @@
 package com.lord.biz.dao.excel.specs;
 
 import com.lord.biz.utils.BaseSpecification;
+import com.lord.common.dto.excel.ExcelQueryParams;
 import com.lord.common.model.excel.ExcelTemplate;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
@@ -21,7 +22,7 @@ public class ExcelTemplateSpecs extends BaseSpecification {
      * @param pageObj   查询参数
      * @return
      */
-    public static Specification<ExcelTemplate> queryByExcelTemplate(final ExcelTemplate pageObj) {
+    public static Specification<ExcelTemplate> queryByExcelTemplate(final ExcelQueryParams pageObj) {
         return new Specification<ExcelTemplate>() {
             public Predicate toPredicate(Root<ExcelTemplate> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
                 Predicate predicate = builder.conjunction();//添加where 1=1条件

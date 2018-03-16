@@ -4,6 +4,7 @@ import java.util.*;
 import javax.persistence.*;
 import java.io.Serializable;
 
+import com.lord.common.model.mis.MisUser;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 /**
@@ -42,12 +43,6 @@ public class ExcelTemplate implements Serializable {
 	private Integer excelStartRow;
 
 	/**
-	 * 导入方式
-	 */
-	@Column(name = "import_way", nullable = true, length = 50)
-	private String importWay;
-
-	/**
 	 * 标识字段组
 	 */
 	@Column(name = "identify_column", nullable = true, length = 100)
@@ -62,8 +57,27 @@ public class ExcelTemplate implements Serializable {
 	/**
 	 * 分类Id
 	 */
-	@Column(name = "category_id", nullable = true, length = 19)
-	private Long categoryId;
+	@ManyToOne
+	@JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "none"))
+	private ExcelCategory category;
+
+	/**
+	 * 支持全量导入
+	 */
+	@Column(name = "cover_all", nullable = true)
+	private Boolean coverAll = false;
+
+	/**
+	 * 支持覆盖导入
+	 */
+	@Column(name = "cover_old", nullable = true)
+	private Boolean coverOld = true;
+
+	/**
+	 * 支持追加导入
+	 */
+	@Column(name = "cover_append", nullable = true)
+	private Boolean coverAppend = true;
 
 	/**
 	 * 排序
@@ -74,8 +88,9 @@ public class ExcelTemplate implements Serializable {
 	/**
 	 * 创建人
 	 */
-	@Column(name = "creater", nullable = true, length = 19)
-	private Long creater;
+	@ManyToOne
+	@JoinColumn(name = "creater", foreignKey = @ForeignKey(name = "none"))
+	private MisUser creater;
 
 	/**
 	 * 创建时间
@@ -86,8 +101,9 @@ public class ExcelTemplate implements Serializable {
 	/**
 	 * 更新人
 	 */
-	@Column(name = "modifier", nullable = true, length = 19)
-	private Long modifier;
+	@ManyToOne
+	@JoinColumn(name = "modifier", foreignKey = @ForeignKey(name = "none"))
+	private MisUser modifier;
 
 	/**
 	 * 更新时间
@@ -127,14 +143,6 @@ public class ExcelTemplate implements Serializable {
 		this.excelStartRow = excelStartRow;
 	}
 
-	public String getImportWay() {
-		return this.importWay;
-	}
-
-	public void setImportWay(String importWay) {
-		this.importWay = importWay;
-	}
-
 	public String getIdentifyColumn() {
 		return this.identifyColumn;
 	}
@@ -151,12 +159,44 @@ public class ExcelTemplate implements Serializable {
 		this.excelExample = excelExample;
 	}
 
-	public Long getCategoryId() {
-		return this.categoryId;
+	public ExcelCategory getCategory()
+	{
+		return category;
 	}
 
-	public void setCategoryId(Long categoryId) {
-		this.categoryId = categoryId;
+	public void setCategory(ExcelCategory category)
+	{
+		this.category = category;
+	}
+
+	public Boolean getCoverAll()
+	{
+		return coverAll;
+	}
+
+	public void setCoverAll(Boolean coverAll)
+	{
+		this.coverAll = coverAll;
+	}
+
+	public Boolean getCoverOld()
+	{
+		return coverOld;
+	}
+
+	public void setCoverOld(Boolean coverOld)
+	{
+		this.coverOld = coverOld;
+	}
+
+	public Boolean getCoverAppend()
+	{
+		return coverAppend;
+	}
+
+	public void setCoverAppend(Boolean coverAppend)
+	{
+		this.coverAppend = coverAppend;
 	}
 
 	public Long getOrderValue() {
@@ -167,12 +207,24 @@ public class ExcelTemplate implements Serializable {
 		this.orderValue = orderValue;
 	}
 
-	public Long getCreater() {
-		return this.creater;
+	public MisUser getCreater()
+	{
+		return creater;
 	}
 
-	public void setCreater(Long creater) {
+	public void setCreater(MisUser creater)
+	{
 		this.creater = creater;
+	}
+
+	public MisUser getModifier()
+	{
+		return modifier;
+	}
+
+	public void setModifier(MisUser modifier)
+	{
+		this.modifier = modifier;
 	}
 
 	public Date getCreateTime() {
@@ -181,14 +233,6 @@ public class ExcelTemplate implements Serializable {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
-	}
-
-	public Long getModifier() {
-		return this.modifier;
-	}
-
-	public void setModifier(Long modifier) {
-		this.modifier = modifier;
 	}
 
 	public Date getUpdateTime() {

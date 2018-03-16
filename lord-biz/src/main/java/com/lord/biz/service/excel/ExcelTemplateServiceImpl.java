@@ -6,6 +6,7 @@ import com.lord.biz.utils.ServiceUtils;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
+import com.lord.common.dto.excel.ExcelQueryParams;
 import com.lord.common.model.excel.ExcelTemplate;
 import com.lord.common.service.excel.ExcelTemplateService;
 import com.lord.utils.Preconditions;
@@ -75,26 +76,26 @@ public class ExcelTemplateServiceImpl implements ExcelTemplateService {
     }
 
     @Override
-    public Pager<ExcelTemplate> pageExcelTemplate(ExcelTemplate param, int page, int pageSize) {
+    public Pager<ExcelTemplate> pageExcelTemplate(ExcelQueryParams param, int page, int pageSize) {
         PagerParam pagerParam = new PagerParam(page, pageSize);
         return pageExcelTemplate(param, pagerParam);
 
     }
 
     @Override
-    public Pager<ExcelTemplate> pageExcelTemplate(ExcelTemplate param, PagerParam pagerParam) {
+    public Pager<ExcelTemplate> pageExcelTemplate(ExcelQueryParams param, PagerParam pagerParam) {
         PageRequest pageRequest = new PageRequest(pagerParam.getPage() - 1, pagerParam.getPageSize());
         Page<ExcelTemplate> pageResult = excelTemplateDao.findAll(ExcelTemplateSpecs.queryByExcelTemplate(param), pageRequest);
         return ServiceUtils.toPager(pageResult, pagerParam);
     }
 
     @Override
-    public Pager<ExcelTemplate> pageExcelTemplate(ExcelTemplate param, PagerParam pagerParam, PagerSort... sorts) {
+    public Pager<ExcelTemplate> pageExcelTemplate(ExcelQueryParams param, PagerParam pagerParam, PagerSort... sorts) {
         Sort sort = ServiceUtils.parseSort(sorts);
         Page<ExcelTemplate> pageResult = null;
         //ID存在时，按ID进行查询
         if (param != null && param.getId() != null) {
-            ExcelTemplate obj = excelTemplateDao.findOne(param.getId());
+            ExcelTemplate obj = excelTemplateDao.findOne(param.getLongId());
             return ServiceUtils.toPager(obj, pagerParam);
         }
         if(sort != null) {
