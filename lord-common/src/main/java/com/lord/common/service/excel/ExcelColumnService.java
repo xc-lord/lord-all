@@ -10,7 +10,7 @@ import com.lord.common.model.excel.ExcelColumn;
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2018年03月16日 16:22:38
+ * @Date 2018年03月20日 11:39:54
  */
 public interface ExcelColumnService {
 

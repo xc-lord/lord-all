@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2018年03月16日 16:22:38
+ * @Date 2018年03月20日 11:39:54
  */
 @Entity
 @Table(name = "excel_column")
@@ -56,8 +56,14 @@ public class ExcelColumn implements Serializable {
 	/**
 	 * 是否为空
 	 */
-	@Column(name = "nullable", nullable = true, length = 0)
+	@Column(name = "nullable", nullable = true, length = 1)
 	private Boolean nullable;
+
+	/**
+	 * 是否标识
+	 */
+	@Column(name = "identification", nullable = true, length = 1)
+	private Boolean identification;
 
 	/**
 	 * 开始时间
@@ -72,22 +78,16 @@ public class ExcelColumn implements Serializable {
 	private Date endTime;
 
 	/**
-	 * 枚举Json
+	 * 最小值
 	 */
-	@Column(name = "enum_json_str", nullable = true, length = 200)
-	private String enumJsonStr;
+	@Column(name = "min_value", nullable = true, length = 22)
+	private Double minValue;
 
 	/**
-	 * 锁定状态
+	 * 最大值
 	 */
-	@Column(name = "lock_state", nullable = true, length = 40)
-	private String lockState;
-
-	/**
-	 * 校验API
-	 */
-	@Column(name = "check_api", nullable = true, length = 50)
-	private String checkApi;
+	@Column(name = "max_value", nullable = true, length = 22)
+	private Double maxValue;
 
 	/**
 	 * 排序
@@ -178,6 +178,17 @@ public class ExcelColumn implements Serializable {
 		this.nullable = nullable;
 	}
 
+	public Boolean isIdentification() {
+		return this.identification;
+	}
+	public Boolean getIdentification() {
+		return this.identification;
+	}
+
+	public void setIdentification(Boolean identification) {
+		this.identification = identification;
+	}
+
 	public Date getStartTime() {
 		return this.startTime;
 	}
@@ -194,28 +205,20 @@ public class ExcelColumn implements Serializable {
 		this.endTime = endTime;
 	}
 
-	public String getEnumJsonStr() {
-		return this.enumJsonStr;
+	public Double getMinValue() {
+		return this.minValue;
 	}
 
-	public void setEnumJsonStr(String enumJsonStr) {
-		this.enumJsonStr = enumJsonStr;
+	public void setMinValue(Double minValue) {
+		this.minValue = minValue;
 	}
 
-	public String getLockState() {
-		return this.lockState;
+	public Double getMaxValue() {
+		return this.maxValue;
 	}
 
-	public void setLockState(String lockState) {
-		this.lockState = lockState;
-	}
-
-	public String getCheckApi() {
-		return this.checkApi;
-	}
-
-	public void setCheckApi(String checkApi) {
-		this.checkApi = checkApi;
+	public void setMaxValue(Double maxValue) {
+		this.maxValue = maxValue;
 	}
 
 	public Long getOrderValue() {
