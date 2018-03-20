@@ -7,88 +7,200 @@
 <!-- UI界面 start -->
 <div id="excelTemplateEditView">
     <el-row>
-        <h3><i class="el-icon-edit"></i> <a href="#/excelTemplate">Excel模板配置管理</a> / 编辑</h3>
+        <h3><i class="el-icon-edit"></i> <a href="#/excelTemplate">Excel模板配置管理</a> / {{editModeName}}</h3>
     </el-row>
     <!--编辑界面-->
     <el-row type="flex" justify="center">
         <el-col :span="22">
             <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
-				<el-form-item label="ID" prop="id">
-                    <el-input v-model="editForm.id" auto-complete="off" :disabled="true"></el-input>
-                </el-form-item>
-                <el-form-item label="Excel名称" prop="excelName">
-                    <el-input v-model="editForm.excelName" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="数据库表名" prop="tableName">
-                    <el-input v-model="editForm.tableName" auto-complete="off"></el-input>
-                </el-form-item>
-				<el-form-item label="Excel起始行">
-                    <el-input-number v-model="editForm.excelStartRow" :min="0"></el-input-number>
-                </el-form-item>
-                <el-form-item label="支持全量导入">
-                    <el-switch
-                            v-model="editForm.coverAll"
-                            active-color="#13ce66"
-                            inactive-color="#ff4949">
-                    </el-switch>
-                </el-form-item>
-                <el-form-item label="支持覆盖导入">
-                    <el-switch
-                            v-model="editForm.coverOld"
-                            active-color="#13ce66"
-                            inactive-color="#ff4949">
-                    </el-switch>
-                </el-form-item>
-                <el-form-item label="支持追加导入">
-                    <el-switch
-                            v-model="editForm.coverAppend"
-                            active-color="#13ce66"
-                            inactive-color="#ff4949">
-                    </el-switch>
-                </el-form-item>
-                <el-form-item label="标识字段组" prop="identifyColumn">
-                    <el-input v-model="editForm.identifyColumn" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="Excel样例" prop="excelExample">
-                    <el-input v-model="editForm.excelExample" auto-complete="off"></el-input>
-                </el-form-item>
-				<el-form-item label="分类">
-                    <el-input v-model="editForm.category.name" :disabled="true"></el-input>
-                </el-form-item>
-				<el-form-item label="排序">
-                    <el-input-number v-model="editForm.orderValue" :min="0"></el-input-number>
-                </el-form-item>
-				<el-form-item label="创建人">
-                    <el-input v-model="editForm.creater.name" :disabled="true"></el-input>
-                </el-form-item>
-				<el-form-item label="创建时间">
-                    <el-date-picker type="datetime" 
-									placeholder="选择日期和时间"
-									:disabled="true"
-                                    v-model="editForm.createTime">
-					</el-date-picker>
-                </el-form-item>
-				<el-form-item label="更新人">
-                    <el-input v-model="editForm.modifier.name" :disabled="true"></el-input>
-                </el-form-item>
-				<el-form-item label="更新时间">
-                    <el-date-picker type="datetime" 
-									placeholder="选择日期和时间"
-									:disabled="true"
-                                    v-model="editForm.updateTime">
-					</el-date-picker>
-                </el-form-item>
-                <!--TODO:待修改-->
-				<!--<el-form-item label="状态">
-                    <el-select v-model="editForm.status" clearable placeholder="请选择">
-                        <el-option
-                                v-for="item in excelTemplateStatus"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>-->
+                <el-row>
+                    <el-col :span="10">
+                        <el-form-item label="ID" prop="id" v-if="editMode">
+                            <el-input v-model="editForm.id" auto-complete="off" :disabled="true" size="small"></el-input>
+                        </el-form-item>
+                        <el-form-item label="Excel名称" prop="excelName">
+                            <el-input v-model="editForm.excelName" auto-complete="off" size="small"></el-input>
+                        </el-form-item>
+                        <el-form-item label="数据库表名" prop="tableName">
+                            <el-input v-model="editForm.tableName" auto-complete="off" size="small"></el-input>
+                        </el-form-item>
+                        <el-form-item label="Excel起始行">
+                            <el-input-number v-model="editForm.excelStartRow" :min="0" size="small"></el-input-number>
+                        </el-form-item>
+                        <el-form-item label="标识字段组" prop="identifyColumn">
+                            <el-input v-model="editForm.identifyColumn" auto-complete="off" size="small"></el-input>
+                        </el-form-item>
+                        <el-form-item label="Excel样例" prop="excelExample">
+                            <el-input v-model="editForm.excelExample" auto-complete="off" size="small"></el-input>
+                        </el-form-item>
+                        <el-form-item label="分类" prop="categoryId">
+                            <el-select v-model="editForm.categoryId" clearable placeholder="请选择">
+                                <el-option
+                                        v-for="item in excelCategoryList"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="排序">
+                            <el-input-number v-model="editForm.orderValue" :min="0" size="small"></el-input-number>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="10">
+                        <el-form-item label="支持全量导入">
+                            <el-switch
+                                    v-model="editForm.coverAll"
+                                    active-color="#13ce66"
+                                    inactive-color="#ff4949">
+                            </el-switch>
+                        </el-form-item>
+                        <el-form-item label="支持覆盖导入">
+                            <el-switch
+                                    v-model="editForm.coverOld"
+                                    active-color="#13ce66"
+                                    inactive-color="#ff4949">
+                            </el-switch>
+                        </el-form-item>
+                        <el-form-item label="支持追加导入">
+                            <el-switch
+                                    v-model="editForm.coverAppend"
+                                    active-color="#13ce66"
+                                    inactive-color="#ff4949">
+                            </el-switch>
+                        </el-form-item>
+                        <el-form-item label="创建人" v-if="editMode && excelTemplateData.creater != null">
+                            <el-input v-model="excelTemplateData.creater.name" :disabled="true" size="small"></el-input>
+                        </el-form-item>
+                        <el-form-item label="创建时间" v-if="editMode">
+                            <el-date-picker type="datetime"
+                                            placeholder="选择日期和时间"
+                                            :disabled="true"
+                                            v-model="excelTemplateData.createTime"
+                                            size="small">
+                            </el-date-picker>
+                        </el-form-item>
+                        <el-form-item label="更新人" v-if="editMode && excelTemplateData.modifier != null">
+                            <el-input v-model="excelTemplateData.modifier.name" :disabled="true" size="small"></el-input>
+                        </el-form-item>
+                        <el-form-item label="更新时间" v-if="editMode">
+                            <el-date-picker type="datetime"
+                                            placeholder="选择日期和时间"
+                                            :disabled="true"
+                                            v-model="excelTemplateData.updateTime" size="small">
+                            </el-date-picker>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-button type="success" icon="el-icon-plus" @click="addColumnClick">新增列</el-button>
+                </el-row>
+                <el-row>
+                    <el-card class="box-card">
+                        <div slot="header" class="clearfix">
+                            <span>卡片名称</span>
+                            <el-button style="float: right; padding: 3px 0" type="text">删除</el-button>
+                        </div>
+                        <div class="text item">
+                            <el-row>
+                                <el-col :span="6">
+                                    <el-form-item label="列名">
+                                        <el-input
+                                                size="mini"
+                                                placeholder="列名"
+                                                v-model="input9">
+                                        </el-input>
+                                    </el-form-item>
+                                    <el-form-item label="是否为空">
+                                        <el-input
+                                                size="mini"
+                                                placeholder="是否为空"
+                                                v-model="input9">
+                                        </el-input>
+                                    </el-form-item>
+                                    <el-form-item label="是否标识">
+                                        <el-input
+                                                size="mini"
+                                                placeholder="是否标识"
+                                                v-model="input9">
+                                        </el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="6">
+                                    <el-form-item label="列类型">
+                                        <el-input
+                                                size="mini"
+                                                placeholder="列类型"
+                                                v-model="input9">
+                                        </el-input>
+                                    </el-form-item>
+                                    <el-form-item label="排序">
+                                        <el-input
+                                                size="mini"
+                                                placeholder="排序"
+                                                v-model="input9">
+                                        </el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="6">
+                                    <el-form-item label="数据库列名">
+                                        <el-input
+                                                size="mini"
+                                                placeholder="数据库列名"
+                                                v-model="input9">
+                                        </el-input>
+                                    </el-form-item>
+                                    <el-form-item label="开始时间">
+                                        <el-input
+                                                size="mini"
+                                                placeholder="开始时间"
+                                                v-model="input9">
+                                        </el-input>
+                                    </el-form-item>
+                                    <el-form-item label="最小值">
+                                        <el-input
+                                                size="mini"
+                                                placeholder="最小值"
+                                                v-model="input9">
+                                        </el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="6">
+                                    <el-form-item label="长度">
+                                        <el-input
+                                                size="mini"
+                                                placeholder="长度"
+                                                v-model="input9">
+                                        </el-input>
+                                    </el-form-item>
+                                    <el-form-item label="结束时间">
+                                        <el-input
+                                                size="mini"
+                                                placeholder="结束时间"
+                                                v-model="input9">
+                                        </el-input>
+                                    </el-form-item>
+                                    <el-form-item label="最大值">
+                                        <el-input
+                                                size="mini"
+                                                placeholder="最大值"
+                                                v-model="input9">
+                                        </el-input>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                        </div>
+                    </el-card>
+                    <el-card class="box-card">
+                        <div slot="header" class="clearfix">
+                            <span>卡片名称</span>
+                            <el-button style="float: right; padding: 3px 0" type="text">删除</el-button>
+                        </div>
+                        <div v-for="o in 4" :key="o" class="text item">
+                            {{'列表内容 ' + o }}
+                        </div>
+                    </el-card>
+                </el-row>
             </el-form>
         </el-col>
     </el-row>
@@ -104,53 +216,155 @@
 <!-- UI界面 end -->
 
 <script type="text/javascript">
-    $.getScript('/res/js/mis/excel/excelTemplate/excelTemplateForm.js', function () {
-        var excelTemplateEditView = new Vue({
-            el: '#excelTemplateEditView',
-            data: ExcelTemplateFromCommon.data,
-            //数据初始化
-            created: function () {
+    var excelTemplateEditView = new Vue({
+        el: '#excelTemplateEditView',
+        data: {
+            editLoading:false,
+            //表单验证规则
+            editFormRules: {
+                tableName: [
+                    {required: true, message: '数据库表名不能为空', trigger: 'blur'},
+                    {
+                        validator: function(rule, value, callback){
+                            return commonUtils.formRowIsExist('/api/admin/excel/excelTemplate/isExist.do',"tableName",rule, value, callback);
+                        },
+                        trigger: 'blur'
+                    }
+                ],
+                categoryId:[
+                    {required: true, message: '分类不能为空', trigger: 'blur'},
+                ]
+            },
+            //编辑界面数据
+            editForm: {},
+            //Excel模板数据
+            excelTemplateData:{},
+            //Excel模板分类数据
+            excelCategoryList:[],
+            //是否编辑模式
+            editMode:true,
+            editModeName:'编辑',
+            input9:''
+        },
+        //数据初始化
+        created: function () {
+            var _self = this;
+            //根据Id,获取编辑的对象
+            _self.loadExcelTemplate();
+            //获取分类
+            _self.loadCategory();
+        },
+        methods: {
+            //是否具有权限
+            hasRight: function(rightCode) {
+                return commonUtils.hasRight(rightCode);
+            },
+            //保存事件
+            editSubmit: function (formName) {
                 var _self = this;
-                //获取下拉框选项
-                ExcelTemplateFromCommon.loadSelect(_self);
+                _self.$refs[formName].validate(function(valid){
+                    if (valid) {
+                        //转换称时间戳
+                        _self.editForm.createTime = commonUtils.toTimestamp(_self.editForm.createTime);//创建时间
+                        _self.editForm.updateTime = commonUtils.toTimestamp(_self.editForm.updateTime);//更新时间
+                        //保存异步提交
+                        $.ajax({
+                            method: "post",
+                            url: '/api/admin/excel/excelTemplate/saveOrUpdate.do',
+                            data: _self.editForm,
+                            dataType: "json"
+                        }).done(function (res, status, xhr) {
+                            if (res.success) {
+                                _self.$message.success(res.msg);//保存成功
+                                window.location.href = "#/excelTemplate";//跳转到列表页面
+                            } else {
+                                _self.$message.error(res.msg);//提示错误
+                            }
+                            _self.loading = false;
+                        });
+                    } else{
+                        _self.$message.error("请正确填写表单！");
+                    }
+                });
+            },
+            //取消事件
+            editFormCancel: function () {
+                window.location.href = "#/excelTemplate";//跳转到列表页面
+            },
+            //上传图片前的验证事件
+            beforeAvatarUpload:function(file) {
+                var _self = this;
+                commonUtils.uploadImageCheck(file, _self);
+            },
+            //加载分类数据
+            loadCategory:function() {
+                var _self = this;
+                //获取分类
+                var paramData = {
+                    pageSize: 100,
+                    page: 1
+                };
+                $.ajax({
+                    url: '/api/admin/excel/excelCategory/list.do',
+                    data: paramData,
+                    dataType: "json"
+                }).done(function (res, status, xhr) {
+                    if (res.success) {
+                        _self.excelCategoryList = res.data.list;
+                    } else {
+                        _self.$message.error(res.msg);//提示错误
+                    }
+                });
+            },
+            //加载Excel模板数据
+            loadExcelTemplate:function() {
+                var _self = this;
+                if(commonUtils.isEmpty(pageParam.id)) {
+                    _self.editMode = false;
+                    _self.editModeName = '新增';
+                    _self.editForm = {
+                        excelName: '',		//Excel名称
+                        tableName: '',		//数据库表名
+                        excelStartRow: 2,		//Excel起始行
+                        identifyColumn: '',		//标识字段组
+                        excelExample: '',		//Excel样例
+                        categoryId: '',		//分类
+                        coverAll: false,//支持全量导入
+                        coverOld: true,//支持覆盖导入
+                        coverAppend: true,//支持追加导入
+                        orderValue: 0//排序
+                    };
+                    return;//id不存在时，是编辑界面
+                }
                 //根据Id,获取编辑的对象
                 $.ajax({
                     url: '/api/admin/excel/excelTemplate/' + pageParam.id + ".do",
                     dataType: "json"
                 }).done(function (res) {
                     if (res.success) {
-                        _self.editForm = Object.assign(ExcelTemplateFromCommon.defaultModel, res.data);
+                        _self.editForm = {
+                            id:res.data.id,
+                            excelName: res.data.excelName,		//Excel名称
+                            tableName: res.data.tableName,		//数据库表名
+                            excelStartRow: res.data.excelStartRow,		//Excel起始行
+                            identifyColumn: res.data.identifyColumn,		//标识字段组
+                            excelExample: res.data.excelExample,		//Excel样例
+                            categoryId: res.data.category.id,		//分类
+                            coverAll: res.data.coverAll,//支持全量导入
+                            coverOld: res.data.coverOld,//支持覆盖导入
+                            coverAppend: res.data.coverAppend,//支持追加导入
+                            orderValue: res.data.orderValue//排序
+                        };
+                        _self.excelTemplateData = res.data;
                     } else {
                         _self.$message.error(res.msg);//提示错误
                     }
                 });
             },
-            methods: {
-                //是否具有权限
-                hasRight: function(rightCode) {
-                    return commonUtils.hasRight(rightCode);
-                },
-                //保存事件
-                editSubmit: function (formName) {
-                    var _self = this;
-                    _self.$refs[formName].validate(function(valid){
-                        if (valid) {
-                            ExcelTemplateFromCommon.saveAction(_self);
-                        } else{
-                            _self.$message.error("请正确填写表单！");
-                        }
-                    });
-                },
-                //取消事件
-                editFormCancel: function () {
-                    ExcelTemplateFromCommon.cancelAction(this);
-                },
-                //上传图片前的验证事件
-                beforeAvatarUpload:function(file) {
-                    var _self = this;
-                    commonUtils.uploadImageCheck(file, _self);
-                }
+            //新增列
+            addColumnClick:function(){
+
             }
-        });
+        }
     });
 </script>

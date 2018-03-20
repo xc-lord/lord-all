@@ -65,13 +65,21 @@
                     width="120">
             </el-table-column>
             <el-table-column
-                    prop="excelStartRow"
-                    label="Excel起始行"
+                    prop="category.name"
+                    label="分类"
                     width="120">
             </el-table-column>
             <el-table-column
-                    prop="importWay"
-                    label="导入方式"
+                    label="排序值"
+                    width="100">
+                <template scope="scope">
+                    <el-input v-model="scope.row.orderValue" placeholder="排序值" size="small" @blur="orderBlurEvent"
+                              :data-id="scope.row.id"></el-input>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="excelStartRow"
+                    label="Excel起始行"
                     width="120">
             </el-table-column>
             <el-table-column
@@ -83,19 +91,6 @@
                     prop="excelExample"
                     label="Excel样例"
                     width="120">
-            </el-table-column>
-            <el-table-column
-                    prop="category.name"
-                    label="分类Id"
-                    width="120">
-            </el-table-column>
-            <el-table-column
-                    label="排序值"
-                    width="100">
-                <template scope="scope">
-                    <el-input v-model="scope.row.orderValue" placeholder="排序值" size="small" @blur="orderBlurEvent"
-                              :data-id="scope.row.id"></el-input>
-                </template>
             </el-table-column>
             <el-table-column
                     prop="creater.name"

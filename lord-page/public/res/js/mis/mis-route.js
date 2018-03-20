@@ -127,7 +127,8 @@ var routes = {
         $("#showView").load("/mis/excel/excelTemplate/excelTemplateList.html");
     },
     '/excelTemplate/add': function () {
-        $("#showView").load("/mis/excel/excelTemplate/excelTemplateAdd.html");
+        pageParam = {};
+        $("#showView").load("/mis/excel/excelTemplate/excelTemplateEdit.html");
     },
     '/excelTemplate/edit/:id': function (id) {
         pageParam = Object.assign({}, {id: id});//设置页面参数

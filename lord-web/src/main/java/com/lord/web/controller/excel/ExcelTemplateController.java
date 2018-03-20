@@ -1,13 +1,17 @@
 package com.lord.web.controller.excel;
 
 import com.lord.common.dto.Pager;
-import com.lord.common.dto.QueryParams;
 import com.lord.common.dto.excel.ExcelQueryParams;
+import com.lord.common.dto.excel.ExcelTemplateFormDto;
 import com.lord.common.model.excel.ExcelTemplate;
 import com.lord.common.service.excel.ExcelTemplateService;
 import com.lord.utils.Preconditions;
 import com.lord.utils.dto.Result;
-import io.swagger.annotations.*;
+import com.lord.web.handler.UserHandler;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +41,10 @@ public class ExcelTemplateController {
 
     @ApiOperation(value = "保存或更新Excel模板配置")
     @RequestMapping(value = "/api/admin/excel/excelTemplate/saveOrUpdate", method = RequestMethod.POST)
-    public Result saveOrUpdate(@ModelAttribute ExcelTemplate pageObj) {
-        ExcelTemplate dbObj = excelTemplateService.saveOrUpdate(pageObj);
+    public Result saveOrUpdate(@ModelAttribute ExcelTemplateFormDto pageDto) {
+        Preconditions.checkNotNull(pageDto, "保存对象不能为空");
+        pageDto.setLoginUser(UserHandler.getLoginUser());
+        ExcelTemplate dbObj = excelTemplateService.saveOrUpdate(pageDto);
         return Result.success("保存成功", dbObj);
     }
 

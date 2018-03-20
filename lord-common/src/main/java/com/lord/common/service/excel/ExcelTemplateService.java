@@ -4,6 +4,7 @@ import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.excel.ExcelQueryParams;
+import com.lord.common.dto.excel.ExcelTemplateFormDto;
 import com.lord.common.model.excel.ExcelTemplate;
 
 /**
@@ -24,10 +25,10 @@ public interface ExcelTemplateService {
 
     /**
      * 新增或者更新
-     * @param pageObj   页面传参
+     * @param pageDto   页面传参
      * @return  数据库对象
      */
-    ExcelTemplate saveOrUpdate(ExcelTemplate pageObj);
+    ExcelTemplate saveOrUpdate(ExcelTemplateFormDto pageDto);
 
     /**
      * 分页查询

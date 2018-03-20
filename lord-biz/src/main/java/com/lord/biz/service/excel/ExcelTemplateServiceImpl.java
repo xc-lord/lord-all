@@ -1,15 +1,22 @@
 package com.lord.biz.service.excel;
 
+import com.lord.biz.dao.excel.ExcelCategoryDao;
 import com.lord.biz.dao.excel.ExcelTemplateDao;
 import com.lord.biz.dao.excel.specs.ExcelTemplateSpecs;
+import com.lord.biz.dao.mis.MisUserDao;
 import com.lord.biz.utils.ServiceUtils;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.excel.ExcelQueryParams;
+import com.lord.common.dto.excel.ExcelTemplateFormDto;
+import com.lord.common.model.excel.ExcelCategory;
 import com.lord.common.model.excel.ExcelTemplate;
+import com.lord.common.model.mis.MisUser;
 import com.lord.common.service.excel.ExcelTemplateService;
 import com.lord.utils.Preconditions;
+import com.lord.utils.exception.CommonException;
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +26,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,6 +46,12 @@ public class ExcelTemplateServiceImpl implements ExcelTemplateService {
     @Autowired
     private ExcelTemplateDao excelTemplateDao;
 
+    @Autowired
+    private ExcelCategoryDao excelCategoryDao;
+
+    @Autowired
+    private MisUserDao misUserDao;
+
     @Override
     public ExcelTemplate getExcelTemplate(Long id) {
         return excelTemplateDao.findOne(id);
@@ -45,20 +59,35 @@ public class ExcelTemplateServiceImpl implements ExcelTemplateService {
 
     @Override
     @Transactional
-    public ExcelTemplate saveOrUpdate(ExcelTemplate pageObj) {
-        Preconditions.checkNotNull(pageObj, "保存对象不能为空");
-
+    public ExcelTemplate saveOrUpdate(ExcelTemplateFormDto pageDto) {
+        Preconditions.checkNotNull(pageDto, "保存对象不能为空");
         if(logger.isDebugEnabled())
-            logger.debug("保存" + pageObj);
+            logger.debug("保存" + pageDto);
 
-        //验证字段的唯一性
+        ExcelTemplate pageObj = new ExcelTemplate();
+        try
+        {
+            BeanUtils.copyProperties(pageObj,pageDto);
+        }
+        catch (Exception e)
+        {
+            throw new CommonException("对象转换失败");
+        }
+
+        MisUser misUser = misUserDao.findOne(pageDto.getLoginUser().getUserId());
+        Preconditions.checkNotNull(misUser, "用户不存在！");
+        Preconditions.checkNotNull(pageDto.getCategoryId(), "分类ID不能为空！");
+        ExcelCategory excelCategory = excelCategoryDao.findOne(pageDto.getCategoryId());
+        Preconditions.checkNotNull(excelCategory, "分类不存在！");
+        pageObj.setCategory(excelCategory);
 
         //新增记录
         if (pageObj.getId() == null) {
             //设置默认属性
             pageObj.setCreateTime(new Date());
             pageObj.setUpdateTime(new Date());
-
+            pageObj.setCreater(misUser);
+            pageObj.setModifier(misUser);
             excelTemplateDao.save(pageObj);//新增
             return pageObj;
         }
@@ -69,9 +98,10 @@ public class ExcelTemplateServiceImpl implements ExcelTemplateService {
         //不能修改的字段
         pageObj.setCreateTime(dbObj.getCreateTime());
         pageObj.setUpdateTime(new Date());//更新时间
+        pageObj.setCreater(dbObj.getCreater());
+        pageObj.setModifier(misUser);
 
         excelTemplateDao.save(pageObj);//更新
-
         return pageObj;
     }
 
@@ -127,8 +157,7 @@ public class ExcelTemplateServiceImpl implements ExcelTemplateService {
     @Override
     public boolean isExist(Long id, String rowName, String rowValue) {
         List<String> rowList = new ArrayList<>();
-        rowList.add("name");
-        rowList.add("username");
+        rowList.add("tableName");
         Preconditions.checkArgument(!rowList.contains(rowName), "此字段不需要判断是否存在");
         List<ExcelTemplate> list = excelTemplateDao.findAll(ExcelTemplateSpecs.queryBy(rowName, rowValue, ExcelTemplate.class));
         if (list == null || list.size() < 1) {
