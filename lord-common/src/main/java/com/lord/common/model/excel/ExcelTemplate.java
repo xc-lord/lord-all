@@ -37,6 +37,18 @@ public class ExcelTemplate implements Serializable {
 	private String tableName;
 
 	/**
+	 * 是否已经生成表
+	 */
+	@Column(name = "table_created", nullable = true)
+	private Boolean tableCreated = false;
+
+	/**
+	 * 上次生成表的时间
+	 */
+	@Column(name = "table_created_time", nullable = true, length = 19)
+	private Date tableCreatedTime;
+
+	/**
 	 * Excel起始行
 	 */
 	@Column(name = "excel_start_row", nullable = true, length = 10)
@@ -133,6 +145,26 @@ public class ExcelTemplate implements Serializable {
 
 	public void setTableName(String tableName) {
 		this.tableName = tableName;
+	}
+
+	public Boolean getTableCreated()
+	{
+		return tableCreated;
+	}
+
+	public void setTableCreated(Boolean tableCreated)
+	{
+		this.tableCreated = tableCreated;
+	}
+
+	public Date getTableCreatedTime()
+	{
+		return tableCreatedTime;
+	}
+
+	public void setTableCreatedTime(Date tableCreatedTime)
+	{
+		this.tableCreatedTime = tableCreatedTime;
 	}
 
 	public Integer getExcelStartRow() {

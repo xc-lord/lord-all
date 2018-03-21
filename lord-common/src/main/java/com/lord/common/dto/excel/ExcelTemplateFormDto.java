@@ -29,6 +29,11 @@ public class ExcelTemplateFormDto implements Serializable
     private String tableName;
 
     /**
+     * 是否已经生成表
+     */
+    private Boolean tableCreated = false;
+
+    /**
      * Excel起始行
      */
     private Integer excelStartRow;
@@ -103,6 +108,16 @@ public class ExcelTemplateFormDto implements Serializable
     public void setTableName(String tableName)
     {
         this.tableName = tableName;
+    }
+
+    public Boolean getTableCreated()
+    {
+        return tableCreated;
+    }
+
+    public void setTableCreated(Boolean tableCreated)
+    {
+        this.tableCreated = tableCreated;
     }
 
     public Integer getExcelStartRow()

@@ -1,12 +1,14 @@
 package com.lord.biz.service.excel;
 
 import com.alibaba.fastjson.JSON;
+import com.lord.biz.dao.DbSqlDao;
 import com.lord.biz.dao.excel.ExcelCategoryDao;
 import com.lord.biz.dao.excel.ExcelColumnDao;
 import com.lord.biz.dao.excel.ExcelTemplateDao;
 import com.lord.biz.dao.excel.specs.ExcelTemplateSpecs;
 import com.lord.biz.dao.mis.MisUserDao;
 import com.lord.biz.utils.ServiceUtils;
+import com.lord.common.constant.excel.ExcelColumnType;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
@@ -55,6 +57,9 @@ public class ExcelTemplateServiceImpl implements ExcelTemplateService {
     @Autowired
     private MisUserDao misUserDao;
 
+    @Autowired
+    private DbSqlDao dbSqlDao;
+
     @Override
     public ExcelTemplate getExcelTemplate(Long id) {
         return excelTemplateDao.findOne(id);
@@ -89,6 +94,7 @@ public class ExcelTemplateServiceImpl implements ExcelTemplateService {
             pageObj.setUpdateTime(new Date());
             pageObj.setCreater(misUser);
             pageObj.setModifier(misUser);
+            pageObj.setTableCreated(false);
             excelTemplateDao.save(pageObj);//新增
         } else {
             //更新记录
@@ -99,6 +105,8 @@ public class ExcelTemplateServiceImpl implements ExcelTemplateService {
             pageObj.setUpdateTime(new Date());//更新时间
             pageObj.setCreater(dbObj.getCreater());
             pageObj.setModifier(misUser);
+            pageObj.setTableCreated(dbObj.getTableCreated());
+            pageObj.setTableCreatedTime(dbObj.getTableCreatedTime());
 
             excelTemplateDao.save(pageObj);//更新
         }
@@ -222,5 +230,70 @@ public class ExcelTemplateServiceImpl implements ExcelTemplateService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    @Transactional
+    public void createTable(Long id)
+    {
+        ExcelTemplate template = excelTemplateDao.findOne(id);
+        List<ExcelColumn> columns = excelColumnDao.findByTemplateId(id);
+        Preconditions.checkNotNull(template, "Excel模板不存在");
+        Preconditions.checkArgument(columns == null || columns.size() < 1, "Excel模板的列不存在");
+
+        createMysqlTable(template, columns);//创建Mysql的表
+
+        template.setTableCreated(true);
+        template.setTableCreatedTime(new Date());
+        excelTemplateDao.save(template);//更新生成表的状态
+    }
+
+    /**
+     * 创建Mysql的表
+     * @param template
+     * @param columns
+     */
+    private void createMysqlTable(ExcelTemplate template, List<ExcelColumn> columns)
+    {
+        //生成sql
+        String columnSql = "";
+        for (ExcelColumn column : columns)
+        {
+            String type = column.getColumnType();
+            String columnType = "varchar(50)";
+            if(ExcelColumnType.Varchar.toString().equals(type)) {
+                columnType = "varchar(" + column.getColumnLength() + ")";
+            }
+            else if(ExcelColumnType.Datetime.toString().equals(type)) {
+                columnType = "datetime";
+            }
+            else if(ExcelColumnType.Number.toString().equals(type)) {
+                columnType = "double";
+            }
+            if(!column.getNullable()) {
+                columnType += " not null";
+            }
+            columnSql += "   " + column.getDbColumn() + "                 " + columnType + " comment '" + column.getExcelColumn() + "',\n";
+        }
+        String tableName = template.getTableName();
+        String dropTableSql = "drop table if exists " + tableName;
+        String createSql = "create table " + tableName + "\n" +
+                "(\n" +
+                "   id                   bigint not null auto_increment comment '主键ID',\n" +
+                columnSql +
+                "   lock_state           varchar(50) comment '锁定状态',\n" +
+                "   create_time          datetime comment '创建时间',\n" +
+                "   update_time          datetime comment '更新时间',\n" +
+                "   primary key (id)\n" +
+                ")";
+
+        //打印sql
+        String commentSql = "alter table " + tableName + " comment '" + template.getExcelName() + "'";
+        logger.info("生成表的SQL为：\n" + dropTableSql + ";\n" + createSql + ";\n" + commentSql + ";");
+
+        //执行sql
+        dbSqlDao.execute(dropTableSql);
+        dbSqlDao.execute(createSql);
+        dbSqlDao.execute(commentSql);
     }
 }

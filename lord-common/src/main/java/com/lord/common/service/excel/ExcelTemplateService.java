@@ -88,4 +88,10 @@ public interface ExcelTemplateService {
      * @return
      */
     boolean isExist(Long id, String rowName, String rowValue);
+
+    /**
+     * 生成Excel模板对应的数据库表
+     * @param id Excel模板Id
+     */
+    void createTable(Long id);
 }

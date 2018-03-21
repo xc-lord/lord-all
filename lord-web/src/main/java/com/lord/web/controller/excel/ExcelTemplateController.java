@@ -63,6 +63,15 @@ public class ExcelTemplateController {
         return Result.success("删除成功");
     }
 
+    @ApiOperation(value="生成Excel模板对应的数据库表", notes="根据主键id，生成Excel模板对应的数据库表")
+    @ApiImplicitParam(name = "id", value = "主键Id", required = true, dataType = "Long", paramType = "query")
+    @RequestMapping(value = "/api/admin/excel/excelTemplate/createTable", method = RequestMethod.GET)
+    public Result createTable(Long id) {
+        Preconditions.checkNotNull(id, "id不能为空");
+        excelTemplateService.createTable(id);//物理删除
+        return Result.success("生成数据库表成功");
+    }
+
     @ApiOperation(value="获取Excel模板配置", notes="根据主键id，获取Excel模板配置")
     @ApiImplicitParam(name = "id", value = "主键Id", required = true, dataType = "Long", paramType = "path")
     @RequestMapping(value = "/api/admin/excel/excelTemplate/{id}", method = RequestMethod.GET)
