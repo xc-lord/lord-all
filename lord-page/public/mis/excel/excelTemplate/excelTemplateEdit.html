@@ -492,7 +492,7 @@
                 var template = _self.excelTemplateData;
                 var createdMsg = "生成";
                 if(template.tableCreated) {
-                    createdMsg = "重新生成";
+                    createdMsg = "【删除旧表和数据】，重新生成";
                 }
                 createdMsg += template.excelName + "对应的表" + template.tableName;
                 _self.$confirm('确认在数据库' + createdMsg + '吗?', '提示', {
@@ -509,6 +509,7 @@
                                 message: createdMsg + '成功！',
                                 type: 'success'
                             });
+                            _self.loadExcelTemplate();//重新加载数据
                         } else {
                             _self.$message.error(res.msg);//提示错误
                         }

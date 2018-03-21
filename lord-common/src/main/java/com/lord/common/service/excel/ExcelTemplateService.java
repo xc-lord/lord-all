@@ -5,6 +5,7 @@ import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.excel.ExcelQueryParams;
 import com.lord.common.dto.excel.ExcelTemplateFormDto;
+import com.lord.common.dto.user.LoginUser;
 import com.lord.common.model.excel.ExcelColumn;
 import com.lord.common.model.excel.ExcelTemplate;
 
@@ -92,6 +93,7 @@ public interface ExcelTemplateService {
     /**
      * 生成Excel模板对应的数据库表
      * @param id Excel模板Id
+     * @param loginUser 当前用户
      */
-    void createTable(Long id);
+    void createTable(Long id, LoginUser loginUser);
 }

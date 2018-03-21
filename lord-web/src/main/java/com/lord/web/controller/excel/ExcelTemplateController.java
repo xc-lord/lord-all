@@ -68,7 +68,7 @@ public class ExcelTemplateController {
     @RequestMapping(value = "/api/admin/excel/excelTemplate/createTable", method = RequestMethod.GET)
     public Result createTable(Long id) {
         Preconditions.checkNotNull(id, "id不能为空");
-        excelTemplateService.createTable(id);//物理删除
+        excelTemplateService.createTable(id, UserHandler.getLoginUser());//物理删除
         return Result.success("生成数据库表成功");
     }
 

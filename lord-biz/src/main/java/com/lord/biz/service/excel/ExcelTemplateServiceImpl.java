@@ -15,6 +15,7 @@ import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.excel.ExcelColumnDto;
 import com.lord.common.dto.excel.ExcelQueryParams;
 import com.lord.common.dto.excel.ExcelTemplateFormDto;
+import com.lord.common.dto.user.LoginUser;
 import com.lord.common.model.excel.ExcelCategory;
 import com.lord.common.model.excel.ExcelColumn;
 import com.lord.common.model.excel.ExcelTemplate;
@@ -234,8 +235,9 @@ public class ExcelTemplateServiceImpl implements ExcelTemplateService {
 
     @Override
     @Transactional
-    public void createTable(Long id)
+    public void createTable(Long id, LoginUser loginUser)
     {
+        MisUser misUser = misUserDao.findOne(loginUser.getUserId());
         ExcelTemplate template = excelTemplateDao.findOne(id);
         List<ExcelColumn> columns = excelColumnDao.findByTemplateId(id);
         Preconditions.checkNotNull(template, "Excel模板不存在");
@@ -245,7 +247,9 @@ public class ExcelTemplateServiceImpl implements ExcelTemplateService {
 
         template.setTableCreated(true);
         template.setTableCreatedTime(new Date());
-        excelTemplateDao.save(template);//更新生成表的状态
+        template.setUpdateTime(new Date());
+        template.setModifier(misUser);
+        excelTemplateDao.save(template);//更新Excel模板的状态
     }
 
     /**
