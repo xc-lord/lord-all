@@ -2,6 +2,7 @@ package com.lord.biz.service.excel;
 
 import com.alibaba.fastjson.JSON;
 import com.lord.biz.dao.excel.ExcelCategoryDao;
+import com.lord.biz.dao.excel.ExcelColumnDao;
 import com.lord.biz.dao.excel.ExcelTemplateDao;
 import com.lord.biz.dao.excel.specs.ExcelTemplateSpecs;
 import com.lord.biz.dao.mis.MisUserDao;
@@ -13,12 +14,12 @@ import com.lord.common.dto.excel.ExcelColumnDto;
 import com.lord.common.dto.excel.ExcelQueryParams;
 import com.lord.common.dto.excel.ExcelTemplateFormDto;
 import com.lord.common.model.excel.ExcelCategory;
+import com.lord.common.model.excel.ExcelColumn;
 import com.lord.common.model.excel.ExcelTemplate;
 import com.lord.common.model.mis.MisUser;
 import com.lord.common.service.excel.ExcelTemplateService;
+import com.lord.utils.CommonUtils;
 import com.lord.utils.Preconditions;
-import com.lord.utils.exception.CommonException;
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Excel模板配置excel_template的Service实现
@@ -52,6 +50,9 @@ public class ExcelTemplateServiceImpl implements ExcelTemplateService {
     private ExcelCategoryDao excelCategoryDao;
 
     @Autowired
+    private ExcelColumnDao excelColumnDao;
+
+    @Autowired
     private MisUserDao misUserDao;
 
     @Override
@@ -67,22 +68,12 @@ public class ExcelTemplateServiceImpl implements ExcelTemplateService {
             logger.debug("保存" + pageDto);
 
         ExcelTemplate pageObj = new ExcelTemplate();
-        try
-        {
-            BeanUtils.copyProperties(pageObj,pageDto);
-        }
-        catch (Exception e)
-        {
-            throw new CommonException("对象转换失败");
-        }
+        CommonUtils.copyProperties(pageObj, pageDto);
 
         String columnStr = pageDto.getColumnJsonStr();
         Preconditions.checkNotNull(columnStr, "列信息不能为空！");
         List<ExcelColumnDto> columnList = JSON.parseArray(columnStr, ExcelColumnDto.class);
-        for (ExcelColumnDto excelColumnDto : columnList)
-        {
-            System.out.println(excelColumnDto);
-        }
+        Preconditions.checkArgument(columnList.size() < 1, "只是需要新增一列！");
 
         MisUser misUser = misUserDao.findOne(pageDto.getLoginUser().getUserId());
         Preconditions.checkNotNull(misUser, "用户不存在！");
@@ -99,20 +90,72 @@ public class ExcelTemplateServiceImpl implements ExcelTemplateService {
             pageObj.setCreater(misUser);
             pageObj.setModifier(misUser);
             excelTemplateDao.save(pageObj);//新增
-            return pageObj;
+        } else {
+            //更新记录
+            ExcelTemplate dbObj = excelTemplateDao.findOne(pageObj.getId());
+            Preconditions.checkNotNull(dbObj, "更新的记录不存在");
+            //不能修改的字段
+            pageObj.setCreateTime(dbObj.getCreateTime());
+            pageObj.setUpdateTime(new Date());//更新时间
+            pageObj.setCreater(dbObj.getCreater());
+            pageObj.setModifier(misUser);
+
+            excelTemplateDao.save(pageObj);//更新
+        }
+        //保存Excel的列信息
+        saveExcelColumn(pageObj, columnList, misUser);
+        return pageObj;
+    }
+
+    /**
+     * 保存Excel的列信息
+     * @param template   Excel模板
+     * @param columnList 列集合
+     * @param misUser    当前用户
+     */
+    private void saveExcelColumn(ExcelTemplate template, List<ExcelColumnDto> columnList, MisUser misUser)
+    {
+        List<ExcelColumn> list = getExcelColumns(template.getId());
+        Map<String, ExcelColumn> map = new HashMap<>();
+        for (ExcelColumn column : list)
+        {
+            map.put(column.getDbColumn(), column);
         }
 
-        //更新记录
-        ExcelTemplate dbObj = excelTemplateDao.findOne(pageObj.getId());
-        Preconditions.checkNotNull(dbObj, "更新的记录不存在");
-        //不能修改的字段
-        pageObj.setCreateTime(dbObj.getCreateTime());
-        pageObj.setUpdateTime(new Date());//更新时间
-        pageObj.setCreater(dbObj.getCreater());
-        pageObj.setModifier(misUser);
+        for (ExcelColumnDto dto : columnList)
+        {
+            ExcelColumn column = new ExcelColumn();
+            CommonUtils.copyProperties(column, dto);
+            column.setExcelTemplateId(template.getId());
+            column.setUpdateTime(new Date());
+            column.setModifier(misUser.getId());
 
-        excelTemplateDao.save(pageObj);//更新
-        return pageObj;
+            ExcelColumn dbColumn = map.remove(dto.getDbColumn());
+            if(dbColumn == null)
+            {
+                column.setId(null);
+                column.setCreater(misUser.getId());
+                column.setCreateTime(new Date());
+            }
+            else
+            {
+                column.setCreater(dbColumn.getCreater());
+                column.setCreateTime(dbColumn.getCreateTime());
+                column.setId(dbColumn.getId());
+            }
+            excelColumnDao.save(column);
+        }
+
+        //删除旧的记录
+        for (String key : map.keySet())
+        {
+            excelColumnDao.delete(map.get(key).getId());
+        }
+    }
+
+    public List<ExcelColumn> getExcelColumns(Long templateId)
+    {
+        return excelColumnDao.findByTemplateId(templateId);
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.lord.utils;
 
+import com.lord.utils.exception.CommonException;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -154,7 +156,7 @@ public class CommonUtils {
      * @return 格式化的结果
      */
     public static String dateFormat(Date date, String format) {
-        if (org.apache.commons.lang3.StringUtils.isEmpty(format)) {
+        if (StringUtils.isEmpty(format)) {
             format = dateFormat;
         }
         SimpleDateFormat sdformat = new SimpleDateFormat(format);
@@ -195,10 +197,10 @@ public class CommonUtils {
      * @return 格式化的结果
      */
     public static Date parseDate(String str, String format) {
-        if (org.apache.commons.lang3.StringUtils.isEmpty(str)) {
+        if (StringUtils.isEmpty(str)) {
             return null;
         }
-        if(org.apache.commons.lang3.StringUtils.isEmpty(format))
+        if(StringUtils.isEmpty(format))
             format = dateFormat;
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         try {
@@ -217,12 +219,12 @@ public class CommonUtils {
      */
     public static List<Long> parseLongList(String idStr,String spliter)
     {
-        if(org.apache.commons.lang3.StringUtils.isEmpty(idStr)) return new ArrayList<>();
+        if(StringUtils.isEmpty(idStr)) return new ArrayList<>();
         String[] arr = idStr.split(spliter);
         List<Long> list = new ArrayList<>();
         for (String s : arr)
         {
-            if(org.apache.commons.lang3.StringUtils.isNotEmpty(s))
+            if(StringUtils.isNotEmpty(s))
             {
                 list.add(Long.parseLong(s));
             }
@@ -253,7 +255,7 @@ public class CommonUtils {
      */
     public static String subEndString(String source, String str)
     {
-        if (org.apache.commons.lang3.StringUtils.isEmpty(source))
+        if (StringUtils.isEmpty(source))
         {
             return source;
         }
@@ -287,7 +289,7 @@ public class CommonUtils {
     public static List<String> matchedList(String str, String regx)
     {
         List<String> list = new ArrayList<>();
-        if(org.apache.commons.lang3.StringUtils.isEmpty(str) || org.apache.commons.lang3.StringUtils.isEmpty(regx)) return list;
+        if(StringUtils.isEmpty(str) || StringUtils.isEmpty(regx)) return list;
         //1.将正在表达式封装成对象Patten 类来实现
         Pattern pattern = Pattern.compile(regx);
         //2.将字符串和正则表达式相关联
@@ -309,7 +311,7 @@ public class CommonUtils {
      */
     public static boolean isMatched(String str, String regx)
     {
-        if(org.apache.commons.lang3.StringUtils.isEmpty(str) || org.apache.commons.lang3.StringUtils.isEmpty(regx)) return false;
+        if(StringUtils.isEmpty(str) || StringUtils.isEmpty(regx)) return false;
         //1.将正在表达式封装成对象Patten 类来实现
         Pattern pattern = Pattern.compile(regx);
         //2.将字符串和正则表达式相关联
@@ -334,6 +336,18 @@ public class CommonUtils {
         }
         str = subEndString(str, s);
         return str;
+    }
+
+    public static void copyProperties(Object dest, Object orig) {
+        try
+        {
+            BeanUtils.copyProperties(dest, orig);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            throw new CommonException("复制相同的Bean属性失败：" + e.getMessage());
+        }
     }
 
 }

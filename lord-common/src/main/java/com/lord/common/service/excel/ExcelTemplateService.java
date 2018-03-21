@@ -5,7 +5,10 @@ import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.excel.ExcelQueryParams;
 import com.lord.common.dto.excel.ExcelTemplateFormDto;
+import com.lord.common.model.excel.ExcelColumn;
 import com.lord.common.model.excel.ExcelTemplate;
+
+import java.util.List;
 
 /**
  * Excel模板配置excel_template的Service
@@ -29,6 +32,13 @@ public interface ExcelTemplateService {
      * @return  数据库对象
      */
     ExcelTemplate saveOrUpdate(ExcelTemplateFormDto pageDto);
+
+    /**
+     * 获取Excel模板的列集合
+     * @param templateId    Excel模板Id
+     * @return
+     */
+    List<ExcelColumn> getExcelColumns(Long templateId);
 
     /**
      * 分页查询

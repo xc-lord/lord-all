@@ -26,10 +26,10 @@ public interface ExcelColumnDao extends JpaRepository<ExcelColumn, Long>, JpaSpe
     @Query("select u from ExcelColumn u where u.id in ?1")
     List<ExcelColumn> findByIds(Long... ids);
 
-
     @Modifying
     @Query("update ExcelColumn u set u.orderValue = ?2 where u.id = ?1")
     void updateOrderValue(Long id, Long orderValue);
 
-	//在此添加你的自定义方法...
+    @Query("select u from ExcelColumn u where u.excelTemplateId = ?1 order by orderValue")
+    List<ExcelColumn> findByTemplateId(Long id);
 }

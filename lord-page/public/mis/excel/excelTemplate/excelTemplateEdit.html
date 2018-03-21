@@ -99,7 +99,7 @@
                     <el-card class="box-card" v-for="(column, columnIndex) in editForm.columnList">
                         <div slot="header" class="clearfix">
                             <span>列{{columnIndex+1}}.{{column.columnId}} {{column.excelColumn}}</span>
-                            <el-button style="float: right; padding: 3px 0" type="text">删除</el-button>
+                            <el-button style="float: right; padding: 3px 0" type="text" @click="deleteColumnClick(column.columnId)">删除</el-button>
                         </div>
                         <div class="text item">
                             <el-row>
@@ -113,7 +113,7 @@
                                                 v-model="column.excelColumn">
                                         </el-input>
                                     </el-form-item>
-                                    <el-form-item label="是否为空">
+                                    <el-form-item label="是否可为空">
                                         <el-switch
                                                 v-model="column.nullable"
                                                 active-color="#13ce66"
@@ -171,9 +171,22 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :span="8">
-                                    <el-form-item label="数据库列名" :rules="{
-                                    required: true, message: '数据库列名不能为空', trigger: 'blur'
-                                    }" :prop="'columnList.' + columnIndex + '.dbColumn'">
+                                    <el-form-item label="数据库列名" :rules="[
+                    {required: true, message: '数据库列名不能为空', trigger: 'blur'},
+                    {
+                        validator: function(rule, value, callback){
+                            var reg = /\w[a-zA-Z0-9_]*/;
+                            if (!value) {
+                                return callback(new Error('此项不能为空'));
+                            }
+                            if(!reg.test(value)) {
+                                return callback(new Error('只能是英文、数字、下划线组合'));
+                            }
+                            return callback();
+                        },
+                        trigger: 'blur'
+                    }
+                ]" :prop="'columnList.' + columnIndex + '.dbColumn'">
                                         <el-input
                                                 size="mini"
                                                 placeholder="数据库列名"
@@ -205,15 +218,6 @@
                             </el-row>
                         </div>
                     </el-card>
-                    <el-card class="box-card">
-                        <div slot="header" class="clearfix">
-                            <span>卡片名称</span>
-                            <el-button style="float: right; padding: 3px 0" type="text">删除</el-button>
-                        </div>
-                        <div v-for="o in 4" :key="o" class="text item">
-                            {{'列表内容 ' + o }}
-                        </div>
-                    </el-card>
                 </el-row>
             </el-form>
         </el-col>
@@ -240,7 +244,14 @@
                     {required: true, message: '数据库表名不能为空', trigger: 'blur'},
                     {
                         validator: function(rule, value, callback){
-                            return commonUtils.formRowIsExist('/api/admin/excel/excelTemplate/isExist.do',"tableName",rule, value, callback);
+                            var reg = /^tb_\w[a-zA-Z0-9_]*/;
+                            if (!value) {
+                                return callback(new Error('此项不能为空'));
+                            }
+                            if(!reg.test(value)) {
+                                return callback(new Error('只能是以tb_下划线开头的英文、数字、下划线组合'));
+                            }
+                            return commonUtils.formRowIsExist('/api/admin/excel/excelTemplate/isExist.do','tableName',rule, value, callback);
                         },
                         trigger: 'blur'
                     }
@@ -363,7 +374,7 @@
                     _self.editForm = {
                         columnList:[],
                         excelName: '',		//Excel名称
-                        tableName: '',		//数据库表名
+                        tableName: 'tb_',		//数据库表名
                         excelStartRow: 2,		//Excel起始行
                         identifyColumn: '',		//标识字段组
                         excelExample: '',		//Excel样例
@@ -384,21 +395,37 @@
                     dataType: "json"
                 }).done(function (res) {
                     if (res.success) {
+                        if(res.data == null || res.data.excelTemplate == null) {
+                            _self.$message.error("数据不存在");
+                            return;
+                        }
+                        var excelTemplate = res.data.excelTemplate;
+                        var columnList = res.data.columnList;
+                        if(columnList) {
+                            var columnId = _self.columnIdIndex;
+                            for(var i=0; i<columnList.length; i++) {
+                                var orderValue = columnList[i].orderValue;
+                                columnList[i].columnId=orderValue;
+                                if(columnId < orderValue)
+                                    columnId = orderValue;
+                            }
+                            _self.columnIdIndex = columnId + 1;
+                        }
                         _self.editForm = {
-                            columnList:[],
-                            id:res.data.id,
-                            excelName: res.data.excelName,		//Excel名称
-                            tableName: res.data.tableName,		//数据库表名
-                            excelStartRow: res.data.excelStartRow,		//Excel起始行
-                            identifyColumn: res.data.identifyColumn,		//标识字段组
-                            excelExample: res.data.excelExample,		//Excel样例
-                            categoryId: res.data.category.id,		//分类
-                            coverAll: res.data.coverAll,//支持全量导入
-                            coverOld: res.data.coverOld,//支持覆盖导入
-                            coverAppend: res.data.coverAppend,//支持追加导入
-                            orderValue: res.data.orderValue//排序
+                            columnList:columnList,
+                            id:excelTemplate.id,
+                            excelName: excelTemplate.excelName,		//Excel名称
+                            tableName: excelTemplate.tableName,		//数据库表名
+                            excelStartRow: excelTemplate.excelStartRow,		//Excel起始行
+                            identifyColumn: excelTemplate.identifyColumn,		//标识字段组
+                            excelExample: excelTemplate.excelExample,		//Excel样例
+                            categoryId: excelTemplate.category.id,		//分类
+                            coverAll: excelTemplate.coverAll,//支持全量导入
+                            coverOld: excelTemplate.coverOld,//支持覆盖导入
+                            coverAppend: excelTemplate.coverAppend,//支持追加导入
+                            orderValue: excelTemplate.orderValue//排序
                         };
-                        _self.excelTemplateData = res.data;
+                        _self.excelTemplateData = excelTemplate;
                     } else {
                         _self.$message.error(res.msg);//提示错误
                     }
@@ -416,7 +443,7 @@
                     columnId:columnId,
                     excelColumn:'',
                     dbColumn:'',
-                    columnType:'',
+                    columnType:'Varchar',
                     columnLength:50,
                     nullable:true,
                     identification:false,
@@ -424,11 +451,24 @@
                     endTime:'',
                     minValue:'',
                     maxValue:'',
-                    orderValue:'',
+                    orderValue:columnId,
                     timeFormat:'yyyy-MM-dd HH:mm:ss'
                 };
                 this.columnIdIndex++;
                 return column;
+            },
+            //删除列
+            deleteColumnClick:function(columnId) {
+                var columnList = this.editForm.columnList;
+                var columnIndex = -1;
+                for (var i = 0; i < columnList.length; i++) {
+                    if (columnList[i].columnId == columnId)
+                        columnIndex = i;
+                }
+                if (columnIndex > -1) {
+                    columnList.splice(columnIndex, 1);
+                    this.editForm.columnList = columnList;
+                }
             }
         }
     });

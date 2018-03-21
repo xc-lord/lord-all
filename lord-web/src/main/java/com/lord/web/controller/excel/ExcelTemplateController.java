@@ -3,6 +3,7 @@ package com.lord.web.controller.excel;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.excel.ExcelQueryParams;
 import com.lord.common.dto.excel.ExcelTemplateFormDto;
+import com.lord.common.model.excel.ExcelColumn;
 import com.lord.common.model.excel.ExcelTemplate;
 import com.lord.common.service.excel.ExcelTemplateService;
 import com.lord.utils.Preconditions;
@@ -16,6 +17,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 功能：Excel模板配置excel_template的Api
@@ -64,7 +69,11 @@ public class ExcelTemplateController {
     public Result get(@PathVariable Long id) {
         Preconditions.checkNotNull(id, "id不能为空");
         ExcelTemplate dbObj = excelTemplateService.getExcelTemplate(id);
-        return Result.success("获取成功", dbObj);
+        List<ExcelColumn> columnList = excelTemplateService.getExcelColumns(id);
+        Map<String, Object> map = new HashMap<>();
+        map.put("excelTemplate", dbObj);
+        map.put("columnList", columnList);
+        return Result.success("获取成功", map);
     }
 
     @ApiOperation(value="更新Excel模板配置的排序值", notes="根据主键id，更新Excel模板配置的排序值")
