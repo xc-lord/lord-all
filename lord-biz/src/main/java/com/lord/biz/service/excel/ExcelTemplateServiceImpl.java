@@ -1,5 +1,6 @@
 package com.lord.biz.service.excel;
 
+import com.alibaba.fastjson.JSON;
 import com.lord.biz.dao.excel.ExcelCategoryDao;
 import com.lord.biz.dao.excel.ExcelTemplateDao;
 import com.lord.biz.dao.excel.specs.ExcelTemplateSpecs;
@@ -8,6 +9,7 @@ import com.lord.biz.utils.ServiceUtils;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
+import com.lord.common.dto.excel.ExcelColumnDto;
 import com.lord.common.dto.excel.ExcelQueryParams;
 import com.lord.common.dto.excel.ExcelTemplateFormDto;
 import com.lord.common.model.excel.ExcelCategory;
@@ -72,6 +74,14 @@ public class ExcelTemplateServiceImpl implements ExcelTemplateService {
         catch (Exception e)
         {
             throw new CommonException("对象转换失败");
+        }
+
+        String columnStr = pageDto.getColumnJsonStr();
+        Preconditions.checkNotNull(columnStr, "列信息不能为空！");
+        List<ExcelColumnDto> columnList = JSON.parseArray(columnStr, ExcelColumnDto.class);
+        for (ExcelColumnDto excelColumnDto : columnList)
+        {
+            System.out.println(excelColumnDto);
         }
 
         MisUser misUser = misUserDao.findOne(pageDto.getLoginUser().getUserId());

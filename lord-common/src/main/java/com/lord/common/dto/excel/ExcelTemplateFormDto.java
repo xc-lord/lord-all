@@ -68,7 +68,12 @@ public class ExcelTemplateFormDto implements Serializable
      */
     private Long orderValue;
 
+    /**
+     * 登录用户
+     */
     private LoginUser loginUser;
+
+    private String columnJsonStr;
 
     public Long getId()
     {
@@ -188,5 +193,15 @@ public class ExcelTemplateFormDto implements Serializable
     public void setLoginUser(LoginUser loginUser)
     {
         this.loginUser = loginUser;
+    }
+
+    public String getColumnJsonStr()
+    {
+        return columnJsonStr;
+    }
+
+    public void setColumnJsonStr(String columnJsonStr)
+    {
+        this.columnJsonStr = columnJsonStr;
     }
 }

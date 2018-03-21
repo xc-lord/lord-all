@@ -96,6 +96,12 @@ public class ExcelColumn implements Serializable {
 	private Long orderValue;
 
 	/**
+	 * 时间格式
+	 */
+	@Column(name = "time_format", nullable = true, length = 50)
+	private String timeFormat;
+
+	/**
 	 * 创建人
 	 */
 	@Column(name = "creater", nullable = true, length = 19)
@@ -259,6 +265,16 @@ public class ExcelColumn implements Serializable {
 
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
+	}
+
+	public String getTimeFormat()
+	{
+		return timeFormat;
+	}
+
+	public void setTimeFormat(String timeFormat)
+	{
+		this.timeFormat = timeFormat;
 	}
 
 	public String toString() {
