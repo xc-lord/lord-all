@@ -120,6 +120,10 @@
                              width="320">
                 <template scope="scope">
                     <el-button :plain="true" type="success" size="small" icon="el-icon-edit"
+                               @click="importClick(scope.row)">
+                        导入
+                    </el-button>
+                    <el-button :plain="true" type="success" size="small" icon="el-icon-edit"
                                @click="editClick(scope.row)">
                         编辑
                     </el-button>
@@ -135,10 +139,6 @@
     <!--列表底部工具条和分页符-->
     <el-row style="margin-top: 20px" type="flex" justify="end">
         <el-col :span="6">
-            <el-button v-if="showEditPage" :plain="true" type="danger" size="small" icon="el-icon-delete"
-                       @click="removeSelection">删除所选
-            </el-button>
-            <el-button v-if="!showEditPage" type="success" icon="el-icon-plus" @click="selectSelection">选择</el-button>
         </el-col>
         <el-col :span="18">
             <el-pagination
@@ -292,6 +292,10 @@
             //新建事件
             addClick: function () {
                 window.location.href = "#/excelTemplate/add";
+            },
+            //表格导入事件
+            importClick: function (row) {
+                window.location.href = "#/excelImportRecord/" + row.id;
             },
             //表格编辑事件
             editClick: function (row) {

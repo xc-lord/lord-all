@@ -78,6 +78,15 @@ public class ExcelTemplateController {
     public Result get(@PathVariable Long id) {
         Preconditions.checkNotNull(id, "id不能为空");
         ExcelTemplate dbObj = excelTemplateService.getExcelTemplate(id);
+        return Result.success("获取成功", dbObj);
+    }
+
+    @ApiOperation(value="获取Excel模板配置", notes="根据主键id，获取Excel模板配置")
+    @ApiImplicitParam(name = "id", value = "主键Id", required = true, dataType = "Long", paramType = "query")
+    @RequestMapping(value = "/api/admin/excel/excelTemplate/getDetails", method = RequestMethod.GET)
+    public Result getDetails(Long id) {
+        Preconditions.checkNotNull(id, "id不能为空");
+        ExcelTemplate dbObj = excelTemplateService.getExcelTemplate(id);
         List<ExcelColumn> columnList = excelTemplateService.getExcelColumns(id);
         Map<String, Object> map = new HashMap<>();
         map.put("excelTemplate", dbObj);

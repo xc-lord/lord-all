@@ -1,5 +1,6 @@
 package com.lord.common.dto.excel;
 
+import com.lord.common.constant.excel.ExcelImportState;
 import com.lord.common.dto.QueryParams;
 
 /**
@@ -15,6 +16,7 @@ public class ExcelQueryParams extends QueryParams
     private Long categoryId;//Excel分类ID
     private String excelName;//Excel名称
     private String tableName;//数据库表名
+    private ExcelImportState importState;//导入状态
 
     public Long getTemplateId()
     {
@@ -54,5 +56,15 @@ public class ExcelQueryParams extends QueryParams
     public void setTableName(String tableName)
     {
         this.tableName = tableName;
+    }
+
+    public ExcelImportState getImportState()
+    {
+        return importState;
+    }
+
+    public void setImportState(ExcelImportState importState)
+    {
+        this.importState = importState;
     }
 }

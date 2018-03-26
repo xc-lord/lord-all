@@ -10,7 +10,7 @@ import java.io.File;
 public class CodeGenerator {
 
     public static void main(String[] args) throws Exception {
-        String tableName = "ads_element";
+        String tableName = "excel_import_record";
         GeneratorFacade facade = new GeneratorFacade();
         String path = CodeGenerator.class.getClassLoader().getResource("template").getPath();
         facade.getGenerator().addTemplateRootDir(new File(path));

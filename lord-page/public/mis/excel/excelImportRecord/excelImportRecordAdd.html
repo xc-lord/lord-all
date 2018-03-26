@@ -1,0 +1,114 @@
+<!-- 
+	Desc: 	Excel导入记录的新增界面
+	Author: xiaocheng
+	Date: 	2018年03月26日 11:31:45
+-->
+
+<!-- UI界面 start -->
+<div id="excelImportRecordAddView">
+    <el-row>
+        <h3><i class="el-icon-edit"></i> <a href="#/excelImportRecord">Excel导入记录管理</a> / 新增</h3>
+    </el-row>
+    <!--编辑界面-->
+    <el-row type="flex" justify="center">
+        <el-col :span="22">
+            <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
+				<!--id不需要-->
+				<el-form-item label="Excel模板ID">
+                    <el-input-number v-model="editForm.templateId" :min="0"></el-input-number>
+                </el-form-item>
+                <el-form-item label="文件名" prop="name">
+                    <el-input v-model="editForm.name" auto-complete="off"></el-input>
+                </el-form-item>
+				<el-form-item label="文件大小">
+                    <el-input-number v-model="editForm.fileSize" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="上传用户">
+                    <el-input-number v-model="editForm.uploadUserId" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="导入用户">
+                    <el-input-number v-model="editForm.importUserId" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="导入次数">
+                    <el-input-number v-model="editForm.importNum" :min="0"></el-input-number>
+                </el-form-item>
+				<el-form-item label="导入行数">
+                    <el-input-number v-model="editForm.lineNum" :min="0"></el-input-number>
+                </el-form-item>
+                <el-form-item label="导入状态" prop="importState">
+                    <el-input v-model="editForm.importState" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="导入方式" prop="importWay">
+                    <el-input v-model="editForm.importWay" auto-complete="off"></el-input>
+                </el-form-item>
+				<!--createTime不需要-->
+				<!--updateTime不需要-->
+                <!--TODO:待修改-->
+                <!--<el-form-item label="状态">
+                    <el-select v-model="editForm.status" clearable placeholder="请选择">
+                        <el-option
+                                v-for="item in excelImportRecordStatus"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>-->
+            </el-form>
+        </el-col>
+    </el-row>
+
+    <el-row type="flex" justify="center">
+        <el-col :span="6">
+            <el-button @click="editFormCancel">取消</el-button>
+            <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading">提交</el-button>
+        </el-col>
+    </el-row>
+
+</div>
+<!-- UI界面 end -->
+
+<script type="text/javascript">
+    $.getScript('/res/js/mis/excel/excelImportRecord/excelImportRecordForm.js', function () {
+        //清空参数
+        pageParam = Object.assign({}, {});
+
+        var excelImportRecordAddView = new Vue({
+            el: '#excelImportRecordAddView',
+            data: ExcelImportRecordFromCommon.data,
+            //数据初始化
+            created: function () {
+                var _self = this;
+                //获取下拉框选项
+                ExcelImportRecordFromCommon.loadSelect(_self);
+                _self.editForm = Object.assign({}, ExcelImportRecordFromCommon.defaultModel);
+            },
+            methods: {
+                //是否具有权限
+                hasRight: function(rightCode) {
+                    return commonUtils.hasRight(rightCode);
+                },
+                //保存事件
+                editSubmit: function (formName) {
+                    var _self = this;
+                    _self.$refs[formName].validate(function(valid){
+                        if (valid) {
+                            ExcelImportRecordFromCommon.saveAction(_self);
+                        } else{
+                            _self.$message.error("请正确填写表单！");
+                        }
+                    });
+                },
+                //取消事件
+                editFormCancel: function () {
+                    ExcelImportRecordFromCommon.cancelAction(this);
+                },
+                //上传图片前的验证事件
+                beforeAvatarUpload:function(file) {
+                    var _self = this;
+                    commonUtils.uploadImageCheck(file, _self);
+                }
+            }
+        });
+    });
+</script>

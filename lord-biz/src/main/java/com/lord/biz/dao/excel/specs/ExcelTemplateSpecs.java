@@ -2,6 +2,7 @@ package com.lord.biz.dao.excel.specs;
 
 import com.lord.biz.utils.BaseSpecification;
 import com.lord.common.dto.excel.ExcelQueryParams;
+import com.lord.common.model.excel.ExcelCategory;
 import com.lord.common.model.excel.ExcelTemplate;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
@@ -34,7 +35,8 @@ public class ExcelTemplateSpecs extends BaseSpecification {
                 }
                 if (pageObj.getCategoryId() != null)
                 {
-                    Path categoryId = root.get("categoryId");
+                    Join<ExcelTemplate, ExcelCategory> categoryJoin = root.join("category", JoinType.LEFT);
+                    Path categoryId = categoryJoin.get("id");
                     predicate = builder.and(predicate, builder.equal(categoryId, pageObj.getCategoryId()));
                 }
                 if (StringUtils.isNotEmpty(pageObj.getExcelName()))
