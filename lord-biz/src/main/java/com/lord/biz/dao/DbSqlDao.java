@@ -1,5 +1,6 @@
 package com.lord.biz.dao;
 
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 功能：
@@ -65,5 +67,19 @@ public class DbSqlDao
             return list.get(0);
         }
         return null;
+    }
+
+    public List<Map<String, Object>> select(String sql, Object... params)
+    {
+        if(params == null) return null;
+        Query query = entityManager.createNativeQuery(sql);
+        for (int i = 0; i < params.length; i++)
+        {
+            query.setParameter(i+1, params[i]);
+        }
+        // 将结果转化为 Map<tableKey, keyValue>
+        query.unwrap(org.hibernate.SQLQuery.class)
+                .setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+        return query.getResultList();
     }
 }

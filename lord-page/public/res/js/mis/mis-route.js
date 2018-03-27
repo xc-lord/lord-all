@@ -147,6 +147,10 @@ var routes = {
         pageParam = Object.assign({}, {templateId: templateId, id: id});//设置页面参数
         $("#showView").load("/mis/excel/excelImportRecord/excelImportRecordEdit.html");
     },
+    '/excelImportRecord/:templateId/viewData/:id': function (templateId, id) {
+        pageParam = Object.assign({}, {templateId: templateId, id: id});//设置页面参数
+        $("#showView").load("/mis/excel/excelImportRecord/excelDataList.html");
+    },
     //页面管理
     '/adsPage': function () {
         $("#showView").load("/mis/ads/adsPage/adsPageList.html");

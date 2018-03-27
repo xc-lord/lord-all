@@ -15,9 +15,7 @@ import com.lord.common.constant.excel.ExcelImportWay;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
-import com.lord.common.dto.excel.ExcelCellDto;
-import com.lord.common.dto.excel.ExcelQueryParams;
-import com.lord.common.dto.excel.ExcelSheetDto;
+import com.lord.common.dto.excel.*;
 import com.lord.common.dto.user.LoginUser;
 import com.lord.common.model.excel.ExcelColumn;
 import com.lord.common.model.excel.ExcelImportRecord;
@@ -43,6 +41,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Excel导入记录excel_import_record的Service实现
@@ -387,8 +386,8 @@ public class ExcelImportRecordServiceImpl implements ExcelImportRecordService {
     {
         ExcelImportRecord record = excelImportRecordDao.findOne(id);
         Preconditions.checkNotNull(record, "记录不存在");
-        /*Preconditions.checkArgument(ExcelImportState.NotImported.equals(record.getImportState()) ||
-                ExcelImportState.RemoveImported.equals(record.getImportState()), "数据未导入或者已删除");*/
+        Preconditions.checkArgument(ExcelImportState.NotImported.equals(record.getImportState()) ||
+                ExcelImportState.RemoveImported.equals(record.getImportState()), "数据未导入或者已删除");
         MisUser misUser = misUserDao.findOne(loginUser.getUserId());
         Preconditions.checkNotNull(misUser, "用户未登录");
         ExcelTemplate template = excelTemplateDao.getOne(record.getTemplateId());
@@ -400,5 +399,39 @@ public class ExcelImportRecordServiceImpl implements ExcelImportRecordService {
         record.setUpdateTime(new Date());
         record.setImportState(ExcelImportState.RemoveImported);
         excelImportRecordDao.save(record);//保存记录
+    }
+
+    @Override
+    public ExcelDataDto viewData(Long id)
+    {
+        ExcelImportRecord record = excelImportRecordDao.findOne(id);
+        Preconditions.checkNotNull(record, "记录不存在");
+        ExcelTemplate template = excelTemplateDao.getOne(record.getTemplateId());
+        Preconditions.checkNotNull(template, "模板不存在");
+        List<ExcelColumn> columnList = excelColumnDao.findByTemplateId(template.getId());
+        Preconditions.checkArgument(CollectionUtils.isEmpty(columnList), "模板的列信息不存在");
+
+        List<ExcelDataColumn> columns = new ArrayList<>();
+        String columnStr = "";
+        for (ExcelColumn column : columnList)
+        {
+            columnStr += column.getDbColumn() + ",";
+            columns.add(new ExcelDataColumn(column.getExcelColumn(),column.getDbColumn(), column.getColumnType()));
+        }
+        String selectSql = "SELECT " + columnStr + "id,modifier,modifier_id,import_record_id,create_time,update_time FROM " + template.getTableName() + " WHERE import_record_id=?";
+        logger.info("查询的SQL语句为：" + selectSql);
+
+        columns.add(new ExcelDataColumn("主键ID", "id", ExcelColumnType.Number.toString()));
+        columns.add(new ExcelDataColumn("修改人", "modifier", ExcelColumnType.Varchar.toString()));
+        columns.add(new ExcelDataColumn("修改人ID", "modifier_id", ExcelColumnType.Number.toString()));
+        columns.add(new ExcelDataColumn("记录ID", "import_record_id", ExcelColumnType.Number.toString()));
+        columns.add(new ExcelDataColumn("创建时间", "create_time", ExcelColumnType.Datetime.toString()));
+        columns.add(new ExcelDataColumn("更新时间", "update_time", ExcelColumnType.Datetime.toString()));
+
+        List<Map<String,Object>> dataList = dbSqlDao.select(selectSql, record.getId());
+        ExcelDataDto dataDto = new ExcelDataDto();
+        dataDto.setDataList(dataList);
+        dataDto.setColumnList(columns);
+        return dataDto;
     }
 }

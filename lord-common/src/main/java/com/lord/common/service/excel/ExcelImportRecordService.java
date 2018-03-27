@@ -4,9 +4,13 @@ import com.lord.common.constant.excel.ExcelImportWay;
 import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
+import com.lord.common.dto.excel.ExcelDataDto;
 import com.lord.common.dto.excel.ExcelQueryParams;
 import com.lord.common.dto.user.LoginUser;
 import com.lord.common.model.excel.ExcelImportRecord;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Excel导入记录excel_import_record的Service
@@ -88,4 +92,10 @@ public interface ExcelImportRecordService {
      * @param loginUser
      */
     void deleteData(Long id, LoginUser loginUser);
+
+    /**
+     * 查询已经导入数据
+     * @param id 记录ID
+     */
+    ExcelDataDto viewData(Long id);
 }

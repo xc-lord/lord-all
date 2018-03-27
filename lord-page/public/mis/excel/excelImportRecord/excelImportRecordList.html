@@ -7,7 +7,7 @@
         <!-- UI界面 start -->
         <div id="excelImportRecordView">
             <el-row v-if="showEditPage">
-                <h3><i class="el-icon-share"></i> {{excelTemplateData.excelName}}的Excel导入记录</h3>
+                <h3><i class="el-icon-share"></i> <a href="#/excelTemplate">Excel模板</a> / {{excelTemplateData.excelName}}的Excel导入记录</h3>
             </el-row>
             <!--列表顶部搜索和工具条-->
             <el-row>
@@ -116,7 +116,7 @@
                     <el-table-column v-if="showEditPage"
                                      fixed="right"
                                      label="操作"
-                                     width="350">
+                                     width="450">
                         <template scope="scope">
                             <template v-if="scope.row.importState == 'NotImported' || scope.row.importState == 'RemoveImported'">
                                 <el-button :plain="true" type="danger" size="small" icon="el-icon-delete" @click="deleteClick(scope.row)">
@@ -127,13 +127,16 @@
                                 <el-button :plain="true" type="danger" size="small" icon="el-icon-delete" @click="deleteDataClick(scope.row)">
                                     删除数据
                                 </el-button>
+                                <el-button :plain="true" type="primary" size="small" icon="el-icon-view" @click="viewDataClick(scope.row)">
+                                    查看
+                                </el-button>
                             </template>
                             <el-button v-if="excelTemplateData.coverAll" :plain="true" type="success" size="small" icon="el-icon-upload2"
-                                       @click="importDataClick(scope.row,'CoverAll')">全量导入</el-button>
+                                       @click="importDataClick(scope.row,'CoverAll')">全量</el-button>
                             <el-button v-if="excelTemplateData.coverOld" :plain="true" type="success" size="small" icon="el-icon-upload2"
-                                       @click="importDataClick(scope.row,'CoverOld')">覆盖导入</el-button>
+                                       @click="importDataClick(scope.row,'CoverOld')">覆盖</el-button>
                             <el-button v-if="excelTemplateData.coverAppend" :plain="true" type="success" size="small" icon="el-icon-upload2"
-                                       @click="importDataClick(scope.row,'CoverAppend')">增量导入</el-button>
+                                       @click="importDataClick(scope.row,'CoverAppend')">增量</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -308,6 +311,10 @@
                     //表格编辑事件
                     editClick: function (row) {
                         window.location.href = "#/excelImportRecord/" + pageParam.templateId +"/edit/" + row.id;
+                    },
+                    //表格编辑事件
+                    viewDataClick: function (row) {
+                        window.location.href = "#/excelImportRecord/" + pageParam.templateId +"/viewData/" + row.id;
                     },
                     //弹窗新建事件
                     dialogAddClick: function () {

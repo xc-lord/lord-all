@@ -3,6 +3,7 @@ package com.lord.web.controller.excel;
 import com.lord.common.constant.excel.ExcelImportWay;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.QueryParams;
+import com.lord.common.dto.excel.ExcelDataDto;
 import com.lord.common.dto.excel.ExcelQueryParams;
 import com.lord.common.model.excel.ExcelImportRecord;
 import com.lord.common.service.excel.ExcelImportRecordService;
@@ -14,6 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 功能：Excel导入记录excel_import_record的Api
@@ -70,6 +74,15 @@ public class ExcelImportRecordController {
         Preconditions.checkNotNull(id, "id不能为空");
         excelImportRecordService.deleteData(id, UserHandler.getLoginUser());//删除已经导入数据
         return Result.success("删除已经导入数据成功");
+    }
+
+    @ApiOperation(value="查询已经导入数据", notes="根据主键id，查询已经导入数据")
+    @ApiImplicitParam(name = "id", value = "主键Id", required = true, dataType = "Long", paramType = "query")
+    @RequestMapping(value = "/api/admin/excel/excelImportRecord/viewData", method = RequestMethod.GET)
+    public Result viewData(Long id) {
+        Preconditions.checkNotNull(id, "id不能为空");
+        ExcelDataDto data = excelImportRecordService.viewData(id);//查看已经导入数据
+        return Result.success("查询数据成功", data);
     }
 
     @ApiOperation(value="获取Excel导入记录", notes="根据主键id，获取Excel导入记录")
