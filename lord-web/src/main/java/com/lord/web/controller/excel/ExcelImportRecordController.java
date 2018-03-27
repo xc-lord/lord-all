@@ -1,5 +1,6 @@
 package com.lord.web.controller.excel;
 
+import com.lord.common.constant.excel.ExcelImportWay;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.QueryParams;
 import com.lord.common.dto.excel.ExcelQueryParams;
@@ -56,10 +57,10 @@ public class ExcelImportRecordController {
     @ApiOperation(value="导入Excel数据", notes="根据主键id，导入Excel数据")
     @ApiImplicitParam(name = "id", value = "主键Id", required = true, dataType = "Long", paramType = "query")
     @RequestMapping(value = "/api/admin/excel/excelImportRecord/importData", method = RequestMethod.GET)
-    public Result importData(Long id) {
+    public Result importData(Long id, ExcelImportWay importWay) {
         Preconditions.checkNotNull(id, "id不能为空");
-        excelImportRecordService.importData(id);//导入Excel数据
-        return Result.success("导入Excel数据成功");
+        long lineNum = excelImportRecordService.importData(id, importWay, UserHandler.getLoginUser());//导入Excel数据
+        return Result.success("导入" + lineNum + "条Excel数据成功");
     }
 
     @ApiOperation(value="删除已经导入数据", notes="根据主键id，删除已经导入数据")
@@ -67,7 +68,7 @@ public class ExcelImportRecordController {
     @RequestMapping(value = "/api/admin/excel/excelImportRecord/deleteData", method = RequestMethod.GET)
     public Result deleteData(Long id) {
         Preconditions.checkNotNull(id, "id不能为空");
-        excelImportRecordService.deleteData(id);//删除已经导入数据
+        excelImportRecordService.deleteData(id, UserHandler.getLoginUser());//删除已经导入数据
         return Result.success("删除已经导入数据成功");
     }
 

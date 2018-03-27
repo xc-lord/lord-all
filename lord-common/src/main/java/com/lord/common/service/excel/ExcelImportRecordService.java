@@ -1,5 +1,6 @@
 package com.lord.common.service.excel;
 
+import com.lord.common.constant.excel.ExcelImportWay;
 import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
@@ -76,12 +77,15 @@ public interface ExcelImportRecordService {
     /**
      * 导入Excel数据
      * @param id 记录ID
+     * @param importWay
+     * @param loginUser
      */
-    void importData(Long id);
+    long importData(Long id, ExcelImportWay importWay, LoginUser loginUser);
 
     /**
      * 删除已经导入数据
      * @param id 记录ID
+     * @param loginUser
      */
-    void deleteData(Long id);
+    void deleteData(Long id, LoginUser loginUser);
 }

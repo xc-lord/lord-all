@@ -58,11 +58,6 @@
                                     width="80">
                             </el-table-column>
                                                 <el-table-column
-                                                        prop="templateId"
-                                                        label="Excel模板ID"
-                                                        width="120">
-                                                </el-table-column>
-                                                <el-table-column
                                                         label="文件名"
                                                         width="240">
                                                     <template scope="scope">
@@ -121,24 +116,24 @@
                     <el-table-column v-if="showEditPage"
                                      fixed="right"
                                      label="操作"
-                                     width="320">
+                                     width="350">
                         <template scope="scope">
                             <template v-if="scope.row.importState == 'NotImported' || scope.row.importState == 'RemoveImported'">
                                 <el-button :plain="true" type="danger" size="small" icon="el-icon-delete" @click="deleteClick(scope.row)">
                                     删除
-                                </el-button>
-                                <el-button :plain="true" type="success" size="small" icon="el-icon-upload2" @click="importDataClick(scope.row)">
-                                    导入
                                 </el-button>
                             </template>
                             <template v-if="scope.row.importState == 'Imported' || scope.row.importState == 'ReImported'">
                                 <el-button :plain="true" type="danger" size="small" icon="el-icon-delete" @click="deleteDataClick(scope.row)">
                                     删除数据
                                 </el-button>
-                                <el-button :plain="true" type="success" size="small" icon="el-icon-upload2" @click="importDataClick(scope.row)">
-                                    重新导入
-                                </el-button>
                             </template>
+                            <el-button v-if="excelTemplateData.coverAll" :plain="true" type="success" size="small" icon="el-icon-upload2"
+                                       @click="importDataClick(scope.row,'CoverAll')">全量导入</el-button>
+                            <el-button v-if="excelTemplateData.coverOld" :plain="true" type="success" size="small" icon="el-icon-upload2"
+                                       @click="importDataClick(scope.row,'CoverOld')">覆盖导入</el-button>
+                            <el-button v-if="excelTemplateData.coverAppend" :plain="true" type="success" size="small" icon="el-icon-upload2"
+                                       @click="importDataClick(scope.row,'CoverAppend')">增量导入</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -516,21 +511,31 @@
                         });
                     },
                     //导入数据
-                    importDataClick:function(row) {
+                    importDataClick:function(row, importWay) {
                         var _self = this;
                         var rowName = '[' + row.id + ']' + row.name;
-                        _self.$confirm('确认导入' + rowName + '的数据吗?', '提示', {
+                        var confirmMsg = "";
+                        if(importWay == 'CoverALL') {
+                            confirmMsg = '确认全量导入' + rowName + '的数据吗？ 此操作会删除之前导入的所有数据！'
+                        }
+                        if(importWay == 'CoverOld') {
+                            confirmMsg = '确认覆盖导入' + rowName + '的数据吗？ 此操作只会更新已有数据！'
+                        }
+                        if(importWay == 'CoverAppend') {
+                            confirmMsg = '确认增量导入' + rowName + '的数据吗？ 此操作存在数据则更新，不存在则写入！'
+                        }
+                        _self.$confirm(confirmMsg, '提示', {
                             type: 'warning'
                         }).then(function () {
                             //删除记录
                             $.ajax({
                                 url: '/api/admin/excel/excelImportRecord/importData.do',
-                                data: {id: row.id},
+                                data: {id: row.id, importWay:importWay},
                                 dataType: "json"
                             }).done(function (res) {
                                 if (res.success) {
                                     _self.$message({
-                                        message: rowName + '导入成功',
+                                        message: res.msg,
                                         type: 'success'
                                     });
                                     _self.loadingData();//重新加载数据

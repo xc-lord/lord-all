@@ -24,6 +24,9 @@
                         <el-form-item label="数据库表名" prop="tableName">
                             <el-input v-model="editForm.tableName" auto-complete="off" size="small" :disabled="editMode"></el-input>
                         </el-form-item>
+                        <el-form-item label="Sheet索引">
+                            <el-input-number v-model="editForm.excelSheetIndex" :min="0" size="small"></el-input-number>
+                        </el-form-item>
                         <el-form-item label="Excel起始行">
                             <el-input-number v-model="editForm.excelStartRow" :min="0" size="small"></el-input-number>
                         </el-form-item>
@@ -392,6 +395,7 @@
                         columnList:[],
                         excelName: '',		//Excel名称
                         tableName: 'tb_',		//数据库表名
+                        excelSheetIndex: 1,		//Excel的sheet索引
                         excelStartRow: 2,		//Excel起始行
                         identifyColumn: '',		//标识字段组
                         excelExample: '',		//Excel样例
@@ -434,6 +438,7 @@
                             id:excelTemplate.id,
                             excelName: excelTemplate.excelName,		//Excel名称
                             tableName: excelTemplate.tableName,		//数据库表名
+                            excelSheetIndex: excelTemplate.excelSheetIndex,		//Excel的sheet索引
                             excelStartRow: excelTemplate.excelStartRow,		//Excel起始行
                             identifyColumn: excelTemplate.identifyColumn,		//标识字段组
                             excelExample: excelTemplate.excelExample,		//Excel样例

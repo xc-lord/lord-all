@@ -49,10 +49,16 @@ public class ExcelTemplate implements Serializable {
 	private Date tableCreatedTime;
 
 	/**
+	 * Excel的sheet索引
+	 */
+	@Column(name = "excel_sheet_index", nullable = true, length = 10)
+	private Integer excelSheetIndex = 1;
+
+	/**
 	 * Excel起始行
 	 */
 	@Column(name = "excel_start_row", nullable = true, length = 10)
-	private Integer excelStartRow;
+	private Integer excelStartRow = 2;
 
 	/**
 	 * 标识字段组
@@ -165,6 +171,16 @@ public class ExcelTemplate implements Serializable {
 	public void setTableCreatedTime(Date tableCreatedTime)
 	{
 		this.tableCreatedTime = tableCreatedTime;
+	}
+
+	public Integer getExcelSheetIndex()
+	{
+		return excelSheetIndex;
+	}
+
+	public void setExcelSheetIndex(Integer excelSheetIndex)
+	{
+		this.excelSheetIndex = excelSheetIndex;
 	}
 
 	public Integer getExcelStartRow() {

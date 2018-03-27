@@ -34,9 +34,14 @@ public class ExcelTemplateFormDto implements Serializable
     private Boolean tableCreated = false;
 
     /**
+     * Excel的sheet索引
+     */
+    private Integer excelSheetIndex = 1;
+
+    /**
      * Excel起始行
      */
-    private Integer excelStartRow;
+    private Integer excelStartRow = 2;
 
     /**
      * 标识字段组
@@ -118,6 +123,16 @@ public class ExcelTemplateFormDto implements Serializable
     public void setTableCreated(Boolean tableCreated)
     {
         this.tableCreated = tableCreated;
+    }
+
+    public Integer getExcelSheetIndex()
+    {
+        return excelSheetIndex;
+    }
+
+    public void setExcelSheetIndex(Integer excelSheetIndex)
+    {
+        this.excelSheetIndex = excelSheetIndex;
     }
 
     public Integer getExcelStartRow()

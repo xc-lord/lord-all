@@ -283,9 +283,11 @@ public class ExcelTemplateServiceImpl implements ExcelTemplateService {
         String dropTableSql = "drop table if exists " + tableName;
         String createSql = "create table " + tableName + "\n" +
                 "(\n" +
-                "   id                   bigint not null auto_increment comment '主键ID',\n" +
+                "   id                   bigint not null comment '主键ID',\n" +
                 columnSql +
-                "   lock_state           varchar(50) comment '锁定状态',\n" +
+                "   modifier             varchar(50) comment '修改人',\n" +
+                "   modifier_id          bigint comment '修改人ID',\n" +
+                "   import_record_id     bigint comment '导入记录ID',\n" +
                 "   create_time          datetime comment '创建时间',\n" +
                 "   update_time          datetime comment '更新时间',\n" +
                 "   primary key (id)\n" +

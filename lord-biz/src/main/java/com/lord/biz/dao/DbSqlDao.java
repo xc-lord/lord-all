@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * 功能：
@@ -31,5 +32,38 @@ public class DbSqlDao
     {
         Query query = entityManager.createNativeQuery(sql);
         query.executeUpdate();
+    }
+
+    /**
+     * 执行原生的Sql
+     *
+     * @param sql 原生sql
+     */
+    @Transactional
+    public void execute(String sql, Object... params)
+    {
+        if(params == null) return;
+        Query query = entityManager.createNativeQuery(sql);
+        for (int i = 0; i < params.length; i++)
+        {
+            query.setParameter(i+1, params[i]);
+        }
+        query.executeUpdate();
+    }
+
+    public Object selectOne(String sql, Object... params)
+    {
+        if(params == null) return null;
+        Query query = entityManager.createNativeQuery(sql);
+        for (int i = 0; i < params.length; i++)
+        {
+            query.setParameter(i+1, params[i]);
+        }
+        List list = query.getResultList();
+        if (list != null && list.size() > 0)
+        {
+            return list.get(0);
+        }
+        return null;
     }
 }

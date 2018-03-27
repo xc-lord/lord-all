@@ -68,7 +68,7 @@ public class ExcelImportRecord implements Serializable {
 	 * 导入次数
 	 */
 	@Column(name = "import_num", nullable = true, length = 10)
-	private Integer importNum;
+	private Integer importNum = 0;
 
 	/**
 	 * 导入行数

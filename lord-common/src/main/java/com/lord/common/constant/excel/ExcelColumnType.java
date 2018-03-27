@@ -14,8 +14,9 @@ import java.util.Map;
  */
 public enum ExcelColumnType implements BaseEnumType {
     Varchar("字符串"),
-    Number("数字"),
+    Number("数值"),
     Datetime("时间"),
+    Bit("布尔值"),
     ;
 
     private String name;
