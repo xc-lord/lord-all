@@ -338,6 +338,11 @@ public class CommonUtils {
         return str;
     }
 
+    /**
+     * 复制相似的属性值
+     * @param dest  目标对象
+     * @param orig  原对象
+     */
     public static void copyProperties(Object dest, Object orig) {
         try
         {
