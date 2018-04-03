@@ -25,7 +25,7 @@ public class IndexController {
     @RequestMapping("/api/")
     public String home() {
         logger.info("spring boot hello world!");
-        return "Hello World!";
+        return "Hello World!首页";
     }
 
     @RequestMapping("/api/testError")

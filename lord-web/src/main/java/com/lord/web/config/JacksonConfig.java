@@ -12,12 +12,12 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
  * spring boot 去null值
  * Created by xiaocheng on 2017/3/23.
  */
-@Configuration
+//@Configuration
 public class JacksonConfig {
 
-    @Bean
+    /*@Bean
     @Primary
-    @ConditionalOnMissingBean(ObjectMapper.class)
+    @ConditionalOnMissingBean(ObjectMapper.class)*/
     public ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
         ObjectMapper objectMapper = builder.createXmlMapper(false).build();
         //去掉响应的json中的null值
