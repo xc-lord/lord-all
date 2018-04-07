@@ -261,7 +261,7 @@ public class CommonUtils {
         }
         if (source.endsWith(str))
         {
-            source = source.substring(0, source.length() - 1);
+            source = source.substring(0, source.length() - str.length());
         }
         return source;
     }
