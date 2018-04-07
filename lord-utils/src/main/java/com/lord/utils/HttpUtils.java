@@ -132,6 +132,18 @@ public class HttpUtils {
         return pmethod;
     }
 
+    private static HttpPost getPostJsonMethod(String url) {
+        if (!url.startsWith("http")) {
+            url = "http://" + url;
+        }
+        HttpPost pmethod = new HttpPost(url);
+        pmethod.setHeader("Content-type","application/json;charset=UTF-8");
+        pmethod.setHeader("Accept", "application/json, text/javascript, */*");
+        pmethod.setHeader("Accept-Language", "zh-CN,zh;q=0.8");
+        pmethod.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36 SE 2.X MetaSr 1.0");
+        return pmethod;
+    }
+
     /**
      * 模拟浏览器GET提交
      *
@@ -188,6 +200,39 @@ public class HttpUtils {
      * POST方式提交数据
      *
      * @param url     待请求的URL
+     * @param str     要提交的数据,json格式
+     * @param resEnc     编码
+     * @return 响应结果
+     */
+    public static String doPostJson(String url, String str, String resEnc) {
+        String response = EMPTY;
+        HttpPost httpPost = null;
+        try {
+            httpPost = getPostJsonMethod(url);
+            // 将XML数据放入httpPost中
+            StringEntity entity = new StringEntity(str);
+            httpPost.setEntity(entity);
+            // 执行请求
+            HttpResponse httpResponse = getHttpClient(url).execute(httpPost);
+            response = getResponse(url, httpResponse, resEnc);
+
+        } catch (ClientProtocolException e) {
+            logger.error("发生致命的异常，可能是协议不对或者返回的内容有问题:" + e.getMessage(), e);
+        } catch (IOException e) {
+            logger.error("发生网络异常" + e.getMessage(), e);
+        } finally {
+            if (httpPost != null) {
+                httpPost.releaseConnection();
+                httpPost = null;
+            }
+        }
+        return response;
+    }
+
+    /**
+     * POST方式提交数据
+     *
+     * @param url     待请求的URL
      * @param xmlData 要提交的XML数据
      * @return 响应结果
      */
@@ -204,6 +249,17 @@ public class HttpUtils {
      */
     public static String doPostString(String url, String str) {
         return doPostString(url, str, UTF8);
+    }
+
+    /**
+     * POST方式提交数据
+     *
+     * @param url     待请求的URL
+     * @param json     要提交的数据,json格式
+     * @return 响应结果
+     */
+    public static String doPostJson(String url, String json) {
+        return doPostJson(url, json, UTF8);
     }
 
     /**
@@ -299,6 +355,10 @@ public class HttpUtils {
     public static String doGet(String url, Map<String, String> params, String enc, String resEnc) {
         String response = EMPTY;
         HttpGet getMethod = null;
+        if (StringUtils.isEmpty(url))
+        {
+            return null;
+        }
         StringBuffer strtTotalURL = getTotalUrl(url, params, enc);
         logger.debug("GET请求URL = \n" + strtTotalURL.toString());
         try {
@@ -336,6 +396,8 @@ public class HttpUtils {
             logger.warn(url + "响应状态码 = " + statusCode);
             logger.warn(url + "响应内容：\n" + response);
         }
+        logger.warn(url + "响应状态码 = " + statusCode);
+        logger.warn(url + "响应内容：\n" + response);
         return response;
     }
 
@@ -349,10 +411,11 @@ public class HttpUtils {
      */
     public static StringBuffer getTotalUrl(String url, Map<String, String> params, String enc) {
         StringBuffer strtTotalURL = new StringBuffer(EMPTY);
+        if(StringUtils.isEmpty(url)) return strtTotalURL;
         if (!url.startsWith("http")) {
             url = "http://" + url;
         }
-        if (strtTotalURL.indexOf("?") == -1) {
+        if (url.indexOf("?") == -1) {
             strtTotalURL.append(url).append("?").append(convertMapToUrl(params, enc));
         } else {
             strtTotalURL.append(url).append(URL_PARAM_CONNECT_FLAG).append(convertMapToUrl(params, enc));
