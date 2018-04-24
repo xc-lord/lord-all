@@ -396,8 +396,6 @@ public class HttpUtils {
             logger.warn(url + "响应状态码 = " + statusCode);
             logger.warn(url + "响应内容：\n" + response);
         }
-        logger.warn(url + "响应状态码 = " + statusCode);
-        logger.warn(url + "响应内容：\n" + response);
         return response;
     }
 

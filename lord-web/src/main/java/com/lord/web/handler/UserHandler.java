@@ -172,11 +172,9 @@ public class UserHandler
         String sign = createSign(output, request);
         if (sign.equals(cookieSign))
         {
-            long nowTime = new Date().getTime();
-            long expireTime = output.getExpireTime().getTime();
-            if ((expireTime - nowTime) < 120000)
+            if (CommonUtils.genRandom(1, 6) == 3)
             {
-                //还差2分钟就到用户的Redis失效时间，重新设置用户缓存，刷新失效时间
+                //随机数刚好为3时，重新设置用户缓存，刷新失效时间，按概率每请求5次会刷新一次缓存
                 saveToRedis(key, output);
             }
             output.setToken(null);//获取用户时，不获取用户证书
