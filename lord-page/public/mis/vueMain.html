@@ -57,6 +57,9 @@
         <el-col :span="3">
             <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
                      @select="handleMenuSelect">
+                <el-menu-item index="sysDistrict">
+                    <i class="el-icon-setting"></i>行政区域
+                </el-menu-item>
                 <el-menu-item index="misUser">
                     <i class="el-icon-setting"></i>用户管理
                 </el-menu-item>
@@ -224,12 +227,10 @@
             //左侧二级菜单点击事件
             handleMenuSelect: function (key, keyPath) {
                 var _self = this;
-                console.log("点击二级菜单"  + key, keyPath);
                 window.location.href = "#/" + keyPath;
             },
             //左侧二级菜单展开事件
             handleOpen: function (key, keyPath) {
-                console.log("二级菜单展开事件"  + key, keyPath);
                 window.location.href = "#/viewBook";
             },
             //左侧二级菜单关闭事件

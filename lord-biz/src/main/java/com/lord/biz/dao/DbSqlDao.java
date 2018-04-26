@@ -71,11 +71,13 @@ public class DbSqlDao
 
     public List<Map<String, Object>> select(String sql, Object... params)
     {
-        if(params == null) return null;
         Query query = entityManager.createNativeQuery(sql);
-        for (int i = 0; i < params.length; i++)
+        if(params != null)
         {
-            query.setParameter(i+1, params[i]);
+            for (int i = 0; i < params.length; i++)
+            {
+                query.setParameter(i + 1, params[i]);
+            }
         }
         // 将结果转化为 Map<tableKey, keyValue>
         query.unwrap(org.hibernate.SQLQuery.class)

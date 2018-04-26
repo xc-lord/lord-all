@@ -73,6 +73,23 @@ var routes = {
         pageParam = Object.assign({}, {id: id});//设置页面参数
         $("#showView").load("/mis/sys/sysSite/sysSiteEdit.html");
     },
+    //行政区域
+    '/sysDistrict': function () {
+        pageParam = Object.assign({}, {parentId: 0});//设置页面参数
+        $("#showView").load("/mis/sys/sysDistrict/sysDistrictList.html");
+    },
+    '/sysDistrict/:parentId': function (parentId) {
+        pageParam = Object.assign({}, {parentId: parentId});//设置页面参数
+        $("#showView").load("/mis/sys/sysDistrict/sysDistrictList.html");
+    },
+    '/sysDistrict/:parentId/add': function (parentId) {
+        pageParam = Object.assign({}, {parentId: parentId});//设置页面参数
+        $("#showView").load("/mis/sys/sysDistrict/sysDistrictAdd.html");
+    },
+    '/sysDistrict/:parentId/edit/:id': function (parentId, id) {
+        pageParam = Object.assign({}, {parentId:parentId, id: id});//设置页面参数
+        $("#showView").load("/mis/sys/sysDistrict/sysDistrictEdit.html");
+    },
     //文章
     '/cmsArticle': function () {
         pageParam = Object.assign({}, {showEditPage: true});

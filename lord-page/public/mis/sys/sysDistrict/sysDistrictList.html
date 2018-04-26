@@ -1,15 +1,17 @@
-<#assign className = table.className>
-    <#assign classNameLower = className?uncap_first>
         <!--
-            Desc: 	${bizName}的列表界面
-            Author: ${authorName}
-            Date: 	${now?string('yyyy年MM月dd日 HH:mm:ss')}
+            Desc: 	行政区域的列表界面
+            Author: xiaocheng
+            Date: 	2018年04月24日 15:04:09
         -->
 
         <!-- UI界面 start -->
-        <div id="${classNameLower}View">
+        <div id="sysDistrictView">
             <el-row v-if="showEditPage">
-                <h3><i class="el-icon-share"></i> ${bizName}管理</h3>
+                <h3><i class="el-icon-share"></i> <a href="#sysDistrict">行政区域管理</a>
+                    <template v-for="item in parentDistrictList">
+                    / <a :href="'#/sysDistrict/' + item.id" >{{item.name}}</a>
+                    </template>
+                </h3>
             </el-row>
             <!--列表顶部搜索和工具条-->
             <el-row>
@@ -20,21 +22,10 @@
                     <el-form-item label="名称">
                         <el-input v-model="searchForm.name" placeholder="名称" size="small"></el-input>
                     </el-form-item>
-                    <!--TODO:待修改-->
-                    <el-form-item label="状态">
-                        <el-select v-model="searchForm.state" clearable placeholder="请选择" size="small">
-                            <el-option
-                                    v-for="item in enumTypeSelect"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
                     <el-form-item>
                         <el-button type="primary" icon="el-icon-search" @click="searchClick" size="small">查询</el-button>
-                        <el-button v-if="showEditPage" type="success" icon="el-icon-plus" @click="addClick" size="small">新增</el-button>
-                        <el-button v-if="showEditPage" type="success" icon="el-icon-plus" @click="dialogAddClick" size="small">弹窗新增</el-button>
+                        <!--<el-button v-if="showEditPage" type="success" icon="el-icon-plus" @click="addClick" size="small">新增</el-button>-->
+                        <el-button v-if="showEditPage" type="success" icon="el-icon-plus" @click="dialogAddClick" size="small">新增</el-button>
                     </el-form-item>
                 </el-form>
             </el-row>
@@ -50,38 +41,64 @@
                             type="selection"
                             width="50">
                     </el-table-column>
-                    <#list table.columns as column>
-                        <#if column.pk>
                             <el-table-column
-                                    prop="${column.columnNameLower}"
+                                    prop="id"
                                     label="ID"
-                                    width="80">
+                                    width="100">
                             </el-table-column>
-                            <#elseif column.javaType == 'java.lang.Boolean'>
-                                <el-table-column
-                                        prop="${column.columnNameLower}"
-                                        label="${column.remarks}"
-                                        :formatter="booleanFormat"
-                                        width="120">
-                                </el-table-column>
-                                <#elseif column.javaType == 'java.util.Date'>
+                                                <el-table-column
+                                                        prop="citycode"
+                                                        label="城市编码"
+                                                        width="100">
+                                                </el-table-column>
+                                                <el-table-column
+                                                        prop="adcode"
+                                                        label="区域编码"
+                                                        width="120">
+                                                </el-table-column>
+                                                <el-table-column
+                                                        prop="name"
+                                                        label="行政区名称"
+                                                        width="120">
+                                                </el-table-column>
+                                                <el-table-column
+                                                        prop="longitude"
+                                                        label="经度"
+                                                        width="120">
+                                                </el-table-column>
+                                                <el-table-column
+                                                        prop="latitude"
+                                                        label="纬度"
+                                                        width="120">
+                                                </el-table-column>
+                                                <el-table-column
+                                                        prop="level"
+                                                        label="行政区划级别"
+                                                        :formatter="enumFormat"
+                                                        width="120">
+                                                </el-table-column>
+                                                <el-table-column
+                                                        prop="zipCode"
+                                                        label="邮编"
+                                                        width="120">
+                                                </el-table-column>
+                                                <el-table-column
+                                                        prop="parentId"
+                                                        label="父区域ID"
+                                                        width="120">
+                                                </el-table-column>
                                     <el-table-column
-                                            prop="${column.columnNameLower}"
-                                            label="${column.remarks}"
+                                            prop="updateTime"
+                                            label="更新时间"
                                             :formatter="dateFormat"
                                             width="180">
                                     </el-table-column>
-                                    <#elseif column.sqlName?contains("img") || column.sqlName?contains("icon")>
-                                        <el-table-column
-                                                label="${column.remarks}"
-                                                width="135">
-                                            <template scope="scope">
-                                                <div class="el-table-img-div">
-                                                    <img :src="scope.row.${column.columnNameLower}" class="el-table-img">
-                                                </div>
-                                            </template>
-                                        </el-table-column>
-                                        <#elseif column.columnNameLower == 'orderValue'>
+                                    <el-table-column
+                                            prop="createTime"
+                                            label="创建时间"
+                                            :formatter="dateFormat"
+                                            width="180">
+                                    </el-table-column>
                                             <el-table-column
                                                     label="排序值"
                                                     width="100">
@@ -90,27 +107,22 @@
                                                               :data-id="scope.row.id" size="small"></el-input>
                                                 </template>
                                             </el-table-column>
-                                            <#else>
-                                                <el-table-column
-                                                        prop="${column.columnNameLower}"
-                                                        label="${column.remarks}"
-                                                        width="120">
-                                                </el-table-column>
-                        </#if>
-                    </#list>
                     <el-table-column v-if="showEditPage"
                                      fixed="right"
                                      label="操作"
                                      width="320">
                         <template scope="scope">
-                            <el-button :plain="true" type="success" size="small" icon="el-icon-edit" @click="editClick(scope.row)" size="small">
+                            <!--<el-button :plain="true" type="success" size="small" icon="el-icon-edit" @click="editClick(scope.row)" size="small">
                                 编辑
-                            </el-button>
+                            </el-button>-->
                             <el-button :plain="true" type="danger" size="small" icon="el-icon-delete" @click="deleteClick(scope.row)" size="small">
                                 删除
                             </el-button>
                             <el-button :plain="true" type="success" size="small" icon="el-icon-edit" @click="dialogEditClick(scope.row)" size="small">
-                                弹窗编辑
+                                编辑
+                            </el-button>
+                            <el-button :plain="true" type="success" size="small" icon="el-icon-view" @click="viewSubClick(scope.row)" size="small">
+                                查看下级
                             </el-button>
                         </template>
                     </el-table-column>
@@ -144,9 +156,11 @@
         <!-- UI界面 end -->
 
         <script type="text/javascript">
-            var ${classNameLower}View = new Vue({
-                el: '#${classNameLower}View',
+            var sysDistrictView = new Vue({
+                el: '#sysDistrictView',
                 data: {
+                    //父区域列表
+                    parentDistrictList:[],
                     //列表数据
                     tableData: [],
                     //显示加载中样式
@@ -184,8 +198,21 @@
                         _self.showEditPage = true;
                     }
                     //获取枚举类型
-                    commonUtils.vueGetEnumType(_self, "mis_MisUserStatus");
+                    commonUtils.vueGetEnumType(_self, "sys_SysDistrictLevel");
                     _self.loadingData();
+                    //获取父行政区域的导航
+                    $.ajax({
+                        url: '/api/admin/sys/sysDistrict/listParentDistrict.do',
+                        data: {id:pageParam.parentId},
+                        dataType: "json"
+                    }).done(function (res, status, xhr) {
+                        if (res.success) {
+                            _self.parentDistrictList = res.data;
+                        } else {
+                            _self.$message.error(res.msg);//提示错误
+                        }
+                        _self.loading = false;
+                    });
                 },
                 methods: {
                     //是否具有权限
@@ -198,6 +225,7 @@
                         _self.loading = true;
 
                         var paramData = {
+                            expandId: pageParam.parentId,
                             pageSize: _self.pageSize,
                             page: _self.currentPage
                         };
@@ -205,7 +233,7 @@
                         commonUtils.putFormData(paramData, _self.searchForm);
                         //搜索
                         $.ajax({
-                            url: '/api/admin/${bizPackage}/${classNameLower}/list.do',
+                            url: '/api/admin/sys/sysDistrict/list.do',
                             data: paramData,
                             dataType: "json"
                         }).done(function (res, status, xhr) {
@@ -232,7 +260,7 @@
                         }
                         //修改排序值
                         $.ajax({
-                            url: '/api/admin/${bizPackage}/${classNameLower}/updateOrderValue.do',
+                            url: '/api/admin/sys/sysDistrict/updateOrderValue.do',
                             data: {id: id, orderValue: orderValue},
                             dataType: "json"
                         }).done(function (res) {
@@ -257,24 +285,28 @@
                     },
                     //新建事件
                     addClick: function () {
-                        window.location.href = "#/${classNameLower}/add";
+                        window.location.href = "#/sysDistrict/" + pageParam.parentId + "/add";
+                    },
+                    //查看下级
+                    viewSubClick: function (row) {
+                        window.location.href = "#/sysDistrict/" + row.id;
                     },
                     //表格编辑事件
                     editClick: function (row) {
-                        window.location.href = "#/${classNameLower}/edit/" + row.id;
+                        window.location.href = "#/sysDistrict/" + pageParam.parentId + "/edit/" + row.id;
                     },
                     //弹窗新建事件
                     dialogAddClick: function () {
                         var _self = this;
                         _self.dialogFormVisible = true;
-                        _self.dialogFormUrl = "/mis/${bizPackage}/${classNameLower}/${classNameLower}Add.html";
+                        _self.dialogFormUrl = "/mis/sys/sysDistrict/sysDistrictAdd.html";
                     },
                     //表格弹窗编辑事件
                     dialogEditClick: function (row) {
                         var _self = this;
-                        pageParam = Object.assign({}, {id: row.id});//设置页面参数
+                        pageParam = Object.assign({}, {parentId:pageParam.parentId, id: row.id});//设置页面参数
                         _self.dialogFormVisible = true;
-                        _self.dialogFormUrl = "/mis/${bizPackage}/${classNameLower}/${classNameLower}Edit.html";
+                        _self.dialogFormUrl = "/mis/sys/sysDistrict/sysDistrictEdit.html";
                     },
                     //弹窗打开事件
                     dialogFormOpen:function() {
@@ -323,9 +355,9 @@
                             return;
                         }
                         //如果是弹窗模式，关闭弹窗
-                        if(typeof(search${className}ParentView) !== 'undefined' && search${className}ParentView.dialogFormVisible) {
+                        if(typeof(searchSysDistrictParentView) !== 'undefined' && searchSysDistrictParentView.dialogFormVisible) {
                             var ids = commonUtils.arrayToSingleArray(multipleSelection, "id");
-                            search${className}ParentView.dialogFormClose(ids);
+                            searchSysDistrictParentView.dialogFormClose(ids);
                         }
                     },
                     //表格删除事件
@@ -341,7 +373,7 @@
                         }).then(function () {
                             //删除记录
                             $.ajax({
-                                url: '/api/admin/${bizPackage}/${classNameLower}/remove.do',
+                                url: '/api/admin/sys/sysDistrict/remove.do',
                                 data: {ids: ids},
                                 dataType: "json"
                             }).done(function (res) {
@@ -368,8 +400,8 @@
                         if (columnVal == undefined) {
                             return "";
                         }
-                        if (columnName == 'status') {
-                            var mType = _self.enumType["mis_MisUserStatus"];
+                        if (columnName == 'level') {
+                            var mType = _self.enumType["sys_SysDistrictLevel"];
                             return mType[columnVal];
                         }
                         return column;

@@ -1,0 +1,131 @@
+<!-- 
+	Desc: 	行政区域的编辑界面
+	Author: xiaocheng
+	Date: 	2018年04月24日 15:04:09
+-->
+
+<!-- UI界面 start -->
+<div id="sysDistrictEditView">
+    <el-row>
+        <h3><i class="el-icon-edit"></i> 行政区域管理 / 编辑</h3>
+    </el-row>
+    <!--编辑界面-->
+    <el-row type="flex" justify="center">
+        <el-col :span="22">
+            <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
+				<el-form-item label="ID" prop="id">
+                    <el-input v-model="editForm.id" auto-complete="off" :disabled="true" size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="城市编码" prop="citycode">
+                    <el-input v-model="editForm.citycode" auto-complete="off" size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="区域编码" prop="adcode">
+                    <el-input v-model="editForm.adcode" auto-complete="off" :disabled="true" size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="行政区名称" prop="name">
+                    <el-input v-model="editForm.name" auto-complete="off" size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="经度" prop="longitude">
+                    <el-input v-model="editForm.longitude" auto-complete="off" size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="纬度" prop="latitude">
+                    <el-input v-model="editForm.latitude" auto-complete="off" size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="行政区划级别" prop="level">
+                    <el-select v-model="editForm.level" clearable placeholder="请选择" size="small">
+                        <el-option
+                                v-for="item in sysDistrictLevel"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="邮编" prop="zipCode">
+                    <el-input v-model="editForm.zipCode" auto-complete="off" size="small"></el-input>
+                </el-form-item>
+				<el-form-item label="父区域ID">
+                    <el-input-number v-model="editForm.parentId" :min="0" size="small" :disabled="true"></el-input-number>
+                </el-form-item>
+				<el-form-item label="更新时间">
+                    <el-date-picker type="datetime" 
+									placeholder="选择日期和时间" size="small"
+									:disabled="true"
+                                    v-model="editForm.updateTime">
+					</el-date-picker>
+                </el-form-item>
+				<el-form-item label="创建时间">
+                    <el-date-picker type="datetime" 
+									placeholder="选择日期和时间" size="small"
+									:disabled="true"
+                                    v-model="editForm.createTime">
+					</el-date-picker>
+                </el-form-item>
+				<el-form-item label="排序值">
+                    <el-input-number v-model="editForm.orderValue" :min="0" size="small"></el-input-number>
+                </el-form-item>
+            </el-form>
+        </el-col>
+    </el-row>
+
+    <el-row type="flex" justify="center">
+        <el-col :span="6">
+            <el-button @click="editFormCancel" size="small">取消</el-button>
+            <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading" size="small">提交</el-button>
+        </el-col>
+    </el-row>
+
+</div>
+<!-- UI界面 end -->
+
+<script type="text/javascript">
+    $.getScript('/res/js/mis/sys/sysDistrict/sysDistrictForm.js', function () {
+        var sysDistrictEditView = new Vue({
+            el: '#sysDistrictEditView',
+            data: SysDistrictFromCommon.data,
+            //数据初始化
+            created: function () {
+                var _self = this;
+                //获取下拉框选项
+                SysDistrictFromCommon.loadSelect(_self);
+                //根据Id,获取编辑的对象
+                $.ajax({
+                    url: '/api/admin/sys/sysDistrict/' + pageParam.id + ".do",
+                    dataType: "json"
+                }).done(function (res) {
+                    if (res.success) {
+                        _self.editForm = Object.assign(SysDistrictFromCommon.defaultModel, res.data);
+                    } else {
+                        _self.$message.error(res.msg);//提示错误
+                    }
+                });
+            },
+            methods: {
+                //是否具有权限
+                hasRight: function(rightCode) {
+                    return commonUtils.hasRight(rightCode);
+                },
+                //保存事件
+                editSubmit: function (formName) {
+                    var _self = this;
+                    _self.$refs[formName].validate(function(valid){
+                        if (valid) {
+                            SysDistrictFromCommon.saveAction(_self);
+                        } else{
+                            _self.$message.error("请正确填写表单！");
+                        }
+                    });
+                },
+                //取消事件
+                editFormCancel: function () {
+                    SysDistrictFromCommon.cancelAction(this);
+                },
+                //上传图片前的验证事件
+                beforeAvatarUpload:function(file) {
+                    var _self = this;
+                    commonUtils.uploadImageCheck(file, _self);
+                }
+            }
+        });
+    });
+</script>

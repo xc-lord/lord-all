@@ -18,25 +18,25 @@
 			<#list table.columns as column>
 			<#if column.pk>
 				<el-form-item label="ID" prop="${column.columnNameLower}">
-                    <el-input v-model="editForm.${column.columnNameLower}" auto-complete="off" :disabled="true"></el-input>
+                    <el-input v-model="editForm.${column.columnNameLower}" auto-complete="off" :disabled="true" size="small"></el-input>
                 </el-form-item>
 			<#elseif column.columnNameLower == 'removed'>
 				<!--${column.columnNameLower}不需要-->
 			<#elseif column.javaType == 'java.lang.Boolean'>
 				<el-form-item label="${column.remarks}">
-                    <el-radio-group v-model="editForm.${column.columnNameLower}">
+                    <el-radio-group v-model="editForm.${column.columnNameLower}" size="small">
                         <el-radio class="radio" :label="true">是</el-radio>
                         <el-radio class="radio" :label="false">否</el-radio>
                     </el-radio-group>
                 </el-form-item>
 			<#elseif column.javaType == 'java.lang.Long' || column.javaType == 'java.lang.Integer'>
 				<el-form-item label="${column.remarks}">
-                    <el-input-number v-model="editForm.${column.columnNameLower}" :min="0"></el-input-number>
+                    <el-input-number v-model="editForm.${column.columnNameLower}" :min="0" size="small"></el-input-number>
                 </el-form-item>
 			<#elseif column.javaType == 'java.util.Date'>
 				<el-form-item label="${column.remarks}">
                     <el-date-picker type="datetime" 
-									placeholder="选择日期和时间"
+									placeholder="选择日期和时间" size="small"
 								<#if column.columnNameLower == 'createTime' || column.columnNameLower == 'updateTime'>
 									:disabled="true"
 								</#if>
@@ -57,17 +57,17 @@
                 </el-form-item>
 			<#elseif column.size gt 500>
 				<el-form-item label="${column.remarks}">
-                    <el-input type="textarea" v-model="editForm.${column.columnNameLower}"></el-input>
+                    <el-input type="textarea" v-model="editForm.${column.columnNameLower}" size="small"></el-input>
                 </el-form-item>
 			<#else>
                 <el-form-item label="${column.remarks}" prop="${column.columnNameLower}">
-                    <el-input v-model="editForm.${column.columnNameLower}" auto-complete="off"></el-input>
+                    <el-input v-model="editForm.${column.columnNameLower}" auto-complete="off" size="small"></el-input>
                 </el-form-item>
 			</#if>
 			</#list>
                 <!--TODO:待修改-->
 				<!--<el-form-item label="状态">
-                    <el-select v-model="editForm.status" clearable placeholder="请选择">
+                    <el-select v-model="editForm.status" clearable placeholder="请选择" size="small">
                         <el-option
                                 v-for="item in ${classNameLower}Status"
                                 :key="item.value"
@@ -82,8 +82,8 @@
 
     <el-row type="flex" justify="center">
         <el-col :span="6">
-            <el-button @click="editFormCancel">取消</el-button>
-            <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading">提交</el-button>
+            <el-button @click="editFormCancel" size="small">取消</el-button>
+            <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading" size="small">提交</el-button>
         </el-col>
     </el-row>
 
