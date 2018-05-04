@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学校详情</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="/res/css/amaze-ui-2.7.2/amazeui.min.css">
+    <link rel="stylesheet" href="/res/css/school/school-show.css?6">
+    <link rel="stylesheet" href="/res/css/school/animate.min.css">
+    <script src="/res/js/jquery-2.1.4.min.js"></script>
+    <script src="/res/js/amaze-ui-2.7.2/amazeui.min.js"></script>
+    <script src="/res/js/amaze-ui-2.7.2/amazeui.lazyload.min.js"></script>
+</head>
+<body>
+<header class="am-topbar am-topbar-inverse">
+    <div class="amz-container">
+        <h1 class="am-topbar-brand">
+            <a href="#" class="am-topbar-logo">
+                <img src="/res/img/school/school-logo.png?1" alt="">
+            </a>
+        </h1>
+        <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"
+                data-am-collapse="{target: '#doc-topbar-collapse-5'}">
+            <span class="am-sr-only">
+                导航切换
+            </span>
+            <span class="am-icon-bars">
+            </span>
+        </button>
+        <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse-5">
+            <ul class="am-nav am-nav-pills am-topbar-nav">
+                <li class="am-active">
+                    <a href="/school/index.html">
+                        首页
+                    </a>
+                </li>
+                <li class="am-dropdown" data-am-dropdown="">
+                    <a class="am-dropdown-toggle" data-am-dropdown-toggle="" href="javascript:;">
+                        发现萌宠
+                        <span class="am-icon-caret-down">
+                        </span>
+                    </a>
+                    <ul class="am-dropdown-content">
+                        <li>
+                            <a href="#">
+                                编辑推荐
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                人气排行
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                最新发布
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                语音涂鸦
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="/school/schoolIndex.html">
+                        学校目录
+                    </a>
+                </li>
+                <li>
+                    <a href="/school/schoolMap.html">
+                        网站地图
+                    </a>
+                </li>
+                <li>
+                    <a href="/school/schoolNews.html">
+                        资讯列表
+                    </a>
+                </li>
+                <li>
+                    <a href="/school/schoolArticle.html">
+                        文章详情
+                    </a>
+                </li>
+                <li>
+                    <a href="/school/schoolDetails.html">
+                        学校详情
+                    </a>
+                </li>
+                <li class="am-dropdown" data-am-dropdown="">
+                    <a class="am-dropdown-toggle" data-am-dropdown-toggle="" href="javascript:;">
+                        萌宠服务
+                        <span class="am-icon-caret-down">
+                        </span>
+                    </a>
+                    <ul class="am-dropdown-content">
+                        <li>
+                            <a href="#">
+                                宠物医院
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                宠物美容
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                宠物店铺
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                更多服务
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <!-- content srart -->
+    <!--banner-->
+    <div class="padding-content">
+        <div class="am-g">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-8 padding-none">
+                <div data-am-widget="slider" class="am-slider am-slider-c4" >
+                    <ul class="am-slides">
+                        <li>
+                            <img src="http://s.amazeui.org/media/i/demos/bing-1.jpg">
+                            <div class="am-slider-desc">远方 有一个地方 那里种有我们的梦想</div>
+
+                        </li>
+                        <li>
+                            <img src="http://s.amazeui.org/media/i/demos/bing-2.jpg">
+                            <div class="am-slider-desc">某天 也许会相遇 相遇在这个好地方</div>
+
+                        </li>
+                        <li>
+                            <img src="http://s.amazeui.org/media/i/demos/bing-3.jpg">
+                            <div class="am-slider-desc">不要太担心 只因为我相信 终会走过这条遥远的道路</div>
+
+                        </li>
+                        <li>
+                            <img src="http://s.amazeui.org/media/i/demos/bing-4.jpg">
+                            <div class="am-slider-desc">OH PARA PARADISE 是否那么重要 你是否那么地遥远</div>
+
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="am-u-sm-0 am-u-md-0 am-u-lg-4 padding-none lrad">
+                <ul class="am-avg-sm-1 am-avg-md-2 am-avg-lg-1">
+                    <li class="ms"><img src="http://s.amazeui.org/media/i/demos/bing-2.jpg" class="am-img-responsive"></li>
+                    <li><img src="http://s.amazeui.org/media/i/demos/bing-3.jpg" class="am-img-responsive"></li>
+                </ul>
+            </div>
+        </div>
+
+        <ol class="am-breadcrumb school-breadcumb">
+            <li><a href="#" class="am-icon-home">首页</a></li>
+            <li><a href="#">分类</a></li>
+            <li class="am-active">内容</li>
+        </ol>
+    </div>
+
+    <div class="am-g">
+        <div class="am-u-sm-0 am-u-md-0 am-u-lg-2">
+            <nav class="scrollspy-nav" data-am-scrollspynav="{offsetTop: 45}" data-am-sticky>
+                <img src="http://s.amazeui.org/media/i/demos/bing-3.jpg" alt="LOGO" width="100px"/>
+                <ul>
+                    <li><a href="#school-info">学校概况</a></li>
+                    <li><a href="#recruit">招生计划</a></li>
+                    <li><a href="#examination">考试时间、地点</a></li>
+                    <li><a href="#requirements">报考条件</a></li>
+                    <li><a href="#scoreLine">录取分数线</a></li>
+                    <li><a href="#schoolQuestion">常见问题</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-10">
+            <div class="school-info" id="school-info">
+                <div class="school-details-title"><span class="title">学校概况</span></div>
+                <div class="am-cf">
+                    <div class="am-align-right"><img src="http://s.amazeui.org/media/i/demos/bing-2.jpg" alt="" width="200"></div>
+                    <p>
+                        中央戏剧学院（The Central Academy Of Drama），由中华人民共和国教育部直属，是中国高等戏剧教育联盟总部、亚洲戏剧教育研究中心总部和世界戏剧院校联盟秘书处所在地，是世界戏剧院校联盟国际大学生戏剧节活动基地，是国家首批“双一流”世界一流学科建设高校。中央戏剧学院拥有联合国教科文组织戏剧教育席位，是新中国第一所戏剧教育高等学校。
+                    </p>
+                    <p>
+                        中央戏剧学院（The Central Academy Of Drama），由中华人民共和国教育部直属，是中国高等戏剧教育联盟总部、亚洲戏剧教育研究中心总部和世界戏剧院校联盟秘书处所在地，是世界戏剧院校联盟国际大学生戏剧节活动基地，是国家首批“双一流”世界一流学科建设高校。中央戏剧学院拥有联合国教科文组织戏剧教育席位，是新中国第一所戏剧教育高等学校。
+                        中央戏剧学院的历史可以溯源至1938年4月10日成立的延安鲁迅艺术学院；1949年12月，中央戏剧学院正式开办；1950年4月2日，召开了中央戏剧学院成立大会，毛泽东主席亲笔题写校名。
+                        据2015年12月学校官网信息显示，中央戏剧学院有2个校区（东城校区、昌平校区），总占地面积约23万平方米，建筑面积约18万平方米；下辖10个教学系，开办7个本科专业；在校学生2199人（截至2014年9月），专任教师244人（截至2014年8月）。
+                    </p>
+                </div>
+                <div class="am-scrollable-horizontal">
+                    <table class="am-table am-table-striped am-text-nowrap school-table">
+                        <tbody>
+                        <tr>
+                            <td><span>中文名称</span>北京大学</td>
+                            <td><span>学费</span>8000-10000/年(部分专业免学费)</td>
+                        </tr>
+                        <tr>
+                            <td><span>英文名称</span>The Central Academy Of Drama</td>
+                            <td><span>录取分数线</span>The Central Academy Of Drama</td>
+                        </tr>
+                        <tr>
+                            <td><span>学校官网</span>http://www.chntheatre.edu.cn/</td>
+                            <td><span>招生官网</span>http://zhaosheng.zhongxi.cn/</td>
+                        </tr>
+                        <tr>
+                            <td><span>招生简章年份</span>2018年最新</td>
+                            <td><span>学校所在城市</span>北京</td>
+                        </tr>
+                        <tr>
+                            <td><span>开学时间</span>见录取通知书</td>
+                            <td><span>现任校长</span>The Central Academy Of Drama</td>
+                        </tr>
+                        <tr>
+                            <td><span>招生人数</span>500人2008年</td>
+                            <td><span>学制</span>4-5年</td>
+                        </tr>
+                        <tr>
+                            <td><span>院校类型</span>艺术类</td>
+                            <td><span>办学层次</span>中央部属本科院校</td>
+                        </tr>
+                        <tr>
+                            <td><span>教育性质</span>普通高等教育</td>
+                            <td><span>学校地址</span>北京市东城区东棉花胡同39号</td>
+                        </tr>
+                        <tr>
+                            <td><span>知名校友</span>普通高等教育</td>
+                            <td><span>招生批次</span>本科一批</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="school-content" id="recruit">
+                <div class="school-details-title"><span class="title">招生计划</span>（共计598人，面向全国、文理兼招）</div>
+                <div>
+                    <p>注2：详见中国中央戏剧学院与英国盖德霍尔音乐戏剧学院话剧影视表演本科双学位校际交流项目招生简章。</p>
+                    <p>注3：青衣（2名）、花旦（3名）、花衫（1名）、武旦（1名）、老旦（1名）、老生（2名）、武生（2名）、小生（2名）、</p>
+                    <p>花脸（2名）、丑行（3名）；名额划分按当年报考情况适当调整。</p>
+                    <p>注4: 京胡（2名）、京二胡（1名）、月琴（1名）、三弦（1名）、鼓板（2名）；大锣、铁钹、小锣（三个种类统一排名，共计3名）；名额划分按当年报考情况适当调整。</p>
+                    <p>注5：招生名额按男女比例划分：男生15人，女生15人。</p>
+                </div>
+            </div>
+
+            <div class="school-content" id="examination">
+                <div class="school-details-title"><span class="title">考试时间、地点及科目</span>（具体各试考试时间和地点以我院实际安排为准）</div>
+                <div>
+                    <p>注2：详见中国中央戏剧学院与英国盖德霍尔音乐戏剧学院话剧影视表演本科双学位校际交流项目招生简章。</p>
+                    <p>注3：青衣（2名）、花旦（3名）、花衫（1名）、武旦（1名）、老旦（1名）、老生（2名）、武生（2名）、小生（2名）、</p>
+                    <p>花脸（2名）、丑行（3名）；名额划分按当年报考情况适当调整。</p>
+                    <p>注4: 京胡（2名）、京二胡（1名）、月琴（1名）、三弦（1名）、鼓板（2名）；大锣、铁钹、小锣（三个种类统一排名，共计3名）；名额划分按当年报考情况适当调整。</p>
+                    <p>注5：招生名额按男女比例划分：男生15人，女生15人。</p>
+                </div>
+            </div>
+
+            <div class="school-content" id="requirements">
+                <div class="school-details-title"><span class="title">报考条件</span>（具体各试考试时间和地点以我院实际安排为准）</div>
+                <div>
+                    <p>注2：详见中国中央戏剧学院与英国盖德霍尔音乐戏剧学院话剧影视表演本科双学位校际交流项目招生简章。</p>
+                    <p>注3：青衣（2名）、花旦（3名）、花衫（1名）、武旦（1名）、老旦（1名）、老生（2名）、武生（2名）、小生（2名）、</p>
+                    <p>花脸（2名）、丑行（3名）；名额划分按当年报考情况适当调整。</p>
+                    <p>注4: 京胡（2名）、京二胡（1名）、月琴（1名）、三弦（1名）、鼓板（2名）；大锣、铁钹、小锣（三个种类统一排名，共计3名）；名额划分按当年报考情况适当调整。</p>
+                    <p>注5：招生名额按男女比例划分：男生15人，女生15人。</p>
+                </div>
+            </div>
+
+            <div class="school-content" id="scoreLine">
+                <div class="school-details-title"><span class="title">录取分数线</span>（具体各试考试时间和地点以我院实际安排为准）</div>
+                <div>
+                    <p>注2：详见中国中央戏剧学院与英国盖德霍尔音乐戏剧学院话剧影视表演本科双学位校际交流项目招生简章。</p>
+                    <p>注3：青衣（2名）、花旦（3名）、花衫（1名）、武旦（1名）、老旦（1名）、老生（2名）、武生（2名）、小生（2名）、</p>
+                    <p>花脸（2名）、丑行（3名）；名额划分按当年报考情况适当调整。</p>
+                    <p>注4: 京胡（2名）、京二胡（1名）、月琴（1名）、三弦（1名）、鼓板（2名）；大锣、铁钹、小锣（三个种类统一排名，共计3名）；名额划分按当年报考情况适当调整。</p>
+                    <p>注5：招生名额按男女比例划分：男生15人，女生15人。</p>
+                </div>
+            </div>
+
+            <div class="school-info" id="schoolQuestion">
+                <div class="school-details-title"><span class="title">常见问题</span>（具体各试考试时间和地点以我院实际安排为准）</div>
+                <div>
+                    <div class="question-content">
+                        <span class="question-tag">报考条件：</span>
+                        <div class="question"><i class="am-icon-question-circle-o"></i> 我要在你们心中奔腾，你们怕不怕？</div>
+                        <div class="answer">
+                            <span>答：</span>
+                            <div>
+                                <p>1.登陆http://zhaosheng.zhongxi.cn（中央戏剧学院本科招生网）进行网上报名。</p>
+                                <p>3.每个招考专业（方向）都有自己的考试科目，具体可以了解本页面的考试科目内容。</p>
+                                <p>2.注册 → 选择报考专业（方向） → 选择考试时间 → 网上交费  → 上传照片 → 打印准考证</p>
+                            </div>
+                        </div>
+                        <div class="question"><i class="am-icon-question-circle-o"></i> 我要在你们心中奔腾，你们怕不怕？</div>
+                        <div class="answer">
+                            <span>答：</span>
+                            <div>
+                                <p>1.登陆http://zhaosheng.zhongxi.cn（中央戏剧学院本科招生网）进行网上报名。</p>
+                                <p>3.每个招考专业（方向）都有自己的考试科目，具体可以了解本页面的考试科目内容。</p>
+                                <p>2.注册 → 选择报考专业（方向） → 选择考试时间 → 网上交费  → 上传照片 → 打印准考证</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-content">
+                        <span class="question-tag">报考条件：</span>
+                        <div class="question"><i class="am-icon-question-circle-o"></i> 我要在你们心中奔腾，你们怕不怕？</div>
+                        <div class="answer">
+                            <span>答：</span>
+                            <div>
+                                <p>1.登陆http://zhaosheng.zhongxi.cn（中央戏剧学院本科招生网）进行网上报名。</p>
+                                <p>3.每个招考专业（方向）都有自己的考试科目，具体可以了解本页面的考试科目内容。</p>
+                                <p>2.注册 → 选择报考专业（方向） → 选择考试时间 → 网上交费  → 上传照片 → 打印准考证</p>
+                            </div>
+                        </div>
+                        <div class="question"><i class="am-icon-question-circle-o"></i> 我要在你们心中奔腾，你们怕不怕？</div>
+                        <div class="answer">
+                            <span>答：</span>
+                            <div>
+                                <p>1.登陆http://zhaosheng.zhongxi.cn（中央戏剧学院本科招生网）进行网上报名。</p>
+                                <p>3.每个招考专业（方向）都有自己的考试科目，具体可以了解本页面的考试科目内容。</p>
+                                <p>2.注册 → 选择报考专业（方向） → 选择考试时间 → 网上交费  → 上传照片 → 打印准考证</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- content end -->
+</div>
+
+<footer class="am_footer">
+    <div class="am_footer_con">
+        <div class="am_footer_link">
+            <span>关于我们</span>
+            <ul>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+            </ul>
+        </div>
+        <div class="am_footer_link">
+            <span>友情链接</span>
+            <ul>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+            </ul>
+        </div>
+        <div class="am_footer_link">
+            <span>友情链接</span>
+            <ul>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+            </ul>
+        </div>
+        <div class="am_footer_link">
+            <span>友情链接</span>
+            <ul>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+            </ul>
+        </div>
+
+        <div class="am_footer_erweima">
+            <div class="am_footer_weixin"><img src="/res/img/school/qrcode.png" alt="">
+
+                <div class="am_footer_d_gzwx am-icon-weixin"> 关注微信</div>
+            </div>
+            <div class="am_footer_weixin"><img src="/res/img/school/qrcode.png" alt="">
+
+                <div class="am_footer_d_gzwx am-icon-weixin"> 扫码下载</div>
+            </div>
+        </div>
+    </div>
+    <div class="am_footer_friendly_con">
+        <div class="am_footer_link_friendly">
+            <ul>
+                <li>友情链接：</li>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">历程</a></li>
+                <li><a href="###">历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">关于我们</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="am_info_line">Copyright(c)2018 <span>yikaozhaosheng.com</span> All Rights Reserved 广州小超小诚科技有限公司 粤ICP备11092500号-1 </div>
+</footer>
+<script type="text/javascript" src="/res/js/school/school-page.js"></script>
+<script type="text/javascript" src="/res/js/school/school-scroll-top.js"></script>
+<script type="text/javascript" src="/res/js/school/pinto.min.js"></script>
+</body>
+</html>

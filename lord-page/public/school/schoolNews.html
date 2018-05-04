@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>资讯列表</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="/res/css/amaze-ui-2.7.2/amazeui.min.css">
+    <link rel="stylesheet" href="/res/css/school/school-show.css?6">
+    <link rel="stylesheet" href="/res/css/school/animate.min.css">
+    <script src="/res/js/jquery-2.1.4.min.js"></script>
+    <script src="/res/js/amaze-ui-2.7.2/amazeui.min.js"></script>
+    <script src="/res/js/amaze-ui-2.7.2/amazeui.lazyload.min.js"></script>
+</head>
+<body>
+<header class="am-topbar am-topbar-inverse">
+    <div class="amz-container">
+        <h1 class="am-topbar-brand">
+            <a href="#" class="am-topbar-logo">
+                <img src="/res/img/school/school-logo.png?1" alt="">
+            </a>
+        </h1>
+        <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"
+                data-am-collapse="{target: '#doc-topbar-collapse-5'}">
+            <span class="am-sr-only">
+                导航切换
+            </span>
+            <span class="am-icon-bars">
+            </span>
+        </button>
+        <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse-5">
+            <ul class="am-nav am-nav-pills am-topbar-nav">
+                <li class="am-active">
+                    <a href="/school/index.html">
+                        首页
+                    </a>
+                </li>
+                <li class="am-dropdown" data-am-dropdown="">
+                    <a class="am-dropdown-toggle" data-am-dropdown-toggle="" href="javascript:;">
+                        发现萌宠
+                        <span class="am-icon-caret-down">
+                        </span>
+                    </a>
+                    <ul class="am-dropdown-content">
+                        <li>
+                            <a href="#">
+                                编辑推荐
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                人气排行
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                最新发布
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                语音涂鸦
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="/school/schoolIndex.html">
+                        学校目录
+                    </a>
+                </li>
+                <li>
+                    <a href="/school/schoolMap.html">
+                        网站地图
+                    </a>
+                </li>
+                <li>
+                    <a href="/school/schoolNews.html">
+                        资讯列表
+                    </a>
+                </li>
+                <li>
+                    <a href="/school/schoolArticle.html">
+                        文章详情
+                    </a>
+                </li>
+                <li>
+                    <a href="/school/schoolDetails.html">
+                        学校详情
+                    </a>
+                </li>
+                <li class="am-dropdown" data-am-dropdown="">
+                    <a class="am-dropdown-toggle" data-am-dropdown-toggle="" href="javascript:;">
+                        萌宠服务
+                        <span class="am-icon-caret-down">
+                        </span>
+                    </a>
+                    <ul class="am-dropdown-content">
+                        <li>
+                            <a href="#">
+                                宠物医院
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                宠物美容
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                宠物店铺
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                更多服务
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <!--banner-->
+    <div class="padding-content">
+        <div class="am-g">
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-8 padding-none">
+                <div data-am-widget="slider" class="am-slider am-slider-c4" >
+                    <ul class="am-slides">
+                        <li>
+                            <img src="http://s.amazeui.org/media/i/demos/bing-1.jpg">
+                            <div class="am-slider-desc">远方 有一个地方 那里种有我们的梦想</div>
+
+                        </li>
+                        <li>
+                            <img src="http://s.amazeui.org/media/i/demos/bing-2.jpg">
+                            <div class="am-slider-desc">某天 也许会相遇 相遇在这个好地方</div>
+
+                        </li>
+                        <li>
+                            <img src="http://s.amazeui.org/media/i/demos/bing-3.jpg">
+                            <div class="am-slider-desc">不要太担心 只因为我相信 终会走过这条遥远的道路</div>
+
+                        </li>
+                        <li>
+                            <img src="http://s.amazeui.org/media/i/demos/bing-4.jpg">
+                            <div class="am-slider-desc">OH PARA PARADISE 是否那么重要 你是否那么地遥远</div>
+
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="am-u-sm-0 am-u-md-0 am-u-lg-4 padding-none lrad">
+                <ul class="am-avg-sm-1 am-avg-md-2 am-avg-lg-1">
+                    <li class="ms"><img src="http://s.amazeui.org/media/i/demos/bing-2.jpg" class="am-img-responsive"></li>
+                    <li><img src="http://s.amazeui.org/media/i/demos/bing-3.jpg" class="am-img-responsive"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="am-g am-container padding-content">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-8 newshui">
+            <div data-am-widget="list_news" class="am-list-news am-list-news-default" >
+                <!--列表标题-->
+                <div class="am-list-news-hd am-cf">
+                    <!--带更多链接-->
+                    <a href="###" class="">
+                        <h2>报考资讯</h2>
+                        <!--<span class="am-list-news-more am-fr">更多 &raquo;</span>-->
+                    </a>
+                </div>
+                <div class="am-list-news-bd">
+                    <ul class="am-list">
+                        <!--缩略图在标题左边-->
+                        <li class="am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
+                            <div class="am-u-sm-4 am-list-thumb">
+                                <a href="http://www.douban.com/online/11614662/" class="">
+                                    <img src="https://img3.yxlady.com/yl/UploadFiles_5361/20170924/20170924102112848.jpg" alt="我很囧，你保重....晒晒旅行中的那些囧！"/>
+                                </a>
+                            </div>
+                            <div class=" am-u-sm-8 am-list-main">
+                                <h3 class="am-list-item-hd"><a href="http://www.douban.com/online/11614662/" class="">我很囧，你保重....晒晒旅行中的那些囧！</a></h3>
+
+                                <div class="am-list-item-text">囧人囧事囧照，人在囧途，越囧越萌。标记《带你出发，陪我回家》http://book.douban.com/subject/25711202/为“想读”“在读”或“读过”，有机会获得此书本活动进行3个月，每月送出三本书。会有不定期bonus！</div>
+
+                            </div>
+                        </li>
+                        <li class="am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-left">
+                            <div class="am-u-sm-4 am-list-thumb">
+                                <a href="http://www.douban.com/online/11624755/" class="">
+                                    <img src="https://img3.yxlady.com/yl/UploadFiles_5361/20170924/20170924102112848.jpg" alt="我最喜欢的一张画"/>
+                                </a>
+                            </div>
+
+                            <div class=" am-u-sm-8 am-list-main">
+                                <h3 class="am-list-item-hd"><a href="http://www.douban.com/online/11624755/" class="">我最喜欢的一张画</a></h3>
+
+                                <div class="am-list-item-text">你最喜欢的艺术作品，告诉大家它们的------名图画，色彩，交织，撞色，线条雕塑装置当代古代现代作品的照片美我最喜欢的画群296795413进群发画，少说多发图，</div>
+
+                            </div>
+                        </li>
+                        <li class="am-g am-list-item-desced">
+                            <div class=" am-list-main">
+                                <h3 class="am-list-item-hd"><a href="http://www.douban.com/online/11645411/" class="">“你的旅行，是什么颜色？” 晒照片，换北欧梦幻极光之旅！</a></h3>
+                                <div class="am-list-item-text">还在苦恼圣诞礼物再也玩儿不出新意？快来抢2013最炫彩的跨国圣诞礼物！【参与方式】1.关注“UniqueWay无二之旅”豆瓣品牌小站http://brand.douban.com/uniqueway/2.上传一张**本人**在旅行中色彩最浓郁、最丰富的照片（色彩包含取景地、周边事物、服装饰品、女生彩妆等等，发挥你们无穷的创意想象力哦！^^）一定要有本人出现喔！3. 在照片下方，附上一句旅行宣言作为照片说明。 成功参与活动！* 听他们刚才说，上传照片的次</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <ul data-am-widget="pagination" class="am-pagination am-pagination-default">
+                    <li class="am-pagination-first ">
+                        <a href="#" class="">第一页</a>
+                    </li>
+                    <li class="am-pagination-prev ">
+                        <a href="#" class="">上一页</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">1</a>
+                    </li>
+                    <li >
+                        <a href="#">2</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">3</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">4</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">5</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">6</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">7</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">8</a>
+                    </li>
+                    <li class="am-active">
+                        <a href="#">9</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">10</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">11</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">12</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">13</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">14</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">15</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">16</a>
+                    </li>
+                    <li class="am-pagination-next ">
+                        <a href="#" class="">下一页</a>
+                    </li>
+                    <li class="am-pagination-last ">
+                        <a href="#" class="">最末页</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="am-u-sm-0 am-u-md-0 am-u-lg-4 padding-none am-hide-sm">
+            <div class="tag">
+                <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
+                    <h2 class="am-titlebar-title ">
+                        热门标签
+                    </h2>
+                </div>
+                <ul>
+                    <li class="active"><a href="#">的房间打开</a></li>
+                    <li><a href="#">阿斯达</a></li>
+                    <li><a href="#">恩恩</a></li>
+                    <li><a href="#">十二分</a></li>
+                    <li><a href="#">爱妃</a></li>
+                    <li><a href="#">而非</a></li>
+                    <li><a href="#">为非</a></li>
+                    <li><a href="#">二位</a></li>
+                    <li><a href="#">维吾尔</a></li>
+                    <li><a href="#">玩儿玩儿</a></li>
+                </ul>
+                <div class="am-cf"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="am_footer">
+    <div class="am_footer_con">
+        <div class="am_footer_link">
+            <span>关于我们</span>
+            <ul>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+            </ul>
+        </div>
+        <div class="am_footer_link">
+            <span>友情链接</span>
+            <ul>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+            </ul>
+        </div>
+        <div class="am_footer_link">
+            <span>友情链接</span>
+            <ul>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+            </ul>
+        </div>
+        <div class="am_footer_link">
+            <span>友情链接</span>
+            <ul>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+            </ul>
+        </div>
+
+        <div class="am_footer_erweima">
+            <div class="am_footer_weixin"><img src="/res/img/school/qrcode.png" alt="">
+
+                <div class="am_footer_d_gzwx am-icon-weixin"> 关注微信</div>
+            </div>
+            <div class="am_footer_weixin"><img src="/res/img/school/qrcode.png" alt="">
+
+                <div class="am_footer_d_gzwx am-icon-weixin"> 扫码下载</div>
+            </div>
+        </div>
+    </div>
+    <div class="am_footer_friendly_con">
+        <div class="am_footer_link_friendly">
+            <ul>
+                <li>友情链接：</li>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">历程</a></li>
+                <li><a href="###">历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">关于我们</a></li>
+                <li><a href="###">发展历程</a></li>
+                <li><a href="###">关于我们</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="am_info_line">Copyright(c)2018 <span>yikaozhaosheng.com</span> All Rights Reserved 广州小超小诚科技有限公司 粤ICP备11092500号-1 </div>
+</footer>
+<script type="text/javascript" src="/res/js/school/school-page.js"></script>
+<script type="text/javascript" src="/res/js/school/school-scroll-top.js"></script>
+<script type="text/javascript" src="/res/js/school/pinto.min.js"></script>
+</body>
+</html>
