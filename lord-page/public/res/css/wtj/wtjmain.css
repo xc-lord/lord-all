@@ -1,0 +1,168 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*首页banner*/
+.wtj-banner{ position:relative; min-width:1200px;  }
+.wtj-banner .banner-menu{ position:absolute; top:30px; left:40px; width:90px; z-index: 9999;}
+.wtj-banner .banner-menu ul li{ height:45px; color:#333333; font-size:14px; line-height:45px; border-top:1px solid #f0f0f0; background:#FFF; text-align:center; cursor: pointer; }
+.wtj-banner .banner-menu ul li h3{font-size:14px; font-weight: normal;}
+.wtj-banner .banner-menu ul li:first-child{border-top:none;}
+
+.banner-menu-nav{  display:inline-block; position:absolute; bottom:20px; left:50%; width:160px; margin-left:-80px;}
+.banner-menu-nav a{ margin-right:10px; margin-left:10px; display:inline-block; width:60px; float:left; text-align:center; font-size:12px; font-family:Microsoft Yahei; color:#FFF; }
+.banner-menu-nav a:hover{ text-decoration:none;}
+.banner-menu-nav .add-lgj i{ background:url(../../img/wtj/wtjicon.png) no-repeat -1px  -66px; width:60px; height:60px; display:inline-block;}
+.banner-menu-nav .add-lgj:hover i{ background-position:-63px  -66px;}
+.banner-menu-nav .banner-name i{ display:inline-block; background-color:#ffffff;   -moz-border-radius: 90px; -webkit-border-radius: 90px; border-radius: 90px;  overflow:hidden; width:58px; height:58px;  border:1px solid #FFF; position:relative; z-index:1; behavior: url(PIE.htc);}
+.banner-menu-nav .banner-name i img{display:inline-block;  -moz-border-radius: 90px; -webkit-border-radius: 90px; border-radius: 90px;  overflow:hidden; width:59px; height:59px;  position:relative; z-index:1; behavior: url(PIE.htc);}
+.banner-menu-nav .banner-name:hover i  img{  filter:alpha(opacity=70); -moz-opacity:0.7;  opacity:0.7;}
+.banner-menu-nav  .banner-name img{filter:alpha(opacity=100); -moz-opacity:1; opacity:1; }
+
+.banner-menu .banner-menu-hover{ background-color:#111111; width:0px; height:183px;   position:absolute; left:90px; top:0px; display:none; z-index:9999; }
+.banner-menu-hover .cow-banner{ float:left; width:30%; overflow:hidden;}
+.banner-menu-hover .cow-banner a{ display:block; height:26px; line-height:26px; color:#FFF; text-align:left; font-size:12px;}
+.wtj-banner .banner-menu ul .banner-menu-active{ background-color:#111111; color:#FFF;}
+.wtj-banner .banner-menu ul .banner-menu-hover .banner-menu-boxs{ margin:30px 50px; margin-right:0px;}
+
+
+
+
+.tv-slideBox{  height:548px; overflow:hidden;  position:relative;   } 
+.tv-slideBox .hd{ display:none;  } 
+.tv-slideBox li{ overflow:hidden; position:relative; min-width:1200px;  } 
+.tv-slideBox .prev,.tv-slideBox .next{ position:absolute; z-index:1;width:42px; height:78px; overflow:hidden; cursor:pointer; left:10px; top:50%; margin-top:-35px; background:url(../../img/wtj/wtjicon.png) no-repeat -125px  -30px; } 
+.tv-slideBox .next{ background-position:-168px  -30px; left:auto; right:10px; } 
+.tv-slideBox .prev:hover{background-position:-220px  -30px;}
+.tv-slideBox .next:hover{background-position:-265px  -30px;} 
+.tv-slideBox  .img-div-slide{ background-position:50% 50%; background-repeat:no-repeat;  height:548px; background:url(../../img/wtj/rd1.png) no-repeat 50% 50%; width: 100% !important;}
+.tv-slideBox  .img-div-slide:after{background:none;}
+
+
+
+
+/*首页我搭*/
+.my-take{  overflow:hidden;}
+.my-take .my-take-name{background:url(../../img/wtj/wtjicon.png) no-repeat 0px  -181px; width:182px; height:44px; display:inline-block; text-indent:-9999px;}
+.my-take .my-take-ul{ margin-top:30px; margin-bottom:30px; width:1224px;}
+.my-take .my-take-ul li{ float:left; margin-right:26px;}
+.my-take  .my-take-nav{ border-bottom:1px solid #000; position:relative; height:12px; overflow: hidden;}
+.my-take-nav .my-take-arrow{ width:280px; text-align:center; display:inline-block; position:absolute;}
+.wtj-link-div{ margin-bottom:80px;}
+.works{ margin-top:30px; display:none;}
+.works .author-img{ float:left; margin-left:17px; width:64px; height:64px; -moz-border-radius: 90px; -webkit-border-radius: 90px; border-radius: 90px; overflow: hidden; display: inline-block; behavior: url(PIE.htc); }
+.works .author{ margin-left:100px;}
+.works .author h3{ font-family:Microsoft Yahei; font-size:16px; color:#333333; font-weight:normal; height:27px; line-height:27px; white-space:nowrap; overflow:hidden;}
+.works .author .tlt-author2{ color:#999999; font-weight:normal; white-space:nowrap; overflow:hidden;}
+.works .author p{ color:#333; margin-top:15px; line-height:22px; font-size:14px;}
+.works .author-info{ width:460px;}
+.work-div{  padding-right:20px; text-align:right;}
+.work-ul{ display:inline-block; overflow:hidden;}
+.work-ul li h3{ font-size:12px; color:#333333; text-align:left; font-weight:normal;}
+.work-div .work-ul li{ float:left; margin-left:57px; text-align:center; width:110px; }
+.my-take-ul li img{ height:280px; width:280px; }
+.my-take-ul li img, .inspiration-ul .img-inspiration-div{ position:relative;}
+.inspiration-ul .img-inspiration-div .inspiration-img{  width:281px;} 
+.inspiration-ul .img-inspiration-div{ display:inline-block; overflow:hidden;  height: 280px; width: 280px;}
+.my-take-ul li img, .inspiration-ul a .inspiration-img{ z-index:1;filter:alpha(opacity=100); -moz-opacity:1; opacity:1;}
+.my-take-ul li a:hover img, .inspiration-ul a:hover .inspiration-img{filter:alpha(opacity=70); -moz-opacity:0.7; opacity:0.7;}
+.works1{ display:block;}
+.inspiration-ul li i.head-ico{ position:relative; bottom:30px; left:50%; margin-left:-30px; background-color:#fff
+; width:60px; height:60px; overflow:hidden; border:1px solid #fff; -moz-border-radius: 90px; -webkit-border-radius: 90px; border-radius: 90px;  z-index:2; behavior: url(PIE.htc); display:inline-block;}
+.inspiration-ul li i.head-ico img{width:60px; height:60px; overflow:hidden;  -moz-border-radius: 90px; -webkit-border-radius: 90px; border-radius: 90px;  z-index:2; behavior: url(PIE.htc); display:inline-block;}
+.inspiration-ul .img-inspiration-div i img{filter:alpha(opacity=100); -moz-opacity:1; opacity:1;-moz-border-radius: 90px; -webkit-border-radius: 90px; border-radius: 90px;  width:60px; height:60px;}
+.inspiration-ul .img-inspiration-div:hover i img{filter:alpha(opacity=70); -moz-opacity:0.7; opacity:0.7;}
+
+.work-img-a{ width:110px; height:110px; line-height:110px; vertical-align:middle; text-align:center; background-color:#fff; display:inline-block; margin-bottom:16px;}
+.work-img-a img{ vertical-align:middle; max-height:110px; max-width:110px;}
+.work-img-a span{ vertical-align:middle; height:100%; display:inline-block;}
+
+
+/*首页推荐灵感*/
+.inspiration .inspiration-name{background:url(../../img/wtj/wtjicon.png) no-repeat 0px  -227px; width:183px; height:44px; display:inline-block; text-indent:-9999px;}
+.inspiration .inspiration-ul{ margin-top:30px; width:1228px;}
+.inpirt-box{  position:relative; height:280px; }
+.inspiration .inspiration-ul li{ float:left; margin-right:25px; width:281px; position:relative;}
+.inspiration-ul li h3{ font-weight:normal; color:#333333; font-size:14px; text-align:center; margin-top:40px; height:30px; line-height:30px;}
+.inspiration-ul li  p{ color:#aaaaaa; text-align:center; line-height:20px; padding-left:14px; padding-right:15px; height: 40px; overflow: hidden;}
+.inspiration-ul li .heart{ margin: 0px auto; margin-top:10px; height:14px; line-height:14px; color:#333333; display:inline-block; font-family:Tahoma; position:relative;}
+.inspiration-ul li .heart:hover{ text-decoration:none;}
+.inspiration-ul li .heart i{background:url(../../img/wtj/wtjicon.png) no-repeat 0px  -47px; width:16px; height:14px; display:inline-block; margin-right:8px; float:left; }
+.inspiration-ul li .heart:hover i{ background-position:-17px -47px;}
+.inspiration-ul li .heart-div{ text-align:center;}
+.inspiration{ }
+
+.heart-div .selected{ color:#ee4848; cursor:default; }
+.inspiration-ul li .selected i{background-position:-34px -47px; }
+.inspiration-ul li .selected:hover i{background-position:-34px -47px;}
+
+
+.work-show{ display:block;}
+
+/*首页选购指南*/
+.wtj-guide .inspiration-name{ background-position: 0 -398px;}
+.wtj-guide .wtj-guide-main{ margin-top:30px;  }
+.wtj-guide .guide-main-l{ width:523px; overflow:hidden;}
+.wtj-guide .guide-main-l img{width:523px; height:393px;}
+.wtj-guide .guide-main-c{ width:370px; overflow:hidden;}
+.wtj-guide .guide-main-c .guide-c-t img{ height:192px; width:370px;}
+.wtj-guide .guide-main-c .guide-c-b img{ height:191px; width:370px;}
+.wtj-guide .guide-main-r{ width:285px; overflow:hidden;}
+.wtj-guide .guide-main-r img{width:285px; height:393px; }
+.wtj-guide .guide-main-l, .wtj-guide .guide-main-c, .wtj-guide .guide-main-r{ position:relative; float:left; height:393px; display:inline-block; overflow:hidden;}
+.wtj-guide .guide-main-l .g-m-c{ position:absolute; bottom:0px; height:80px;   padding:20px; }
+.wtj-guide .guide-main-l .g-m-b{ position:absolute; bottom:0px; height:120px; background-color:#000; width:100%; filter:alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity: 0.5; opacity: 0.5;  }
+.wtj-guide .wtj-guide-main  h2{font-size:26px;  font-weight:normal; line-height:26px; color:#fff; font-family:Microsoft Yahei; white-space: nowrap;}
+.wtj-guide .wtj-guide-main  p{font-size:12px; line-height:22px;  overflow:hidden;  color:#fff; font-family:Microsoft Yahei;}
+.wtj-guide .wtj-guide-main .g-m-c p{ width:326px;   margin-top:16px; }
+.wtj-guide .wtj-guide-main .g-m-c2 p, .wtj-guide .wtj-guide-main .g-m-c3 p, .wtj-guide .wtj-guide-main .g-m-c4 p{margin-bottom:5px; text-align:center; white-space: nowrap;}
+.wtj-guide .wtj-guide-main .g-m-c2 h2, .wtj-guide .wtj-guide-main .g-m-c3 h2, .wtj-guide .wtj-guide-main .g-m-c4 h2{ text-align:center}
+.wtj-guide .wtj-guide-main .g-m-c2, .wtj-guide .wtj-guide-main .g-m-c3, .wtj-guide .wtj-guide-main .g-m-c4{ position:absolute; left:50%; top:50%; width:181px; height:66px; margin-top:-33px; margin-left:-95px; overflow:hidden; z-index: 99999; }
+.wtj-guide .guide-main-c{ margin-left:10px; margin-right:10px;}
+.wtj-guide .guide-c-t{ position:relative; margin-bottom:10px; overflow:hidden; height:192px;}
+.wtj-guide .guide-c-b{ position:relative;  overflow:hidden; height:192px;}
+
+.wtj-guide .wtj-guide-main .g-m-c4{  width:160px;  height:113px; margin-left:-80px; margin-top:-80px; padding-top:47px;}
+
+.wtj-guide .guide-main-r .g-m-b{ width:160px; position:absolute; left:50%; top:50%; background-color:#000; filter:alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity: 0.5; opacity: 0.5; height:160px; margin-left:-80px; margin-top:-80px; }
+
+/*首页热门品牌*/
+.top-brands{ margin-bottom:80px;}
+.top-brands .inspiration-name{ background-position: 0 -450px;}
+.top-brands .wtj-brands-main{ margin-top:30px;  }
+.wtj-brands-main .tv-slideBox{ height:618px; }
+.wtj-brands-main .tv-slideBox .img-div-slide{height:618px;}
+.wtj-brands-main .topbrands-logo-div{ float:left; height:515px; width:300px; position:relative;}
+.wtj-brands-main .topbrands-main-c{ float:left;}
+.wtj-brands-main .topbrands-logo{ height:330px; line-height:330px; text-align:center; vertical-align:middle; z-index:2; position:relative; }
+.wtj-brands-main .logo-brand{ display:inline-block; line-height:22px; vertical-align:middle;}
+.wtj-brands-main .logo-brand p{ text-align:center; line-height:22px;}
+.wtj-brands-main .logo-brand img{ text-align:center; width:100px;}
+.wtj-brands-main .img-brand-slide{ margin: 52px 62px; display:inline-block;}
+.wtj-brands-main .topbrands-conent{ position:relative; z-index:2;}
+.wtj-brands-main .topbrands-conent h2{ font-size:20px; font-family:Microsoft Yahei; color:#333333; text-align:center; margin-bottom:16px;}
+.topbrands-conent p{ text-align:center; font-size:16px; font-family:Microsoft Yahei; color:#333333; line-height:30px;}
+.wtj-brands-main  .topbrands-logo-bg{background-color:#fff; filter:alpha(opacity=60); -moz-opacity:0.6; -khtml-opacity: 0.6; opacity: 0.6; top:0px; bottom:0px; left:0px; right:0px; position:absolute;}
+.wtj-brands-main .topbrands-main-c{ width:695px; background-color:#fff; height:470px; padding-top:45px;}
+.wtj-brands-main .topbrands-main-c a img{  max-height: 100%;  max-width: 100%;  vertical-align: middle;}
+.wtj-brands-main .topbrands-main-c a{ float:left; display:inline-block; margin-left:55px; margin-bottom:15px;}
+.wtj-brands-main .topbrands-main-c a p{ font-size:12px; color:#666666; line-height:20px; width: 155px; white-space:nowrap; overflow: hidden;}
+.wtj-brands-main .topbrands-main-c a .brand-price{ color:#999999; font-family:Microsoft Yahei;}
+.wtj-brands-main .topbrands-main-c a .brand-price span{font-family: ocr-b_10_btregular;}
+.wtj-brands-main .topbrands-main-c a .brand-price em{ font-style: normal;}
+.wtj-brands-main .banner-cm{ float:left;}
+.banner-cm i{ background:url(../../img/wtj/wtjicon.png) no-repeat -189px -345px; display:inline-block; width:80px; height:114px;}
+#topbrands .prev{ background-position:-189px -463px; height:20px; width:13px; margin-top:-10px; left:90px; }
+#topbrands .next{background-position:-203px -463px; height:20px; width:13px; margin-top:-10px; right:25px;}
+.topbrands-img-div{ width: 160px;  height: 160px; line-height: 160px; overflow: hidden; text-align: center; vertical-align: middle;border:1px solid #f0f0f0; margin-bottom: 6px; }
+.topbrands-img-div span{ height: 100%; display: inline-block; vertical-align: middle;}
+
+
+#topbrands .prev:hover{background-position:-219px -463px;}
+#topbrands .next:hover{background-position:-233px -463px;}
+
+.fCl-nav{ text-align:center; margin:auto 0px; display:inline-block;}
+.fCl-nav li{ float:left; margin-right:10px; background-color:#ffffff; min-width:inherit !important; -moz-border-radius: 90px; -webkit-border-radius: 90px; border-radius: 90px; height:12px; width:12px; line-height:12px; overflow:hidden; cursor:pointer;  behavior: url(PIE.htc);}
+.fCl-nav li.on{ background-color:#111111; border:1px solid #111111; height:10px; width:10px; margin-top:-1px; margin-left:-1px;}
+.fCl-nav-div{ text-align:center; margin-top: -30px;}
+
+
