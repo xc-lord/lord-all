@@ -85,13 +85,17 @@
 .parameter-div{ float:left; width:540px; overflow:hidden; margin-bottom: 100px; margin-left: 360px; font-family:Microsoft Yahei; font-size:14px; color:#333333; margin-top: 50px;}
 .parameter-div dl dt{ float:left; width:90px; padding-right: 16px; text-align:right; padding-top:7px; padding-bottom:2px; }
 .parameter-div dl dd{ margin-left:70px; padding-top:7px; padding-bottom:2px;  overflow: hidden;  }
+.school-details-content{ float:left; width:1000px; overflow:hidden; margin-bottom: 20px; margin-left: 200px; font-family:Microsoft Yahei; font-size:14px; color:#333333; margin-top: 20px;}
+.school-details-content table{margin-left:120px; border-collapse: collapse; }
+.school-details-content table tr td {padding: 5px; border:1px solid #999;}
+.school-details-content p {padding: 5px;}
 .school-table-div{ float:left; width:1000px; overflow:hidden; margin-bottom: 20px; margin-left: 200px; font-family:Microsoft Yahei; font-size:14px; color:#333333; margin-top: 20px;}
 .school-table-div table{width: 900px }
 .school-table-div table tr td {padding: 10px;border-bottom:1px dashed #ddd;}
 .school-table-div table tr td span{margin-right: 10px; font-weight: bold;}
 .space-div{ margin-left:420px; width: 400px;}
 .space-ico{ padding-top:4px;}
-.space-div h4{ font-size:14px;  font-family:Microsoft Yahei; font-weight:normal; line-height:35px; }
+.space-div h4{ font-size:14px; font-family:Microsoft Yahei; font-weight:normal; line-height:35px; }
 .space-ico span i{background:url(../../img/wtj/productdetailsicon.png) no-repeat ; display:inline-block; width:48px; height:48px;}
 .space-ico span h5{ font-weight:normal; color:#333333; margin-top:10px; font-size:12px; text-align:center;}
 .space-ico span{width:48px; display:inline-block; float:left; margin-right:20px; margin-bottom:10px;}
@@ -166,7 +170,7 @@
 .discuss-content .publish-btn:hover{ color:#ffffff;}
 .details-publish-div .comment_publist_btn:hover{ color:#ffffff;}
 .discuss-ul{}
-.discuss-ul li{ border-top:1px solid #dddddd; padding:30px 0; color:#333333;}
+.discuss-ul li{ border-bottom:1px solid #dddddd; padding:30px 0; color:#333333;}
 .discuss-ul li i{-moz-border-radius: 90px; -webkit-border-radius: 90px; border-radius: 90px; overflow:hidden; display:inline-block; width:45px; height:45px; float:left;}
 .discuss-ul li i img{width:45px; height:45px;}
 .discuss-r-content{ margin-left:67px;}
