@@ -90,6 +90,29 @@ var routes = {
         pageParam = Object.assign({}, {parentId:parentId, id: id});//设置页面参数
         $("#showView").load("/mis/sys/sysDistrict/sysDistrictEdit.html");
     },
+    //扩展属性模板
+    '/sysExtendTemplate': function () {
+        $("#showView").load("/mis/sys/sysExtendTemplate/sysExtendTemplateList.html");
+    },
+    '/sysExtendTemplate/add': function () {
+        pageParam={};
+        $("#showView").load("/mis/sys/sysExtendTemplate/sysExtendTemplateEdit.html");
+    },
+    '/sysExtendTemplate/edit/:id': function (id) {
+        pageParam = Object.assign({}, {id: id});//设置页面参数
+        $("#showView").load("/mis/sys/sysExtendTemplate/sysExtendTemplateEdit.html");
+    },
+    //扩展属性
+    '/sysExtendAttr': function () {
+        $("#showView").load("/mis/sys/sysExtendAttr/sysExtendAttrList.html");
+    },
+    '/sysExtendAttr/add': function () {
+        $("#showView").load("/mis/sys/sysExtendAttr/sysExtendAttrAdd.html");
+    },
+    '/sysExtendAttr/edit/:id': function (id) {
+        pageParam = Object.assign({}, {id: id});//设置页面参数
+        $("#showView").load("/mis/sys/sysExtendAttr/sysExtendAttrEdit.html");
+    },
     //文章
     '/cmsArticle': function () {
         pageParam = Object.assign({}, {showEditPage: true});

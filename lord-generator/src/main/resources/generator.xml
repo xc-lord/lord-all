@@ -24,11 +24,11 @@
 	<!-- Dao类路径 -->
 	<entry key="srcPathDao">src.main.java.com.lord.biz.dao</entry>
 	<!-- 业务名称 -->
-	<entry key="bizName">行政区域</entry>
+	<entry key="bizName">扩展属性</entry>
 	<!-- 业务的包名 -->
 	<entry key="bizPackage">sys</entry>
 	<!-- 表的变量名 -->
-	<entry key="lowerClassName">sysDistrict</entry>
+	<entry key="lowerClassName">sysExtendAttr</entry>
 	<!-- 作者名称 -->
 	<entry key="authorName">xiaocheng</entry>
 
