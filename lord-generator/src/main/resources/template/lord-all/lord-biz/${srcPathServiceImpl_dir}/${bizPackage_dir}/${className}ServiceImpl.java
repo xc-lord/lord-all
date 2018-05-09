@@ -9,6 +9,7 @@ import ${basepackage}.biz.utils.ServiceUtils;
 import ${basepackage}.common.dto.Pager;
 import ${basepackage}.common.dto.PagerParam;
 import ${basepackage}.common.dto.PagerSort;
+import ${basepackage}.common.dto.user.LoginUser;
 import ${basepackage}.common.model.${bizPackage}.${className};
 import ${basepackage}.common.service.${bizPackage}.${className}Service;
 import ${basepackage}.utils.Preconditions;
@@ -47,7 +48,11 @@ public class ${className}ServiceImpl implements ${className}Service {
 
     @Override
     @Transactional
+<#if hasColumn(table.columns, "creator")>
+    public ${className} saveOrUpdate(${className} pageObj, LoginUser loginUser) {
+<#else>
     public ${className} saveOrUpdate(${className} pageObj) {
+</#if>
         Preconditions.checkNotNull(pageObj, "保存对象不能为空");
 
         if(logger.isDebugEnabled())
@@ -67,6 +72,10 @@ public class ${className}ServiceImpl implements ${className}Service {
             pageObj.setRemoved(false);
             <#elseif column.columnNameLower == 'createTime'>
             pageObj.setCreateTime(new Date());
+            <#elseif column.columnNameLower == 'creator'>
+            pageObj.setCreator(loginUser.getUserId());
+            <#elseif column.columnNameLower == 'modifier'>
+            pageObj.setModifier(loginUser.getUserId());
             <#elseif column.columnNameLower == 'updateTime'>
             pageObj.setUpdateTime(new Date());
             </#if>
@@ -86,6 +95,10 @@ public class ${className}ServiceImpl implements ${className}Service {
         pageObj.setRemoved(dbObj.isRemoved());
         <#elseif column.columnNameLower == 'updateTime'>
         pageObj.setUpdateTime(new Date());//更新时间
+        <#elseif column.columnNameLower == 'creator'>
+        pageObj.setCreator(dbObj.getCreator());
+        <#elseif column.columnNameLower == 'modifier'>
+        pageObj.setModifier(loginUser.getUserId());
         <#elseif column.columnNameLower == 'createTime'>
         pageObj.setCreateTime(dbObj.getCreateTime());
         </#if>

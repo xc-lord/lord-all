@@ -16,7 +16,7 @@
         <el-col :span="22">
             <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
 			<#list table.columns as column>
-			<#if column.pk || column.columnNameLower == 'createTime' || column.columnNameLower == 'updateTime' || column.columnNameLower == 'removed'>
+			<#if column.pk || column.columnNameLower == 'createTime' || column.columnNameLower == 'updateTime' || column.columnNameLower == 'removed' || column.columnNameLower == 'creator' || column.columnNameLower == 'modifier'>
 				<!--${column.columnNameLower}不需要-->
 			<#elseif column.javaType == 'java.lang.Boolean'>
 				<el-form-item label="${column.remarks}">

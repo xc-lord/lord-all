@@ -1,10 +1,12 @@
 <#assign className = table.className>
-<#assign classNameLower = className?uncap_first> 
+<#assign classNameLower = className?uncap_first>
+<#assign hasColumn="com.lord.generator.ftl.FtlHasColumnMethod"?new()>
 package ${basepackage}.common.service.${bizPackage};
 
 import ${basepackage}.common.dto.PagerSort;
 import ${basepackage}.common.dto.Pager;
 import ${basepackage}.common.dto.PagerParam;
+import ${basepackage}.common.dto.user.LoginUser;
 import ${basepackage}.common.model.${bizPackage}.${className};
 
 /**
@@ -23,13 +25,23 @@ public interface ${className}Service {
      */
     ${className} get${className}(Long id);
 
+<#if hasColumn(table.columns, "creator")>
+    /**
+     * 新增或者更新
+     * @param pageObj   页面传参
+     * @param loginUser 登录用户
+     * @return  数据库对象
+     */
+    ${className} saveOrUpdate(${className} pageObj, LoginUser loginUser);
+<#else>
+
     /**
      * 新增或者更新
      * @param pageObj   页面传参
      * @return  数据库对象
      */
     ${className} saveOrUpdate(${className} pageObj);
-
+</#if>
     /**
      * 分页查询
      * @param param     查询参数

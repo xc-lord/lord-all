@@ -31,7 +31,11 @@
                 </el-form-item>
 			<#elseif column.javaType == 'java.lang.Long' || column.javaType == 'java.lang.Integer'>
 				<el-form-item label="${column.remarks}">
-                    <el-input-number v-model="editForm.${column.columnNameLower}" :min="0" size="small"></el-input-number>
+                    <el-input-number v-model="editForm.${column.columnNameLower}"
+                    <#if column.columnNameLower == 'creator' || column.columnNameLower == 'modifier'>
+                        :disabled="true"
+                    </#if>
+                        :min="0" size="small"></el-input-number>
                 </el-form-item>
 			<#elseif column.javaType == 'java.util.Date'>
 				<el-form-item label="${column.remarks}">

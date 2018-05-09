@@ -9,6 +9,7 @@ import ${basepackage}.common.model.${bizPackage}.${className};
 import ${basepackage}.common.service.${bizPackage}.${className}Service;
 import ${basepackage}.utils.Preconditions;
 import ${basepackage}.utils.dto.Result;
+import ${basepackage}.web.handler.UserHandler;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +49,11 @@ public class ${className}Controller {
     @ApiOperation(value = "保存或更新${bizName}")
     @RequestMapping(value = "/api/admin/${bizPackage}/${classNameLower}/saveOrUpdate", method = RequestMethod.POST)
     public Result saveOrUpdate(@ModelAttribute ${className} pageObj) {
+        <#if hasColumn(table.columns, "creator")>
+        ${className} dbObj = ${classNameLower}Service.saveOrUpdate(pageObj, UserHandler.getLoginUser());
+        <#else>
         ${className} dbObj = ${classNameLower}Service.saveOrUpdate(pageObj);
+        </#if>
         return Result.success("保存成功", dbObj);
     }
 
