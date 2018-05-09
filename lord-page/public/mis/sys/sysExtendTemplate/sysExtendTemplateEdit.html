@@ -173,7 +173,6 @@
                 //加载数据
                 loadExtendTemplate:function() {
                     var _self = this;
-                    console.info(pageParam.id);
                     if(commonUtils.isEmpty(pageParam.id)) {
                         _self.editMode = false;
                         _self.editModeName = '新增';
@@ -236,7 +235,6 @@
                     var _self = this;
                     var column = _self.crateColumn();
                     _self.editForm.columnList.push(column);
-                    console.info(_self.editForm.columnList);
                 },
                 crateColumn:function() {
                     var columnId = this.columnIdIndex;
@@ -265,7 +263,6 @@
                         columnList.splice(columnIndex, 1);
                         this.editForm.columnList = columnList;
                     }
-                    console.info(this.editForm.columnList)
                 },
                 //保存事件
                 editSubmit: function (formName) {
