@@ -8,7 +8,7 @@
 
         <!-- UI界面 start -->
         <div id="${classNameLower}View">
-            <el-row v-if="showEditPage">
+            <el-row>
                 <h3><i class="el-icon-share"></i> ${bizName}管理</h3>
             </el-row>
             <!--列表顶部搜索和工具条-->
@@ -33,8 +33,8 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" icon="el-icon-search" @click="searchClick" size="small">查询</el-button>
-                        <el-button v-if="showEditPage" type="success" icon="el-icon-plus" @click="addClick" size="small">新增</el-button>
-                        <el-button v-if="showEditPage" type="success" icon="el-icon-plus" @click="dialogAddClick" size="small">弹窗新增</el-button>
+                        <el-button type="success" icon="el-icon-plus" @click="addClick" size="small">新增</el-button>
+                        <el-button type="success" icon="el-icon-plus" @click="dialogAddClick" size="small">弹窗新增</el-button>
                     </el-form-item>
                 </el-form>
             </el-row>
@@ -98,8 +98,7 @@
                                                 </el-table-column>
                         </#if>
                     </#list>
-                    <el-table-column v-if="showEditPage"
-                                     fixed="right"
+                    <el-table-column fixed="right"
                                      label="操作"
                                      width="320">
                         <template scope="scope">
@@ -120,8 +119,7 @@
             <!--列表底部工具条和分页符-->
             <el-row style="margin-top: 20px" type="flex" justify="end">
                 <el-col :span="6">
-                    <el-button v-if="showEditPage" :plain="true" type="danger" size="small" icon="el-icon-delete" @click="removeSelection" size="small">删除所选</el-button>
-                    <el-button v-if="!showEditPage" type="success" icon="el-icon-plus" @click="selectSelection" size="small">选择</el-button>
+                    <el-button :plain="true" type="danger" size="small" icon="el-icon-delete" @click="removeSelection" size="small">删除所选</el-button>
                 </el-col>
                 <el-col :span="18">
                     <el-pagination
@@ -157,8 +155,6 @@
                         name: '',
                         state: ''
                     },
-                    //是否显示搜索界面
-                    showEditPage: true,
                     //多选值
                     multipleSelection: [],
                     //当前页
@@ -180,9 +176,6 @@
                 created: function () {
                     var _self = this;
                     //TODO:待修改
-                    if(pageParam.showEditPage) {
-                        _self.showEditPage = true;
-                    }
                     //获取枚举类型
                     commonUtils.vueGetEnumType(_self, "mis_MisUserStatus");
                     _self.loadingData();
@@ -310,23 +303,6 @@
                         }
                         var ids = commonUtils.arrayToString(multipleSelection, "id");
                         _self.removeData(_self, ids, ids);
-                    },
-                    //搜索弹窗的选择事件，批量选择
-                    selectSelection: function() {
-                        var _self = this;
-                        var multipleSelection = _self.multipleSelection;
-                        if (multipleSelection.length < 1) {
-                            _self.$message({
-                                message: '请至少选中一条记录',
-                                type: 'error'
-                            });
-                            return;
-                        }
-                        //如果是弹窗模式，关闭弹窗
-                        if(typeof(search${className}ParentView) !== 'undefined' && search${className}ParentView.dialogFormVisible) {
-                            var ids = commonUtils.arrayToSingleArray(multipleSelection, "id");
-                            search${className}ParentView.dialogFormClose(ids);
-                        }
                     },
                     //表格删除事件
                     deleteClick: function (row) {
