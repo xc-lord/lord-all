@@ -1,0 +1,102 @@
+<!-- 
+	Desc: 	扩展属性模板的新增界面
+	Author: xiaocheng
+	Date: 	2018年05月09日 17:34:08
+-->
+
+<!-- UI界面 start -->
+<div id="sysExtendTemplateAddView">
+    <el-row>
+        <h3><i class="el-icon-edit"></i> <a href="#/sysExtendTemplate">扩展属性模板管理</a> / 新增</h3>
+    </el-row>
+    <!--编辑界面-->
+    <el-row type="flex" justify="center">
+        <el-col :span="22">
+            <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
+				<!--id不需要-->
+                <el-form-item label="模板名称" prop="name">
+                    <el-input v-model="editForm.name" auto-complete="off" size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="实体表名" prop="entityTable">
+                    <el-input v-model="editForm.entityTable" auto-complete="off" size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="实体编码" prop="entityCode">
+                    <el-input v-model="editForm.entityCode" auto-complete="off" size="small"></el-input>
+                </el-form-item>
+				<el-form-item label="排序">
+                    <el-input-number v-model="editForm.orderValue" :min="0" size="small"></el-input-number>
+                </el-form-item>
+				<!--creator不需要-->
+				<!--createTime不需要-->
+				<!--modifier不需要-->
+				<!--updateTime不需要-->
+				<!--removed不需要-->
+                <!--TODO:待修改-->
+                <!--<el-form-item label="状态">
+                    <el-select v-model="editForm.status" clearable placeholder="请选择" size="small">
+                        <el-option
+                                v-for="item in sysExtendTemplateStatus"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>-->
+            </el-form>
+        </el-col>
+    </el-row>
+
+    <el-row type="flex" justify="center">
+        <el-col :span="6">
+            <el-button @click="editFormCancel" size="small">取消</el-button>
+            <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading" size="small">提交</el-button>
+        </el-col>
+    </el-row>
+
+</div>
+<!-- UI界面 end -->
+
+<script type="text/javascript">
+    $.getScript('/res/js/mis/sys/sysExtendTemplate/sysExtendTemplateForm.js', function () {
+        //清空参数
+        pageParam = Object.assign({}, {});
+
+        var sysExtendTemplateAddView = new Vue({
+            el: '#sysExtendTemplateAddView',
+            data: SysExtendTemplateFromCommon.data,
+            //数据初始化
+            created: function () {
+                var _self = this;
+                //获取下拉框选项
+                SysExtendTemplateFromCommon.loadSelect(_self);
+                _self.editForm = Object.assign({}, SysExtendTemplateFromCommon.defaultModel);
+            },
+            methods: {
+                //是否具有权限
+                hasRight: function(rightCode) {
+                    return commonUtils.hasRight(rightCode);
+                },
+                //保存事件
+                editSubmit: function (formName) {
+                    var _self = this;
+                    _self.$refs[formName].validate(function(valid){
+                        if (valid) {
+                            SysExtendTemplateFromCommon.saveAction(_self);
+                        } else{
+                            _self.$message.error("请正确填写表单！");
+                        }
+                    });
+                },
+                //取消事件
+                editFormCancel: function () {
+                    SysExtendTemplateFromCommon.cancelAction(this);
+                },
+                //上传图片前的验证事件
+                beforeAvatarUpload:function(file) {
+                    var _self = this;
+                    commonUtils.uploadImageCheck(file, _self);
+                }
+            }
+        });
+    });
+</script>

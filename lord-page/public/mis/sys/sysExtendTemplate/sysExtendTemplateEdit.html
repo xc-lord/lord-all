@@ -1,0 +1,293 @@
+<!-- 
+	Desc: 	扩展属性模板的编辑界面
+	Author: xiaocheng
+	Date: 	2018年05月09日 17:34:08
+-->
+
+<!-- UI界面 start -->
+<div id="sysExtendTemplateEditView">
+    <el-row>
+        <h3><i class="el-icon-edit"></i> <a href="#/sysExtendTemplate">扩展属性模板管理</a> / 编辑</h3>
+    </el-row>
+    <!--编辑界面-->
+    <el-row type="flex" justify="center">
+        <el-col :span="22">
+            <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
+                <row>
+                    <el-form-item label="ID" prop="id" v-if="editMode">
+                        <el-input v-model="editForm.id" auto-complete="off" :disabled="true" size="small"></el-input>
+                    </el-form-item>
+                    <el-form-item label="模板名称" prop="name">
+                        <el-input v-model="editForm.name" auto-complete="off" size="small"></el-input>
+                    </el-form-item>
+                    <el-form-item label="实体表名" prop="entityTable">
+                        <el-input v-model="editForm.entityTable" auto-complete="off" size="small"></el-input>
+                    </el-form-item>
+                    <el-form-item label="实体编码" prop="entityCode">
+                        <el-input v-model="editForm.entityCode" auto-complete="off" size="small"></el-input>
+                    </el-form-item>
+                    <el-form-item label="排序">
+                        <el-input-number v-model="editForm.orderValue"
+                            :min="0" size="small"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="创建人" v-if="editMode">
+                        <el-input-number v-model="editForm.creator"
+                            :disabled="true"
+                            :min="0" size="small"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="创建时间" v-if="editMode">
+                        <el-date-picker type="datetime"
+                                        placeholder="选择日期和时间" size="small"
+                                        :disabled="true"
+                                        v-model="editForm.createTime">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="更新人" v-if="editMode">
+                        <el-input-number v-model="editForm.modifier"
+                            :disabled="true"
+                            :min="0" size="small"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="更新时间" v-if="editMode">
+                        <el-date-picker type="datetime"
+                                        placeholder="选择日期和时间" size="small"
+                                        :disabled="true"
+                                        v-model="editForm.updateTime">
+                        </el-date-picker>
+                    </el-form-item>
+                </row>
+                <el-row>
+                    <el-button type="success" icon="el-icon-plus" @click="addColumnClick">新增属性</el-button>
+                </el-row>
+                <el-row>
+                    <el-card class="box-card" v-for="(column, columnIndex) in editForm.columnList">
+                        <div slot="header" class="clearfix">
+                            <span>列{{columnIndex+1}}.{{column.columnId}} {{column.dataKey}}</span>
+                            <el-button style="float: right; padding: 3px 0" type="text" @click="deleteColumnClick(column.columnId)">删除</el-button>
+                        </div>
+                        <div class="text item">
+                            <el-row>
+                                <el-col :span="8">
+                                    <el-form-item label="属性名" :rules="{
+                                    required: true, message: '属性名不能为空', trigger: 'blur'
+                                    }"  :prop="'columnList.' + columnIndex + '.name'">
+                                        <el-input
+                                                size="mini"
+                                                placeholder="属性名"
+                                                v-model="column.name">
+                                        </el-input>
+                                    </el-form-item>
+                                    <el-form-item label="属性编码" :rules="{
+                                    required: true, message: '属性编码不能为空', trigger: 'blur'
+                                    }" :prop="'columnList.' + columnIndex + '.dataKey'">
+                                        <el-input
+                                                size="mini"
+                                                placeholder="属性编码"
+                                                v-model="column.dataKey">
+                                        </el-input>
+                                    </el-form-item>
+                                    <el-form-item label="属性JSON配置" :prop="'columnList.' + columnIndex + '.valJsonStr'">
+                                        <el-input
+                                                size="mini"
+                                                placeholder="属性JSON配置"
+                                                v-model="column.valJsonStr">
+                                        </el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="8">
+                                    <el-form-item label="数据类型" :rules="{
+                                    required: true, message: '数据类型不能为空', trigger: 'blur'
+                                    }" :prop="'columnList.' + columnIndex + '.dataType'">
+                                        <el-select v-model="column.dataType" clearable placeholder="请选择" size="mini">
+                                            <el-option
+                                                    v-for="item in extendAttrDataType"
+                                                    :key="item.value"
+                                                    :label="item.label"
+                                                    :value="item.value">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                    <el-form-item label="排序">
+                                        <el-input-number
+                                                size="mini"
+                                                placeholder="排序"
+                                                v-model="column.orderValue">
+                                        </el-input-number>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="8">
+                                    <el-form-item label="输入类型" :rules="{
+                                    required: true, message: '输入类型不能为空', trigger: 'blur'
+                                    }" :prop="'columnList.' + columnIndex + '.inputType'">
+                                        <el-select v-model="column.inputType" clearable placeholder="请选择" size="mini">
+                                            <el-option
+                                                    v-for="item in extendAttrInputType"
+                                                    :key="item.value"
+                                                    :label="item.label"
+                                                    :value="item.value">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                    <el-form-item label="是否可为空" :prop="'columnList.' + columnIndex + '.nullable'">
+                                        <el-switch
+                                                v-model="column.nullable"
+                                                active-color="#13ce66"
+                                                inactive-color="#ff4949">
+                                        </el-switch>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                        </div>
+                    </el-card>
+                </el-row>
+            </el-form>
+        </el-col>
+    </el-row>
+
+    <el-row type="flex" justify="center">
+        <el-col :span="6">
+            <el-button @click="editFormCancel" size="small">取消</el-button>
+            <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading" size="small">提交</el-button>
+        </el-col>
+    </el-row>
+
+</div>
+<!-- UI界面 end -->
+
+<script type="text/javascript">
+    $.getScript('/res/js/mis/sys/sysExtendTemplate/sysExtendTemplateForm.js', function () {
+        var sysExtendTemplateEditView = new Vue({
+            el: '#sysExtendTemplateEditView',
+            data: SysExtendTemplateFromCommon.data,
+            //数据初始化
+            created: function () {
+                var _self = this;
+                //获取下拉框选项
+                SysExtendTemplateFromCommon.loadSelect(_self);
+                _self.loadExtendTemplate();
+            },
+            methods: {
+                //是否具有权限
+                hasRight: function(rightCode) {
+                    return commonUtils.hasRight(rightCode);
+                },
+                //加载数据
+                loadExtendTemplate:function() {
+                    var _self = this;
+                    console.info(pageParam.id);
+                    if(commonUtils.isEmpty(pageParam.id)) {
+                        _self.editMode = false;
+                        _self.editModeName = '新增';
+                        _self.editForm = {
+                            columnList:[],
+                            name: '',		//模板名称
+                            entityTable: '',		//实体表名
+                            entityCode: '',		//实体编码
+                            orderValue: 0,		//排序
+                            creator: 0,		//创建人
+                            createTime: '',		//创建时间
+                            modifier: 0,		//更新人
+                            updateTime: '',		//更新时间
+                            removed: false,	//是否删除
+                        };
+                        //创建一列
+                        var column = _self.crateColumn();
+                        _self.editForm.columnList.push(column);
+                        return;//id不存在时，是编辑界面
+                    }
+
+                    //根据Id,获取编辑的对象
+                    $.ajax({
+                        url: '/api/admin/sys/sysExtendTemplate/getDetails.do',
+                        data:{templateId:pageParam.id},
+                        dataType: "json"
+                    }).done(function (res) {
+                        if (res.success) {
+                            var template = res.data.template;
+                            var columnList = res.data.columnList;
+                            if(columnList) {
+                                var columnId = _self.columnIdIndex;
+                                for(var i=0; i<columnList.length; i++) {
+                                    var orderValue = columnList[i].orderValue;
+                                    columnList[i].columnId=orderValue;
+                                    if(columnId < orderValue)
+                                        columnId = orderValue;
+                                }
+                                _self.columnIdIndex = columnId + 1;
+                            }
+                            _self.editForm = {
+                                columnList:columnList,
+                                id: template.id,		//模板名称
+                                name: template.name,		//模板名称
+                                entityTable: template.entityTable,		//实体表名
+                                entityCode: template.entityCode,		//实体编码
+                                orderValue: template.orderValue,		//排序
+                                creator: template.creator,		//创建人
+                                createTime: template.createTime,		//创建时间
+                                modifier: template.modifier,		//更新人
+                                updateTime: template.updateTime,		//更新时间
+                            };
+                        } else {
+                            _self.$message.error(res.msg);//提示错误
+                        }
+                    });
+                },
+                //新增列
+                addColumnClick:function(){
+                    var _self = this;
+                    var column = _self.crateColumn();
+                    _self.editForm.columnList.push(column);
+                    console.info(_self.editForm.columnList);
+                },
+                crateColumn:function() {
+                    var columnId = this.columnIdIndex;
+                    var column = {
+                        columnId:columnId,
+                        dataKey:'',
+                        name:'',
+                        dataType:'Varchar',
+                        inputType:'Input',
+                        valJsonStr:'',
+                        nullable:true,
+                        orderValue:columnId
+                    };
+                    this.columnIdIndex++;
+                    return column;
+                },
+                //删除列
+                deleteColumnClick:function(columnId) {
+                    var columnList = this.editForm.columnList;
+                    var columnIndex = -1;
+                    for (var i = 0; i < columnList.length; i++) {
+                        if (columnList[i].columnId == columnId)
+                            columnIndex = i;
+                    }
+                    if (columnIndex > -1) {
+                        columnList.splice(columnIndex, 1);
+                        this.editForm.columnList = columnList;
+                    }
+                    console.info(this.editForm.columnList)
+                },
+                //保存事件
+                editSubmit: function (formName) {
+                    var _self = this;
+                    _self.$refs[formName].validate(function(valid){
+                        if (valid) {
+                            SysExtendTemplateFromCommon.saveAction(_self);
+                        } else{
+                            _self.$message.error("请正确填写表单！");
+                        }
+                    });
+                },
+                //取消事件
+                editFormCancel: function () {
+                    SysExtendTemplateFromCommon.cancelAction(this);
+                },
+                //上传图片前的验证事件
+                beforeAvatarUpload:function(file) {
+                    var _self = this;
+                    commonUtils.uploadImageCheck(file, _self);
+                }
+            }
+        });
+    });
+</script>
