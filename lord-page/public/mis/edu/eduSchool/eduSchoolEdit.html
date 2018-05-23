@@ -1,0 +1,175 @@
+<!-- 
+	Desc: 	学校的编辑界面
+	Author: xiaocheng
+	Date: 	2018年05月12日 15:55:50
+-->
+
+<!-- UI界面 start -->
+<div id="eduSchoolEditView">
+    <el-row>
+        <h3><i class="el-icon-edit"></i> <a href="#/eduSchool">学校管理</a> / 编辑</h3>
+    </el-row>
+    <!--编辑界面-->
+    <el-row type="flex" justify="center">
+        <el-col :span="22">
+            <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
+				<el-form-item label="ID" prop="id">
+                    <el-input v-model="editForm.id" auto-complete="off" :disabled="true" size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="名称" prop="name">
+                    <el-input v-model="editForm.name" auto-complete="off" size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="英文名" prop="enName">
+                    <el-input v-model="editForm.enName" auto-complete="off" size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="学校Logo" prop="logoImg">
+                    <el-upload
+                            class="avatar-uploader"
+                            action="/api/uploadFile.do"
+                            :show-file-list="false"
+                            :on-success="handleUploadLogoImgSuccess"
+                            :before-upload="beforeAvatarUpload">
+                        <img v-if="editForm.logoImg" :src="editForm.logoImg" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
+                <el-form-item label="介绍" prop="intro">
+                    <el-input v-model="editForm.intro" auto-complete="off" size="small"></el-input>
+                </el-form-item>
+				<el-form-item label="排序">
+                    <el-input-number v-model="editForm.orderValue"
+                        :min="0" size="small"></el-input-number>
+                </el-form-item>
+				<el-form-item label="创建人">
+                    <el-input-number v-model="editForm.creator"
+                        :disabled="true"
+                        :min="0" size="small"></el-input-number>
+                </el-form-item>
+				<el-form-item label="创建时间">
+                    <el-date-picker type="datetime" 
+									placeholder="选择日期和时间" size="small"
+									:disabled="true"
+                                    v-model="editForm.createTime">
+					</el-date-picker>
+                </el-form-item>
+				<el-form-item label="更新人">
+                    <el-input-number v-model="editForm.modifier"
+                        :disabled="true"
+                        :min="0" size="small"></el-input-number>
+                </el-form-item>
+				<el-form-item label="更新时间">
+                    <el-date-picker type="datetime" 
+									placeholder="选择日期和时间" size="small"
+									:disabled="true"
+                                    v-model="editForm.updateTime">
+					</el-date-picker>
+                </el-form-item>
+            </el-form>
+
+            <el-form :model="extendForm" label-width="120px" ref="extendForm">
+                <template v-for="item in extendData.columnList">
+                    <el-form-item v-if="item.inputType == 'Input'" :label="item.name">
+                        <el-input v-model="item.val" auto-complete="off" size="small"></el-input>
+                    </el-form-item>
+                    <el-form-item v-if="item.inputType == 'DatePicker'" :label="item.name">
+                        <el-date-picker type="datetime"
+                                        placeholder="选择日期和时间" size="small"
+                                        v-model="item.val">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item v-if="item.inputType == 'Switch'" :label="item.name">
+                        <el-switch
+                                v-model="item.val"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949">
+                        </el-switch>
+                    </el-form-item>
+                </template>
+            </el-form>
+
+        </el-col>
+    </el-row>
+
+    <el-row type="flex" justify="center">
+        <el-col :span="6">
+            <el-button @click="editFormCancel" size="small">取消</el-button>
+            <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading" size="small">提交</el-button>
+        </el-col>
+    </el-row>
+
+</div>
+<!-- UI界面 end -->
+
+<script type="text/javascript">
+    $.getScript('/res/js/mis/edu/eduSchool/eduSchoolForm.js', function () {
+        var eduSchoolEditView = new Vue({
+            el: '#eduSchoolEditView',
+            data: EduSchoolFromCommon.data,
+            //数据初始化
+            created: function () {
+                var _self = this;
+                //获取下拉框选项
+                EduSchoolFromCommon.loadSelect(_self);
+                //根据Id,获取编辑的对象
+                $.ajax({
+                    url: '/api/admin/edu/eduSchool/' + pageParam.id + ".do",
+                    dataType: "json"
+                }).done(function (res) {
+                    if (res.success) {
+                        _self.editForm = Object.assign(EduSchoolFromCommon.defaultModel, res.data);
+                    } else {
+                        _self.$message.error(res.msg);//提示错误
+                    }
+                });
+
+                _self.loadExtendTemplate();
+            },
+            methods: {
+                //是否具有权限
+                hasRight: function(rightCode) {
+                    return commonUtils.hasRight(rightCode);
+                },
+                //保存事件
+                editSubmit: function (formName) {
+                    var _self = this;
+                    _self.$refs[formName].validate(function(valid){
+                        if (valid) {
+                            EduSchoolFromCommon.saveAction(_self);
+                        } else{
+                            _self.$message.error("请正确填写表单！");
+                        }
+                    });
+                },
+                //加载扩展属性
+                loadExtendTemplate:function() {
+                    var _self = this;
+                    $.ajax({
+                        url: '/api/admin/sys/sysExtendTemplate/getExtendDetails.do',
+                        data:{entityCode:'eduSchool'},
+                        dataType: "json"
+                    }).done(function (res) {
+                        if (res.success) {
+                            _self.extendData = res.data;
+                        } else {
+                            _self.$message.error(res.msg);//提示错误
+                        }
+                    });
+                },
+                //取消事件
+                editFormCancel: function () {
+                    EduSchoolFromCommon.cancelAction(this);
+                },
+                    //上传图片成功的回调事件
+                handleUploadLogoImgSuccess:function(res, file) {
+                    var _self = this;
+                    _self.editForm.logoImg = commonUtils.uploadImageSuccess(res, file, _self);
+                },
+                //上传图片前的验证事件
+                beforeAvatarUpload:function(file) {
+                    var _self = this;
+                    commonUtils.uploadImageCheck(file, _self);
+                }
+            }
+        });
+    });
+</script>
