@@ -77,7 +77,9 @@
                                                 width="135">
                                             <template scope="scope">
                                                 <div class="el-table-img-div">
-                                                    <img :src="scope.row.${column.columnNameLower}" class="el-table-img">
+                                                    <a :href="scope.row.${column.columnNameLower}" target="_blank">
+                                                        <img :src="scope.row.${column.columnNameLower}" class="el-table-img">
+                                                    </a>
                                                 </div>
                                             </template>
                                         </el-table-column>

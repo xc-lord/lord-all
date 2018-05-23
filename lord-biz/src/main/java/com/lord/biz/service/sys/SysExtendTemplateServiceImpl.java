@@ -178,4 +178,15 @@ public class SysExtendTemplateServiceImpl implements SysExtendTemplateService {
     {
         return sysExtendAttrDao.findByTemplateId(templateId);
     }
+
+    @Override
+    public SysExtendTemplate getSysExtendTemplate(String entityCode)
+    {
+        List<SysExtendTemplate> list = sysExtendTemplateDao.findByEntityCode(entityCode);
+        if (list.size() > 0)
+        {
+            return list.get(0);
+        }
+        return null;
+    }
 }

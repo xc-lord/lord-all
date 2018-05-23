@@ -86,6 +86,19 @@ public class SysExtendTemplateController {
         return Result.success("获取成功", map);
     }
 
+    @ApiOperation(value="获取扩展属性模板配置", notes="根据实体编码，获取模板配置")
+    @ApiImplicitParam(name = "entityCode", value = "实体编码", required = true, dataType = "String", paramType = "query")
+    @RequestMapping(value = "/api/admin/sys/sysExtendTemplate/getExtendDetails", method = RequestMethod.GET)
+    public Result getExtendDetails(String entityCode) {
+        Preconditions.checkNotNull(entityCode, "id不能为空");
+        SysExtendTemplate template = sysExtendTemplateService.getSysExtendTemplate(entityCode);
+        List<SysExtendAttr> columnList = sysExtendTemplateService.listSysExtendAttr(template.getId());
+        Map<String, Object> map = new HashMap<>();
+        map.put("template", template);
+        map.put("columnList", columnList);
+        return Result.success("获取成功", map);
+    }
+
     @ApiOperation(value="更新扩展属性模板的排序值", notes="根据主键id，更新扩展属性模板的排序值")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "主键Id", required = true, dataType = "Long", paramType = "query"),

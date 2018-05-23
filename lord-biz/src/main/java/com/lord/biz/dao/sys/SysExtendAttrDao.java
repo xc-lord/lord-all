@@ -37,5 +37,4 @@ public interface SysExtendAttrDao extends JpaRepository<SysExtendAttr, Long>, Jp
 
     List<SysExtendAttr> findByTemplateId(Long templateId);
 
-    //在此添加你的自定义方法...
 }

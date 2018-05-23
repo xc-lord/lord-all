@@ -34,5 +34,7 @@ public interface SysExtendTemplateDao extends JpaRepository<SysExtendTemplate, L
     @Query("update SysExtendTemplate u set u.removed = true where u.id in ?1")
     void removeSysExtendTemplate(Long... id);
 
-	//在此添加你的自定义方法...
+    List<SysExtendTemplate> findByEntityCode(String entityCode);
+
+    //在此添加你的自定义方法...
 }

@@ -16,7 +16,7 @@
         <module>lord-utils</module>
         <module>lord-biz</module>
         <module>lord-web</module>
-        <module>lord-generator</module>
+        <module>lord-auto</module>
     </modules>
 
     <!-- 管理依赖版本号，子项目不显式引用版本号，则引用此位置的版本号 -->

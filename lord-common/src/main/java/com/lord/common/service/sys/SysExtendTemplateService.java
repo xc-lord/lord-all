@@ -93,4 +93,11 @@ public interface SysExtendTemplateService {
      * @return 扩展属性列表
      */
     List<SysExtendAttr> listSysExtendAttr(Long templateId);
+
+    /**
+     * 根据实体编码，获取模板配置
+     * @param entityCode
+     * @return
+     */
+    SysExtendTemplate getSysExtendTemplate(String entityCode);
 }

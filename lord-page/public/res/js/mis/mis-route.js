@@ -226,6 +226,17 @@ var routes = {
         pageParam = Object.assign({}, {id: id});//设置页面参数
         $("#showView").load("/mis/ads/adsElement/adsElementEdit.html");
     },
+    //学校
+    '/eduSchool': function () {
+        $("#showView").load("/mis/edu/eduSchool/eduSchoolList.html");
+    },
+    '/eduSchool/add': function () {
+        $("#showView").load("/mis/edu/eduSchool/eduSchoolAdd.html");
+    },
+    '/eduSchool/edit/:id': function (id) {
+        pageParam = Object.assign({}, {id: id});//设置页面参数
+        $("#showView").load("/mis/edu/eduSchool/eduSchoolEdit.html");
+    },
 };
 var router = Router(routes);
 router.init();
