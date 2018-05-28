@@ -23,7 +23,7 @@ rm -f /data/app/spring/lord-web-1.0-SNAPSHOT.jar
 cp /data/app/src/lord-all/lord-web/target/lord-web-1.0-SNAPSHOT.jar /data/app/spring
 cd /data/app/spring
 
-nohup java -jar lord-web-1.0-SNAPSHOT.jar --spring.profiles.active=sit >/data/app/logs/log-lord-web.log 2>&1 &
+nohup java -jar lord-web-1.0-SNAPSHOT.jar --spring.profiles.active=live >/data/app/logs/log-lord-web.log 2>&1 &
 echo "spring boot lord-web server starting!"
 
 tail -100f /data/app/logs/log-lord-web.log
