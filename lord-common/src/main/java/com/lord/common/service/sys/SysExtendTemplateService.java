@@ -3,6 +3,7 @@ package com.lord.common.service.sys;
 import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
+import com.lord.common.dto.sys.ExtendDetails;
 import com.lord.common.dto.sys.ExtendTemplateDto;
 import com.lord.common.dto.user.LoginUser;
 import com.lord.common.model.sys.SysExtendAttr;
@@ -100,4 +101,12 @@ public interface SysExtendTemplateService {
      * @return
      */
     SysExtendTemplate getSysExtendTemplate(String entityCode);
+
+    /**
+     * 根据实体编码，获取实体模板配置信息
+     * @param entityCode    实体编码
+     * @param entityId      实体ID
+     * @return
+     */
+    ExtendDetails getExtendDetails(String entityCode, Long entityId);
 }

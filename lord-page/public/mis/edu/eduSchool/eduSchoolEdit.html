@@ -66,7 +66,7 @@
                 </el-form-item>
             </el-form>
 
-            <el-form :model="extendForm" label-width="120px" ref="extendForm">
+            <el-form label-width="120px" ref="extendForm">
                 <template v-for="item in extendData.columnList">
                     <el-form-item v-if="item.inputType == 'Input'" :label="item.name">
                         <el-input v-model="item.val" auto-complete="off" size="small"></el-input>
@@ -122,7 +122,7 @@
                     }
                 });
 
-                _self.loadExtendTemplate();
+                _self.loadExtendDetails();
             },
             methods: {
                 //是否具有权限
@@ -141,7 +141,7 @@
                     });
                 },
                 //加载扩展属性
-                loadExtendTemplate:function() {
+                loadExtendDetails:function() {
                     var _self = this;
                     $.ajax({
                         url: '/api/admin/sys/sysExtendTemplate/getExtendDetails.do',

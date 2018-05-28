@@ -2,6 +2,7 @@ package com.lord.web.controller.sys;
 
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.QueryParams;
+import com.lord.common.dto.sys.ExtendDetails;
 import com.lord.common.dto.sys.ExtendTemplateDto;
 import com.lord.common.model.sys.SysExtendAttr;
 import com.lord.common.model.sys.SysExtendTemplate;
@@ -87,16 +88,15 @@ public class SysExtendTemplateController {
     }
 
     @ApiOperation(value="获取扩展属性模板配置", notes="根据实体编码，获取模板配置")
-    @ApiImplicitParam(name = "entityCode", value = "实体编码", required = true, dataType = "String", paramType = "query")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "entityCode", value = "实体编码", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "entityId", value = "实体Id", required = true, dataType = "Long", paramType = "query")
+    })
     @RequestMapping(value = "/api/admin/sys/sysExtendTemplate/getExtendDetails", method = RequestMethod.GET)
-    public Result getExtendDetails(String entityCode) {
-        Preconditions.checkNotNull(entityCode, "id不能为空");
-        SysExtendTemplate template = sysExtendTemplateService.getSysExtendTemplate(entityCode);
-        List<SysExtendAttr> columnList = sysExtendTemplateService.listSysExtendAttr(template.getId());
-        Map<String, Object> map = new HashMap<>();
-        map.put("template", template);
-        map.put("columnList", columnList);
-        return Result.success("获取成功", map);
+    public Result getExtendDetails(String entityCode, Long entityId) {
+        Preconditions.checkNotNull(entityCode, "entityCode不能为空");
+        ExtendDetails extendDetails = sysExtendTemplateService.getExtendDetails(entityCode, entityId);
+        return Result.success("获取成功", extendDetails);
     }
 
     @ApiOperation(value="更新扩展属性模板的排序值", notes="根据主键id，更新扩展属性模板的排序值")

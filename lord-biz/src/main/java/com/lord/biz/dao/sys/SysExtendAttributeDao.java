@@ -26,6 +26,7 @@ public interface SysExtendAttributeDao extends JpaRepository<SysExtendAttribute,
     @Query("select u from SysExtendAttribute u where u.id in ?1")
     List<SysExtendAttribute> findByIds(Long... ids);
 
+    List<SysExtendAttribute> findByEntityCodeAndEntityId(String entityCode, Long entityId);
 
-	//在此添加你的自定义方法...
+    //在此添加你的自定义方法...
 }

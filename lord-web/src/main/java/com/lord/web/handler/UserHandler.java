@@ -28,9 +28,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class UserHandler
 {
-    /** Redis中登录用户的Key */
-    public static final String LOGIN_USER_KEY = "LOGIN_USER_%s_%s";
-
     /** 保存当前登录的用户 */
     private static ThreadLocal<LoginUser> userHolder = new ThreadLocal<LoginUser>();
 
@@ -81,8 +78,8 @@ public class UserHandler
         }
         String token = CommonUtils.getUUID();
         output.setToken(token);
-        final String key = String.format(LOGIN_USER_KEY, output.getWebChannel(), output.getUserId());
-        saveToRedis(key, output);
+        final String sessionKey = CommonUtils.getUUID();
+        saveToRedis(sessionKey, output);
 
         String sign = createSign(output, request);
         CookieUtil cookieUtil = new CookieUtil(request, response);
@@ -90,6 +87,7 @@ public class UserHandler
         cookieUtil.setCookie(output.getWebChannel() + "_USER_NAME", output.getUsername(), CookieUtil.LONG_TIME);
         cookieUtil.setCookie(output.getWebChannel() + "_NICK_NAME", output.getNickname(), CookieUtil.LONG_TIME);
         cookieUtil.setCookie(output.getWebChannel() + "_USER_ICON", output.getIcon());
+        cookieUtil.setCookie(output.getWebChannel() + "_SESSION_KEY", sessionKey);
         cookieUtil.setCookie(output.getWebChannel() + "_AUTH_SIGN", sign);//用户是否登录，验证的签名，会话期间有效
         output.setToken(sign);
     }
@@ -104,9 +102,9 @@ public class UserHandler
     {
         CookieUtil cookieUtil = new CookieUtil(request, response);
         Long userId = cookieUtil.getLong(channel + "_USER_ID");
+        final String key = cookieUtil.getString(channel + "_SESSION_KEY");
         if (userId != null)
         {
-            final String key = String.format(LOGIN_USER_KEY, channel, userId);
             getRedisService().delete(key);//删缓存中的key
         }
         //删除cookie中的用户信息
@@ -115,6 +113,7 @@ public class UserHandler
         cookieUtil.removeCookie(channel + "_NICK_NAME");
         cookieUtil.removeCookie(channel + "_USER_ICON");
         cookieUtil.removeCookie(channel + "_AUTH_SIGN");
+        cookieUtil.removeCookie(channel + "_SESSION_KEY");
         try
         {
             response.sendRedirect("/mis/login.html");
@@ -162,7 +161,7 @@ public class UserHandler
         Long userId = cookieUtil.getLong(channel + "_USER_ID");
         if(StringUtils.isEmpty(cookieSign) || userId == null)
             return null;
-        final String key = String.format(LOGIN_USER_KEY, channel, userId);
+        final String key = cookieUtil.getString(channel + "_SESSION_KEY");
         String redisJson = getRedisService().get(key);
         if(StringUtils.isEmpty(redisJson))
             return null;

@@ -2,19 +2,25 @@ package com.lord.biz.service.sys;
 
 import com.alibaba.fastjson.JSON;
 import com.lord.biz.dao.sys.SysExtendAttrDao;
+import com.lord.biz.dao.sys.SysExtendAttributeDao;
 import com.lord.biz.dao.sys.SysExtendTemplateDao;
 import com.lord.biz.dao.sys.specs.SysExtendTemplateSpecs;
 import com.lord.biz.utils.ServiceUtils;
+import com.lord.common.constant.sys.ExtendAttrDataType;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
+import com.lord.common.dto.sys.ExtendAttrDto;
+import com.lord.common.dto.sys.ExtendDetails;
 import com.lord.common.dto.sys.ExtendTemplateDto;
 import com.lord.common.dto.user.LoginUser;
 import com.lord.common.model.sys.SysExtendAttr;
+import com.lord.common.model.sys.SysExtendAttribute;
 import com.lord.common.model.sys.SysExtendTemplate;
 import com.lord.common.service.sys.SysExtendTemplateService;
 import com.lord.utils.CommonUtils;
 import com.lord.utils.Preconditions;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +30,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 扩展属性模板sys_extend_template的Service实现
@@ -45,6 +49,9 @@ public class SysExtendTemplateServiceImpl implements SysExtendTemplateService {
 
     @Autowired
     private SysExtendAttrDao sysExtendAttrDao;
+
+    @Autowired
+    private SysExtendAttributeDao sysExtendAttributeDao;
 
     @Override
     public SysExtendTemplate getSysExtendTemplate(Long id) {
@@ -188,5 +195,63 @@ public class SysExtendTemplateServiceImpl implements SysExtendTemplateService {
             return list.get(0);
         }
         return null;
+    }
+
+    @Override
+    public ExtendDetails getExtendDetails(String entityCode, Long entityId)
+    {
+        SysExtendTemplate template = getSysExtendTemplate(entityCode);
+        Preconditions.checkNotNull(template, "模板不存在");
+        List<SysExtendAttr> list = listSysExtendAttr(template.getId());
+        List<ExtendAttrDto> columns = new ArrayList<>();
+        Map<String, Object> valMap = getValMap(entityCode, entityId);
+        for (SysExtendAttr attr : list)
+        {
+            ExtendAttrDto dto = new ExtendAttrDto();
+            dto.setDataKey(attr.getDataKey());
+            dto.setDataType(attr.getDataType());
+            dto.setInputType(attr.getInputType());
+            dto.setNullable(attr.getNullable());
+            dto.setName(attr.getName());
+            if(StringUtils.isNotEmpty(attr.getValJsonStr()))
+                dto.setValJson(JSON.parseObject(attr.getValJsonStr()));
+            if(valMap.get(attr.getDataKey()) != null)
+                dto.setVal(valMap.get(attr.getDataKey()));
+            columns.add(dto);
+        }
+        ExtendDetails details = new ExtendDetails();
+        details.setEntityCode(entityCode);
+        details.setEntityId(entityId);
+        details.setTemplateId(template.getId());
+        details.setTemplateName(template.getName());
+        details.setEntityTable(template.getEntityTable());
+        details.setColumnList(columns);
+        return details;
+    }
+
+    /**
+     * 获取实体的属性值
+     * @param entityCode    实体编码
+     * @param entityId      实体ID
+     * @return
+     */
+    private Map<String, Object> getValMap(String entityCode, Long entityId)
+    {
+        Map<String, Object> valMap = new HashMap<>();
+        if(entityId != null)
+        {
+            List<SysExtendAttribute> attributes = sysExtendAttributeDao
+                    .findByEntityCodeAndEntityId(entityCode, entityId);
+            for (SysExtendAttribute attribute : attributes)
+            {
+                if(ExtendAttrDataType.Datetime.toString().equals(attribute.getDataType()))
+                    valMap.put(attribute.getAttrName(), attribute.getAttrValueTime());
+                else if(ExtendAttrDataType.Number.toString().equals(attribute.getDataType()))
+                    valMap.put(attribute.getAttrName(), attribute.getAttrValueNum());
+                else
+                    valMap.put(attribute.getAttrName(), attribute.getAttrValue());
+            }
+        }
+        return valMap;
     }
 }

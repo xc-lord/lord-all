@@ -74,8 +74,10 @@ var EduSchoolFromCommon = {
         }).done(function (res, status, xhr) {
             if (res.success) {
                 _self.$message.success(res.msg);//保存成功
-                window.location.href = "#/eduSchool";//跳转到列表页面
-                formSelf.closeDialogForm();//关闭弹窗
+                console.info(JSON.stringify(_self.extendData));
+
+                /*window.location.href = "#/eduSchool";//跳转到列表页面
+                formSelf.closeDialogForm();//关闭弹窗*/
             } else {
                 _self.$message.error(res.msg);//提示错误
             }
