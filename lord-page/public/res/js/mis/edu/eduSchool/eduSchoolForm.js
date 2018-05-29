@@ -37,9 +37,6 @@ var EduSchoolFromCommon = {
            },
            //编辑界面数据
            editForm: {},
-            //扩展属性表单
-            extendForm: {},
-            extendData:{},
            //状态
            eduSchoolStatus: []
         };
@@ -74,10 +71,13 @@ var EduSchoolFromCommon = {
         }).done(function (res, status, xhr) {
             if (res.success) {
                 _self.$message.success(res.msg);//保存成功
-                console.info(JSON.stringify(_self.extendData));
+                //保存扩展属性
+                var saveAttr = _self.$refs.eduSchoolExtendAttr.saveAction(res.data.id);
+                if(saveAttr) {
+                    window.location.href = "#/eduSchool";//跳转到列表页面
+                    formSelf.closeDialogForm();//关闭弹窗
+                }
 
-                /*window.location.href = "#/eduSchool";//跳转到列表页面
-                formSelf.closeDialogForm();//关闭弹窗*/
             } else {
                 _self.$message.error(res.msg);//提示错误
             }

@@ -1,5 +1,6 @@
 package com.lord.web.controller.sys;
 
+import com.alibaba.fastjson.JSON;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.QueryParams;
 import com.lord.common.dto.sys.ExtendDetails;
@@ -92,11 +93,20 @@ public class SysExtendTemplateController {
             @ApiImplicitParam(name = "entityCode", value = "实体编码", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "entityId", value = "实体Id", required = true, dataType = "Long", paramType = "query")
     })
-    @RequestMapping(value = "/api/admin/sys/sysExtendTemplate/getExtendDetails", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/admin/sys/getExtendDetails", method = RequestMethod.GET)
     public Result getExtendDetails(String entityCode, Long entityId) {
         Preconditions.checkNotNull(entityCode, "entityCode不能为空");
         ExtendDetails extendDetails = sysExtendTemplateService.getExtendDetails(entityCode, entityId);
         return Result.success("获取成功", extendDetails);
+    }
+
+    @ApiOperation(value = "保存或更新实体的扩展属性")
+    @RequestMapping(value = "/api/admin/sys/saveExtendDetails", method = RequestMethod.POST)
+    public Result saveExtendDetails(String extendJson)
+    {
+        ExtendDetails extendDetails = JSON.parseObject(extendJson, ExtendDetails.class);
+        sysExtendTemplateService.saveExtendDetails(extendDetails, UserHandler.getLoginUser());
+        return Result.success("保存扩展属性成功");
     }
 
     @ApiOperation(value="更新扩展属性模板的排序值", notes="根据主键id，更新扩展属性模板的排序值")

@@ -234,3 +234,84 @@ Vue.component('mis-lookup', {
         self.tableData = res.data.list;
     }
 });
+
+//扩展属性组件
+Vue.component('mis-extend-attr', {
+    props: {
+        entityId: Number,
+        entityCode: String,
+        editMode:String
+    },
+    data: function () {
+        return {
+            extendData: {}
+        }
+    },
+    template: '<el-form label-width="120px" ref="extendForm">\
+                    <template v-for="item in extendData.columnList">\
+                        <el-form-item v-if="item.inputType == \'Input\'" :label="item.name">\
+                            <el-input v-model="item.val" auto-complete="off" size="small"></el-input>\
+                        </el-form-item>\
+                        <el-form-item v-if="item.inputType == \'DatePicker\'" :label="item.name">\
+                            <el-date-picker type="datetime"\
+                                placeholder="选择日期和时间" size="small"\
+                                v-model="item.val">\
+                            </el-date-picker>\
+                        </el-form-item>\
+                        <el-form-item v-if="item.inputType == \'Switch\'" :label="item.name">\
+                            <el-switch\
+                            v-model="item.val"\
+                            active-color="#13ce66"\
+                            inactive-color="#ff4949">\
+                            </el-switch>\
+                        </el-form-item>\
+                    </template>\
+                </el-form>',
+    methods:{
+        //加载扩展属性
+        loadExtendDetails:function() {
+            var _self = this;
+            $.ajax({
+                url: '/api/admin/sys/getExtendDetails.do',
+                data:{entityCode:_self.entityCode,entityId:_self.entityId},
+                dataType: "json"
+            }).done(function (res) {
+                if (res.success) {
+                    _self.extendData = res.data;
+                } else {
+                    _self.$message.error(res.msg);//提示错误
+                }
+            });
+        },
+        saveAction:function(entityId) {
+            var _self = this;
+            _self.extendData.entityId = entityId;//设置ID
+            var success = false;
+            $.ajax({
+                async:false,
+                method: "post",
+                url: '/api/admin/sys/saveExtendDetails.do',
+                data: {extendJson:JSON.stringify(_self.extendData)},
+                dataType: "json"
+            }).done(function (res, status, xhr) {
+                if (res.success) {
+                    //_self.$message.success(res.msg);//保存成功
+                    success = true;
+                } else {
+                    _self.$message.error(res.msg);//提示错误
+                }
+            });
+            return success;
+        }
+    },
+    watch:{
+        entityId:function(newVal, oldVal) {
+            this.loadExtendDetails();
+        }
+    },
+    mounted: function() {
+        if(this.editMode == 'Add') {
+            this.loadExtendDetails();
+        }
+    }
+});

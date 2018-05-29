@@ -48,6 +48,12 @@ public class SysExtendAttribute implements Serializable {
 	private String attrName;
 
 	/**
+	 * 属性key
+	 */
+	@Column(name = "attr_key", nullable = true, length = 100)
+	private String attrKey;
+
+	/**
 	 * 属性类型
 	 */
 	@Column(name = "data_type", nullable = true, length = 40)
@@ -109,6 +115,16 @@ public class SysExtendAttribute implements Serializable {
 
 	public void setAttrName(String attrName) {
 		this.attrName = attrName;
+	}
+
+	public String getAttrKey()
+	{
+		return attrKey;
+	}
+
+	public void setAttrKey(String attrKey)
+	{
+		this.attrKey = attrKey;
 	}
 
 	public String getDataType() {

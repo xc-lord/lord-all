@@ -204,10 +204,11 @@ public class SysExtendTemplateServiceImpl implements SysExtendTemplateService {
         Preconditions.checkNotNull(template, "模板不存在");
         List<SysExtendAttr> list = listSysExtendAttr(template.getId());
         List<ExtendAttrDto> columns = new ArrayList<>();
-        Map<String, Object> valMap = getValMap(entityCode, entityId);
+        Map<Long, Object> valMap = getValMap(entityCode, entityId);
         for (SysExtendAttr attr : list)
         {
             ExtendAttrDto dto = new ExtendAttrDto();
+            dto.setAttrId(attr.getId());
             dto.setDataKey(attr.getDataKey());
             dto.setDataType(attr.getDataType());
             dto.setInputType(attr.getInputType());
@@ -215,8 +216,8 @@ public class SysExtendTemplateServiceImpl implements SysExtendTemplateService {
             dto.setName(attr.getName());
             if(StringUtils.isNotEmpty(attr.getValJsonStr()))
                 dto.setValJson(JSON.parseObject(attr.getValJsonStr()));
-            if(valMap.get(attr.getDataKey()) != null)
-                dto.setVal(valMap.get(attr.getDataKey()));
+            if(valMap.get(attr.getId()) != null)
+                dto.setVal(valMap.get(attr.getId()));
             columns.add(dto);
         }
         ExtendDetails details = new ExtendDetails();
@@ -235,9 +236,9 @@ public class SysExtendTemplateServiceImpl implements SysExtendTemplateService {
      * @param entityId      实体ID
      * @return
      */
-    private Map<String, Object> getValMap(String entityCode, Long entityId)
+    private Map<Long, Object> getValMap(String entityCode, Long entityId)
     {
-        Map<String, Object> valMap = new HashMap<>();
+        Map<Long, Object> valMap = new HashMap<>();
         if(entityId != null)
         {
             List<SysExtendAttribute> attributes = sysExtendAttributeDao
@@ -245,13 +246,68 @@ public class SysExtendTemplateServiceImpl implements SysExtendTemplateService {
             for (SysExtendAttribute attribute : attributes)
             {
                 if(ExtendAttrDataType.Datetime.toString().equals(attribute.getDataType()))
-                    valMap.put(attribute.getAttrName(), attribute.getAttrValueTime());
+                    valMap.put(attribute.getAttrId(), attribute.getAttrValueTime());
                 else if(ExtendAttrDataType.Number.toString().equals(attribute.getDataType()))
-                    valMap.put(attribute.getAttrName(), attribute.getAttrValueNum());
+                    valMap.put(attribute.getAttrId(), attribute.getAttrValueNum());
                 else
-                    valMap.put(attribute.getAttrName(), attribute.getAttrValue());
+                    valMap.put(attribute.getAttrId(), attribute.getAttrValue());
             }
         }
         return valMap;
+    }
+
+    @Override
+    public void saveExtendDetails(ExtendDetails extendDetails, LoginUser loginUser)
+    {
+        Preconditions.checkNotNull(extendDetails, "扩展属性对象不能为空");
+        Long entityId = extendDetails.getEntityId();
+        String entityCode = extendDetails.getEntityCode();
+        Preconditions.checkNotNull(entityId, "扩展属性entityId不能为空");
+        Preconditions.checkNotNull(extendDetails, "扩展属性entityCode不能为空");
+
+        //获取旧属性列表
+        List<SysExtendAttribute> attributes = sysExtendAttributeDao
+                .findByEntityCodeAndEntityId(entityCode, entityId);
+        Map<Long, SysExtendAttribute> attributeMap = new HashMap<>();
+        for (SysExtendAttribute attribute : attributes)
+        {
+            attributeMap.put(attribute.getAttrId(), attribute);
+        }
+
+        //设置新属性和更新旧属性
+        for (ExtendAttrDto attrDto : extendDetails.getColumnList())
+        {
+            SysExtendAttribute attribute = attributeMap.remove(attrDto.getAttrId());
+            if(attribute == null)
+                attribute = new SysExtendAttribute();
+            attribute.setAttrId(attrDto.getAttrId());
+            attribute.setAttrName(attrDto.getName());
+            attribute.setAttrKey(attrDto.getDataKey());
+            attribute.setDataType(attrDto.getDataType());
+            attribute.setEntityCode(entityCode);
+            attribute.setEntityId(entityId);
+            if (ExtendAttrDataType.Datetime.toString().equals(attrDto.getDataType()))
+            {
+                Date time = (Date) attrDto.getVal();
+                attribute.setAttrValueTime(time);
+                if(time != null)
+                    attribute.setAttrValue(CommonUtils.dateFormat(time));
+            } else if (ExtendAttrDataType.Number.toString().equals(attrDto.getDataType()))
+            {
+                Double number = (Double) attrDto.getVal();
+                attribute.setAttrValueNum(number);
+                if(number != null)
+                    attribute.setAttrValue("" + attrDto.getVal());
+            } else {
+                attribute.setAttrValue((String) attrDto.getVal());
+            }
+            sysExtendAttributeDao.save(attribute);
+        }
+
+        //删除无效属性
+        for (Long attrId : attributeMap.keySet())
+        {
+            sysExtendAttributeDao.delete(attributeMap.get(attrId).getId());
+        }
     }
 }

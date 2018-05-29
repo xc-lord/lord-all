@@ -109,4 +109,6 @@ public interface SysExtendTemplateService {
      * @return
      */
     ExtendDetails getExtendDetails(String entityCode, Long entityId);
+
+    void saveExtendDetails(ExtendDetails extendDetails, LoginUser loginUser);
 }

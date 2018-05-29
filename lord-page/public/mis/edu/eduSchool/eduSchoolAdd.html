@@ -37,22 +37,8 @@
 				<el-form-item label="排序">
                     <el-input-number v-model="editForm.orderValue" :min="0" size="small"></el-input-number>
                 </el-form-item>
-				<!--creator不需要-->
-				<!--createTime不需要-->
-				<!--modifier不需要-->
-				<!--updateTime不需要-->
-                <!--TODO:待修改-->
-                <!--<el-form-item label="状态">
-                    <el-select v-model="editForm.status" clearable placeholder="请选择" size="small">
-                        <el-option
-                                v-for="item in eduSchoolStatus"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>-->
             </el-form>
+            <mis-extend-attr entity-code="eduSchool" ref="eduSchoolExtendAttr" edit-mode="Add"></mis-extend-attr>
         </el-col>
     </el-row>
 
