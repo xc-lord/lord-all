@@ -66,7 +66,8 @@
                 </el-form-item>
             </el-form>
 
-            <mis-extend-attr entity-code="eduSchool" :entity-id="editForm.id" ref="eduSchoolExtendAttr"></mis-extend-attr>
+            <mis-extend-attr edit-mode="Edit" entity-code="eduSchool" :entity-id="editForm.id" ref="eduSchoolExtendAttr"></mis-extend-attr>
+            <mis-extend-content edit-mode="Edit" entity-code="eduSchool" :entity-id="editForm.id" ref="eduSchoolExtendContent" content-name="学校简介"></mis-extend-content>
 
         </el-col>
     </el-row>
@@ -80,7 +81,6 @@
 
 </div>
 <!-- UI界面 end -->
-
 <script type="text/javascript">
     $.getScript('/res/js/mis/edu/eduSchool/eduSchoolForm.js', function () {
         var eduSchoolEditView = new Vue({

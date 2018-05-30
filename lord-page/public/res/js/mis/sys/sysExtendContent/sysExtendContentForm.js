@@ -1,20 +1,17 @@
 /**
-	Desc: 	学校的表单公共方法
+	Desc: 	扩展内容的表单公共方法
 	Author: xiaocheng
-	Date: 	2018年05月12日 15:55:50
+	Date: 	2018年05月29日 20:18:20
 */
-var EduSchoolFromCommon = {
+var SysExtendContentFromCommon = {
     //表单默认值
     defaultModel: {
         //id//不需要此项
-        name: '',		//名称
-        enName: '',		//英文名
-        logoImg: '',		//学校Logo
-        intro: '',		//介绍
-        orderValue: 0,		//排序
-        creator: 0,		//创建人
+        entityId: 0,		//实体ID
+        entityCode: '',		//实体编码
+        content: '',		//内容
+        contentEdit: '',		//编辑的内容
         createTime: '',		//创建时间
-        modifier: 0,		//更新人
         updateTime: '',		//更新时间
     },
     data: function(){
@@ -26,7 +23,7 @@ var EduSchoolFromCommon = {
                    {required: true, message: '名称不能为空', trigger: 'blur'},
                    {
                        validator: function(rule, value, callback){
-                           return commonUtils.formRowIsExist('/api/admin/edu/eduSchool/isExist.do',"name",rule, value, callback);
+                           return commonUtils.formRowIsExist('/api/admin/sys/sysExtendContent/isExist.do',"name",rule, value, callback);
                        },
                        trigger: 'blur'
                    }
@@ -38,7 +35,7 @@ var EduSchoolFromCommon = {
            //编辑界面数据
            editForm: {},
            //状态
-           eduSchoolStatus: []
+           sysExtendContentStatus: []
         };
     },
     //加载下拉框的数据
@@ -50,7 +47,7 @@ var EduSchoolFromCommon = {
             dataType: "json"
         }).done(function (res) {
             if (res.success) {
-                _self.eduSchoolStatus = res.data.mis_MisUserStatus;
+                _self.sysExtendContentStatus = res.data.mis_MisUserStatus;
             } else {
                 _self.$message.error(res.msg);//提示错误
             }
@@ -65,20 +62,14 @@ var EduSchoolFromCommon = {
         //保存异步提交
         $.ajax({
             method: "post",
-            url: '/api/admin/edu/eduSchool/saveOrUpdate.do',
+            url: '/api/admin/sys/sysExtendContent/saveOrUpdate.do',
             data: _self.editForm,
             dataType: "json"
         }).done(function (res, status, xhr) {
             if (res.success) {
                 _self.$message.success(res.msg);//保存成功
-                //保存扩展属性
-                var saveAttr = _self.$refs.eduSchoolExtendAttr.saveAction(res.data.id);
-                var saveContent = _self.$refs.eduSchoolExtendContent.saveAction(res.data.id);
-                if(saveAttr && saveContent) {
-                    window.location.href = "#/eduSchool";//跳转到列表页面
-                    formSelf.closeDialogForm();//关闭弹窗
-                }
-
+                window.location.href = "#/sysExtendContent";//跳转到列表页面
+                formSelf.closeDialogForm();//关闭弹窗
             } else {
                 _self.$message.error(res.msg);//提示错误
             }
@@ -87,14 +78,14 @@ var EduSchoolFromCommon = {
     },
     //取消事件
     cancelAction: function (_self) {
-        window.location.href = "#/eduSchool";//跳转到列表页面
+        window.location.href = "#/sysExtendContent";//跳转到列表页面
         this.closeDialogForm();//关闭弹窗
     },
     //关闭父组件的弹窗
     closeDialogForm:function() {
 		//如果是弹窗模式，关闭弹窗
-        if(typeof(eduSchoolView) !== 'undefined' && eduSchoolView.dialogFormVisible) {			
-			eduSchoolView.dialogFormClose();
+        if(typeof(sysExtendContentView) !== 'undefined' && sysExtendContentView.dialogFormVisible) {			
+			sysExtendContentView.dialogFormClose();
 		}
     }
 };

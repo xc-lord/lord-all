@@ -286,6 +286,8 @@ Vue.component('mis-extend-attr', {
         saveAction:function(entityId) {
             var _self = this;
             _self.extendData.entityId = entityId;//设置ID
+            if(!_self.extendData.columnList)
+                return true;
             var success = false;
             $.ajax({
                 async:false,
@@ -312,6 +314,88 @@ Vue.component('mis-extend-attr', {
     mounted: function() {
         if(this.editMode == 'Add') {
             this.loadExtendDetails();
+        }
+    }
+});
+
+//扩展内容组件
+Vue.component('mis-extend-content', {
+    props: {
+        entityId: Number,
+        entityCode: String,
+        contentName: String,
+        editMode:String
+    },
+    data: function () {
+        var contentId = commonUtils.uuid();
+        return {
+            extendData: {},
+            ueElement:{},
+            contentId:contentId
+        }
+    },
+    template: '<el-form label-width="120px" ref="extendContentForm">\
+                    <el-form-item :label="contentName">\
+                        <script :id="contentId" type="text/plain"></script>\
+                    </el-form-item>\
+               </el-form>',
+    methods:{
+        //加载扩展属性
+        loadExtendContent:function() {
+            var _self = this;
+            if(this.editMode == 'Add') {
+                return;
+            }
+            $.ajax({
+                url: '/api/admin/sys/getExtendContent.do',
+                data:{entityCode:_self.entityCode,entityId:_self.entityId},
+                dataType: "json"
+            }).done(function (res) {
+                if (res.success) {
+                    var content = "";
+                    if(res.data && commonUtils.isNotEmpty(res.data.content))
+                        content = res.data.content;
+                    _self.ueElement = UE.getEditor(_self.contentId, {
+                        initialFrameHeight: 500,
+                        initialContent: content
+                    });
+                    _self.extendData = res.data;
+                } else {
+                    _self.$message.error(res.msg);//提示错误
+                }
+            });
+        },
+        saveAction:function(entityId) {
+            var _self = this;
+            var success = false;
+            var content = _self.ueElement.getContent();
+
+            $.ajax({
+                async:false,
+                method: "post",
+                url: '/api/admin/sys/sysExtendContent/saveOrUpdate.do',
+                data: {entityId:entityId,entityCode:_self.entityCode,content:content,id:_self.extendData.id},
+                dataType: "json"
+            }).done(function (res, status, xhr) {
+                if (res.success) {
+                    //_self.$message.success(res.msg);//保存成功
+                    success = true;
+                } else {
+                    _self.$message.error(res.msg);//提示错误
+                }
+            });
+            return success;
+        }
+    },
+    watch:{
+        entityId:function(newVal, oldVal) {
+            this.loadExtendContent();
+        }
+    },
+    mounted: function() {
+        if(this.editMode == 'Add') {
+            this.ueElement = UE.getEditor(this.contentId, {initialFrameHeight: 500});
+            this.loadExtendContent();
         }
     }
 });

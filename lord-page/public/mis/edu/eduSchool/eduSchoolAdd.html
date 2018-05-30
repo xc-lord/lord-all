@@ -38,7 +38,10 @@
                     <el-input-number v-model="editForm.orderValue" :min="0" size="small"></el-input-number>
                 </el-form-item>
             </el-form>
-            <mis-extend-attr entity-code="eduSchool" ref="eduSchoolExtendAttr" edit-mode="Add"></mis-extend-attr>
+
+            <mis-extend-attr edit-mode="Add" entity-code="eduSchool" ref="eduSchoolExtendAttr"></mis-extend-attr>
+            <mis-extend-content edit-mode="Add" entity-code="eduSchool" ref="eduSchoolExtendContent" content-name="学校简介"></mis-extend-content>
+
         </el-col>
     </el-row>
 
