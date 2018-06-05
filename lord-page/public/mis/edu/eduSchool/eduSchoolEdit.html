@@ -22,6 +22,15 @@
                 <el-form-item label="英文名" prop="enName">
                     <el-input v-model="editForm.enName" auto-complete="off" size="small"></el-input>
                 </el-form-item>
+                <el-form-item label="地址">
+                    <mis-location
+                            province-id="110000"
+                            city-id="110100"
+                            county-id="110101"
+                            town-id="110101003"
+                            @location-changed="locationChanged">
+                    </mis-location>
+                </el-form-item>
                 <el-form-item label="学校Logo" prop="logoImg">
                     <el-upload
                             class="avatar-uploader"
@@ -133,6 +142,14 @@
                 beforeAvatarUpload:function(file) {
                     var _self = this;
                     commonUtils.uploadImageCheck(file, _self);
+                },
+                locationChanged:function(location) {
+                    console.info(location);
+                    var _self = this;
+                    _self.editForm.provinceId = location[0];
+                    _self.editForm.cityId = location[1];
+                    _self.editForm.countyId = location[2];
+                    _self.editForm.townId = location[3];
                 }
             }
         });

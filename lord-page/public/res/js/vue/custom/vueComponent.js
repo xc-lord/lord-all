@@ -92,6 +92,131 @@ Vue.component('mis-cascader', {
 });
 
 /**
+ * 地址组件
+ * provinceId\cityId\countyId\townId 默认选中的省市县镇Id数组
+ * location-changed 选中地址回调函数
+ * 使用列子：
+ * <mis-location
+ *   :province-id="editForm.provinceId"
+ *   :city-id="editForm.cityId"
+ *   :county-id="editForm.countyId"
+ *   :town-id="editForm.townId"
+ *   @location-changed="locationChanged">
+ */
+Vue.component('mis-location', {
+    props:{
+        provinceId:String,
+        cityId:String,
+        countyId:String,
+        townId:String,
+    },
+    template: '<el-cascader\
+                :options="locationOptions"\
+                @change="locationChange"\
+                @active-item-change="locationItemChange"\
+                :props="locationProps"\
+                size="small"\
+                v-model="selectedLocations"\
+                style="width:400px"\
+                    ></el-cascader>',
+    data: function () {
+        var locationArr = [];
+        if(this.provinceId) {
+            locationArr.push(this.provinceId);
+        }
+        if(this.cityId) {
+            locationArr.push(this.cityId);
+        }
+        if(this.countyId) {
+            locationArr.push(this.countyId);
+        }
+        if(this.townId) {
+            locationArr.push(this.townId);
+        }
+        console.info(locationArr);
+        return {
+            message: "地址组件",
+            locationProps:{
+                value: 'id',
+                label:'name',
+                children: 'children'
+            },
+            locationLoadArr:[],
+            locationOptions:[],
+            selectedLocations:locationArr
+        };
+    },
+    methods:{
+        locationChange:function(location) {
+            this.$emit('location-changed', location);
+        },
+        locationItemChange:function(location) {
+            var _self = this;
+            var locationSize = location.length;
+            var locationId = location[locationSize-1];
+            if(!_self.locationLoadArr.contains(locationId) && locationSize<4) {
+                $.ajax({
+                    url: '/api/admin/sys/sysDistrict/listDistrict.do',
+                    data: {parentId: locationId},
+                    dataType: "json"
+                }).done(function (res) {
+                    if (res.success) {
+                        _self.locationLoadArr.push(locationId);//保存已经加载过的地址
+                        _self.setLocation(_self, _self.locationOptions, locationId, res.data, locationSize)
+                    } else {
+                        _self.$message.error(res.msg);//提示错误
+                    }
+                });
+            }
+        },
+        setLocation:function(_self, options, locationId, resData, locationSize) {
+            for(var i=0;i<options.length;i++) {
+                var opt = options[i];
+                //查询子区域
+                if(opt.children && opt.children.length>0) {
+                    _self.setLocation(_self, opt.children, locationId, resData, locationSize);
+                }
+                if(opt.id == locationId) {
+                    if(locationSize == 3) {
+                        for(var j=0;j<resData.length;j++) {
+                            delete resData[j].children;
+                        }
+                    }
+                    if(resData.length < 1) {
+                        opt.children = null;
+                    } else {
+                        opt.children = resData;
+                    }
+                }
+            }
+        }
+    },
+    mounted: function() {
+        var _self = this;
+        var params = {};
+        if(_self.provinceId) {
+            params = {
+                provinceId: _self.provinceId,
+                cityId: _self.cityId,
+                countyId: _self.countyId,
+                townId: _self.townId
+            };
+        }
+        $.ajax({
+            url: '/api/admin/sys/sysDistrict/getDistrict.do',
+            data: params,
+            dataType: "json"
+        }).done(function (res) {
+            if (res.success) {
+                _self.locationOptions = res.data;
+            } else {
+                _self.$message.error(res.msg);//提示错误
+            }
+        });
+    }
+});
+
+/**
  * Lookup组件
  * api-url 调用的api地址
  *

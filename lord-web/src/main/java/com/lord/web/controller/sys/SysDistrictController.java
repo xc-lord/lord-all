@@ -2,6 +2,7 @@ package com.lord.web.controller.sys;
 
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.QueryParams;
+import com.lord.common.dto.sys.DistrictDto;
 import com.lord.common.model.sys.SysDistrict;
 import com.lord.common.service.sys.SysDistrictService;
 import com.lord.utils.Preconditions;
@@ -105,6 +106,29 @@ public class SysDistrictController {
     {
         Preconditions.checkNotNull(id, "id不能为空");
         List<SysDistrict> list = sysDistrictService.listParentDistrict(id);
+        return Result.success("获取成功", list);
+    }
+
+    @ApiOperation(value="获取子行政区域", notes="根据父区域Id，获取子行政区域")
+    @ApiImplicitParam(name = "parentId", value = "父区域Id", required = true, dataType = "Long", paramType = "query")
+    @RequestMapping(value = "/api/admin/sys/sysDistrict/listDistrict", method = RequestMethod.GET)
+    public Result listDistrict(Long parentId) {
+        Preconditions.checkNotNull(parentId, "parentId不能为空");
+        List<DistrictDto> list = sysDistrictService.listChildrenDistrict(parentId);
+        return Result.success("获取成功", list);
+    }
+
+    @ApiOperation(value="根据省市县ID，获取区域信息", notes="根据省市县ID，获取区域信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "provinceId", value = "省Id", dataType = "Long", paramType = "query"),
+            @ApiImplicitParam(name = "cityId", value = "市Id", dataType = "Long", paramType = "query"),
+            @ApiImplicitParam(name = "countyId", value = "县Id", dataType = "Long", paramType = "query"),
+            @ApiImplicitParam(name = "townId", value = "镇Id", dataType = "Long", paramType = "query"),
+    })
+    @RequestMapping(value = "/api/admin/sys/sysDistrict/getDistrict", method = RequestMethod.GET)
+    public Result getDistrict(Long provinceId, Long cityId, Long countyId, Long townId)
+    {
+        List<DistrictDto> list = sysDistrictService.getDistrict(provinceId, cityId, countyId, townId);
         return Result.success("获取成功", list);
     }
 }

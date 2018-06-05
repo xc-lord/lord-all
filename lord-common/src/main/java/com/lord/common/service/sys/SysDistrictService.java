@@ -3,6 +3,7 @@ package com.lord.common.service.sys;
 import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
+import com.lord.common.dto.sys.DistrictDto;
 import com.lord.common.model.sys.SysDistrict;
 
 import java.util.List;
@@ -85,4 +86,21 @@ public interface SysDistrictService {
      * @return
      */
     List<SysDistrict> listParentDistrict(Long id);
+
+    /**
+     * 根据父区域Id，获取子行政区域
+     * @param parentId  父区域Id
+     * @return 子行政区域列表
+     */
+    List<DistrictDto> listChildrenDistrict(Long parentId);
+
+    /**
+     * 根据省市县ID，获取区域信息
+     * @param provinceId    省
+     * @param cityId        市
+     * @param countyId      县
+     * @param townId        镇
+     * @return  区域信息
+     */
+    List<DistrictDto> getDistrict(Long provinceId, Long cityId, Long countyId, Long townId);
 }

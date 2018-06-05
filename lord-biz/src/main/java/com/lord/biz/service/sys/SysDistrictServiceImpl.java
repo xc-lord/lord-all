@@ -6,6 +6,7 @@ import com.lord.biz.utils.ServiceUtils;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
+import com.lord.common.dto.sys.DistrictDto;
 import com.lord.common.model.sys.SysDistrict;
 import com.lord.common.service.sys.SysDistrictService;
 import com.lord.utils.IdGenerator;
@@ -154,6 +155,55 @@ public class SysDistrictServiceImpl implements SysDistrictService {
         list.add(district);
         addParentDistrict(list, district);
         Collections.reverse(list);
+        return list;
+    }
+
+    @Override
+    public List<DistrictDto> listChildrenDistrict(Long parentId)
+    {
+        List<SysDistrict> list = sysDistrictDao.findByParentId(parentId);
+        List<DistrictDto> dtoList = new ArrayList<>();
+        for (SysDistrict district : list)
+        {
+            DistrictDto dto = parseDistrictDto(district);
+            dtoList.add(dto);
+        }
+        return dtoList;
+    }
+
+    private DistrictDto parseDistrictDto(SysDistrict district)
+    {
+        DistrictDto dto = new DistrictDto();
+        dto.setId(district.getId());
+        dto.setName(district.getName());
+        return dto;
+    }
+
+    @Override
+    public List<DistrictDto> getDistrict(Long provinceId, Long cityId, Long countyId, Long townId)
+    {
+        List<DistrictDto> list = listChildrenDistrict(100000L);
+        if(provinceId != null) {
+            for (DistrictDto provinceDto : list)
+            {
+                if(!provinceDto.getId().equals(provinceId) || cityId == null) continue;
+                List<DistrictDto> provinceChildren = listChildrenDistrict(provinceId);
+                for (DistrictDto cityDto : provinceChildren)
+                {
+                    if (!cityDto.getId().equals(cityId) || countyId == null) continue;
+                    List<DistrictDto> cityChildren = listChildrenDistrict(cityId);
+                    for (DistrictDto countyDto : cityChildren)
+                    {
+                        if (!countyDto.getId().equals(countyId) || townId == null) continue;
+                        List<DistrictDto> countyChildren = listChildrenDistrict(countyId);
+                        countyDto.setChildren(countyChildren);
+                    }
+                    cityDto.setChildren(cityChildren);
+                }
+                provinceDto.setChildren(provinceChildren);
+
+            }
+        }
         return list;
     }
 
