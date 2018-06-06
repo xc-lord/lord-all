@@ -1,7 +1,7 @@
 /**
 	Desc: 	学校的表单公共方法
 	Author: xiaocheng
-	Date: 	2018年05月12日 15:55:50
+	Date: 	2018年06月06日 10:15:50
 */
 var EduSchoolFromCommon = {
     //表单默认值
@@ -11,6 +11,11 @@ var EduSchoolFromCommon = {
         enName: '',		//英文名
         logoImg: '',		//学校Logo
         intro: '',		//介绍
+        provinceId: 0,		//省ID
+        cityId: 0,		//市ID
+        countyId: 0,		//县ID
+        townId: 0,		//镇ID
+        address: '',		//详细地址
         orderValue: 0,		//排序
         creator: 0,		//创建人
         createTime: '',		//创建时间
@@ -71,14 +76,8 @@ var EduSchoolFromCommon = {
         }).done(function (res, status, xhr) {
             if (res.success) {
                 _self.$message.success(res.msg);//保存成功
-                //保存扩展属性
-                var saveAttr = _self.$refs.eduSchoolExtendAttr.saveAction(res.data.id);
-                var saveContent = _self.$refs.eduSchoolExtendContent.saveAction(res.data.id);
-                if(saveAttr && saveContent) {
-                    window.location.href = "#/eduSchool";//跳转到列表页面
-                    formSelf.closeDialogForm();//关闭弹窗
-                }
-
+                window.location.href = "#/eduSchool";//跳转到列表页面
+                formSelf.closeDialogForm();//关闭弹窗
             } else {
                 _self.$message.error(res.msg);//提示错误
             }

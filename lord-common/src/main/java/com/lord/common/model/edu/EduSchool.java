@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2018年05月12日 15:55:50
+ * @Date 2018年06月06日 10:15:50
  */
 @Entity
 @Table(name = "edu_school")
@@ -46,6 +46,36 @@ public class EduSchool implements Serializable {
 	 */
 	@Column(name = "intro", nullable = true, length = 500)
 	private String intro;
+
+	/**
+	 * 省ID
+	 */
+	@Column(name = "province_id", nullable = true, length = 19)
+	private Long provinceId;
+
+	/**
+	 * 市ID
+	 */
+	@Column(name = "city_id", nullable = true, length = 19)
+	private Long cityId;
+
+	/**
+	 * 县ID
+	 */
+	@Column(name = "county_id", nullable = true, length = 19)
+	private Long countyId;
+
+	/**
+	 * 镇ID
+	 */
+	@Column(name = "town_id", nullable = true, length = 19)
+	private Long townId;
+
+	/**
+	 * 详细地址
+	 */
+	@Column(name = "address", nullable = true, length = 300)
+	private String address;
 
 	/**
 	 * 排序
@@ -115,6 +145,46 @@ public class EduSchool implements Serializable {
 
 	public void setIntro(String intro) {
 		this.intro = intro;
+	}
+
+	public Long getProvinceId() {
+		return this.provinceId;
+	}
+
+	public void setProvinceId(Long provinceId) {
+		this.provinceId = provinceId;
+	}
+
+	public Long getCityId() {
+		return this.cityId;
+	}
+
+	public void setCityId(Long cityId) {
+		this.cityId = cityId;
+	}
+
+	public Long getCountyId() {
+		return this.countyId;
+	}
+
+	public void setCountyId(Long countyId) {
+		this.countyId = countyId;
+	}
+
+	public Long getTownId() {
+		return this.townId;
+	}
+
+	public void setTownId(Long townId) {
+		this.townId = townId;
+	}
+
+	public String getAddress() {
+		return this.address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public Long getOrderValue() {

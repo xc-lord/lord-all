@@ -1,7 +1,7 @@
 <!-- 
 	Desc: 	学校的新增界面
 	Author: xiaocheng
-	Date: 	2018年05月12日 15:55:50
+	Date: 	2018年06月06日 10:15:50
 -->
 
 <!-- UI界面 start -->
@@ -34,14 +34,27 @@
                 <el-form-item label="介绍" prop="intro">
                     <el-input v-model="editForm.intro" auto-complete="off" size="small"></el-input>
                 </el-form-item>
+                <el-form-item label="地址">
+                    <mis-location
+                            edit-mode="Add"
+                            :province-id="editForm.provinceId"
+                            :city-id="editForm.cityId"
+                            :county-id="editForm.countyId"
+                            :town-id="editForm.townId"
+                            @location-changed="locationChanged">
+                    </mis-location>
+                </el-form-item>
+                <el-form-item label="详细地址" prop="address">
+                    <el-input v-model="editForm.address" auto-complete="off" size="small"></el-input>
+                </el-form-item>
 				<el-form-item label="排序">
                     <el-input-number v-model="editForm.orderValue" :min="0" size="small"></el-input-number>
                 </el-form-item>
+				<!--creator不需要-->
+				<!--createTime不需要-->
+				<!--modifier不需要-->
+				<!--updateTime不需要-->
             </el-form>
-
-            <mis-extend-attr edit-mode="Add" entity-code="eduSchool" ref="eduSchoolExtendAttr"></mis-extend-attr>
-            <mis-extend-content edit-mode="Add" entity-code="eduSchool" ref="eduSchoolExtendContent" content-name="学校简介"></mis-extend-content>
-
         </el-col>
     </el-row>
 
@@ -94,6 +107,13 @@
                 handleUploadLogoImgSuccess:function(res, file) {
                     var _self = this;
                     _self.editForm.logoImg = commonUtils.uploadImageSuccess(res, file, _self);
+                },
+                locationChanged:function(location) {
+                    var _self = this;
+                    _self.editForm.provinceId = location[0];
+                    _self.editForm.cityId = location[1];
+                    _self.editForm.countyId = location[2];
+                    _self.editForm.townId = location[3];
                 },
                 //上传图片前的验证事件
                 beforeAvatarUpload:function(file) {

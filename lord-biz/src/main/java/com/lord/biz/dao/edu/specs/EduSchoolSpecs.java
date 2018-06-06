@@ -12,7 +12,7 @@ import javax.persistence.criteria.*;
  *
  * @author xiaocheng
  * @version 1.0
- * @Date 2018年05月12日 15:55:50
+ * @Date 2018年06月06日 10:15:50
  */
 public class EduSchoolSpecs extends BaseSpecification {
 

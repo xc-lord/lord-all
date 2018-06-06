@@ -18,6 +18,18 @@
 			<#list table.columns as column>
 			<#if column.pk || column.columnNameLower == 'createTime' || column.columnNameLower == 'updateTime' || column.columnNameLower == 'removed' || column.columnNameLower == 'creator' || column.columnNameLower == 'modifier'>
 				<!--${column.columnNameLower}不需要-->
+            <#elseif column.columnNameLower == 'provinceId'>
+                <el-form-item label="地址">
+                    <mis-location
+                            edit-mode="Add"
+                            :province-id="editForm.provinceId"
+                            :city-id="editForm.cityId"
+                            :county-id="editForm.countyId"
+                            :town-id="editForm.townId"
+                            @location-changed="locationChanged">
+                    </mis-location>
+                </el-form-item>
+            <#elseif column.columnNameLower == 'cityId' || column.columnNameLower == 'countyId' || column.columnNameLower == 'townId'>
 			<#elseif column.javaType == 'java.lang.Boolean'>
 				<el-form-item label="${column.remarks}">
                     <el-radio-group v-model="editForm.${column.columnNameLower}" size="small">
@@ -56,17 +68,6 @@
                 </el-form-item>
 			</#if>
 			</#list>
-                <!--TODO:待修改-->
-                <!--<el-form-item label="状态">
-                    <el-select v-model="editForm.status" clearable placeholder="请选择" size="small">
-                        <el-option
-                                v-for="item in ${classNameLower}Status"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>-->
             </el-form>
         </el-col>
     </el-row>
@@ -122,6 +123,14 @@
                 handleUpload${column.columnName}Success:function(res, file) {
                     var _self = this;
                     _self.editForm.${column.columnNameLower} = commonUtils.uploadImageSuccess(res, file, _self);
+                },
+                <#elseif column.columnNameLower == 'provinceId'>
+                locationChanged:function(location) {
+                    var _self = this;
+                    _self.editForm.provinceId = location[0];
+                    _self.editForm.cityId = location[1];
+                    _self.editForm.countyId = location[2];
+                    _self.editForm.townId = location[3];
                 },
                 </#if>
                 </#list>

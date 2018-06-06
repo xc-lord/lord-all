@@ -105,10 +105,14 @@ Vue.component('mis-cascader', {
  */
 Vue.component('mis-location', {
     props:{
-        provinceId:String,
-        cityId:String,
-        countyId:String,
-        townId:String,
+        provinceId:Number,
+        cityId:Number,
+        countyId:Number,
+        townId:Number,
+        editMode:{
+            type: String,
+            default: 'Add'
+        }
     },
     template: '<el-cascader\
                 :options="locationOptions"\
@@ -120,22 +124,9 @@ Vue.component('mis-location', {
                 style="width:400px"\
                     ></el-cascader>',
     data: function () {
-        var locationArr = [];
-        if(this.provinceId) {
-            locationArr.push(this.provinceId);
-        }
-        if(this.cityId) {
-            locationArr.push(this.cityId);
-        }
-        if(this.countyId) {
-            locationArr.push(this.countyId);
-        }
-        if(this.townId) {
-            locationArr.push(this.townId);
-        }
-        console.info(locationArr);
         return {
             message: "地址组件",
+            loadTimes:0,
             locationProps:{
                 value: 'id',
                 label:'name',
@@ -143,10 +134,50 @@ Vue.component('mis-location', {
             },
             locationLoadArr:[],
             locationOptions:[],
-            selectedLocations:locationArr
+            selectedLocations:[]
         };
     },
     methods:{
+        loadLocation:function() {
+            var _self = this;
+            var params = {};
+            if(_self.provinceId) {
+                params = {
+                    provinceId: _self.provinceId,
+                    cityId: _self.cityId,
+                    countyId: _self.countyId,
+                    townId: _self.townId
+                };
+            }
+            $.ajax({
+                url: '/api/admin/sys/sysDistrict/getDistrict.do',
+                data: params,
+                dataType: "json"
+            }).done(function (res) {
+                if (res.success) {
+                    _self.loadTimes++;
+                    _self.locationOptions = res.data;
+                } else {
+                    _self.$message.error(res.msg);//提示错误
+                }
+            });
+        },
+        loadDefaultValue:function() {
+            var locationArr = [];
+            if(this.provinceId) {
+                locationArr.push(this.provinceId);
+            }
+            if(this.cityId) {
+                locationArr.push(this.cityId);
+            }
+            if(this.countyId) {
+                locationArr.push(this.countyId);
+            }
+            if(this.townId) {
+                locationArr.push(this.townId);
+            }
+            this.selectedLocations = locationArr;
+        },
         locationChange:function(location) {
             this.$emit('location-changed', location);
         },
@@ -191,28 +222,18 @@ Vue.component('mis-location', {
             }
         }
     },
+    watch:{
+        provinceId:function(newVal, oldVal) {
+            if(this.loadTimes < 1) {
+                this.loadLocation();
+                this.loadDefaultValue();
+            }
+        }
+    },
     mounted: function() {
         var _self = this;
-        var params = {};
-        if(_self.provinceId) {
-            params = {
-                provinceId: _self.provinceId,
-                cityId: _self.cityId,
-                countyId: _self.countyId,
-                townId: _self.townId
-            };
-        }
-        $.ajax({
-            url: '/api/admin/sys/sysDistrict/getDistrict.do',
-            data: params,
-            dataType: "json"
-        }).done(function (res) {
-            if (res.success) {
-                _self.locationOptions = res.data;
-            } else {
-                _self.$message.error(res.msg);//提示错误
-            }
-        });
+        if(_self.editMode == 'Add')
+            _self.loadLocation();
     }
 });
 
@@ -360,7 +381,10 @@ Vue.component('mis-lookup', {
     }
 });
 
-//扩展属性组件
+/**
+ * 扩展属性组件
+ * <mis-extend-attr edit-mode="Edit" entity-code="eduSchool" :entity-id="editForm.id" ref="eduSchoolExtendAttr"></mis-extend-attr>
+ */
 Vue.component('mis-extend-attr', {
     props: {
         entityId: Number,
@@ -443,7 +467,10 @@ Vue.component('mis-extend-attr', {
     }
 });
 
-//扩展内容组件
+/**
+ * 扩展内容组件
+ * <mis-extend-content edit-mode="Edit" entity-code="eduSchool" :entity-id="editForm.id" ref="eduSchoolExtendContent" content-name="学校简介"></mis-extend-content>
+ */
 Vue.component('mis-extend-content', {
     props: {
         entityId: Number,
