@@ -1,19 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-    {{include '../common/htmlHeader'}}
-</head>
-<body>
+{{extend '../layout/pc.html'}}
 
-<h1>我的网站首页</h1>
-<p>Welcome to lord.com</p>
+{{block 'title'}}首页{{/block}}
+{{block 'keywords'}}My Site{{/block}}
+{{block 'head'}}
+<link rel="stylesheet" href="/res/css/vue/element-ui-2.2.1.css">
+{{/block}}
 
+{{block 'content'}}
 {{each districtList district index}}
 <p>{{district.id}} {{district.name}}</p>
 {{/each}}
 
 <p>{{123.456 | numFormat '0.00'}}</p>
+{{/block}}
 
-{{include '../common/footer'}}
-</body>
-</html>
+{{block 'foot'}}
+<script src="/res/js/vue/vue-2.5.16.min.js"></script>
+<script src="/res/js/vue/element-ui-2.2.1.js"></script>
+{{/block}}

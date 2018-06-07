@@ -15,7 +15,7 @@
         "[object String]":"string"
     };
 
-    var CommonUtils = {
+    var appUtils = {
         //判断字符串是否为空
         isEmpty:function(str) {
             if (str == null || str == undefined || str == '' || str == false) {
@@ -166,29 +166,29 @@
         }
     };
 
-    CommonUtils.date.__defineGetter__("year",function(){
+    appUtils.date.__defineGetter__("year",function(){
         return new Date().getFullYear();
     });
 
-    CommonUtils.date.__defineGetter__("timestamp",function(){
+    appUtils.date.__defineGetter__("timestamp",function(){
         return new Date().getTime()/1000;
     });
 
-    CommonUtils.date.__defineGetter__("month",function(){
+    appUtils.date.__defineGetter__("month",function(){
         var month = new Date().getMonth()+1;
         return month<9?"0"+month:month;
     });
 
-    CommonUtils.date.__defineGetter__("day",function(){
+    appUtils.date.__defineGetter__("day",function(){
         var date = new Date().getDate();
         return date<9?"0"+date:date;
     });
 
     for(var key in typeMap){
-        eval('CommonUtils["is'+typeMap[key].charAt(0).toUpperCase()+typeMap[key].substring(1)+'"] = function(obj){\
+        eval('appUtils["is'+typeMap[key].charAt(0).toUpperCase()+typeMap[key].substring(1)+'"] = function(obj){\
             return $.type(obj) === "'+typeMap[key]+'";\
         }');
     }
 
-    module.exports = CommonUtils;
+    module.exports = appUtils;
 })();

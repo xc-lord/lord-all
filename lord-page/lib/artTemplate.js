@@ -1,10 +1,13 @@
 (function() {
     'use strict';
+    var path = require('path');
+    var logger = require('./logger')(path.basename(__filename));
     var template = require('art-template');//腾讯的模板引擎
     var moment = require('moment');//时间格式化
     var numeral = require('numeral');//数字格式
 
-    var ViewTemplate = {
+    var artTemplate = {
+        /** 腾讯的模板引擎初始化 */
         init: function (app) {
             this.init_template_fun(template);//添加辅助方法
             //app.engine('.html', template.__express);
@@ -21,6 +24,7 @@
                 }
             });
         },
+        /** 初始化模板的格式化方法 */
         init_template_fun: function (template) {
             var self = this;
             var helper = template.defaults.imports;
@@ -67,5 +71,5 @@
         }
     };
 
-    module.exports = ViewTemplate;
+    module.exports = artTemplate;
 })();

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <title>{{block 'title'}}My Site{{/block}}</title>
+    <meta name="keywords" content="{{block 'keywords'}}My Site keywords{{/block}}"/>
+    <meta name="description" content="{{block 'description'}}My Site keywords{{/block}}"/>
+    {{block 'head'}}{{/block}}
+</head>
+<body>
+{{block 'content'}}{{/block}}
+
+{{block 'foot'}}{{/block}}
+{{if apiUseTime}}
+<!-- apiUseTime = {{apiUseTime}} ms -->
+{{/if}}
+</body>
+</html>

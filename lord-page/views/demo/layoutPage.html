@@ -1,0 +1,16 @@
+{{extend '../layout/pc.html'}}
+
+{{block 'title'}}测试layout{{/block}}
+{{block 'keywords'}}My Site{{/block}}
+{{block 'head'}}
+    <link rel="stylesheet" href="/res/css/vue/element-ui-2.2.1.css">
+{{/block}}
+
+{{block 'content'}}
+<p>新增的 “骨架” 继承也是一个挺好用的东西，只能在 NodeJS 中使用，或者采用 webpack 进行编译，原因是 js 中不能注入外部文件的机制</p>
+{{/block}}
+
+{{block 'foot'}}
+<script src="/res/js/vue/vue-2.5.16.min.js"></script>
+<script src="/res/js/vue/element-ui-2.2.1.js"></script>
+{{/block}}
