@@ -3,7 +3,7 @@
     var fs = require('fs');
     var path = require('path');
     var logger = require('./logger')(path.basename(__filename));
-    var apiUtils = require('./apiUtils');
+    var dataUtils = require('./dataUtils');
 
     var appInit = {
         loadRoutes: function(app) {
@@ -32,7 +32,7 @@
                 var regx = "^/mis/\w*";
                 //console.info("登录拦截器" + url + " = " + url.match(regx));
                 if (url.match(regx) && url != "/mis/login.html") {
-                    return apiUtils.doMisAdminAuth(req,res,next);
+                    return dataUtils.doMisAdminAuth(req,res,next);
                 }
                 next();
             });

@@ -3,7 +3,7 @@
 
     var path = require('path');
     var logger = require('../lib/logger')(path.basename(__filename));
-    var apiUtils = require('../lib/apiUtils');
+    var dataUtils = require('../lib/dataUtils');
     var express = require('express');
     var router = express.Router();
 
@@ -19,7 +19,7 @@
                 url: '/api/common/listDistrict.do'
             }
         };
-        apiUtils.get(req, api, function (err, data) {
+        dataUtils.get(req, api, function (err, data) {
             data.title = "我的首页";
             data.keywords = "我的首页";
             data.description = "我的首页";

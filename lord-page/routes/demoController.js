@@ -3,7 +3,7 @@
 
     var path = require('path');
     var logger = require('../lib/logger')(path.basename(__filename));
-    var apiUtils = require('../lib/apiUtils');
+    var dataUtils = require('../lib/dataUtils');
     var express = require('express');
     var router = express.Router();
 
