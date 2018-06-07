@@ -1,8 +1,11 @@
 (function() {
     'use strict';
 
+    var cookieParser = require('cookie-parser');
+    var bodyParser = require('body-parser');
     var path = require('path');
     var logger = require('./lib/logger')(path.basename(__filename));
+    var ApiUtils = require('./lib/ApiUtils');
     var common = require('./lib/common');
     var template = require('art-template');
     var templateHelper = require('./lib/templateHelper');
@@ -24,6 +27,20 @@
     });
 
     templateHelper.imports(template);
+
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({extended: false}));
+    app.use(cookieParser());
+
+    //登录拦截器，需要拦截静态页面，需要放在express.static上面
+    app.use(function (req, res, next) {
+        var url = req.originalUrl;
+        var regx = "^/mis/\w*";
+        if (url.match(regx) && url != "/mis/login.html") {
+            return ApiUtils.doMisAdminAuth(req,res,next);
+        }
+        next();
+    });
 
     app.use(express.static(path.join(__dirname, 'public')));
     app.use(common.interceptor);
@@ -68,16 +85,6 @@ ViewTemplate.init(app);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
-
-//登录拦截器，需要拦截静态页面，需要放在express.static上面
-app.use(function (req, res, next) {
-    var url = req.originalUrl;
-    var regx = "^/mis/\w*";
-    if (url.match(regx) && url != "/mis/login.html") {
-        return ApiUtils.doMisAdminAuth(req,res,next);
-    }
-    next();
-});
 
 app.use(express.static(path.join(__dirname, 'public')));
 //配置路由规则

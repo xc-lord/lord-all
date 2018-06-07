@@ -10,8 +10,6 @@
         interceptor: function(req, res) {
             var self = this;
 
-            logger.info('调用了一次拦截器！');
-
             //重写res.render()
             var render = res.render.bind(res);
             res.render = function(name, options, callback){
