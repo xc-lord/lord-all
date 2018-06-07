@@ -1,7 +1,19 @@
-{{ include('../partials/head') }}
+<!DOCTYPE html>
+<html>
+<head>
+    {{include '../common/htmlHeader'}}
+</head>
+<body>
 
-<div class="container">
+<h1>我的网站首页</h1>
+<p>Welcome to lord.com</p>
 
-</div>
+{{each districtList district index}}
+<p>{{district.id}} {{district.name}}</p>
+{{/each}}
 
-{{ include('../partials/tail') }}
+<p>{{123.456 | numFormat '0.00'}}</p>
+
+{{include '../common/footer'}}
+</body>
+</html>
