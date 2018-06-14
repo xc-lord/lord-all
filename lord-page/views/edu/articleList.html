@@ -10,178 +10,33 @@
 {{block 'content'}}
 <div class="w1200 consultationdetails-main ">
     <div class="breadcrumb">
-        <span><a href="http://www.wutuojia.com/zixun/">{{listData | xv "category.name"}}</a><i></i></span>
-        <span><a href="http://www.wutuojia.com/zixun/article/">{{listData | xv "category.name"}}</a></span>
+        <span><a href="/edu/article/">资讯</a><i></i></span>
+        {{each listData.categoryList}}
+        <span><a href="/edu/article/{{$value.id}}">{{$value.name}}</a><i></i></span>
+        {{/each}}
     </div>
     <div class=" clearfix consultationdetails-content">
-
         <div class="consultationdetails-content-r  consultation-content-l">
             <div class="special-nav">
                 <h4>栏目导航</h4>
                 <ul class="special-nav-ul">
-                    <li >
-                        <a href="http://www.wutuojia.com/zixun/article/jiaju/" ><span  class="special-nav-name">家具知识 <i></i></span></a>
+                    {{each listData.categoryTree catOne}}
+                    <li
+                    {{if listData.parentCatIds.indexOf(catOne.id + ',') > -1}}
+                    class="special-nav-on"
+                    {{/if}}>
+                        <a href="http://www.wutuojia.com/zixun/article/ruanzhuang/" ><span  class="special-nav-name">{{catOne.name}} <i></i></span></a>
                         <ul class="special-nav-ul-t">
+                            {{each catOne.children catTwo}}
                             <li>
-                                <a href="http://www.wutuojia.com/zixun/article/woshi/">
-                                    卧室家具</a>
+                                <a href="http://www.wutuojia.com/zixun/article/csyp/"
+                                   {{if listData.parentCatIds.indexOf(catTwo.id + ',') > -1}} class="special-t-on" {{/if}}
+                                        >{{catTwo.name}}</a>
                             </li>
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/keting/">
-                                    客厅家具</a>
-                            </li>
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/menting/">
-                                    门厅家具</a>
-                            </li>
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/canting/">
-                                    餐厅厨卫</a>
-                            </li>
+                            {{/each}}
                         </ul>
                     </li>
-                    <li class="special-nav-on">
-                        <a href="http://www.wutuojia.com/zixun/article/ruanzhuang/" ><span  class="special-nav-name">软装知识 <i></i></span></a>
-                        <ul class="special-nav-ul-t">
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/csyp/">
-                                    床上用品</a>
-                            </li>
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/buyi/">
-                                    布艺软饰</a>
-                            </li>
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/dengshi/" class="special-t-on">
-                                    灯饰</a>
-                            </li>
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/huayi/">
-                                    花艺装饰</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li >
-                        <a href="http://www.wutuojia.com/zixun/article/sheji/" ><span  class="special-nav-name">设计知识 <i></i></span></a>
-                        <ul class="special-nav-ul-t">
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/fengge/">
-                                    风格搭配</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li >
-                        <a href="http://www.wutuojia.com/zixun/article/fengshui/" ><span  class="special-nav-name">风水知识 <i></i></span></a>
-                        <ul class="special-nav-ul-t">
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/jjfsbj/">
-                                    家居风水布局</a>
-                            </li>
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/fszw/">
-                                    风水植物</a>
-                            </li>
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/fsjxw/">
-                                    风水吉祥物</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li >
-                        <a href="http://www.wutuojia.com/zixun/article/jiancai/" ><span  class="special-nav-name">建材知识 <i></i></span></a>
-                        <ul class="special-nav-ul-t">
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/wujinweiyu/">
-                                    五金洁具/厨卫设备</a>
-                            </li>
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/diban/">
-                                    瓷砖/地板</a>
-                            </li>
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/youqituliao/">
-                                    油漆/涂料</a>
-                            </li>
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/zhaoming/">
-                                    照明光源</a>
-                            </li>
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/diangong/">
-                                    开关电工</a>
-                            </li>
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/menchuang/">
-                                    门窗</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li >
-                        <a href="http://www.wutuojia.com/zixun/article/yingzhuang/" ><span  class="special-nav-name">硬装知识 <i></i></span></a>
-                        <ul class="special-nav-ul-t">
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/zxqian/">
-                                    装修前</a>
-                            </li>
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/zxzhong/">
-                                    装修中</a>
-                            </li>
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/zxhou/">
-                                    装修后</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li >
-                        <a href="http://www.wutuojia.com/zixun/article/jiadian/" ><span  class="special-nav-name">家电知识 <i></i></span></a>
-                        <ul class="special-nav-ul-t">
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/cfjd/">
-                                    厨房家电</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li >
-                        <a href="http://www.wutuojia.com/zixun/article/shenghuo/" ><span  class="special-nav-name">生活知识 <i></i></span></a>
-                        <ul class="special-nav-ul-t">
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/xiaopianfang/">
-                                    小偏方</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li >
-                        <a href="http://www.wutuojia.com/zixun/article/koubei/" ><span  class="special-nav-name">商品口碑 <i></i></span></a>
-                        <ul class="special-nav-ul-t">
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/yigui/">
-                                    衣柜</a>
-                            </li>
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/shafa/">
-                                    品牌沙发</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li >
-                        <a href="http://www.wutuojia.com/zixun/article/sxnr/" ><span  class="special-nav-name">家居杂谈 <i></i></span></a>
-                        <ul class="special-nav-ul-t">
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/chunjie/">
-                                    春节装饰</a>
-                            </li>
-                            <li>
-                                <a href="http://www.wutuojia.com/zixun/article/jjzt/">
-                                    家居杂谈</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li >
-                        <a href="http://www.wutuojia.com/zixun/article/drxg/" ><span  class="special-nav-name">达人选购 <i></i></span></a>
-                        <ul class="special-nav-ul-t">
-                        </ul>
-                    </li>
+                    {{/each}}
                 </ul>
             </div>
 

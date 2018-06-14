@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -183,6 +184,26 @@ public class CmsCategoryServiceImpl extends CategoryServiceImpl implements CmsCa
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<CmsCategory> listParentCategory(CmsCategory category)
+    {
+        List<CmsCategory> list = new ArrayList<>();
+        if(category == null)
+            return list;
+
+        list.add(category);
+        Long parentId = category.getParentId();
+        while (parentId != null)
+        {
+            CmsCategory cat = getCmsCategory(parentId);
+            if(cat != null)
+                parentId = cat.getParentId();
+            list.add(cat);
+        }
+        Collections.reverse(list);
+        return list;
     }
 
 }

@@ -6,6 +6,8 @@ import com.lord.common.dto.PagerSort;
 import com.lord.common.model.cms.CmsCategory;
 import com.lord.common.service.cat.CategoryService;
 
+import java.util.List;
+
 /**
  * 文章分类cms_category的Service
  *
@@ -82,4 +84,11 @@ public interface CmsCategoryService extends CategoryService {
      * @return
      */
     boolean isExist(Long id, String rowName, String rowValue);
+
+    /**
+     * 获取父分类列表
+     * @param category  分类
+     * @return
+     */
+    List<CmsCategory> listParentCategory(CmsCategory category);
 }

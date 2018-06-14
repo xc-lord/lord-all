@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,12 +42,23 @@ public class ArticleAction
     public Result listArticle(Long catId)
     {
         CmsCategory category = null;
+        List<CmsCategory> categoryList = null;
+        String parentCatIds = "";
         if(catId != null)
+        {
             category = cmsCategoryService.getCmsCategory(catId);
+            categoryList = cmsCategoryService.listParentCategory(category);
+            for (CmsCategory cmsCategory : categoryList)
+            {
+                parentCatIds += cmsCategory.getId() + ",";
+            }
+        }
         List<TreeNode> treeNodes = cmsCategoryService.getTreeNodes();
         JSONObject json = new JSONObject();
         json.put("category", category);
+        json.put("categoryList", categoryList);
         json.put("categoryTree", treeNodes);
+        json.put("parentCatIds", parentCatIds);
         return Result.success("获取成功", json);
     }
 }
