@@ -78,6 +78,13 @@
 					</el-date-picker>
                 </el-form-item>
             </el-form>
+
+            <mis-extend-attr edit-mode="Edit" entity-code="eduSchool" :entity-id="editForm.id" ref="eduSchoolExtendAttr"></mis-extend-attr>
+            <mis-extend-content edit-mode="Edit" entity-code="eduSchoolRecruit" :entity-id="editForm.id" ref="eduSchoolRecruit" content-name="招生计划"></mis-extend-content>
+            <mis-extend-content edit-mode="Edit" entity-code="eduSchoolTestTime" :entity-id="editForm.id" ref="eduSchoolTestTime" content-name="考试时间"></mis-extend-content>
+            <mis-extend-content edit-mode="Edit" entity-code="eduSchoolCondition" :entity-id="editForm.id" ref="eduSchoolCondition" content-name="报考条件"></mis-extend-content>
+            <mis-extend-content edit-mode="Edit" entity-code="eduSchoolScoreLine" :entity-id="editForm.id" ref="eduSchoolScoreLine" content-name="录取分数线"></mis-extend-content>
+
         </el-col>
     </el-row>
 

@@ -76,8 +76,16 @@ var EduSchoolFromCommon = {
         }).done(function (res, status, xhr) {
             if (res.success) {
                 _self.$message.success(res.msg);//保存成功
-                window.location.href = "#/eduSchool";//跳转到列表页面
-                formSelf.closeDialogForm();//关闭弹窗
+                var entityId = res.data.id;
+                var saveAttr = _self.$refs.eduSchoolExtendAttr.saveAction(entityId);
+                var saveRecruit = _self.$refs.eduSchoolRecruit.saveAction(entityId);
+                var saveTestTime = _self.$refs.eduSchoolTestTime.saveAction(entityId);
+                var saveCondition = _self.$refs.eduSchoolCondition.saveAction(entityId);
+                var eduSchoolScoreLine = _self.$refs.eduSchoolScoreLine.saveAction(entityId);
+                if(saveAttr && saveRecruit && saveTestTime && saveCondition && eduSchoolScoreLine) {
+                    window.location.href = "#/eduSchool";//跳转到列表页面
+                    formSelf.closeDialogForm();//关闭弹窗
+                }
             } else {
                 _self.$message.error(res.msg);//提示错误
             }

@@ -1,5 +1,6 @@
 package com.lord.biz.service.sys;
 
+import com.lord.biz.dao.DbSqlDao;
 import com.lord.biz.dao.sys.SysFileDao;
 import com.lord.biz.dao.sys.specs.SysFileSpecs;
 import com.lord.biz.utils.ServiceUtils;
@@ -36,6 +37,9 @@ public class SysFileServiceImpl implements SysFileService {
 
     @Autowired
     private SysFileDao sysFileDao;
+
+    @Autowired
+    private DbSqlDao dbSqlDao;
 
     @Override
     public SysFile getSysFile(Long id) {
@@ -134,5 +138,12 @@ public class SysFileServiceImpl implements SysFileService {
     @Override
     public SysFile getSysFileByMd5(String md5) {
         return sysFileDao.findOne(SysFileSpecs.queryBy("mdCode", md5, SysFile.class));
+    }
+
+    @Override
+    public int getDbState()
+    {
+        String sql = "select count(1) from dual";
+        return dbSqlDao.count(sql);
     }
 }

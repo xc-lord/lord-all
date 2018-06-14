@@ -19,9 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 实体的扩展属性值sys_extend_attribute的Service实现
@@ -125,5 +123,24 @@ public class SysExtendAttributeServiceImpl implements SysExtendAttributeService 
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<SysExtendAttribute> listByEntity(String entityCode, Long entityId)
+    {
+        List<SysExtendAttribute> list = sysExtendAttributeDao.findByEntityCodeAndEntityId(entityCode, entityId);
+        return list;
+    }
+
+    @Override
+    public Map<String,SysExtendAttribute> getMapByEntity(String entityCode, Long entityId)
+    {
+        Map<String, SysExtendAttribute> map = new HashMap<>();
+        List<SysExtendAttribute> list = sysExtendAttributeDao.findByEntityCodeAndEntityId(entityCode, entityId);
+        for (SysExtendAttribute obj : list)
+        {
+            map.put(obj.getAttrKey(), obj);
+        }
+        return map;
     }
 }

@@ -1,0 +1,269 @@
+{{extend '../layout/eduPC.html'}}
+
+{{block 'title'}}学校详情{{/block}}
+{{block 'keywords'}}家居,家居网,家居官网,家居商城,乌托家,乌托家家居商城官网,电商平台,家居电商,家居电商平台,家居o2o{{/block}}
+{{block 'description'}}乌托家，一个家居O2O电商平台。我们致力于和用户一起打造一个理想的家、一种自己想要的生活方式。{{/block}}
+{{block 'head'}}
+<link rel="stylesheet" type="text/css" href="/res/css/wtj/lrtk.css"/>
+<link rel="stylesheet" type="text/css" href="/res/css/wtj/schoolDetails.css"/>
+{{/block}}
+
+{{block 'content'}}
+<div class="effect clearfix wtj-banner">
+    <div class="tv-slideBox" id="focusAd"> <a class="prev" href="javascript:;" style="display: none;"></a><a class="next" href="javascript:;" style="display: none;"></a>
+        <div class="bd" style="min-height: 491px;">
+            <div class="tempWrap">
+                <ul style="height: 491px;">
+                    <li style="display: list-item;">
+                        <div class="pic"><a target="_self">
+                            <div style="height: 491px;" class="img-div-slide lazy-wrap"><img class="" data-original="http://img1.wutuojia.com/product/t132/b394/20160728/193714_110570.jpg" src="http://img1.wutuojia.com/product/t132/b394/20160728/193714_110570.jpg" style="display: inline;"></div>
+                        </a></div>
+                    </li>
+                    <!-- <li>
+                        <div class="pic"><a target="_self" href="inspiration.html">
+                            <div class="img-div-slide" > <img src="../pic/pic_img/banner001.jpg" /></div>
+                        </a></div>
+                    </li>
+                    <li>
+                        <div class="pic"><a target="_self" href="inspiration.html">
+                            <div class="img-div-slide" > <img src="../pic/pic_img/banner001.jpg" /></div>
+                        </a></div>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="buy-div" style="display: none; "><a href="#" class="help-bargain"><i></i>帮忙砍价</a><a href="#" class="group-buying"><i></i>一起拼团</a> </div>
+</div>
+<div class="clearfix  business-box">
+    <div class="w1200 business-center">
+        <img src="http://img2.wutuojia.com/pic/small/shop/brand/20160726/155543_374951.jpg" class="logodetails">
+        <div class="business-info">
+            <span>{{schoolData.school.name}}</span>
+            <p>{{schoolData.school.intro}}</p>
+        </div>
+        <!--<div class="pice-box">
+            <div class="commodity-explain">
+                <div class="commodity-explain-div"><b>微观森林保温杯 </b>
+                    <p>每片森林都有一只萌宠</p>
+                </div>
+            </div>
+            <a href="javascript:;" class="buy-btn buy-btn-no  buy-btn-unshelve ">商品已下架</a>
+        </div>-->
+    </div>
+</div>
+<div id="paydetailframe">
+    <div class="nav-div" style="display: none; top: 0px;">
+        <div class="nav-menu">
+            <ul id="jcSide">
+                <li class="select"><a href="javascript:;" rel="schoolInfo">学校概况</a></li>
+                <li><a href="javascript:;" rel="recruitStudents">招生计划</a></li>
+                <li><a href="javascript:;" rel="examination">考试时间、地点</a></li>
+                <li><a href="javascript:;" rel="examinationCondition">报考条件</a></li>
+                <li><a href="javascript:;" rel="scoreLine">录取分数线</a></li>
+                <li><a href="javascript:;" rel="schoolQuestion">常见问题</a></li>
+            </ul>
+        </div>
+        <div class="nav-menu-r">
+            <a href="javascript:;" class="buy-btn buy-btn-no" style="text-align:center;">商品已下架</a>
+            <a href="http://www.wutuojia.com/cart/list.do" class="shop-cart" target="_blank"><i></i>购物车（<span>0</span>）</a>
+        </div>
+    </div>
+    <div id="jcContent">
+        <div id="schoolInfo" class="clearfix w1200 pay-row">
+            <h2 class="payanchorname">学校概况</h2>
+            <div class="school-table-div">
+                <table>
+                    <tr>
+                        <td><span>中文名称</span>{{schoolData.school.name}}</td>
+                        <td><span>学费</span>8000-10000/年(部分专业免学费)</td>
+                    </tr>
+                    <tr>
+                        <td><span>英文名称</span>The Central Academy Of Drama</td>
+                        <td><span>录取分数线</span>The Central Academy Of Drama</td>
+                    </tr>
+                    <tr>
+                        <td><span>学校官网</span>{{schoolData.schoolAttr.siteUrl.attrValue}}</td>
+                        <td><span>招生官网</span>http://zhaosheng.zhongxi.cn/</td>
+                    </tr>
+                    <tr>
+                        <td><span>招生简章年份</span>2018年最新</td>
+                        <td><span>学校所在城市</span>北京</td>
+                    </tr>
+                    <tr>
+                        <td><span>开学时间</span>见录取通知书</td>
+                        <td><span>现任校长</span>The Central Academy Of Drama</td>
+                    </tr>
+                    <tr>
+                        <td><span>招生人数</span>500人2008年</td>
+                        <td><span>学制</span>4-5年</td>
+                    </tr>
+                    <tr>
+                        <td><span>院校类型</span>艺术类</td>
+                        <td><span>办学层次</span>中央部属本科院校</td>
+                    </tr>
+                    <tr>
+                        <td><span>教育性质</span>普通高等教育</td>
+                        <td><span>学校地址</span>北京市东城区东棉花胡同39号</td>
+                    </tr>
+                    <tr>
+                        <td><span>知名校友</span>普通高等教育</td>
+                        <td><span>招生批次</span>本科一批</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div id="recruitStudents" class="clearfix w1200 pay-row">
+            <h2 class="payanchorname">招生计划</h2>
+            <div class="school-details-content">
+                {{schoolData.schoolContent.eduSchoolRecruit.content}}
+            </div>
+        </div>
+        <div id="examination" class="clearfix w1200 pay-row">
+            <h2 class="payanchorname">考试时间</h2>
+            <div class="school-details-content">
+                {{schoolData.schoolContent.eduSchoolTestTime.content}}
+            </div>
+        </div>
+        <div id="examinationCondition" class="clearfix w1200 pay-row">
+            <h2 class="payanchorname">报考条件</h2>
+            <div class="school-details-content">
+                {{schoolData.schoolContent.eduSchoolCondition.content}}
+            </div>
+        </div>
+        <div id="scoreLine" class="clearfix w1200 pay-row">
+            <h2 class="payanchorname">录取分数线</h2>
+            <div class="school-details-content">
+                {{schoolData.schoolContent.eduSchoolScoreLine.content}}
+            </div>
+        </div>
+        <div id="schoolQuestion" class="clearfix w1200 pay-row comment-paydetail">
+            <h2 class="payanchorname">常见问题</h2>
+
+            <div class="details-contents details-content-dt2">
+                <!--<div class="publish-div sso_nologin" style="display:block;">
+                    <div class="txt-ara-s clearfix"><i></i>
+
+                        <div class="txt-ara-div"><span>发表评论请</span><a class="sso_login_btn" href="javascript:;">登录</a>
+                        </div>
+                    </div>
+                </div>-->
+                <div class="publish-div sso_login" style="display:none;">
+                    <div class="txt-ara-s clearfix"><i><img class="sso_login_icon" src="/res/img/wtj/default_icon.png"></i>
+
+                        <div class="txt-ara-div">
+                            <textarea id="comment_content" placeholder="想说点什么"></textarea>
+                        </div>
+                    </div>
+                    <div class="details-publish-div clearfix"><a href="javascript:;"
+                                                                 class="publish-btn comment_publist_btn"
+                                                                 data-target="comment_content">发表</a></div>
+                </div>
+
+                <ul class="discuss-ul">
+                    <div id="commentPage" data-id="8856" data-type="Product">
+                        <input type="hidden" id="commentCount"value="0">
+                        <ul class="discuss-ul">
+                            <li>
+                                <i>
+                                    <a href="javascript:;">
+                                        <img src="http://www.wutuojia.com/images/front/default_icon.png">
+                                    </a>
+                                </i>
+                                <div class="discuss-r-content">
+                                    <div class="name-discuss clearfix">
+                                        <span>中央戏剧学院考试都考哪些？</span>
+                                        <em>2016-01-01 13:35:06</em>
+                                    </div>
+                                    <div class="discuss-content clearfix">
+                                        <div class="postitem-text">
+                                            根据报考专业（方向）的不同，考试的科目也会不同，详情请见本页的表格里的考试科目。
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <i>
+                                    <a href="javascript:;">
+                                        <img src="http://www.wutuojia.com/images/front/default_icon.png">
+                                    </a>
+                                </i>
+                                <div class="discuss-r-content">
+                                    <div class="name-discuss clearfix">
+                                        <span>中央戏剧学院考试都考哪些？</span>
+                                        <em>2016-01-01 13:35:06</em>
+                                    </div>
+                                    <div class="discuss-content clearfix">
+                                        <div class="postitem-text">
+                                            根据报考专业（方向）的不同，考试的科目也会不同，详情请见本页的表格里的考试科目。
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <i>
+                                    <a href="javascript:;">
+                                        <img src="http://www.wutuojia.com/images/front/default_icon.png">
+                                    </a>
+                                </i>
+                                <div class="discuss-r-content">
+                                    <div class="name-discuss clearfix">
+                                        <span>中央戏剧学院考试都考哪些？</span>
+                                        <em>2016-01-01 13:35:06</em>
+                                    </div>
+                                    <div class="discuss-content clearfix">
+                                        <div class="postitem-text">
+                                            根据报考专业（方向）的不同，考试的科目也会不同，详情请见本页的表格里的考试科目。
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <i>
+                                    <a href="javascript:;">
+                                        <img src="http://www.wutuojia.com/images/front/default_icon.png">
+                                    </a>
+                                </i>
+                                <div class="discuss-r-content">
+                                    <div class="name-discuss clearfix">
+                                        <span>中央戏剧学院考试都考哪些？</span>
+                                        <em>2016-01-01 13:35:06</em>
+                                    </div>
+                                    <div class="discuss-content clearfix">
+                                        <div class="postitem-text">
+                                            根据报考专业（方向）的不同，考试的科目也会不同，详情请见本页的表格里的考试科目。
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <div class="page-div w1200">
+                            <div class="paging-div">
+                                <div class="nav-num">
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            $(function () {
+
+                                $(".pic-discuss-box a").hover(function () {
+                                    $(this).parent().parent().find(".picbig-discuss-box").find("img").attr("src", $(this).attr("big-img"));
+                                    $(this).parent().parent().find(".picbig-discuss-box").stop(true, true).slideToggle(200).css("display", "inline-block");
+                                }, function () {
+                                    $(this).parent().parent().find(".picbig-discuss-box").stop(true, true).slideToggle();
+                                });
+                            })
+                        </script>
+                    </div>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
+{{/block}}
+
+{{block 'foot'}}
+<script type="text/javascript" src="/res/js/wtj/paydetail.js"></script>
+{{/block}}

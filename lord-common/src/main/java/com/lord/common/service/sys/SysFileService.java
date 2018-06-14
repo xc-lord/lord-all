@@ -76,4 +76,11 @@ public interface SysFileService {
      * @return
      */
     SysFile getSysFileByMd5(String md5);
+
+    /**
+     * 获取数据库状态
+     * @return
+     */
+    int getDbState();
+
 }

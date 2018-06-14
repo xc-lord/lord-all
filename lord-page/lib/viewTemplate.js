@@ -2,14 +2,14 @@
     'use strict';
     var path = require('path');
     var logger = require('./logger')(path.basename(__filename));
-    var template = require('art-template');//腾讯的模板引擎
+    var artTemplate = require('art-template');//腾讯的模板引擎
     var moment = require('moment');//时间格式化
     var numeral = require('numeral');//数字格式
 
-    var artTemplate = {
+    var viewTemplate = {
         /** 腾讯的模板引擎初始化 */
         init: function (app) {
-            this.init_template_fun(template);//添加辅助方法
+            this.init_template_fun(artTemplate);//添加辅助方法
             //app.engine('.html', template.__express);
             app.engine('html', require('express-art-template'));
             app.set('view engine', 'html');
@@ -33,6 +33,27 @@
             };
             helper.toJSON = function(obj) {
                 return JSON.stringify(obj);
+            };
+            helper.xv = function(obj, paramStr) {
+                if(!paramStr)
+                    return '';
+                var paramArr = paramStr.split('.');
+                var val = obj;
+                var count = 0;
+                for(var i=0; i<paramArr.length; i++ ){
+                    var param = paramArr[i];
+                    var paramObj = val[param];
+                    if(paramObj) {
+                        val = paramObj;
+                        count++;
+                    } else {
+                        break;
+                    }
+                }
+                if(count == paramArr.length)
+                    return val;
+                else
+                    return '';
             };
             /*
              * 格式化时间，用法{{createTime | dateFormat:'YYYY/MM/DD HH:mm:ss'}}
@@ -71,5 +92,5 @@
         }
     };
 
-    module.exports = artTemplate;
+    module.exports = viewTemplate;
 })();

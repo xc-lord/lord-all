@@ -20,9 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 扩展内容sys_extend_content的Service实现
@@ -139,5 +137,23 @@ public class SysExtendContentServiceImpl implements SysExtendContentService {
     {
         SysExtendContent content = sysExtendContentDao.findOneByEntityCodeAndEntityId(entityCode, entityId);
         return content;
+    }
+
+    @Override
+    public List<SysExtendContent> listByEntity(Long entityId, String... entityCodes)
+    {
+        return sysExtendContentDao.findByEntity(entityId, entityCodes);
+    }
+
+    @Override
+    public Map<String, SysExtendContent> getMapByEntity(Long entityId, String... entityCodes)
+    {
+        Map<String, SysExtendContent> map = new HashMap<>();
+        List<SysExtendContent> list = sysExtendContentDao.findByEntity(entityId, entityCodes);
+        for (SysExtendContent obj : list)
+        {
+            map.put(obj.getEntityCode(), obj);
+        }
+        return map;
     }
 }

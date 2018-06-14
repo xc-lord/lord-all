@@ -1,0 +1,423 @@
+{{extend '../layout/eduPC.html'}}
+
+{{block 'title'}}文章列表{{/block}}
+{{block 'keywords'}}家居,家居网,家居官网,家居商城,乌托家,乌托家家居商城官网,电商平台,家居电商,家居电商平台,家居o2o{{/block}}
+{{block 'description'}}乌托家，一个家居O2O电商平台。我们致力于和用户一起打造一个理想的家、一种自己想要的生活方式。{{/block}}
+{{block 'head'}}
+<link rel="stylesheet" type="text/css" href="/res/css/wtj/wtjcms.css"/>
+{{/block}}
+
+{{block 'content'}}
+<div class="w1200 consultationdetails-main ">
+    <div class="breadcrumb">
+        <span><a href="http://www.wutuojia.com/zixun/">{{listData | xv "category.name"}}</a><i></i></span>
+        <span><a href="http://www.wutuojia.com/zixun/article/">{{listData | xv "category.name"}}</a></span>
+    </div>
+    <div class=" clearfix consultationdetails-content">
+
+        <div class="consultationdetails-content-r  consultation-content-l">
+            <div class="special-nav">
+                <h4>栏目导航</h4>
+                <ul class="special-nav-ul">
+                    <li >
+                        <a href="http://www.wutuojia.com/zixun/article/jiaju/" ><span  class="special-nav-name">家具知识 <i></i></span></a>
+                        <ul class="special-nav-ul-t">
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/woshi/">
+                                    卧室家具</a>
+                            </li>
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/keting/">
+                                    客厅家具</a>
+                            </li>
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/menting/">
+                                    门厅家具</a>
+                            </li>
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/canting/">
+                                    餐厅厨卫</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="special-nav-on">
+                        <a href="http://www.wutuojia.com/zixun/article/ruanzhuang/" ><span  class="special-nav-name">软装知识 <i></i></span></a>
+                        <ul class="special-nav-ul-t">
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/csyp/">
+                                    床上用品</a>
+                            </li>
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/buyi/">
+                                    布艺软饰</a>
+                            </li>
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/dengshi/" class="special-t-on">
+                                    灯饰</a>
+                            </li>
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/huayi/">
+                                    花艺装饰</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="http://www.wutuojia.com/zixun/article/sheji/" ><span  class="special-nav-name">设计知识 <i></i></span></a>
+                        <ul class="special-nav-ul-t">
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/fengge/">
+                                    风格搭配</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="http://www.wutuojia.com/zixun/article/fengshui/" ><span  class="special-nav-name">风水知识 <i></i></span></a>
+                        <ul class="special-nav-ul-t">
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/jjfsbj/">
+                                    家居风水布局</a>
+                            </li>
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/fszw/">
+                                    风水植物</a>
+                            </li>
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/fsjxw/">
+                                    风水吉祥物</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="http://www.wutuojia.com/zixun/article/jiancai/" ><span  class="special-nav-name">建材知识 <i></i></span></a>
+                        <ul class="special-nav-ul-t">
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/wujinweiyu/">
+                                    五金洁具/厨卫设备</a>
+                            </li>
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/diban/">
+                                    瓷砖/地板</a>
+                            </li>
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/youqituliao/">
+                                    油漆/涂料</a>
+                            </li>
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/zhaoming/">
+                                    照明光源</a>
+                            </li>
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/diangong/">
+                                    开关电工</a>
+                            </li>
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/menchuang/">
+                                    门窗</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="http://www.wutuojia.com/zixun/article/yingzhuang/" ><span  class="special-nav-name">硬装知识 <i></i></span></a>
+                        <ul class="special-nav-ul-t">
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/zxqian/">
+                                    装修前</a>
+                            </li>
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/zxzhong/">
+                                    装修中</a>
+                            </li>
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/zxhou/">
+                                    装修后</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="http://www.wutuojia.com/zixun/article/jiadian/" ><span  class="special-nav-name">家电知识 <i></i></span></a>
+                        <ul class="special-nav-ul-t">
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/cfjd/">
+                                    厨房家电</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="http://www.wutuojia.com/zixun/article/shenghuo/" ><span  class="special-nav-name">生活知识 <i></i></span></a>
+                        <ul class="special-nav-ul-t">
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/xiaopianfang/">
+                                    小偏方</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="http://www.wutuojia.com/zixun/article/koubei/" ><span  class="special-nav-name">商品口碑 <i></i></span></a>
+                        <ul class="special-nav-ul-t">
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/yigui/">
+                                    衣柜</a>
+                            </li>
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/shafa/">
+                                    品牌沙发</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="http://www.wutuojia.com/zixun/article/sxnr/" ><span  class="special-nav-name">家居杂谈 <i></i></span></a>
+                        <ul class="special-nav-ul-t">
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/chunjie/">
+                                    春节装饰</a>
+                            </li>
+                            <li>
+                                <a href="http://www.wutuojia.com/zixun/article/jjzt/">
+                                    家居杂谈</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="http://www.wutuojia.com/zixun/article/drxg/" ><span  class="special-nav-name">达人选购 <i></i></span></a>
+                        <ul class="special-nav-ul-t">
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>热门文章</h3>
+            <ul class="clearfix ul-consultationdetails-r">
+                <li>
+                    <a href="http://www.wutuojia.com/zixun/article/8264.html" target="_blank">
+                        <div class="about-info" >
+                            <img src="http://img2.wutuojia.com/pic/sq_small/cms/article/20160318/131151_739232.jpeg"  />
+                            <span></span></div>
+                        <div class="about-info-m">
+                            <h4>星空投影灯制作方法 如何自制星空投影灯</h4>
+                            <p>星星难以见到，特别是在放晴的日子没有几天的地方，所以只能自己动手做一个星空投影灯来满足一下自己了，方法不难，但是需要动手操作。</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.wutuojia.com/zixun/article/7144.html" target="_blank">
+                        <div class="about-info" >
+                            <img src="http://img2.wutuojia.com/pic/sq_small/cms/article/20151202/002212_163297.jpg"  />
+                            <span></span></div>
+                        <div class="about-info-m">
+                            <h4>一体化氙气灯的优缺点</h4>
+                            <p>想要知道一体化氙气灯的优缺点是什么？小编告诉你！每款灯具除了自身的优点外，它们还存在着缺点，认真阅读文章，你会发现优点居多哦！</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.wutuojia.com/zixun/article/4679.html" target="_blank">
+                        <div class="about-info" >
+                            <img src="http://img2.wutuojia.com/pic/sq_small/cms/article/20150819/170904_619802.jpg"  />
+                            <span></span></div>
+                        <div class="about-info-m">
+                            <h4>小灯罩有大学问 灯罩材料PK</h4>
+                            <p>灯罩不仅仅是罩在灯上为了使光聚集在一起的作用，还可以防止触电，对保护眼睛也有作用，所以大多数灯上都会有灯罩。不同材料的灯罩透光和防尘效果都有所不一样。</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.wutuojia.com/zixun/article/8847.html" target="_blank">
+                        <div class="about-info" >
+                            <img src="http://img2.wutuojia.com/pic/sq_small/cms/article/20160527/173627_673334.jpg"  />
+                            <span></span></div>
+                        <div class="about-info-m">
+                            <h4>树脂灯罩和亚克力灯罩二选一 哪个比较好呢？</h4>
+                            <p>灯罩是灯具的一个重要的组成部分，外观好、质量优良的灯罩不仅能给家中增添一道美丽的风景，更能带给人舒适的视觉感受和长久的使用幸福感。那么在树脂灯罩和亚克力灯罩中，哪一种材质更加优良，更能凸显我们的生活品质和提高幸福感呢？</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.wutuojia.com/zixun/article/6079.html" target="_blank">
+                        <div class="about-info" >
+                            <img src="http://img2.wutuojia.com/pic/sq_small/cms/article/20150921/175344_257937.jpg"  />
+                            <span></span></div>
+                        <div class="about-info-m">
+                            <h4>吊灯清洗有技巧 3招教你轻松解决</h4>
+                            <p>吊灯可谓是现在家庭装修的必备之一，但吊灯用久了也会脏，挂在天花板上的吊灯一般比较难清洗，遇到这种问题的时候，想必大家肯定会头疼得不行，小编今天就为大家准备了吊灯清洗的详细教程。</p>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+
+            <h3>精选推荐</h3>
+            <div class="clearfix recommend">
+                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6674.html" target="_blank">厨娘有三宝 人美艺高菜板还好</a></p>
+                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6731.html" target="_blank">想要湿意与远方 加湿器这么选</a></p>
+                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6591.html" target="_blank">一盏床头灯会让你拥有安全感</a></p>
+                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6711.html" target="_blank">他们的设计比你想象中更迷人</a></p>
+                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6406.html" target="_blank">原木色装修 雅致生活的空间</a></p>
+                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6544.html" target="_blank">实木家具窗帘搭配技巧大放送</a></p>
+                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6499.html" target="_blank">关于欧式床尾凳的几个小知识</a></p>
+                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6295.html" target="_blank">什么是玄关？ 家的第一印象</a></p>
+                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/5724.html" target="_blank">小窝扮靓神器 墙纸选购攻略</a></p>
+                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/5668.html" target="_blank">悠悠药香伴安眠 中药枕头功效佳</a></p>
+            </div>
+            <h3>猜你喜欢</h3>
+            <div class="clearfix recommend">
+                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/9846.html" target="_blank">只要有创意，灯具也可以与众不同！</a></p>
+                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/9707.html" target="_blank">选一顶合适的灯，撩动无尽流淌的时光</a></p>
+                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/9809.html" target="_blank">听说现在都流行装这种餐厅灯，真想把家里的拆了重装！</a></p>
+                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/9698.html" target="_blank">能拉高你家颜值的，是灯是灯还是灯！</a></p>
+                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/9743.html" target="_blank">一盏灯，一本书，就是一个世界</a></p>
+                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/9657.html" target="_blank">一闪一闪亮晶晶 优雅灯具温暖黑夜</a></p>
+                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/9658.html" target="_blank">简约风格更百搭 家居灯具掀起极简热潮</a></p>
+                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/9636.html" target="_blank">温柔炙热的小黄灯 让你感受家的温度</a></p>
+                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/8847.html" target="_blank">树脂灯罩和亚克力灯罩二选一 哪个比较好呢？</a></p>
+                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/8860.html" target="_blank">星空投影灯多少钱 星空投影灯原理</a></p>
+            </div>
+
+            <h3>相关专题</h3>
+            <div class="clearfix about-special">
+                <a href="http://www.wutuojia.com/zixun/baike/87.html" target="_blank">墙纸</a>
+                <a href="http://www.wutuojia.com/zixun/baike/25.html" target="_blank">枕头</a>
+                <a href="http://www.wutuojia.com/zixun/baike/109.html" target="_blank">吊灯</a>
+                <a href="http://www.wutuojia.com/zixun/baike/26.html" target="_blank">被子</a>
+                <a href="http://www.wutuojia.com/zixun/baike/162.html" target="_blank">床垫</a>
+                <a href="http://www.wutuojia.com/zixun/baike/104.html" target="_blank">地毯</a>
+                <a href="http://www.wutuojia.com/zixun/baike/24.html" target="_blank">窗帘</a>
+                <a href="http://www.wutuojia.com/zixun/baike/101.html" target="_blank">被套</a>
+                <a href="http://www.wutuojia.com/zixun/baike/108.html" target="_blank">台灯</a>
+                <a href="http://www.wutuojia.com/zixun/baike/99.html" target="_blank">床单</a>
+                <a href="http://www.wutuojia.com/zixun/baike/163.html" target="_blank">室内植物</a>
+                <a href="http://www.wutuojia.com/zixun/baike/106.html" target="_blank">花瓶</a>
+                <a href="http://www.wutuojia.com/zixun/baike/88.html" target="_blank">灯具</a>
+                <a href="http://www.wutuojia.com/zixun/baike/107.html" target="_blank">仿真花</a>
+            </div>
+        </div>
+        <div class="consultation-content-r">
+            <div class="clearfix query-hot">
+                <span class="hot" >热门</span><span class="query-hot-on"><a href="http://www.wutuojia.com/zixun/article/">最新(47)</a></span>
+		    	<span style="float: right; margin-top: 6px;" >
+					<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=4037853190789419867' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>
+				</span>
+            </div>
+            <ul class="clearfix ul-concent-cnsul">
+                <li>
+                    <div class="cnsul-concent-img"><a target="_blank" href="http://www.wutuojia.com/zixun/article/9846.html" target="_blank"><img src="http://img2.wutuojia.com/pic/middle/cms/article/20170908/181030_782430.png"  /></a><span></span></div>
+                    <div class="cnsul-concent-r">
+                        <h3><a target="_blank" href="http://www.wutuojia.com/zixun/article/9846.html">只要有创意，灯具也可以与众不同！</a></h3>
+                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>2017-09-08</span> <span class="newdetais-time-span"><em></em>灯饰</span></div>
+                        <p><a target="_blank" href="http://www.wutuojia.com/zixun/article/9846.html">
+                            灯，不只是为了照明，更是为了提升整个家的格调，但同时又不会显得过于繁琐或是突兀。<i>［查看全文］</i>
+                        </a></p>
+                    </div>
+                </li>
+                <li>
+                    <div class="cnsul-concent-img"><a target="_blank" href="http://www.wutuojia.com/zixun/article/9707.html" target="_blank"><img src="http://img2.wutuojia.com/pic/middle/cms/article/20161109/184521_980848.jpg"  /></a><span></span></div>
+                    <div class="cnsul-concent-r">
+                        <h3><a target="_blank" href="http://www.wutuojia.com/zixun/article/9707.html">选一顶合适的灯，撩动无尽流淌的时光</a></h3>
+                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>2017-07-24</span> <span class="newdetais-time-span"><em></em>灯饰</span></div>
+                        <p><a target="_blank" href="http://www.wutuojia.com/zixun/article/9707.html">
+                            选一顶美到没有朋友的灯，撩动无尽流淌的时光<i>［查看全文］</i>
+                        </a></p>
+                    </div>
+                </li>
+                <li>
+                    <div class="cnsul-concent-img"><a target="_blank" href="http://www.wutuojia.com/zixun/article/9809.html" target="_blank"><img src="http://img2.wutuojia.com/pic/middle/cms/article/20170724/154703_421833.png"  /></a><span></span></div>
+                    <div class="cnsul-concent-r">
+                        <h3><a target="_blank" href="http://www.wutuojia.com/zixun/article/9809.html">听说现在都流行装这种餐厅灯，真想把家里的拆了重装！</a></h3>
+                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>2017-07-24</span> <span class="newdetais-time-span"><em></em>灯饰</span></div>
+                        <p><a target="_blank" href="http://www.wutuojia.com/zixun/article/9809.html">
+                            说到餐厅，大家脑海里涌现的画面大概是，在疲惫了一天的工作后，坐在暖暖的灯光下，跟家人一起气氛融洽的吃一顿饭。所以餐厅的装修不在于多么奢华，不在于要在金碧辉煌的水晶灯下用餐，而温暖是家唯一的主格调。<i>［查看全文］</i>
+                        </a></p>
+                    </div>
+                </li>
+                <li>
+                    <div class="cnsul-concent-img"><a target="_blank" href="http://www.wutuojia.com/zixun/article/9698.html" target="_blank"><img src="http://img2.wutuojia.com/pic/middle/cms/article/20161109/144922_378837.jpg"  /></a><span></span></div>
+                    <div class="cnsul-concent-r">
+                        <h3><a target="_blank" href="http://www.wutuojia.com/zixun/article/9698.html">能拉高你家颜值的，是灯是灯还是灯！</a></h3>
+                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>2017-06-12</span> <span class="newdetais-time-span"><em></em>灯饰</span></div>
+                        <p><a target="_blank" href="http://www.wutuojia.com/zixun/article/9698.html">
+                            灯是家中最温暖的存在，
+                            也是夜晚最长情的陪伴。<i>［查看全文］</i>
+                        </a></p>
+                    </div>
+                </li>
+                <li>
+                    <div class="cnsul-concent-img"><a target="_blank" href="http://www.wutuojia.com/zixun/article/9743.html" target="_blank"><img src="http://img2.wutuojia.com/pic/middle/cms/article/20161114/160902_290245.jpg"  /></a><span></span></div>
+                    <div class="cnsul-concent-r">
+                        <h3><a target="_blank" href="http://www.wutuojia.com/zixun/article/9743.html">一盏灯，一本书，就是一个世界</a></h3>
+                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>2017-03-23</span> <span class="newdetais-time-span"><em></em>灯饰</span></div>
+                        <p><a target="_blank" href="http://www.wutuojia.com/zixun/article/9743.html">
+                            离开喧嚣与繁华，寻一份宁静与淡泊，暖暖的灯光下，独自享受好书相伴的时光
+                            <i>［查看全文］</i>
+                        </a></p>
+                    </div>
+                </li>
+                <li>
+                    <div class="cnsul-concent-img"><a target="_blank" href="http://www.wutuojia.com/zixun/article/9658.html" target="_blank"><img src="http://img2.wutuojia.com/pic/middle/cms/article/20161026/150007_980268.jpg"  /></a><span></span></div>
+                    <div class="cnsul-concent-r">
+                        <h3><a target="_blank" href="http://www.wutuojia.com/zixun/article/9658.html">简约风格更百搭 家居灯具掀起极简热潮</a></h3>
+                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>2016-10-28</span> <span class="newdetais-time-span"><em></em>灯饰</span></div>
+                        <p><a target="_blank" href="http://www.wutuojia.com/zixun/article/9658.html">
+                            简约风格的家居，怎么少得了简约风的灯具点缀呢？<i>［查看全文］</i>
+                        </a></p>
+                    </div>
+                </li>
+                <li>
+                    <div class="cnsul-concent-img"><a target="_blank" href="http://www.wutuojia.com/zixun/article/9657.html" target="_blank"><img src="http://img2.wutuojia.com/pic/middle/cms/article/20161026/130805_363348.jpg"  /></a><span></span></div>
+                    <div class="cnsul-concent-r">
+                        <h3><a target="_blank" href="http://www.wutuojia.com/zixun/article/9657.html">一闪一闪亮晶晶 优雅灯具温暖黑夜</a></h3>
+                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>2016-10-28</span> <span class="newdetais-time-span"><em></em>灯饰</span></div>
+                        <p><a target="_blank" href="http://www.wutuojia.com/zixun/article/9657.html">
+                            如今灯饰已经不仅仅是照明，还能在黑夜中给我们带来一丝温暖。<i>［查看全文］</i>
+                        </a></p>
+                    </div>
+                </li>
+                <li>
+                    <div class="cnsul-concent-img"><a target="_blank" href="http://www.wutuojia.com/zixun/article/9636.html" target="_blank"><img src="http://img2.wutuojia.com/pic/middle/cms/article/20161020/222602_634482.jpg"  /></a><span></span></div>
+                    <div class="cnsul-concent-r">
+                        <h3><a target="_blank" href="http://www.wutuojia.com/zixun/article/9636.html">温柔炙热的小黄灯 让你感受家的温度</a></h3>
+                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>2016-10-21</span> <span class="newdetais-time-span"><em></em>灯饰</span></div>
+                        <p><a target="_blank" href="http://www.wutuojia.com/zixun/article/9636.html">
+                            灯饰除了能照明之外，不同光亮度和颜色也能带给人不同的感受。浅浅柔柔的黄光灯能温暖人心，让你疲惫的心重新感受到家的温暖。如何选择灯具，我们一起来看看吧。<i>［查看全文］</i>
+                        </a></p>
+                    </div>
+                </li>
+                <li>
+                    <div class="cnsul-concent-img"><a target="_blank" href="http://www.wutuojia.com/zixun/article/8847.html" target="_blank"><img src="http://img2.wutuojia.com/pic/middle/cms/article/20160527/173627_673334.jpg"  /></a><span></span></div>
+                    <div class="cnsul-concent-r">
+                        <h3><a target="_blank" href="http://www.wutuojia.com/zixun/article/8847.html">树脂灯罩和亚克力灯罩二选一 哪个比较好呢？</a></h3>
+                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>2016-05-30</span> <span class="newdetais-time-span"><em></em>灯饰</span></div>
+                        <p><a target="_blank" href="http://www.wutuojia.com/zixun/article/8847.html">
+                            灯罩是灯具的一个重要的组成部分，外观好、质量优良的灯罩不仅能给家中增添一道美丽的风景，更能带给人舒适的视觉感受和长久的使用幸福感。那么在树脂灯罩和亚克力灯罩中，哪一种材质更加优良，更能凸显我们的生活品质...<i>［查看全文］</i>
+                        </a></p>
+                    </div>
+                </li>
+                <li>
+                    <div class="cnsul-concent-img"><a target="_blank" href="http://www.wutuojia.com/zixun/article/8860.html" target="_blank"><img src="http://img2.wutuojia.com/pic/middle/cms/article/20160527/174020_157089.jpg"  /></a><span></span></div>
+                    <div class="cnsul-concent-r">
+                        <h3><a target="_blank" href="http://www.wutuojia.com/zixun/article/8860.html">星空投影灯多少钱 星空投影灯原理</a></h3>
+                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>2016-05-30</span> <span class="newdetais-time-span"><em></em>灯饰</span></div>
+                        <p><a target="_blank" href="http://www.wutuojia.com/zixun/article/8860.html">
+                            在蝉鸣的夏夜，躺在自家舒适的大床上，欣赏着天花板上浪漫的星空，慢慢陷入梦乡……小的时候我们就梦想着能躺在星空下睡觉，现在，一个星空投影灯就可以为你创造出这样的浪漫又梦幻的世界。<i>［查看全文］</i>
+                        </a></p>
+                    </div>
+                </li>
+
+            </ul>
+            <div class=" clearfix page-div page-cms">
+                <div class="paging-div">
+                    <div class="nav-num">
+                        <a href="javascript:;" class="on-page" >1</a>
+                        <a href="http://www.wutuojia.com/zixun/article/dengshi/list_2.html" >2</a>
+                        <a href="http://www.wutuojia.com/zixun/article/dengshi/list_3.html" >3</a>
+                        <a href="http://www.wutuojia.com/zixun/article/dengshi/list_4.html" >4</a>
+                        <a href="http://www.wutuojia.com/zixun/article/dengshi/list_5.html" >5</a>
+                        <a href="http://www.wutuojia.com/zixun/article/dengshi/list_2.html" class="nav-right"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{/block}}
+
+{{block 'foot'}}
+<script type="text/javascript" src="/res/js/wtj/wtjcms.js"></script>
+{{/block}}

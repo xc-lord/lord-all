@@ -31,5 +31,7 @@ public interface EduSchoolDao extends JpaRepository<EduSchool, Long>, JpaSpecifi
     @Query("update EduSchool u set u.orderValue = ?2 where u.id = ?1")
     void updateOrderValue(Long id, Long orderValue);
 
-	//在此添加你的自定义方法...
+    List<EduSchool> findByProvinceId(Long provinceId);
+
+    //在此添加你的自定义方法...
 }

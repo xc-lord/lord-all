@@ -81,7 +81,7 @@
 
 .pgme-menu{ margin-top: 55px; margin-bottom: 25px; text-align: center;}
 .pgme-menu .pgme-menu-c{ margin: 0 auto; display: inline-block;}
-.pgme-menu .pgme-menu-c li{display: inline-block; float: left; width: 100px; text-align:center;}
+.pgme-menu .pgme-menu-c li{display: inline-block; float: left; text-align:center;}
 .pgme-menu .pgme-menu-c li a{ font-size: 18px; font-family:Microsoft Yahei; display: inline-block;  color: #333; padding-top: 6px; padding-bottom: 6px; }
 .pgme-menu .pgme-menu-c li a.curr-pgme{ border-bottom: 2px solid #111111; }
 

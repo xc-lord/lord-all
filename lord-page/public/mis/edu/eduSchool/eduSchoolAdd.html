@@ -50,11 +50,14 @@
 				<el-form-item label="排序">
                     <el-input-number v-model="editForm.orderValue" :min="0" size="small"></el-input-number>
                 </el-form-item>
-				<!--creator不需要-->
-				<!--createTime不需要-->
-				<!--modifier不需要-->
-				<!--updateTime不需要-->
             </el-form>
+
+            <mis-extend-attr edit-mode="Add" entity-code="eduSchool" :entity-id="editForm.id" ref="eduSchoolExtendAttr"></mis-extend-attr>
+            <mis-extend-content edit-mode="Add" entity-code="eduSchoolRecruit" :entity-id="editForm.id" ref="eduSchoolRecruit" content-name="招生计划"></mis-extend-content>
+            <mis-extend-content edit-mode="Add" entity-code="eduSchoolTestTime" :entity-id="editForm.id" ref="eduSchoolTestTime" content-name="考试时间"></mis-extend-content>
+            <mis-extend-content edit-mode="Add" entity-code="eduSchoolCondition" :entity-id="editForm.id" ref="eduSchoolCondition" content-name="报考条件"></mis-extend-content>
+            <mis-extend-content edit-mode="Add" entity-code="eduSchoolScoreLine" :entity-id="editForm.id" ref="eduSchoolScoreLine" content-name="录取分数线"></mis-extend-content>
+
         </el-col>
     </el-row>
 

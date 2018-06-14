@@ -146,4 +146,10 @@ public class EduSchoolServiceImpl implements EduSchoolService {
         }
         return true;
     }
+
+    @Override
+    public List<EduSchool> listByProvinceId(Long provinceId)
+    {
+        return eduSchoolDao.findByProvinceId(provinceId);
+    }
 }

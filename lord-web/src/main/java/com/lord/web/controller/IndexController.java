@@ -1,12 +1,14 @@
 package com.lord.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.lord.common.service.sys.SysFileService;
 import com.lord.utils.dto.Result;
 import com.lord.utils.exception.CommonException;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +23,9 @@ public class IndexController {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
+    @Autowired
+    private SysFileService sysFileService;
+
     @ApiOperation(value="首页", notes="获取用户列表备注")
     @RequestMapping("/api/")
     public String home() {
@@ -28,22 +33,23 @@ public class IndexController {
         return "Hello World!首页";
     }
 
-    @RequestMapping("/api/testError")
-    public String error() {
-        if(true)
-            throw new CommonException("运行错误");
-        return "error";
-    }
-
-    @ApiOperation(value = "获取用户列表", notes = "获取用户列表备注")
-    @ApiImplicitParam(name = "myName", value = "用户ID", required = true, dataType = "String", paramType = "path")
-    @RequestMapping("/api/hello/{myName}")
-    public Result index(@PathVariable String myName) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", 1);
-        jsonObject.put("isShow", true);
-        jsonObject.put("name", myName);
-        jsonObject.put("createTime", new Date());
-        return Result.success("请求成功", jsonObject);
+    @ApiOperation(value="服务状态", notes="服务状态")
+    @RequestMapping("/api/health")
+    public Result health()
+    {
+        JSONObject json = new JSONObject();
+        json.put("server", 1);
+        int dbState = 0;
+        try
+        {
+            dbState = sysFileService.getDbState();
+            json.put("db", dbState);
+            return Result.success("服务正常", json);
+        }
+        catch (Exception e)
+        {
+            logger.error("数据库异常：" + e.getMessage(), e);
+            return Result.failure("数据库异常：" + e.getMessage(), json);
+        }
     }
 }

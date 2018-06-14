@@ -6,6 +6,9 @@ import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.user.LoginUser;
 import com.lord.common.model.sys.SysExtendAttribute;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 实体的扩展属性值sys_extend_attribute的Service
  *
@@ -70,4 +73,20 @@ public interface SysExtendAttributeService {
      * @return
      */
     boolean isExist(Long id, String rowName, String rowValue);
+
+    /**
+     * 获取扩展属性
+     * @param entityCode    实体编码
+     * @param entityId      实体ID
+     * @return
+     */
+    List<SysExtendAttribute> listByEntity(String entityCode, Long entityId);
+
+    /**
+     * 获取扩展属性
+     * @param entityCode    实体编码
+     * @param entityId      实体ID
+     * @return
+     */
+    Map<String,SysExtendAttribute> getMapByEntity(String entityCode, Long entityId);
 }

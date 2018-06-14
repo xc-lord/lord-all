@@ -8,11 +8,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
 /**
- * 功能：
+ * 功能：原生的SQL查询
  *
  * @author xiaocheng
  * @version 1.0
@@ -44,22 +45,26 @@ public class DbSqlDao
     @Transactional
     public void execute(String sql, Object... params)
     {
-        if(params == null) return;
         Query query = entityManager.createNativeQuery(sql);
-        for (int i = 0; i < params.length; i++)
+        if (params != null)
         {
-            query.setParameter(i+1, params[i]);
+            for (int i = 0; i < params.length; i++)
+            {
+                query.setParameter(i + 1, params[i]);
+            }
         }
         query.executeUpdate();
     }
 
     public Object selectOne(String sql, Object... params)
     {
-        if(params == null) return null;
         Query query = entityManager.createNativeQuery(sql);
-        for (int i = 0; i < params.length; i++)
+        if(params != null)
         {
-            query.setParameter(i+1, params[i]);
+            for (int i = 0; i < params.length; i++)
+            {
+                query.setParameter(i + 1, params[i]);
+            }
         }
         List list = query.getResultList();
         if (list != null && list.size() > 0)
@@ -83,5 +88,11 @@ public class DbSqlDao
         query.unwrap(org.hibernate.SQLQuery.class)
                 .setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         return query.getResultList();
+    }
+
+    public int count(String sql)
+    {
+        BigInteger count = (BigInteger) selectOne(sql);
+        return count.intValue();
     }
 }

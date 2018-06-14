@@ -28,5 +28,8 @@ public interface SysExtendContentDao extends JpaRepository<SysExtendContent, Lon
 
     SysExtendContent findOneByEntityCodeAndEntityId(String entityCode, Long entityId);
 
+    @Query("select u from SysExtendContent u where u.entityId=?1 and u.entityCode in ?2")
+    List<SysExtendContent> findByEntity(Long entityId, String... entityCodes);
+
     //在此添加你的自定义方法...
 }

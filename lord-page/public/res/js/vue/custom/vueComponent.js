@@ -521,12 +521,16 @@ Vue.component('mis-extend-content', {
             var _self = this;
             var success = false;
             var content = _self.ueElement.getContent();
-
+            var contentId = null;
+            if(_self.extendData) {
+                contentId = _self.extendData.id;
+            }
+            console.info("保存扩展属性：" + entityId);
             $.ajax({
                 async:false,
                 method: "post",
                 url: '/api/admin/sys/sysExtendContent/saveOrUpdate.do',
-                data: {entityId:entityId,entityCode:_self.entityCode,content:content,id:_self.extendData.id},
+                data: {entityId:entityId,entityCode:_self.entityCode,content:content,id:contentId},
                 dataType: "json"
             }).done(function (res, status, xhr) {
                 if (res.success) {

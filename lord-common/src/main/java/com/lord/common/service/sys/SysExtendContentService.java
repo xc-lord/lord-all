@@ -7,6 +7,9 @@ import com.lord.common.dto.sys.ExtendContentDto;
 import com.lord.common.dto.user.LoginUser;
 import com.lord.common.model.sys.SysExtendContent;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 扩展内容sys_extend_content的Service
  *
@@ -79,4 +82,20 @@ public interface SysExtendContentService {
      * @return
      */
     SysExtendContent getExtendContent(String entityCode, Long entityId);
+
+    /**
+     * 获取实体的内容
+     * @param entityId      实体ID
+     * @param entityCodes    实体编码
+     * @return
+     */
+    List<SysExtendContent> listByEntity(Long entityId, String... entityCodes);
+
+    /**
+     * 获取实体的内容
+     * @param entityId      实体ID
+     * @param entityCodes    实体编码
+     * @return
+     */
+    Map<String, SysExtendContent> getMapByEntity(Long entityId, String... entityCodes);
 }

@@ -6,7 +6,7 @@
     var path = require('path');
     var logger = require('./lib/logger')(path.basename(__filename));
     var appInit = require('./lib/appInit');
-    var artTemplate = require('./lib/artTemplate');
+    var viewTemplate = require('./lib/viewTemplate');
     var express = require('express');
 
     var app = express();
@@ -19,7 +19,7 @@
     //静态目录配置
     app.use(express.static(path.join(__dirname, 'public')));
     //使用腾讯的art-template模板引擎
-    artTemplate.init(app);
+    viewTemplate.init(app);
     //路由配置
     appInit.loadRoutes(app);
 

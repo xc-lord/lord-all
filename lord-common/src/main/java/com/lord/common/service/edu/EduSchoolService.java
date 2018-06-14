@@ -6,6 +6,8 @@ import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.user.LoginUser;
 import com.lord.common.model.edu.EduSchool;
 
+import java.util.List;
+
 /**
  * 学校edu_school的Service
  *
@@ -77,4 +79,11 @@ public interface EduSchoolService {
      * @return
      */
     boolean isExist(Long id, String rowName, String rowValue);
+
+    /**
+     * 根据省份查询学校
+     * @param provinceId    省份ID
+     * @return
+     */
+    List<EduSchool> listByProvinceId(Long provinceId);
 }
