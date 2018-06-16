@@ -126,17 +126,13 @@ public class ${className}ServiceImpl implements ${className}Service {
     @Override
     public Pager<${className}> page${className}(${className} param, PagerParam pagerParam, PagerSort... sorts) {
         Sort sort = ServiceUtils.parseSort(sorts);
-        Page<${className}> pageResult = null;
-        //ID存在时，按ID进行查询
-        if (param != null && param.getId() != null) {
-            ${className} obj = ${classNameLower}Dao.findOne(param.getId());
-            return ServiceUtils.toPager(obj, pagerParam);
-        }
+        PageRequest pageRequest = null;
         if(sort != null) {
-            pageResult = ${classNameLower}Dao.findAll(new PageRequest(pagerParam.getPage() - 1, pagerParam.getPageSize(), sort));
+            pageRequest = new PageRequest(pagerParam.getPage() - 1, pagerParam.getPageSize(), sort);
         } else {
-            pageResult = ${classNameLower}Dao.findAll(new PageRequest(pagerParam.getPage() - 1, pagerParam.getPageSize()));
+            pageRequest = new PageRequest(pagerParam.getPage() - 1, pagerParam.getPageSize());
         }
+        Page<${className}> pageResult = ${classNameLower}Dao.findAll(${className}Specs.queryBy${className}(param), pageRequest);
         return ServiceUtils.toPager(pageResult, pagerParam);
     }
 

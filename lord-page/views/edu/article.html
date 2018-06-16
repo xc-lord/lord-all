@@ -1,0 +1,109 @@
+{{extend '../layout/eduPC.html'}}
+
+{{block 'title'}}{{articleData.article.title}}{{/block}}
+{{block 'keywords'}}家居,家居网,家居官网,家居商城,乌托家,乌托家家居商城官网,电商平台,家居电商,家居电商平台,家居o2o{{/block}}
+{{block 'description'}}乌托家，一个家居O2O电商平台。我们致力于和用户一起打造一个理想的家、一种自己想要的生活方式。{{/block}}
+{{block 'head'}}
+<link rel="stylesheet" type="text/css" href="{{resSite}}/css/wtj/wtjcms.css"/>
+{{/block}}
+
+{{block 'content'}}
+<div class="w1200 consultationdetails-main ">
+    <div class="breadcrumb">
+        <span><a href="{{articleUrl}}/">资讯</a><i></i></span>
+        {{each articleData.categoryList}}
+        <span><a href="{{articleUrl}}/{{$value.id}}/">{{$value.name}}</a><i></i></span>
+        {{/each}}
+        <span><a>{{articleData.article.title}}</a></span>
+    </div>
+
+    <div class=" clearfix consultationdetails-content">
+        <div class="consultationdetails-content-l">
+            <div class="content-l-box">
+
+                <h1 class="clearfix">
+                    {{articleData.article.title}}
+                </h1>
+
+                <div class=" clearfix newdetais-time">
+                    <span class="newdetais-time-span"><i></i>{{articleData.article.createTime}}</span>
+                    <span class="newdetais-time-span"><em></em>{{articleData.article.catName}}</span>
+                    {{if articleData.article.authorName}}
+                    <span class="newdetais-span">作者：{{articleData.article.authorName}}</span>
+                    {{/if}}
+                    {{if articleData.article.source}}
+                    <span class="newdetais-span">来源：{{articleData.article.source}}</span>
+                    {{/if}}
+                </div>
+                <div class="clearfix lead-box">导语：{{articleData.article.intro}}</div>
+                <div class="clearfix text-content">
+                    {{articleData.content.content}}
+                </div>
+                <div class="clearfix page-div page-cms" >
+                </div>
+            </div>
+            <div class="clearfix tag-box">
+            </div>
+            <div class="clearfix tag-box share-box">
+                <h4>分享到</h4>
+                <div class="analyse-img-btn share-divs">
+                    <div class="jiathis_style_32x32">
+                        <a class="jiathis_button_tsina sina-wb" title="分享到新浪微博"></a>
+                        <a class="jiathis_button_weixin qq-wx" title="分享到微信"></a>
+                        <a class="jiathis_button_huaban hb-wz" title="分享到花瓣"></a>
+                        <a class="jiathis_button_cqq qq-gj" title="分享到QQ"></a>
+                        <a class="copy-link" d-name="http://www.wutuojia.com/zixun/article/9698.html" title="复制链接"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix opt-btn-div">
+
+                <span class="nav-prv">上一篇：
+                    {{if articleData.prevArticle}}
+                    <a href="{{articleUrl}}/{{articleData.prevArticle.id}}.html">{{articleData.prevArticle.title}}</a>
+                    {{else}}
+                    没有了
+                    {{/if}}
+                </span>
+                <span class="nav-next">下一篇：{{if articleData.nextArticle}}
+                    <a href="{{articleUrl}}/{{articleData.nextArticle.id}}.html">{{articleData.nextArticle.title}}</a>
+                    {{else}}
+                    没有了
+                    {{/if}}
+                </span>
+            </div>
+
+
+        </div>
+        <div class="consultationdetails-content-r ">
+            <h3>相关专题</h3>
+            <div class="about-special">
+                <a href="http://www.wutuojia.com/zixun/baike/88.html" target="_blank">灯具</a>
+                <a href="http://www.wutuojia.com/zixun/baike/109.html" target="_blank">吊灯</a>
+                <a href="http://www.wutuojia.com/zixun/baike/108.html" target="_blank">台灯</a>
+            </div>
+
+            <div class="consultation-content-l" style="float:right;margin-right: 64%;padding-top: 25px;">
+                <h3>随机推荐</h3>
+                <div class="clearfix recommend" style="width:250%;">
+                    <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/5636.html" target="_blank">吊灯选购注意事项</a></p>
+                    <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/5637.html" target="_blank">吊灯的保养和清洁</a></p>
+                    <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/5639.html" target="_blank">台灯选购注意事项</a></p>
+                    <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/5640.html" target="_blank">台灯使用建议</a></p>
+                    <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/930.html" target="_blank">家居照明布置技巧</a></p>
+                    <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/931.html" target="_blank">居室灯光巧布置 不同分区光不同</a></p>
+                    <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/932.html" target="_blank">灯具消费误区和品牌建议</a></p>
+                    <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6087.html" target="_blank">吸顶灯和吊灯的区别 选吸顶灯还是吊灯</a></p>
+                    <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6086.html" target="_blank">带风扇的吊灯安全吗 风扇吊灯怎么样</a></p>
+                    <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6079.html" target="_blank">吊灯清洗有技巧 3招教你轻松解决</a></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{{/block}}
+
+{{block 'foot'}}
+<script src="{{resSite}}/js/wtj/wtjcms.js"></script>
+{{/block}}

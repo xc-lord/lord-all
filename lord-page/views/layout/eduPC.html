@@ -9,26 +9,19 @@
     <meta content="email=no" name="format-detection">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=1200">
-    <link rel="shortcut icon" type="image/x-icon" href="/res/img/wtj/wtj_logo_s.ico" media="screen"/>
+    <link rel="shortcut icon" type="image/x-icon" href="{{resSite}}/img/wtj/wtj_logo_s.ico" media="screen"/>
     <title>{{block 'title'}}My Site{{/block}}</title>
     <meta name="keywords" content="{{block 'keywords'}}My Site keywords{{/block}}"/>
     <meta name="description" content="{{block 'description'}}My Site keywords{{/block}}"/>
 
-    <script type="text/javascript" src="/res/js/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="/res/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="{{resSite}}/js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="{{resSite}}/js/jquery.cookie.js"></script>
     <script type="text/javascript">
         var resVersion = '20171027';
-        var thisPageCss = '/res/css/front/wtjmain.css,/res/css/front/specialdetail.css';
-        var thisPageJs = '/res/js/jquery.lazyload.js,/res/js/jquery.SuperSlide.2.1.1.js,/res/js/wtj/index.js';
-        var dynSite = 'http://www.wutuojia.com';
-        var wtjImageUrlPath = 'http://img1.wutuojia.com';
-        var pcBannerImg = 'http://img1.wutuojia.com/banner/20160816/112251_784988.gif';
-        var pcBannerMiniImg = 'http://img1.wutuojia.com/banner/20160815/142636_385412.gif';
-        var pcBannerBackgroudColor = '#ffea00';
-        var pcBannerUrl = 'http://www.wutuojia.com/special/fewmuji.html';
+        var dynSite = '{{dynSite}}';
     </script>
-    <script type="text/javascript" src="/res/js/wtj/common.js"></script>
-    <link rel="stylesheet" type="text/css" href="/res/css/wtj/base.css"/>
+    <script type="text/javascript" src="{{resSite}}/js/wtj/common.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{resSite}}/css/wtj/base.css"/>
     {{block 'head'}}{{/block}}
 </head>
 <body>
@@ -42,10 +35,8 @@
                 <li><a href="/edu/" class='menu-on'>首页</a></li>
                 <li><a href="/wtj/zixun.html">资讯</a></li>
                 <li><a href="/edu/article/">资讯列表</a></li>
-                <li><a href="/wtj/zixunArticle.html">文章详情</a></li>
                 <li><a href="/edu/school/">学校目录</a></li>
                 <li><a href="/wtj/baike.html">百科</a></li>
-                <li><a href="/wtj/schoolDetails.html">学校详情</a></li>
                 <li><a href="/wtj/schoolMap.html">网站地图</a></li>
             </ul>
         </div>
@@ -206,8 +197,8 @@
     </div>
 </div>
 <!-- 页尾 end   -->
-<script type="text/javascript" src="/res/js/jquery.lazyload.js"></script>
-<script type="text/javascript" src="/res/js/jquery.SuperSlide.2.1.1.js"></script>
+<script type="text/javascript" src="{{resSite}}/js/jquery.lazyload.js"></script>
+<script type="text/javascript" src="{{resSite}}/js/jquery.SuperSlide.2.1.1.js"></script>
 <!-- 自定义JS  start -->
 {{block 'foot'}}{{/block}}
 <!-- 自定义JS  end  -->

@@ -36,6 +36,7 @@ Vue.component('mis-cascader', {
                         filterable\
                         :change-on-select="selectAll"\
                         v-model="selectedOptions"\
+                        size="small"\
                         @change="handleChange">\
                     </el-cascader>',
     data: function () {

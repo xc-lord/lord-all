@@ -2,12 +2,14 @@ package com.lord.biz.service.cms;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.lord.biz.dao.DbSqlDao;
 import com.lord.biz.dao.cms.*;
 import com.lord.biz.dao.cms.specs.CmsArticleContentSpecs;
 import com.lord.biz.dao.cms.specs.CmsArticleSpecs;
 import com.lord.biz.dao.cms.specs.CmsTagsSpecs;
 import com.lord.biz.utils.ServiceUtils;
 import com.lord.common.constant.CheckState;
+import com.lord.common.constant.PagerDirection;
 import com.lord.common.constant.cms.CmsArticleState;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
@@ -30,6 +32,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigInteger;
 import java.util.*;
 
 /**
@@ -63,6 +66,9 @@ public class CmsArticleServiceImpl implements CmsArticleService {
 
     @Autowired
     private CmsArticleContentDao cmsArticleContentDao;
+
+    @Autowired
+    private DbSqlDao dbSqlDao;
 
     @Override
     public CmsArticle getCmsArticle(Long id) {
@@ -145,17 +151,13 @@ public class CmsArticleServiceImpl implements CmsArticleService {
     @Override
     public Pager<CmsArticle> pageCmsArticle(CmsArticle param, PagerParam pagerParam, PagerSort... sorts) {
         Sort sort = ServiceUtils.parseSort(sorts);
-        Page<CmsArticle> pageResult = null;
-        //ID存在时，按ID进行查询
-        if (param != null && param.getId() != null) {
-            CmsArticle obj = cmsArticleDao.findOne(param.getId());
-            return ServiceUtils.toPager(obj, pagerParam);
-        }
+        PageRequest pageRequest = null;
         if(sort != null) {
-            pageResult = cmsArticleDao.findAll(new PageRequest(pagerParam.getPage() - 1, pagerParam.getPageSize(), sort));
+            pageRequest = new PageRequest(pagerParam.getPage() - 1, pagerParam.getPageSize(), sort);
         } else {
-            pageResult = cmsArticleDao.findAll(new PageRequest(pagerParam.getPage() - 1, pagerParam.getPageSize()));
+            pageRequest = new PageRequest(pagerParam.getPage() - 1, pagerParam.getPageSize());
         }
+        Page<CmsArticle> pageResult = cmsArticleDao.findAll(CmsArticleSpecs.queryByCmsArticle(param), pageRequest);
         return ServiceUtils.toPager(pageResult, pagerParam);
     }
 
@@ -252,6 +254,52 @@ public class CmsArticleServiceImpl implements CmsArticleService {
             map.put(article.getId() + "", article);
         }
         return map;
+    }
+
+    @Override
+    public Pager<CmsArticle> pageByCategory(CmsCategory category, PagerParam pagerParam)
+    {
+        CmsArticle param = new CmsArticle();
+        if (category != null)
+        {
+            if(category.getLevel() == 1) {
+                param.setCatOneId(category.getId());
+            }
+            else if(category.getLevel() == 2) {
+                param.setCatTwoId(category.getId());
+            }
+            else if(category.getLevel() == 3) {
+                param.setCatThreeId(category.getId());
+            }
+            else if(category.getLevel() == 4) {
+                param.setCatId(category.getId());
+            }
+        }
+        return pageCmsArticle(param, pagerParam);
+    }
+
+    @Override
+    public CmsArticleContent getArticleContent(Long articleId)
+    {
+        return cmsArticleContentDao.findOne(CmsArticleContentSpecs.queryBy("articleId", articleId, CmsArticleContent.class));
+    }
+
+    @Override
+    public CmsArticle getPrevArticle(CmsArticle article)
+    {
+        BigInteger maxId = (BigInteger) dbSqlDao.selectOne("SELECT max(id) FROM cms_article WHERE id < ? AND cat_id=?", article.getId(), article.getCatId());
+        if(maxId == null)
+            return null;
+        return getCmsArticle(maxId.longValue());
+    }
+
+    @Override
+    public CmsArticle getNextArticle(CmsArticle article)
+    {
+        BigInteger minId = (BigInteger) dbSqlDao.selectOne("SELECT min(id) FROM cms_article WHERE id > ? AND cat_id=?", article.getId(), article.getCatId());
+        if(minId == null)
+            return null;
+        return getCmsArticle(minId.longValue());
     }
 
     /**

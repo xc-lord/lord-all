@@ -13,17 +13,17 @@
     <el-row>
         <el-form :inline="true" :model="searchForm" class="demo-form-inline">
             <el-form-item label="ID">
-                <el-input v-model="searchForm.id" placeholder="ID"></el-input>
+                <el-input v-model="searchForm.id" placeholder="ID" size="small"></el-input>
             </el-form-item>
             <el-form-item label="名称">
-                <el-input v-model="searchForm.name" placeholder="名称"></el-input>
+                <el-input v-model="searchForm.name" placeholder="名称" size="small"></el-input>
             </el-form-item>
             <el-form-item label="分类">
                 <mis-cascader ref="cmpSelect" placeholder="搜索" api-url="/api/admin/cms/cmsCategory/getOptions.do" :default-value="categoryArr" v-on:cascader-changed="getOptions" :can-select-all="true"></mis-cascader>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" icon="el-icon-search" @click="searchClick">查询</el-button>
-                <el-button type="success" icon="plus" @click="addClick" v-if="showEditPage && hasRight('cmsArticle.Add')" >新增</el-button>
+                <el-button type="primary" icon="el-icon-search" @click="searchClick"  size="small">查询</el-button>
+                <el-button type="success" icon="plus" @click="addClick" v-if="showEditPage && hasRight('cmsArticle.Add')"  size="small">新增</el-button>
             </el-form-item>
         </el-form>
     </el-row>
@@ -172,6 +172,7 @@
                     <el-button v-if="hasRight('cmsArticle.Delete')" :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">
                         删除
                     </el-button>
+                    <el-button type="primary" icon="el-icon-view" @click="viewClick(scope.row)" size="small">预览</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -334,6 +335,10 @@
                     return;
                 }
                 window.location.href = "#/cmsArticle/add";
+            },
+            //预览事件
+            viewClick: function (row) {
+                window.open("/edu/article/" + row.id + ".html");
             },
             //表格编辑事件
             editClick: function (row) {

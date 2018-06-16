@@ -1,0 +1,23 @@
+{{if needPaging}}
+<div class=" clearfix page-div page-cms">
+    <div class="paging-div">
+        <div class="nav-num">
+            {{if hasPrev}}
+            <a href="http://www.wutuojia.com/zixun/article/fengshui/list_{{page - 1}}.html" class="nav-left"></a>
+            {{/if}}
+            {{each pageNavs pageNum}}
+            {{if pageNum == page}}
+            <a href="javascript:;" class="on-page">{{pageNum}}</a>
+            {{else if pageNum>0}}
+            <a href="http://www.wutuojia.com/zixun/article/fengshui/">{{pageNum}}</a>
+            {{else}}
+            <a href="javascript:;">...</a>
+            {{/if}}
+            {{/each}}
+            {{if hasPrev}}
+            <a href="http://www.wutuojia.com/zixun/article/fengshui/list_{{page + 1}}.html" class="nav-right"></a>
+            {{/if}}
+        </div>
+    </div>
+</div>
+{{/if}}

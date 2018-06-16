@@ -48,6 +48,8 @@ public class Pager<T> implements Serializable {
      */
     private boolean hasNext;
 
+    private List<Integer> pageNavs;
+
     public Pager(PagerParam pagerParam, Integer totalRows) {
         this(pagerParam.getPage(), pagerParam.getPageSize(), totalRows);
     }
@@ -192,6 +194,16 @@ public class Pager<T> implements Serializable {
 
     public void setList(List<T> list) {
         this.list = list;
+    }
+
+    public List<Integer> getPageNavs()
+    {
+        return pageNavs;
+    }
+
+    public void setPageNavs(List<Integer> pageNavs)
+    {
+        this.pageNavs = pageNavs;
     }
 
     @Override

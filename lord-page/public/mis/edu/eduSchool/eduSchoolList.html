@@ -32,7 +32,6 @@
                     <el-form-item>
                         <el-button type="primary" icon="el-icon-search" @click="searchClick" size="small">查询</el-button>
                         <el-button type="success" icon="el-icon-plus" @click="addClick" size="small">新增</el-button>
-                        <el-button type="success" icon="el-icon-plus" @click="dialogAddClick" size="small">弹窗新增</el-button>
                     </el-form-item>
                 </el-form>
             </el-row>
@@ -74,11 +73,6 @@
                                                 </div>
                                             </template>
                                         </el-table-column>
-                                                <el-table-column
-                                                        prop="intro"
-                                                        label="介绍"
-                                                        width="120">
-                                                </el-table-column>
                                                 <el-table-column
                                                         prop="provinceId"
                                                         label="省ID"
@@ -144,9 +138,7 @@
                             <el-button :plain="true" type="danger" size="small" icon="el-icon-delete" @click="deleteClick(scope.row)" size="small">
                                 删除
                             </el-button>
-                            <el-button :plain="true" type="success" size="small" icon="el-icon-edit" @click="dialogEditClick(scope.row)" size="small">
-                                弹窗编辑
-                            </el-button>
+                            <el-button type="primary" icon="el-icon-view" @click="viewClick(scope.row)" size="small">预览</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -287,6 +279,10 @@
                     //新建事件
                     addClick: function () {
                         window.location.href = "#/eduSchool/add";
+                    },
+                    //预览事件
+                    viewClick: function (row) {
+                        window.open("/edu/school/" + row.id + ".html");
                     },
                     //表格编辑事件
                     editClick: function (row) {

@@ -4,15 +4,15 @@
 {{block 'keywords'}}家居,家居网,家居官网,家居商城,乌托家,乌托家家居商城官网,电商平台,家居电商,家居电商平台,家居o2o{{/block}}
 {{block 'description'}}乌托家，一个家居O2O电商平台。我们致力于和用户一起打造一个理想的家、一种自己想要的生活方式。{{/block}}
 {{block 'head'}}
-<link rel="stylesheet" type="text/css" href="/res/css/wtj/wtjcms.css"/>
+<link rel="stylesheet" type="text/css" href="{{resSite}}/css/wtj/wtjcms.css"/>
 {{/block}}
 
 {{block 'content'}}
 <div class="w1200 consultationdetails-main ">
     <div class="breadcrumb">
-        <span><a href="/edu/article/">资讯</a><i></i></span>
+        <span><a href="{{articleUrl}}/">资讯</a><i></i></span>
         {{each listData.categoryList}}
-        <span><a href="/edu/article/{{$value.id}}">{{$value.name}}</a><i></i></span>
+        <span><a href="{{articleUrl}}/{{$value.id}}/">{{$value.name}}</a><i></i></span>
         {{/each}}
     </div>
     <div class=" clearfix consultationdetails-content">
@@ -25,11 +25,11 @@
                     {{if listData.parentCatIds.indexOf(catOne.id + ',') > -1}}
                     class="special-nav-on"
                     {{/if}}>
-                        <a href="http://www.wutuojia.com/zixun/article/ruanzhuang/" ><span  class="special-nav-name">{{catOne.name}} <i></i></span></a>
+                        <a href="{{articleUrl}}/{{catOne.id}}/" ><span  class="special-nav-name">{{catOne.name}} <i></i></span></a>
                         <ul class="special-nav-ul-t">
                             {{each catOne.children catTwo}}
                             <li>
-                                <a href="http://www.wutuojia.com/zixun/article/csyp/"
+                                <a href="{{articleUrl}}/{{catTwo.id}}/"
                                    {{if listData.parentCatIds.indexOf(catTwo.id + ',') > -1}} class="special-t-on" {{/if}}
                                         >{{catTwo.name}}</a>
                             </li>
@@ -146,133 +146,73 @@
         </div>
         <div class="consultation-content-r">
             <div class="clearfix query-hot">
-                <span class="hot" >热门</span><span class="query-hot-on"><a href="http://www.wutuojia.com/zixun/article/">最新(47)</a></span>
+                <span class="hot" >热门</span>
+                <span class="query-hot-on">
+                <a href="{{dynSite}}/article/">最新({{listData.articleData.totalRows}})</a>
+                </span>
 		    	<span style="float: right; margin-top: 6px;" >
 					<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=4037853190789419867' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>
 				</span>
             </div>
             <ul class="clearfix ul-concent-cnsul">
+                {{each listData.articleData.list article}}
                 <li>
-                    <div class="cnsul-concent-img"><a target="_blank" href="http://www.wutuojia.com/zixun/article/9846.html" target="_blank"><img src="http://img2.wutuojia.com/pic/middle/cms/article/20170908/181030_782430.png"  /></a><span></span></div>
+                    <div class="cnsul-concent-img">
+                        <a target="_blank" href="{{articleUrl}}/{{article.id}}.html" target="_blank">
+                            {{if article.coverImg}}
+                            <img src="{{article.coverImg}}"/>
+                            {{else}}
+                            <img src="http://img2.wutuojia.com/pic/middle/cms/article/20170908/181030_782430.png"/>
+                            {{/if}}
+                        </a>
+                        <span></span>
+                    </div>
                     <div class="cnsul-concent-r">
-                        <h3><a target="_blank" href="http://www.wutuojia.com/zixun/article/9846.html">只要有创意，灯具也可以与众不同！</a></h3>
-                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>2017-09-08</span> <span class="newdetais-time-span"><em></em>灯饰</span></div>
-                        <p><a target="_blank" href="http://www.wutuojia.com/zixun/article/9846.html">
-                            灯，不只是为了照明，更是为了提升整个家的格调，但同时又不会显得过于繁琐或是突兀。<i>［查看全文］</i>
+                        <h3><a target="_blank" href="{{articleUrl}}/{{article.id}}.html">{{article.title}}</a></h3>
+                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>{{article.updateTime}}</span> <span class="newdetais-time-span"><em></em>{{article.catName}}</span></div>
+                        <p><a target="_blank" href="{{articleUrl}}/{{article.id}}.html">
+                            {{article.intro}}<i>［查看全文］</i>
                         </a></p>
                     </div>
                 </li>
-                <li>
-                    <div class="cnsul-concent-img"><a target="_blank" href="http://www.wutuojia.com/zixun/article/9707.html" target="_blank"><img src="http://img2.wutuojia.com/pic/middle/cms/article/20161109/184521_980848.jpg"  /></a><span></span></div>
-                    <div class="cnsul-concent-r">
-                        <h3><a target="_blank" href="http://www.wutuojia.com/zixun/article/9707.html">选一顶合适的灯，撩动无尽流淌的时光</a></h3>
-                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>2017-07-24</span> <span class="newdetais-time-span"><em></em>灯饰</span></div>
-                        <p><a target="_blank" href="http://www.wutuojia.com/zixun/article/9707.html">
-                            选一顶美到没有朋友的灯，撩动无尽流淌的时光<i>［查看全文］</i>
-                        </a></p>
-                    </div>
-                </li>
-                <li>
-                    <div class="cnsul-concent-img"><a target="_blank" href="http://www.wutuojia.com/zixun/article/9809.html" target="_blank"><img src="http://img2.wutuojia.com/pic/middle/cms/article/20170724/154703_421833.png"  /></a><span></span></div>
-                    <div class="cnsul-concent-r">
-                        <h3><a target="_blank" href="http://www.wutuojia.com/zixun/article/9809.html">听说现在都流行装这种餐厅灯，真想把家里的拆了重装！</a></h3>
-                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>2017-07-24</span> <span class="newdetais-time-span"><em></em>灯饰</span></div>
-                        <p><a target="_blank" href="http://www.wutuojia.com/zixun/article/9809.html">
-                            说到餐厅，大家脑海里涌现的画面大概是，在疲惫了一天的工作后，坐在暖暖的灯光下，跟家人一起气氛融洽的吃一顿饭。所以餐厅的装修不在于多么奢华，不在于要在金碧辉煌的水晶灯下用餐，而温暖是家唯一的主格调。<i>［查看全文］</i>
-                        </a></p>
-                    </div>
-                </li>
-                <li>
-                    <div class="cnsul-concent-img"><a target="_blank" href="http://www.wutuojia.com/zixun/article/9698.html" target="_blank"><img src="http://img2.wutuojia.com/pic/middle/cms/article/20161109/144922_378837.jpg"  /></a><span></span></div>
-                    <div class="cnsul-concent-r">
-                        <h3><a target="_blank" href="http://www.wutuojia.com/zixun/article/9698.html">能拉高你家颜值的，是灯是灯还是灯！</a></h3>
-                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>2017-06-12</span> <span class="newdetais-time-span"><em></em>灯饰</span></div>
-                        <p><a target="_blank" href="http://www.wutuojia.com/zixun/article/9698.html">
-                            灯是家中最温暖的存在，
-                            也是夜晚最长情的陪伴。<i>［查看全文］</i>
-                        </a></p>
-                    </div>
-                </li>
-                <li>
-                    <div class="cnsul-concent-img"><a target="_blank" href="http://www.wutuojia.com/zixun/article/9743.html" target="_blank"><img src="http://img2.wutuojia.com/pic/middle/cms/article/20161114/160902_290245.jpg"  /></a><span></span></div>
-                    <div class="cnsul-concent-r">
-                        <h3><a target="_blank" href="http://www.wutuojia.com/zixun/article/9743.html">一盏灯，一本书，就是一个世界</a></h3>
-                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>2017-03-23</span> <span class="newdetais-time-span"><em></em>灯饰</span></div>
-                        <p><a target="_blank" href="http://www.wutuojia.com/zixun/article/9743.html">
-                            离开喧嚣与繁华，寻一份宁静与淡泊，暖暖的灯光下，独自享受好书相伴的时光
-                            <i>［查看全文］</i>
-                        </a></p>
-                    </div>
-                </li>
-                <li>
-                    <div class="cnsul-concent-img"><a target="_blank" href="http://www.wutuojia.com/zixun/article/9658.html" target="_blank"><img src="http://img2.wutuojia.com/pic/middle/cms/article/20161026/150007_980268.jpg"  /></a><span></span></div>
-                    <div class="cnsul-concent-r">
-                        <h3><a target="_blank" href="http://www.wutuojia.com/zixun/article/9658.html">简约风格更百搭 家居灯具掀起极简热潮</a></h3>
-                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>2016-10-28</span> <span class="newdetais-time-span"><em></em>灯饰</span></div>
-                        <p><a target="_blank" href="http://www.wutuojia.com/zixun/article/9658.html">
-                            简约风格的家居，怎么少得了简约风的灯具点缀呢？<i>［查看全文］</i>
-                        </a></p>
-                    </div>
-                </li>
-                <li>
-                    <div class="cnsul-concent-img"><a target="_blank" href="http://www.wutuojia.com/zixun/article/9657.html" target="_blank"><img src="http://img2.wutuojia.com/pic/middle/cms/article/20161026/130805_363348.jpg"  /></a><span></span></div>
-                    <div class="cnsul-concent-r">
-                        <h3><a target="_blank" href="http://www.wutuojia.com/zixun/article/9657.html">一闪一闪亮晶晶 优雅灯具温暖黑夜</a></h3>
-                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>2016-10-28</span> <span class="newdetais-time-span"><em></em>灯饰</span></div>
-                        <p><a target="_blank" href="http://www.wutuojia.com/zixun/article/9657.html">
-                            如今灯饰已经不仅仅是照明，还能在黑夜中给我们带来一丝温暖。<i>［查看全文］</i>
-                        </a></p>
-                    </div>
-                </li>
-                <li>
-                    <div class="cnsul-concent-img"><a target="_blank" href="http://www.wutuojia.com/zixun/article/9636.html" target="_blank"><img src="http://img2.wutuojia.com/pic/middle/cms/article/20161020/222602_634482.jpg"  /></a><span></span></div>
-                    <div class="cnsul-concent-r">
-                        <h3><a target="_blank" href="http://www.wutuojia.com/zixun/article/9636.html">温柔炙热的小黄灯 让你感受家的温度</a></h3>
-                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>2016-10-21</span> <span class="newdetais-time-span"><em></em>灯饰</span></div>
-                        <p><a target="_blank" href="http://www.wutuojia.com/zixun/article/9636.html">
-                            灯饰除了能照明之外，不同光亮度和颜色也能带给人不同的感受。浅浅柔柔的黄光灯能温暖人心，让你疲惫的心重新感受到家的温暖。如何选择灯具，我们一起来看看吧。<i>［查看全文］</i>
-                        </a></p>
-                    </div>
-                </li>
-                <li>
-                    <div class="cnsul-concent-img"><a target="_blank" href="http://www.wutuojia.com/zixun/article/8847.html" target="_blank"><img src="http://img2.wutuojia.com/pic/middle/cms/article/20160527/173627_673334.jpg"  /></a><span></span></div>
-                    <div class="cnsul-concent-r">
-                        <h3><a target="_blank" href="http://www.wutuojia.com/zixun/article/8847.html">树脂灯罩和亚克力灯罩二选一 哪个比较好呢？</a></h3>
-                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>2016-05-30</span> <span class="newdetais-time-span"><em></em>灯饰</span></div>
-                        <p><a target="_blank" href="http://www.wutuojia.com/zixun/article/8847.html">
-                            灯罩是灯具的一个重要的组成部分，外观好、质量优良的灯罩不仅能给家中增添一道美丽的风景，更能带给人舒适的视觉感受和长久的使用幸福感。那么在树脂灯罩和亚克力灯罩中，哪一种材质更加优良，更能凸显我们的生活品质...<i>［查看全文］</i>
-                        </a></p>
-                    </div>
-                </li>
-                <li>
-                    <div class="cnsul-concent-img"><a target="_blank" href="http://www.wutuojia.com/zixun/article/8860.html" target="_blank"><img src="http://img2.wutuojia.com/pic/middle/cms/article/20160527/174020_157089.jpg"  /></a><span></span></div>
-                    <div class="cnsul-concent-r">
-                        <h3><a target="_blank" href="http://www.wutuojia.com/zixun/article/8860.html">星空投影灯多少钱 星空投影灯原理</a></h3>
-                        <div class=" clearfix newdetais-time"> <span class="newdetais-time-span"><i></i>2016-05-30</span> <span class="newdetais-time-span"><em></em>灯饰</span></div>
-                        <p><a target="_blank" href="http://www.wutuojia.com/zixun/article/8860.html">
-                            在蝉鸣的夏夜，躺在自家舒适的大床上，欣赏着天花板上浪漫的星空，慢慢陷入梦乡……小的时候我们就梦想着能躺在星空下睡觉，现在，一个星空投影灯就可以为你创造出这样的浪漫又梦幻的世界。<i>［查看全文］</i>
-                        </a></p>
-                    </div>
-                </li>
-
+                {{/each}}
             </ul>
+
+            {{if listData.articleData.needPaging}}
             <div class=" clearfix page-div page-cms">
                 <div class="paging-div">
                     <div class="nav-num">
-                        <a href="javascript:;" class="on-page" >1</a>
-                        <a href="http://www.wutuojia.com/zixun/article/dengshi/list_2.html" >2</a>
-                        <a href="http://www.wutuojia.com/zixun/article/dengshi/list_3.html" >3</a>
-                        <a href="http://www.wutuojia.com/zixun/article/dengshi/list_4.html" >4</a>
-                        <a href="http://www.wutuojia.com/zixun/article/dengshi/list_5.html" >5</a>
-                        <a href="http://www.wutuojia.com/zixun/article/dengshi/list_2.html" class="nav-right"></a>
+                        {{if listData.articleData.hasPrev}}
+                        {{if listData.articleData.page-1 == 1}}
+                        <a href="{{pageUrl}}/" class="nav-left"></a>
+                        {{else}}
+                        <a href="{{pageUrl}}/list{{listData.articleData.page - 1}}.html" class="nav-left"></a>
+                        {{/if}}
+                        {{/if}}
+                        {{each listData.articleData.pageNavs pageNum}}
+                        {{if pageNum == listData.articleData.page}}
+                        <a href="javascript:;" class="on-page">{{pageNum}}</a>
+                        {{else if pageNum == 1}}
+                        <a href="{{pageUrl}}/">{{pageNum}}</a>
+                        {{else if pageNum>1}}
+                        <a href="{{pageUrl}}/list{{pageNum}}.html">{{pageNum}}</a>
+                        {{else}}
+                        <a href="javascript:;">...</a>
+                        {{/if}}
+                        {{/each}}
+                        {{if listData.articleData.hasNext}}
+                        <a href="{{pageUrl}}/list{{listData.articleData.page + 1}}.html" class="nav-right"></a>
+                        {{/if}}
                     </div>
                 </div>
             </div>
+            {{/if}}
+
         </div>
     </div>
 </div>
 {{/block}}
 
 {{block 'foot'}}
-<script type="text/javascript" src="/res/js/wtj/wtjcms.js"></script>
+<script type="text/javascript" src="{{resSite}}/js/wtj/wtjcms.js"></script>
 {{/block}}

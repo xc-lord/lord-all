@@ -33,7 +33,6 @@
             var data = {};
             var httpMethod;
             var s = new Date().getTime();
-
             for (var key in api) {
                 data[key] = {};
                 if (!api[key].url) {
@@ -80,7 +79,7 @@
                 });
 
             }, function (err, resArr) {
-                var data = {};
+                var resData = {};
                 for (var ii = 0; ii < resArr.length; ii++) {
                     var modelKey = resArr[ii].key;
                     var api_url = resArr[ii].api_url;
@@ -88,16 +87,20 @@
                     if(response.code != 1) {
                         logger.error("API接口" + api_url + " 调用失败：" + response.msg);
                     }
-                    data[modelKey] = response.data;
+                    resData[modelKey] = response.data;
                 }
-                data.hasData = true;
-                /*logger.debug("接口获取到的数据为：");
-                 logger.debug(data);*/
                 var e = new Date().getTime();
                 var u = e-s;
-                data.apiUseTime=u;
+                resData.apiUseTime = u;//请求时间
+                resData.dynSite = req.protocol + '://' + req.host;//当前请求地址
+                resData.resSite = req.protocol + '://' + req.host + "/res";//资源地址
+                resData.hasData = true;//是否有数据
+
                 logger.debug("请求页面：" + req.path + ' 调用api接口获取数据用时: ' + u + "ms");
-                self.doRender(callback, null, data);
+                /*logger.debug("接口获取到的数据为：");
+                 logger.debug(resData);*/
+
+                self.doRender(callback, null, resData);
             });
         },
         /*

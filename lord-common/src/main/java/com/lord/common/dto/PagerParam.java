@@ -27,9 +27,9 @@ public class PagerParam implements Serializable {
     }
 
     private void initStartRow() {
-        if(page < 1)
+        if(page == null || page < 1)
             page = 1;
-        if(pageSize < 1)
+        if(pageSize == null || pageSize < 1)
             pageSize = 10;
         startRow = (page - 1) * pageSize;
     }

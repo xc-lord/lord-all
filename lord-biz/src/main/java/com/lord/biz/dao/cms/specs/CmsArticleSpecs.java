@@ -2,6 +2,7 @@ package com.lord.biz.dao.cms.specs;
 
 import com.lord.biz.utils.BaseSpecification;
 import com.lord.common.model.cms.CmsArticle;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
@@ -32,7 +33,26 @@ public class CmsArticleSpecs extends BaseSpecification {
                     predicate = builder.and(predicate, builder.equal(id, pageObj.getId()));
                     return predicate;
                 }
-                //TODO:待修改
+                if (pageObj.getCatId() != null)
+                {
+                    Path catId = root.get("catId");
+                    predicate = builder.and(predicate, builder.equal(catId, pageObj.getCatId()));
+                }
+                if (pageObj.getCatOneId() != null)
+                {
+                    Path catOneId = root.get("catOneId");
+                    predicate = builder.and(predicate, builder.equal(catOneId, pageObj.getCatOneId()));
+                }
+                if (pageObj.getCatTwoId() != null)
+                {
+                    Path catTwoId = root.get("catTwoId");
+                    predicate = builder.and(predicate, builder.equal(catTwoId, pageObj.getCatTwoId()));
+                }
+                if (pageObj.getCatThreeId() != null)
+                {
+                    Path catThreeId = root.get("catThreeId");
+                    predicate = builder.and(predicate, builder.equal(catThreeId, pageObj.getCatThreeId()));
+                }
                 query.where(predicate);
                 query.orderBy(builder.desc(root.get("orderValue")), builder.desc(root.get("createTime")));
                 return null;

@@ -10,7 +10,7 @@
     /* 首页 */
     router.get('/', function (req, res, next) {
         console.log("req.host = " + req.host);
-        console.log("req.port = ");
+        console.log("req.port = " + global.serverPort);
         console.log("req.originalUrl = " + req.originalUrl);
         console.log("req.url = " + req.url);
         console.log("req.path = " + req.path);

@@ -5,6 +5,8 @@ import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
 import com.lord.common.dto.cms.CmsArticleDto;
 import com.lord.common.model.cms.CmsArticle;
+import com.lord.common.model.cms.CmsArticleContent;
+import com.lord.common.model.cms.CmsCategory;
 
 import java.util.List;
 import java.util.Map;
@@ -100,7 +102,47 @@ public interface CmsArticleService {
      */
     List<CmsArticle> listByIds(List<String> ids);
 
+    /**
+     * 分页查询文章ID
+     * @param page
+     * @param pageSize
+     * @return
+     */
     List<String> listArticleIds(int page, int pageSize);
 
+    /**
+     * 查询文章
+     * @param ids
+     * @return
+     */
     Map<String,CmsArticle> findMapByIds(List<String> ids);
+
+    /**
+     * 根据分类查询文章列表，分类为空时，查询全部文章
+     * @param category
+     * @param pagerParam
+     * @return
+     */
+    Pager<CmsArticle> pageByCategory(CmsCategory category, PagerParam pagerParam);
+
+    /**
+     * 获取文章内容
+     * @param articleId 文章ID
+     * @return 文章内容
+     */
+    CmsArticleContent getArticleContent(Long articleId);
+
+    /**
+     * 获取上一篇文章
+     * @param article 文章
+     * @return 上一篇文章
+     */
+    CmsArticle getPrevArticle(CmsArticle article);
+
+    /**
+     * 获取下一篇文章
+     * @param article 文章
+     * @return 下一篇文章
+     */
+    CmsArticle getNextArticle(CmsArticle article);
 }

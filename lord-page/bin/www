@@ -19,6 +19,9 @@
   var port = normalizePort(process.env.PORT || '3002');
   app.set('port', port);
 
+  /** 全局配置 */
+  global.serverPort = port;
+
   /**
    * Create HTTP server.
    */
