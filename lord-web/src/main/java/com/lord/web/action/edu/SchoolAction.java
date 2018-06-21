@@ -4,13 +4,16 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.lord.common.dto.sys.DistrictDto;
+import com.lord.common.model.common.CommonQuestion;
 import com.lord.common.model.edu.EduSchool;
 import com.lord.common.model.sys.SysExtendAttribute;
 import com.lord.common.model.sys.SysExtendContent;
+import com.lord.common.service.common.CommonQuestionService;
 import com.lord.common.service.edu.EduSchoolService;
 import com.lord.common.service.sys.SysDistrictService;
 import com.lord.common.service.sys.SysExtendAttributeService;
 import com.lord.common.service.sys.SysExtendContentService;
+import com.lord.utils.Preconditions;
 import com.lord.utils.dto.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -46,6 +49,9 @@ public class SchoolAction
     @Autowired
     private SysExtendContentService sysExtendContentService;
 
+    @Autowired
+    private CommonQuestionService commonQuestionService;
+
     @ApiOperation(value="获取学校目录", notes="获取学校目录")
     @RequestMapping(value = "/api/edu/listSchool", method = RequestMethod.GET)
     public Result listSchool() {
@@ -66,14 +72,19 @@ public class SchoolAction
     @RequestMapping(value = "/api/edu/getSchool", method = RequestMethod.GET)
     public Result getSchool(Long id)
     {
+        Preconditions.checkNotNull(id, "学校id不能为空");
         EduSchool school = eduSchoolService.getEduSchool(id);
+        Preconditions.checkNotNull(school, "学校" + id + "不能为空");
         Map<String,SysExtendAttribute> schoolAttr = sysExtendAttributeService.getMapByEntity("eduSchool", id);
         String[] entityCodeArr = new String[]{"eduSchoolRecruit","eduSchoolTestTime","eduSchoolCondition", "eduSchoolScoreLine"};
         Map<String, SysExtendContent> schoolContent = sysExtendContentService.getMapByEntity(id, entityCodeArr);
+        List<CommonQuestion> questions = commonQuestionService.listQuestion("eduSchool", id);
+
         JSONObject json = new JSONObject();
         json.put("school", school);
         json.put("schoolAttr", schoolAttr);
         json.put("schoolContent", schoolContent);
+        json.put("questions", questions);
         return Result.success("获取成功", json);
     }
 }

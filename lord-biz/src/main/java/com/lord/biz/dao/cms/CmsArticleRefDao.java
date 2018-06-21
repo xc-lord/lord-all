@@ -29,4 +29,6 @@ public interface CmsArticleRefDao extends JpaRepository<CmsArticleRef, Long>, Jp
     @Modifying
     @Query("delete from CmsArticleRef where articleId=?1")
     void deleteByArticle(Long articleId);
+
+    List<CmsArticleRef> findByArticleId(Long articleId);
 }

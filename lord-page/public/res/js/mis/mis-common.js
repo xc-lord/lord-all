@@ -32,6 +32,9 @@ var commonUtils = {
         if(typeof time == 'number') {
             return time;
         }
+        if(typeof time == 'string') {
+            return moment(time).valueOf();
+        }
         if(typeof time == 'object') {
             return Date.parse(time);
         }

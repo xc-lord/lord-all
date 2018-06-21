@@ -1,14 +1,19 @@
 package com.lord.biz.service.cms;
 
+import com.lord.biz.dao.DbSqlDao;
+import com.lord.biz.dao.cms.CmsArticleRefDao;
 import com.lord.biz.dao.cms.CmsTagsDao;
 import com.lord.biz.dao.cms.specs.CmsTagsSpecs;
 import com.lord.biz.utils.ServiceUtils;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
+import com.lord.common.model.cms.CmsArticle;
 import com.lord.common.model.cms.CmsTags;
 import com.lord.common.service.cms.CmsTagsService;
+import com.lord.utils.CommonUtils;
 import com.lord.utils.Preconditions;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +23,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.math.BigInteger;
+import java.util.*;
 
 /**
  * 文章标签cms_tags的Service实现
@@ -36,6 +40,12 @@ public class CmsTagsServiceImpl implements CmsTagsService {
 
     @Autowired
     private CmsTagsDao cmsTagsDao;
+
+    @Autowired
+    private CmsArticleRefDao cmsArticleRefDao;
+
+    @Autowired
+    private DbSqlDao dbSqlDao;
 
     @Override
     public CmsTags getCmsTags(Long id) {
@@ -148,5 +158,75 @@ public class CmsTagsServiceImpl implements CmsTagsService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<CmsTags> listByArticle(CmsArticle article)
+    {
+        if(article == null || StringUtils.isEmpty(article.getTags())) {
+            return null;
+        }
+
+        List<Map<String, Object>> dbList = dbSqlDao
+                .select("SELECT * FROM cms_tags WHERE id IN (SELECT tags_id FROM cms_article_tags WHERE article_id=?)",
+                        article.getId());
+        List<CmsTags> list = parseCmsTags(dbList);
+        return list;
+    }
+
+    private List<CmsTags> parseCmsTags(List<Map<String, Object>> dbList)
+    {
+        List<CmsTags> list = new ArrayList<>();
+        for (Map<String, Object> map : dbList)
+        {
+            CmsTags cmsTags = new CmsTags();
+            cmsTags.setName((String) map.get("name"));
+            cmsTags.setId(((BigInteger) map.get("id")).longValue());
+            list.add(cmsTags);
+        }
+        return list;
+    }
+
+    public List<CmsTags> listRandomTags(Integer num)
+    {
+        if(num == null)
+            num = 5;
+        BigInteger count = (BigInteger) dbSqlDao.selectOne("SELECT count(id) FROM cms_tags");
+
+        if(count.intValue() <= num)
+        {
+            return cmsTagsDao.findAll();//数量不足时，获取全部文章
+        }
+
+        int total = count.intValue();
+        Map<Long, Long> rowNumMap = new HashMap<>();
+        int times = num;
+        if(times > total)
+            times = total;
+        while (rowNumMap.size() < times)
+        {
+            Long rowNum = CommonUtils.genRandom(1, total) + 0L;
+            rowNumMap.put(rowNum, rowNum);
+        }
+        Long[] arr = new Long[rowNumMap.size()];
+        int i = 0;
+        String idParamStr = "";
+        String rowNumStr = "";
+        for (Long rowNum : rowNumMap.keySet())
+        {
+            arr[i] = rowNum;
+            rowNumStr += rowNum + ",";
+            idParamStr += "?,";
+            i++;
+        }
+        idParamStr = idParamStr.substring(0, idParamStr.length()-1);
+        logger.debug("随机的文章行号为：" + rowNumStr + " 参数为：" + idParamStr);
+
+        List<Map<String, Object>> dbList = dbSqlDao.select("SELECT A.* FROM (\n" +
+                "SELECT @rownum\\:=@rownum+1 AS rownum, cms_tags.*\n" +
+                "FROM (SELECT @rownum\\:=0) r, cms_tags) A\n" +
+                "WHERE A.rownum in (" + idParamStr + ")", arr);
+        List<CmsTags> list = parseCmsTags(dbList);
+        return list;
     }
 }

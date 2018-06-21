@@ -54,6 +54,16 @@ public class AdsPageController {
         return Result.success("查询成功", pager);
     }
 
+    @ApiOperation(value = "生成页面数据")
+    @RequestMapping(value = "/api/admin/ads/adsPage/generateData", method = { RequestMethod.GET, RequestMethod.POST })
+    public Result generateData(Long pageId)
+    {
+        AdsPage page = adsPageService.getAdsPage(pageId);
+        Preconditions.checkNotNull(page, "页面" + pageId + "不存在");
+        adsTemplateService.importData(page.getPageConfig());
+        return Result.success("生成页面数据成功");
+    }
+
     @ApiOperation(value = "保存或更新页面")
     @RequestMapping(value = "/api/admin/ads/adsPage/saveOrUpdate", method = RequestMethod.POST)
     public Result saveOrUpdate(@ModelAttribute AdsPage pageObj) {

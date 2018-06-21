@@ -226,7 +226,7 @@ public class AdsSpaceServiceImpl extends CategorySimpleServiceImpl implements Ad
 
     public List<TreeNode> getTreeByPageId(Long pageId) {
         List<TreeNode> list = new ArrayList<>();
-        List<AdsSpace> adsSpaces = loadAllSpace(pageId);
+        List<AdsSpace> adsSpaces = adsSpaceDao.findAllByPageId(pageId);
         List<CategorySimple> categoryList = new ArrayList<>();
         categoryList.addAll(adsSpaces);
         if (categoryList.size() < 1) {
@@ -288,6 +288,12 @@ public class AdsSpaceServiceImpl extends CategorySimpleServiceImpl implements Ad
         cacheList = adsSpaceDao.findAllByPageId(id);
         redisService.set(cacheKey, cacheList, 30, TimeUnit.MINUTES);
         return cacheList;
+    }
+
+    public void removeCache(Long pageId)
+    {
+        final String cacheKey = AdsTemplateService.ADS_ALL_PAGE + pageId;
+        redisService.delete(cacheKey);
     }
 
     private List loadElementData(AdsSpace adsSpace)

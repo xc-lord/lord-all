@@ -24,6 +24,7 @@ public class FastJSONConfig extends WebMvcConfigurerAdapter
         FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
         FastJsonConfig fastJsonConfig = new FastJsonConfig();
         fastJsonConfig.setSerializerFeatures(
+                SerializerFeature.DisableCircularReferenceDetect,//禁用循环引用检测$ref
                 SerializerFeature.WriteNullStringAsEmpty,//null转为空字符串
                 SerializerFeature.WriteNullNumberAsZero,//空的数值默认为0
                 SerializerFeature.WriteDateUseDateFormat//对时间进行格式化输出

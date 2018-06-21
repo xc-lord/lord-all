@@ -108,4 +108,10 @@ public interface AdsSpaceService extends CategorySimpleService {
     Map<String, AdsSpaceInfo> loadAllSpaceAndElementData(AdsPage adsPage);
 
     List<AdsSpace> listSpaceByKeywordStart(Long pageId, Long spaceId, String keyword);
+
+    /**
+     * 清除页面数据的缓存
+     * @param pageId    页面ID
+     */
+    void removeCache(Long pageId);
 }

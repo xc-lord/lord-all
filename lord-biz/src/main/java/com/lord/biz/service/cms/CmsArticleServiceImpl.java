@@ -9,7 +9,6 @@ import com.lord.biz.dao.cms.specs.CmsArticleSpecs;
 import com.lord.biz.dao.cms.specs.CmsTagsSpecs;
 import com.lord.biz.utils.ServiceUtils;
 import com.lord.common.constant.CheckState;
-import com.lord.common.constant.PagerDirection;
 import com.lord.common.constant.cms.CmsArticleState;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
@@ -300,6 +299,118 @@ public class CmsArticleServiceImpl implements CmsArticleService {
         if(minId == null)
             return null;
         return getCmsArticle(minId.longValue());
+    }
+
+    @Override
+    public List<CmsArticle> listRandomArticle(Integer num, Long catId)
+    {
+        if(num == null)
+            num = 5;
+
+        BigInteger count = null;
+        if(catId != null) {
+            count = (BigInteger) dbSqlDao.selectOne("SELECT count(id) FROM cms_article where cat_id=?", catId);
+        } else {
+            count = (BigInteger) dbSqlDao.selectOne("SELECT count(id) FROM cms_article");
+        }
+
+        if(count.intValue() <= num)
+        {
+            if(catId != null && count.intValue() == 0)
+                return listRandomArticle(num, null);//该分类下没有记录，则推荐其他分类
+            else
+                return cmsArticleDao.findAll();//数量不足时，获取全部文章
+        }
+
+        int total = count.intValue();
+        Map<Long, Long> rowNumMap = new HashMap<>();
+        int times = num;
+        if(times > total)
+            times = total;
+        while (rowNumMap.size() < times)
+        {
+            Long rowNum = CommonUtils.genRandom(1, total) + 0L;
+            rowNumMap.put(rowNum, rowNum);
+        }
+        Long[] arr = new Long[rowNumMap.size()];
+        int i = 0;
+        String idParamStr = "";
+        String rowNumStr = "";
+        for (Long rowNum : rowNumMap.keySet())
+        {
+            arr[i] = rowNum;
+            rowNumStr += rowNum + ",";
+            idParamStr += "?,";
+            i++;
+        }
+        idParamStr = idParamStr.substring(0, idParamStr.length()-1);
+        logger.debug("随机的文章行号为：" + rowNumStr + " 参数为：" + idParamStr);
+
+        List<Map<String, Object>> dbList = null;
+        if(catId != null) {
+            dbList = dbSqlDao.select("SELECT A.* FROM (\n" +
+                    "SELECT @rownum:=@rownum+1 AS rownum, art.*\n" +
+                    "FROM (SELECT @rownum:=0) r, (SELECT * FROM cms_article WHERE cat_id=?) art) A\n" +
+                    "WHERE A.rownum in (" + idParamStr + ")", catId, arr);
+        } else {
+            dbList = dbSqlDao.select("SELECT A.* FROM (\n" +
+                    "SELECT @rownum\\:=@rownum+1 AS rownum, cms_article.*\n" +
+                    "FROM (SELECT @rownum\\:=0) r, cms_article) A\n" +
+                    "WHERE A.rownum in (" + idParamStr + ")", arr);
+        }
+        List<CmsArticle> list = parseCmsArticles(dbList);
+        return list;
+    }
+
+    /**
+     * 数据库对象转换为实体对象
+     * @param dbList
+     * @return
+     */
+    private List<CmsArticle> parseCmsArticles(List<Map<String, Object>> dbList)
+    {
+        List<CmsArticle> list = new ArrayList<>();
+        for (Map<String, Object> objectMap : dbList)
+        {
+            CmsArticle article = new CmsArticle();
+            article.setId(((BigInteger) objectMap.get("id")).longValue());
+            article.setTitle((String) objectMap.get("title"));
+            article.setCatId(((BigInteger) objectMap.get("cat_id")).longValue());
+            article.setCatName((String) objectMap.get("cat_name"));
+            article.setCoverImg((String) objectMap.get("cover_img"));
+            article.setUpdateTime((Date) objectMap.get("update_time"));
+            article.setCreateTime((Date) objectMap.get("create_time"));
+            list.add(article);
+        }
+        return list;
+    }
+
+    @Override
+    public List<CmsArticle> listRefArticle(Long articleId)
+    {
+        List<CmsArticleRef> refs = cmsArticleRefDao.findByArticleId(articleId);
+        if(refs == null || refs.size() < 1)
+            return null;
+        Long[] ids = new Long[refs.size()];
+        for (int i = 0; i < refs.size(); i++)
+        {
+            ids[i] = refs.get(i).getArticleId();
+        }
+        List<CmsArticle> list = cmsArticleDao.findByIds(ids);
+        return list;
+    }
+
+    @Override
+    public Pager<CmsArticle> pageByTags(Long tagsId, PagerParam pagerParam)
+    {
+        int count = dbSqlDao.count("SELECT count(1) FROM cms_article WHERE id IN (SELECT article_id FROM cms_article_tags WHERE tags_id=?)", tagsId);
+        Pager<CmsArticle> pager = new Pager<>(pagerParam, count);
+        if(count < 1)
+            return pager;
+        List<Map<String, Object>> dbList = dbSqlDao.select("SELECT * FROM cms_article WHERE id IN (SELECT article_id FROM cms_article_tags WHERE tags_id=?) limit ?,?", tagsId, pager.getStartRow(), pager.getEndRow());
+        List<CmsArticle> list = parseCmsArticles(dbList);
+        pager.setList(list);
+        return pager;
     }
 
     /**

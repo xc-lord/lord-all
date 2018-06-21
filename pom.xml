@@ -148,11 +148,6 @@
                 <artifactId>poi-ooxml</artifactId>
                 <version>3.10-FINAL</version>
             </dependency>
-            <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-all</artifactId>
-                <version>4.0.7</version>
-            </dependency>
             <!--文档处理 end-->
         </dependencies>
     </dependencyManagement>

@@ -3,7 +3,10 @@ package com.lord.common.service.cms;
 import com.lord.common.dto.Pager;
 import com.lord.common.dto.PagerParam;
 import com.lord.common.dto.PagerSort;
+import com.lord.common.model.cms.CmsArticle;
 import com.lord.common.model.cms.CmsTags;
+
+import java.util.List;
 
 /**
  * 文章标签cms_tags的Service
@@ -81,4 +84,18 @@ public interface CmsTagsService {
      * @return
      */
     boolean isExist(Long id, String rowName, String rowValue);
+
+    /**
+     * 根据文章获取标签列表
+     * @param article   文章
+     * @return  标签列表
+     */
+    List<CmsTags> listByArticle(CmsArticle article);
+
+    /**
+     * 获取随机推荐的标签
+     * @param num   数量
+     * @return 标签列表
+     */
+    List<CmsTags> listRandomTags(Integer num);
 }

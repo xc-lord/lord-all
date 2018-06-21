@@ -31,7 +31,6 @@ public class EduSchoolSpecs extends BaseSpecification {
                     predicate = builder.and(predicate, builder.equal(id, pageObj.getId()));
                     return predicate;
                 }
-                //TODO:待修改
                 if (StringUtils.isNotEmpty(pageObj.getName())) {
                     Path name = root.get("name");
                     predicate = builder.and(predicate, builder.like(name, "%" + pageObj.getName() + "%"));

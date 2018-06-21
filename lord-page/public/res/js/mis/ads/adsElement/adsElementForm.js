@@ -32,14 +32,13 @@ var AdsElementFromCommon = {
         var _self = this;
         function validateEndTime(rule, value, callback) {
             var startTime = _self.editForm.startTime;
-            console.info(startTime);
-            console.info(value);
             if (!startTime) {
-                return callback();
+                return callback(new Error("开始时间为空"));
             }
             if(startTime.getTime() >= value.getTime()) {
                 return callback(new Error("结束时间不能小于开始时间"));
             }
+            return callback();
         };
         return {
             editLoading:false,

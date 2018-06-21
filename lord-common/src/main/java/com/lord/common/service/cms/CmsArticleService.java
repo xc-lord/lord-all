@@ -145,4 +145,27 @@ public interface CmsArticleService {
      * @return 下一篇文章
      */
     CmsArticle getNextArticle(CmsArticle article);
+
+    /**
+     * 获取随机推荐的文章
+     * @param num   数量
+     * @param catId 分类ID
+     * @return  文章列表
+     */
+    List<CmsArticle> listRandomArticle(Integer num, Long catId);
+
+    /**
+     * 获取关联文章
+     * @param articleId 文章ID
+     * @return 关联文章
+     */
+    List<CmsArticle> listRefArticle(Long articleId);
+
+    /**
+     * 分页查询标签的文章列表
+     * @param tagsId        标签ID
+     * @param pagerParam    分页参数
+     * @return  文章列表
+     */
+    Pager<CmsArticle> pageByTags(Long tagsId, PagerParam pagerParam);
 }

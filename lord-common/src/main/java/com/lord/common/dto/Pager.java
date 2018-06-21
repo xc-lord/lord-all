@@ -31,6 +31,10 @@ public class Pager<T> implements Serializable {
      */
     private Integer startRow = 0;
     /**
+     * 分页记录结束的行数
+     */
+    private Integer endRow = 0;
+    /**
      * 当前页中的数据集
      */
     private List<T> list;
@@ -110,6 +114,7 @@ public class Pager<T> implements Serializable {
             } else {
                 this.startRow = 0;
             }
+            this.endRow = this.startRow + this.pageSize;
         }
 
         //计算是否需要分页
@@ -174,6 +179,11 @@ public class Pager<T> implements Serializable {
 
     public Integer getStartRow() {
         return this.startRow;
+    }
+
+    public Integer getEndRow()
+    {
+        return endRow;
     }
 
     public boolean isHasPrev() {

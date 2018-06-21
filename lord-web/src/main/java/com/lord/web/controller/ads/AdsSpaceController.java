@@ -49,6 +49,14 @@ public class AdsSpaceController {
         return Result.success("查询成功", treeNodes);
     }
 
+    @ApiOperation(value = "清除页面数据的缓存")
+    @RequestMapping(value = "/api/admin/ads/adsSpace/removeCache", method = {RequestMethod.GET, RequestMethod.POST})
+    public Result removeCache(Long pageId) {
+        Preconditions.checkArgument(pageId == null, "pageId不能为空");
+        adsSpaceService.removeCache(pageId);
+        return Result.success("清除页面数据的缓存成功");
+    }
+
     @ApiOperation(value = "查询广告位的列表")
     @RequestMapping(value = "/api/admin/ads/adsSpace/list", method = {RequestMethod.GET, RequestMethod.POST})
     public Result list(@ModelAttribute QueryParams queryParams) {

@@ -130,7 +130,7 @@
                                     </el-table-column>
                     <el-table-column fixed="right"
                                      label="操作"
-                                     width="320">
+                                     width="420">
                         <template scope="scope">
                             <el-button :plain="true" type="success" size="small" icon="el-icon-edit" @click="editClick(scope.row)" size="small">
                                 编辑
@@ -139,6 +139,7 @@
                                 删除
                             </el-button>
                             <el-button type="primary" icon="el-icon-view" @click="viewClick(scope.row)" size="small">预览</el-button>
+                            <el-button type="primary" icon="el-icon-view" @click="questionClick(scope.row)" size="small">常见问题</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -283,6 +284,10 @@
                     //预览事件
                     viewClick: function (row) {
                         window.open("/edu/school/" + row.id + ".html");
+                    },
+                    //常见问题事件
+                    questionClick: function (row) {
+                        window.open("#/commonQuestion/eduSchool/" + row.id);
                     },
                     //表格编辑事件
                     editClick: function (row) {

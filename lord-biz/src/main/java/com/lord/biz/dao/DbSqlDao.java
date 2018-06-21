@@ -28,17 +28,6 @@ public class DbSqlDao
 
     /**
      * 执行原生的Sql
-     * @param sql 原生sql
-     */
-    @Transactional
-    public void execute(String sql)
-    {
-        Query query = entityManager.createNativeQuery(sql);
-        query.executeUpdate();
-    }
-
-    /**
-     * 执行原生的Sql
      *
      * @param sql 原生sql
      */
@@ -90,9 +79,9 @@ public class DbSqlDao
         return query.getResultList();
     }
 
-    public int count(String sql)
+    public int count(String sql, Object... params)
     {
-        BigInteger count = (BigInteger) selectOne(sql);
+        BigInteger count = (BigInteger) selectOne(sql, params);
         return count.intValue();
     }
 }

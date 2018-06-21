@@ -52,6 +52,7 @@ public class AdsTemplateServiceImpl implements AdsTemplateService
     @Override
     public void importData(String xml)
     {
+        Preconditions.checkNotNull(xml, "xml数据为空");
         long start = System.currentTimeMillis();
         Document doc = getDocument(xml);
         Element root = doc.getRootElement();

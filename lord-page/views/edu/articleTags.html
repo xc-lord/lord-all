@@ -1,0 +1,166 @@
+{{extend '../layout/eduPC.html'}}
+
+{{block 'title'}}{{tagsData.cmsTags.name}}{{/block}}
+{{block 'keywords'}}家居,家居网,家居官网,家居商城,乌托家,乌托家家居商城官网,电商平台,家居电商,家居电商平台,家居o2o{{/block}}
+{{block 'description'}}乌托家，一个家居O2O电商平台。我们致力于和用户一起打造一个理想的家、一种自己想要的生活方式。{{/block}}
+{{block 'head'}}
+<link rel="stylesheet" type="text/css" href="{{resSite}}/css/wtj/wtjcms.css"/>
+{{/block}}
+
+{{block 'content'}}
+<div class="w1200 consultationdetails-main ">
+    <div class="breadcrumb">
+        <span><a href="{{articleUrl}}/">资讯</a><i></i></span>
+        <span><a href="{{tagsUrl}}/{{tagsData.cmsTags.id}}/">{{tagsData.cmsTags.name}}</a></span>
+    </div>
+    <div class=" clearfix consultationdetails-content">
+        <div class="consultation-content-r ency-content-l">
+            <div class="lemma-main-content">
+                <div class="catalog-nav"><a href="javascript:;" class="a-catalog-nav">
+                    <div class="icon-catalog"></div>
+                </a>
+
+                    <div class="encycl-nav">
+                        <div class="encycl-nav-box">
+                            <div class="top-round"></div>
+                            <div class="bd encycl-navs">
+                                <ul class="nav-ul-encycl" id="nav-ul-encycl">
+                                    {{each tagsData.articleData.list article index}}
+                                    {{if index < 2}}
+                                    <li><a href="#ems-anchor{{article.id}}"><i></i>{{article.title}} </a></li>
+                                    {{/if}}
+                                    {{/each}}
+                                </ul>
+                                <div class="pagesize btn-box">
+                                    <a href="javascript:;" class="prev btn-up"><i></i></a>
+                                    <a href="javascript:;" class="next btn-down"><i></i></a>
+                                </div>
+                            </div>
+                            <div class="bottom-round"></div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="clearfix lemma-main-l">
+                    <h1>{{tagsData.cmsTags.name}}</h1>
+
+                    <div class="clearfix card-summary-content">
+                        <div class="card-summary-img">
+                            <img src="{{tagsData.cmsTags.tagImg | showImg}}"/>
+                            <span></span>
+                        </div>
+                        {{tagsData.cmsTags.intro}}
+                    </div>
+
+                    {{each tagsData.articleData.list article index}}
+                    {{if index < 2}}
+                    <a class="anchor-ency ems-anchor{{article.id}}" name="ems-anchor{{article.id}}"></a>
+                    <div class="clearfix para">
+                        <h2>
+                            <a href="{{articleUrl}}/{{article.id}}.html" target="_blank">{{article.title}}</a></h2>
+                        <div class="para-main">
+                            <p>{{article.intro}}</p>
+                        </div>
+                    </div>
+                    {{/if}}
+                    {{/each}}
+                </div>
+                <div class="lemma-main-r">
+
+                </div>
+            </div>
+            <ul class="clearfix ul-concent-cnsul">
+                {{each tagsData.articleData.list article index}}
+                {{if index > 1}}
+                <li>
+                    <div class="cnsul-concent-img">
+                        <a href="{{articleUrl}}/{{article.id}}.html" target="_blank">
+                            <img src="{{article.coverImg | showImg}}" style="width: 100%; margin-top: -53px; visibility: visible;"/>
+                        </a>
+                        <span></span>
+                    </div>
+                    <div class="cnsul-concent-r">
+                        <h3>
+                            <a href="{{articleUrl}}/{{article.id}}.html" target="_blank">{{article.title}}</a>
+                        </h3>
+                        <div class=" clearfix newdetais-time">
+                            <span class="newdetais-time-span"><i></i>{{article.updateTime}}</span>
+                            <span class="newdetais-time-span"><em></em>{{article.catName}}</span>
+                        </div>
+                        <p>
+                            <a href="{{articleUrl}}/{{article.id}}.html" target="_blank">
+                                {{article.intro}}
+                                <i>［查看全文］</i>
+                            </a>
+                        </p>
+                    </div>
+                </li>
+                {{/if}}
+                {{/each}}
+            </ul>
+
+            {{if tagsData.articleData.needPaging}}
+            <div class=" clearfix page-div page-cms">
+                <div class="paging-div">
+                    <div class="nav-num">
+                        {{if tagsData.articleData.hasPrev}}
+                        {{if tagsData.articleData.page-1 == 1}}
+                        <a href="{{pageUrl}}/" class="nav-left"></a>
+                        {{else}}
+                        <a href="{{pageUrl}}/list{{tagsData.articleData.page - 1}}.html" class="nav-left"></a>
+                        {{/if}}
+                        {{/if}}
+                        {{each tagsData.articleData.pageNavs pageNum}}
+                        {{if pageNum == tagsData.articleData.page}}
+                        <a href="javascript:;" class="on-page">{{pageNum}}</a>
+                        {{else if pageNum == 1}}
+                        <a href="{{pageUrl}}/">{{pageNum}}</a>
+                        {{else if pageNum>1}}
+                        <a href="{{pageUrl}}/list{{pageNum}}.html">{{pageNum}}</a>
+                        {{else}}
+                        <a href="javascript:;">...</a>
+                        {{/if}}
+                        {{/each}}
+                        {{if tagsData.articleData.hasNext}}
+                        <a href="{{pageUrl}}/list{{tagsData.articleData.page + 1}}.html" class="nav-right"></a>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+
+        </div>
+
+        <div class="consultationdetails-content-r">
+            <h3>精选推荐</h3>
+            <ul class="clearfix ul-consultationdetails-r">
+                {{each randomArticles article}}
+                <li>
+                    <a href="{{articleUrl}}/{{article.id}}.html" target="_blank">
+                        <div class="about-info" >
+                            <img src="{{article.coverImg | showImg}}"/>
+                            <span></span>
+                        </div>
+                        <div class="about-info-m">
+                            <h4>{{article.title}}</h4>
+                            <p>{{article.intro}}</p>
+                        </div>
+                    </a>
+                </li>
+                {{/each}}
+            </ul>
+
+            <h3>相关专题</h3>
+            <div class="clearfix about-special">
+                {{each tagsData.tagsList tags}}
+                <a href="{{tagsUrl}}/{{tags.id}}/" target="_blank">{{tags.name}}</a>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>
+{{/block}}
+
+{{block 'foot'}}
+<script src="{{resSite}}/js/wtj/wtjcms.js"></script>
+{{/block}}

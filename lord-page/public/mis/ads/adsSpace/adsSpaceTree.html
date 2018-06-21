@@ -13,8 +13,10 @@
     <el-row>
         <el-form :inline="true" :model="searchForm" class="demo-form-inline">
             <el-form-item>
-                <el-button type="success" icon="plus" @click="dialogAddClick">新增一级广告位</el-button>
-                <el-button type="primary" icon="search" @click="viewDataClick">查看数据</el-button>
+                <el-button type="success" icon="plus" @click="dialogAddClick" size="small">新增一级广告位</el-button>
+                <el-button type="primary" icon="plus" @click="generateClick" size="small">导入数据</el-button>
+                <el-button type="primary" icon="search" @click="viewDataClick" size="small">查看数据</el-button>
+                <el-button type="primary" icon="search" @click="removeCacheClick" size="small">删除缓存</el-button>
             </el-form-item>
         </el-form>
     </el-row>
@@ -108,6 +110,45 @@
                 }).done(function (res) {
                     if (res.success) {
                         _self.categoryData = res.data;
+                    } else {
+                        _self.$message.error(res.msg);//提示错误
+                    }
+                });
+            },
+            //删除缓存
+            removeCacheClick:function() {
+                var _self = this;
+                //删除缓存
+                $.ajax({
+                    url: '/api/admin/ads/adsSpace/removeCache.do',
+                    data:{pageId:pageParam.pageId},
+                    dataType: "json"
+                }).done(function (res) {
+                    if (res.success) {
+                        _self.$message({
+                            message: res.msg,
+                            type: 'success'
+                        });
+                    } else {
+                        _self.$message.error(res.msg);//提示错误
+                    }
+                });
+            },
+            //生成数据
+            generateClick:function() {
+                var _self = this;
+                //生成数据
+                $.ajax({
+                    url: '/api/admin/ads/adsPage/generateData.do',
+                    data:{pageId:pageParam.pageId},
+                    dataType: "json"
+                }).done(function (res) {
+                    if (res.success) {
+                        _self.$message({
+                            message: res.msg,
+                            type: 'success'
+                        });
+                        _self.loadingData();//重新加载数据
                     } else {
                         _self.$message.error(res.msg);//提示错误
                     }

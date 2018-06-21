@@ -12,6 +12,16 @@
      批量调用API接口的工具类
      */
     var dataUtils = {
+        /**
+         * 获取页面数据和页头页尾等公共数据
+         */
+        getData: function (req, api, callback) {
+            api.commonData = {
+                url: '/api/ads/getPage.do',
+                data:{pageCode:'eduCommonData'}
+            };
+            return this.get(req, api, callback);
+        },
         /*
          * 调用API接口
          * @param req   用户的请求信息
@@ -47,12 +57,9 @@
 
                 api[key].type || (api[key].type = "get");
                 api[key].data || (api[key].data = {});
-                var api_request = null;
                 if (api[key].type.toLowerCase() == "get") {
-                    api_request = self.get;
                     httpMethod = asyncUtils.get;
                 } else {
-                    api_request = self.post;
                     httpMethod = asyncUtils.post;
                 }
                 var tempObj = {

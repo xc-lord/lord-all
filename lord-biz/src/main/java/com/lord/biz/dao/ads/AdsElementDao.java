@@ -27,15 +27,12 @@ public interface AdsElementDao extends JpaRepository<AdsElement, Long>, JpaSpeci
     @Query("select u from AdsElement u where u.id in ?1")
     List<AdsElement> findByIds(Long... ids);
 
-
     @Modifying
     @Query("update AdsElement u set u.orderValue = ?2 where u.id = ?1")
     void updateOrderValue(Long id, Long orderValue);
 
-    @Query("select u from AdsElement u where u.spaceId = ?1 and u.startTime < ?2 and u.endTime > ?2")
+    @Query("select u from AdsElement u where u.spaceId = ?1 and u.startTime < ?2 and u.endTime > ?2 order by u.orderValue desc")
     List<AdsElement> listEffectElement(Long spaceId, Date now);
 
     List<AdsElement> findBySpaceId(Long spaceId);
-
-    //在此添加你的自定义方法...
 }

@@ -12,7 +12,7 @@
     <!--编辑界面-->
     <el-row type="flex" justify="center">
         <el-col :span="22">
-            <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
+            <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="addForm">
                 <el-form-item label="元素类型" prop="targetType">
                     <el-select v-model="editForm.targetType" :disabled="true" placeholder="请选择">
                         <el-option
@@ -97,7 +97,7 @@
     <el-row type="flex" justify="center">
         <el-col :span="6">
             <el-button @click="editFormCancel">取消</el-button>
-            <el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading">提交</el-button>
+            <el-button type="primary" @click="editSubmit('addForm')" :loading="editLoading">提交</el-button>
         </el-col>
     </el-row>
 
@@ -106,9 +106,6 @@
 
 <script type="text/javascript">
     $.getScript('/res/js/mis/ads/adsElement/adsElementForm.js', function () {
-        //清空参数
-        pageParam = Object.assign({}, {});
-
         var adsElementAddView = new Vue({
             el: '#adsElementAddView',
             data: AdsElementFromCommon.data,

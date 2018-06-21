@@ -1,0 +1,80 @@
+{{extend '../layout/eduPC.html'}}
+
+{{block 'title'}}网站地图{{/block}}
+{{block 'keywords'}}家居,家居网,家居官网,家居商城,乌托家,乌托家家居商城官网,电商平台,家居电商,家居电商平台,家居o2o{{/block}}
+{{block 'description'}}乌托家，一个家居O2O电商平台。我们致力于和用户一起打造一个理想的家、一种自己想要的生活方式。{{/block}}
+{{block 'head'}}
+<link rel="stylesheet" type="text/css" href="{{resSite}}/css/wtj/wtjcms.css"/>
+{{/block}}
+
+{{block 'content'}}
+<div class="w1200 consultationdetails-main ">
+    <div class="breadcrumb">
+        <span><a href="{{siteMapUrl}}/">网站地图</a><i></i></span>
+        <span><a href="{{siteMapUrl}}/">首页</a></span>
+    </div>
+    <div class=" clearfix consultationdetails-content poly-content">
+        <div class="consultationdetails-content-r  consultation-content-l">
+            <div class="special-nav">
+                <h4>网站地图</h4>
+                <div class="special-nav-two">
+                    <a href="{{schoolUrl}}/">所有学校</a>
+                    <a href="{{articleUrl}}/">所有文章</a>
+                    {{each categoryTree cat}}
+                    <a href="{{articleUrl}}/{{cat.id}}/">{{cat.name}}</a>
+                    {{/each}}
+                </div>
+            </div>
+            <h3>精选推荐</h3>
+            <div class="clearfix recommend">
+                {{each randomArticles article}}
+                <p><b>■</b><a href="{{articleUrl}}/{{article.id}}.html" target="_blank">{{article.title}}</a></p>
+                {{/each}}
+            </div>
+        </div>
+
+        <div class="polymerization-content-r">
+            <h2>所有学校</h2>
+            {{each districtList district index}}
+            {{if district.schools && district.schools.length > 0}}
+            <div class="polymerization-box">
+                <h3><a href="{{schoolUrl}}/#district{{district.id}}">{{district.name}}</a></h3>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ul-polymerization">
+                    <tr>
+                        <td>
+                            <div class="clearfix polymerization-a-box">
+                                {{each district.schools school}}
+                                <a href="{{schoolUrl}}/{{school.id}}.html" target="_blank">{{school.name}}</a>
+                                {{/each}}
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            {{/if}}
+            {{/each}}
+            <h2>所有文章</h2>
+            {{each categoryTree catOne}}
+            <div class="polymerization-box">
+                <h3><a href="{{articleUrl}}/{{catOne.id}}/">{{catOne.name}}</a></h3>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ul-polymerization">
+                    <tr>
+                        <td>
+                            <div class="clearfix polymerization-a-box">
+                                {{each catOne.children catTwo}}
+                                <a href="{{articleUrl}}/{{catTwo.id}}/" target="_blank">{{catTwo.name}}</a>
+                                {{/each}}
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
+{{/block}}
+
+{{block 'foot'}}
+<script src="{{resSite}}/js/wtj/wtjcms.js"></script>
+{{/block}}

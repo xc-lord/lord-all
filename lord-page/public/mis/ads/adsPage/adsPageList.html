@@ -13,13 +13,13 @@
     <el-row>
         <el-form :inline="true" :model="searchForm" class="demo-form-inline">
             <el-form-item label="编码">
-                <el-input v-model="searchForm.pageCode" placeholder="编码"></el-input>
+                <el-input v-model="searchForm.pageCode" placeholder="编码" size="small"></el-input>
             </el-form-item>
             <el-form-item label="名称">
-                <el-input v-model="searchForm.name" placeholder="名称"></el-input>
+                <el-input v-model="searchForm.name" placeholder="名称" size="small"></el-input>
             </el-form-item>
             <el-form-item label="平台类型">
-                <el-select v-model="searchForm.appType" clearable placeholder="请选择">
+                <el-select v-model="searchForm.appType" clearable placeholder="请选择" size="small">
                     <el-option
                             v-for="item in ads_AdsAppType"
                             :key="item.value"
@@ -29,7 +29,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="页面类型">
-                <el-select v-model="searchForm.pageType" clearable placeholder="请选择">
+                <el-select v-model="searchForm.pageType" clearable placeholder="请选择" size="small">
                     <el-option
                             v-for="item in ads_AdsPageType"
                             :key="item.value"
@@ -39,7 +39,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="平台类型">
-                <el-select v-model="searchForm.pageState" clearable placeholder="请选择">
+                <el-select v-model="searchForm.pageState" clearable placeholder="请选择" size="small">
                     <el-option
                             v-for="item in ads_AdsPageState"
                             :key="item.value"
@@ -49,8 +49,8 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" icon="el-icon-search" @click="searchClick">查询</el-button>
-                <el-button v-if="showEditPage" type="success" icon="el-icon-plus" @click="dialogAddClick">新增</el-button>
+                <el-button type="primary" icon="el-icon-search" @click="searchClick" size="small">查询</el-button>
+                <el-button v-if="showEditPage" type="success" icon="el-icon-plus" @click="dialogAddClick" size="small">新增</el-button>
             </el-form-item>
         </el-form>
     </el-row>

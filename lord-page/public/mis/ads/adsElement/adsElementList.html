@@ -13,14 +13,14 @@
     <el-row>
         <el-form :inline="true" :model="searchForm" class="demo-form-inline">
             <el-form-item label="ID">
-                <el-input v-model="searchForm.id" placeholder="ID"></el-input>
+                <el-input v-model="searchForm.id" placeholder="ID" size="small"></el-input>
             </el-form-item>
             <el-form-item label="名称">
-                <el-input v-model="searchForm.name" placeholder="名称"></el-input>
+                <el-input v-model="searchForm.name" placeholder="名称" size="small"></el-input>
             </el-form-item>
             <!--TODO:待修改-->
             <el-form-item label="状态">
-                <el-select v-model="searchForm.state" clearable placeholder="请选择">
+                <el-select v-model="searchForm.state" clearable placeholder="请选择" size="small">
                     <el-option
                             v-for="item in enumTypeSelect"
                             :key="item.value"
@@ -30,8 +30,8 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" icon="el-icon-search" @click="searchClick">查询</el-button>
-                <el-button v-if="showEditPage" type="success" icon="el-icon-plus" @click="dialogAddClick">新增</el-button>
+                <el-button type="primary" icon="el-icon-search" @click="searchClick" size="small">查询</el-button>
+                <el-button v-if="showEditPage" type="success" icon="el-icon-plus" @click="dialogAddClick" size="small">新增</el-button>
             </el-form-item>
         </el-form>
     </el-row>
@@ -108,7 +108,7 @@
                     width="100">
                 <template scope="scope">
                     <el-input v-model="scope.row.orderValue" placeholder="排序值" size="small" @blur="orderBlurEvent"
-                              :data-id="scope.row.id"></el-input>
+                              :data-id="scope.row.id" size="small"></el-input>
                 </template>
             </el-table-column>
 			<el-table-column
@@ -170,10 +170,10 @@
                 label="操作"
 				width="320">
                 <template scope="scope">
-                    <el-button :plain="true" type="success" size="small" icon="el-icon-edit" @click="dialogEditClick(scope.row)">
+                    <el-button :plain="true" type="success" size="small" icon="el-icon-edit" @click="dialogEditClick(scope.row)" size="small">
                         编辑
                     </el-button>
-                    <el-button :plain="true" type="danger" size="small" icon="el-icon-delete" @click="deleteClick(scope.row)">
+                    <el-button :plain="true" type="danger" size="small" icon="el-icon-delete" @click="deleteClick(scope.row)" size="small">
                         删除
                     </el-button>
                 </template>
@@ -184,8 +184,8 @@
     <!--列表底部工具条和分页符-->
     <el-row style="margin-top: 20px" type="flex" justify="end">
         <el-col :span="6">
-            <el-button v-if="showEditPage" :plain="true" type="danger" size="small" icon="el-icon-delete" @click="removeSelection">删除所选</el-button>
-            <el-button v-if="!showEditPage" type="success" icon="el-icon-plus" @click="selectSelection">选择</el-button>
+            <el-button v-if="showEditPage" :plain="true" type="danger" size="small" icon="el-icon-delete" @click="removeSelection" size="small">删除所选</el-button>
+            <el-button v-if="!showEditPage" type="success" icon="el-icon-plus" @click="selectSelection" size="small">选择</el-button>
         </el-col>
         <el-col :span="18">
             <el-pagination
@@ -196,7 +196,7 @@
                     :page-sizes="[10, 20, 30, 50]"
                     :page-size="pageSize"
                     layout="total, sizes, prev, pager, next, jumper"
-                    :total="total">
+                    :total="total" size="small">
             </el-pagination>
         </el-col>
     </el-row>
@@ -352,7 +352,7 @@
             //表格弹窗编辑事件
             dialogEditClick: function (row) {
                 var _self = this;
-                pageParam = Object.assign({}, {id: row.id});//设置页面参数
+                pageParam = Object.assign({}, {id: row.id, spaceId:pageParam.spaceId});//设置页面参数
                 _self.dialogFormVisible = true;
                 _self.dialogFormUrl = "/mis/ads/adsElement/adsElementEdit.html";
             },

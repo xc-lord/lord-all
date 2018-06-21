@@ -34,6 +34,9 @@ public class QueryParams implements Serializable {
     /** 扩展Id */
     private Long expandId;
 
+    /** 扩展编码 */
+    private String expandCode;
+
     public String getId() {
         return id;
     }
@@ -91,5 +94,15 @@ public class QueryParams implements Serializable {
     public void setExpandId(Long expandId)
     {
         this.expandId = expandId;
+    }
+
+    public String getExpandCode()
+    {
+        return expandCode;
+    }
+
+    public void setExpandCode(String expandCode)
+    {
+        this.expandCode = expandCode;
     }
 }

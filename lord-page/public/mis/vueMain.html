@@ -57,24 +57,7 @@
         <el-col :span="3">
             <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
                      @select="handleMenuSelect">
-                <el-menu-item index="sysExtendTemplate">
-                    <i class="el-icon-setting"></i>扩展属性模板
-                </el-menu-item>
-                <el-menu-item index="eduSchool">
-                    <i class="el-icon-setting"></i>学校
-                </el-menu-item>
-                <el-menu-item index="sysDistrict">
-                    <i class="el-icon-setting"></i>行政区域
-                </el-menu-item>
-                <el-menu-item index="misUser">
-                    <i class="el-icon-setting"></i>用户管理
-                </el-menu-item>
-                <el-menu-item index="excelCategory">
-                    <i class="el-icon-setting"></i>Excel分类
-                </el-menu-item>
-                <el-menu-item index="excelTemplate">
-                    <i class="el-icon-setting"></i>Excel模板
-                </el-menu-item>
+                <!--<el-menu-item index="misUser"><i class="el-icon-setting"></i>用户管理</el-menu-item>-->
                 <template v-for="subMenu in subMenus">
                     <template v-if="!subMenu.children">
                         <!--没有子菜单-->

@@ -164,6 +164,7 @@
                     <div id="commentPage" data-id="8856" data-type="Product">
                         <input type="hidden" id="commentCount"value="0">
                         <ul class="discuss-ul">
+                            {{each schoolData.questions question}}
                             <li>
                                 <i>
                                     <a href="javascript:;">
@@ -172,70 +173,17 @@
                                 </i>
                                 <div class="discuss-r-content">
                                     <div class="name-discuss clearfix">
-                                        <span>中央戏剧学院考试都考哪些？</span>
-                                        <em>2016-01-01 13:35:06</em>
+                                        <span>{{question.question}}</span>
+                                        <em>{{question.createTime}}</em>
                                     </div>
                                     <div class="discuss-content clearfix">
                                         <div class="postitem-text">
-                                            根据报考专业（方向）的不同，考试的科目也会不同，详情请见本页的表格里的考试科目。
+                                            {{question.answer}}
                                         </div>
                                     </div>
                                 </div>
                             </li>
-                            <li>
-                                <i>
-                                    <a href="javascript:;">
-                                        <img src="http://www.wutuojia.com/images/front/default_icon.png">
-                                    </a>
-                                </i>
-                                <div class="discuss-r-content">
-                                    <div class="name-discuss clearfix">
-                                        <span>中央戏剧学院考试都考哪些？</span>
-                                        <em>2016-01-01 13:35:06</em>
-                                    </div>
-                                    <div class="discuss-content clearfix">
-                                        <div class="postitem-text">
-                                            根据报考专业（方向）的不同，考试的科目也会不同，详情请见本页的表格里的考试科目。
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <i>
-                                    <a href="javascript:;">
-                                        <img src="http://www.wutuojia.com/images/front/default_icon.png">
-                                    </a>
-                                </i>
-                                <div class="discuss-r-content">
-                                    <div class="name-discuss clearfix">
-                                        <span>中央戏剧学院考试都考哪些？</span>
-                                        <em>2016-01-01 13:35:06</em>
-                                    </div>
-                                    <div class="discuss-content clearfix">
-                                        <div class="postitem-text">
-                                            根据报考专业（方向）的不同，考试的科目也会不同，详情请见本页的表格里的考试科目。
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <i>
-                                    <a href="javascript:;">
-                                        <img src="http://www.wutuojia.com/images/front/default_icon.png">
-                                    </a>
-                                </i>
-                                <div class="discuss-r-content">
-                                    <div class="name-discuss clearfix">
-                                        <span>中央戏剧学院考试都考哪些？</span>
-                                        <em>2016-01-01 13:35:06</em>
-                                    </div>
-                                    <div class="discuss-content clearfix">
-                                        <div class="postitem-text">
-                                            根据报考专业（方向）的不同，考试的科目也会不同，详情请见本页的表格里的考试科目。
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
+                            {{/each}}
                         </ul>
 
                         <div class="page-div w1200">

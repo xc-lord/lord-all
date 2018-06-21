@@ -32,12 +32,9 @@
         </a>
         <div class="menu-nav fl">
             <ul>
-                <li><a href="/edu/" class='menu-on'>首页</a></li>
-                <li><a href="/wtj/zixun.html">资讯</a></li>
-                <li><a href="/edu/article/">资讯列表</a></li>
-                <li><a href="/edu/school/">学校目录</a></li>
-                <li><a href="/wtj/baike.html">百科</a></li>
-                <li><a href="/wtj/schoolMap.html">网站地图</a></li>
+                {{each commonData.spaceMap[commonData.treeMap.headerLink.keyword].elements link}}
+                <li><a href="{{link.adsUrl}}">{{link.title}}</a></li>
+                {{/each}}
             </ul>
         </div>
     </div>
@@ -53,7 +50,13 @@
     <ul>
         <li>
             <a href="javascript:;" class="floatingmenu-ico1"></a>
-            <div class="qrcode-floatingmenu"><img src="http://img2.wutuojia.com/pic/small/product/servercode/20160511/122801_445907.jpg" width="130" heigh="130" alt="乌托家客服小妹私号" ><p>关注</p><p>乌托妹客服私号</p></div>
+            <div class="qrcode-floatingmenu">
+                {{each commonData.spaceMap[commonData.treeMap.QRCode.keyword].elements link}}
+                <img src="{{link.adsImg | showImg}}" width="130" heigh="130" alt="{{link.title}}" >
+                <p>关注</p>
+                <p>{{link.title}}</p>
+                {{/each}}
+            </div>
         </li>
         <li>
             <a href="javascript:;" class="floatingmenu-ico3 floatingmenu-ico3-l2"></a>
@@ -63,7 +66,7 @@
                     <form action="http://www.wutuojia.com/advice.do" id="adviceFormId" method="post">
                         <div class="row-view">
                             <label>提议与建议</label>
-                            <textarea name="content" cols="" rows="" placeholder="感谢您对乌托家的支持与关注，您的宝贵意见有助于我们不断改进"></textarea>
+                            <textarea name="content" cols="" rows="" placeholder="感谢您对我们的支持与关注，您的宝贵意见有助于我们不断改进"></textarea>
                         </div>
                         <div class="row-view">
                             <label>请输入您的电子邮件地址</label>
@@ -95,102 +98,41 @@
                 <li class="footer-tag-r"><a href="http://www.wutuojia.com/diy/"><i class="f-collocation"></i><span>私人搭配师</span><p>资深设计师免费帮你搭</p></a></li>
             </ul>
         </div>-->
-        <div class="f-company"> <img src="http://www.wutuojia.com/images/wtj-logo.png" width="114" heigh="52" alt="乌托家|家居网"  />
-            <p class="record-company">粤ICP备10044327-3</p>
-            <p>©2018 yikaozhaosheng.com 广州小超小诚科技有限公司</p>
+        <div class="f-company">
+            {{each commonData.spaceMap[commonData.treeMap.footerLogo.keyword].elements link}}
+            <img src="{{link.adsImg | showImg}}" width="114" heigh="52" alt="{{link.title}}"  />
+            {{/each}}
+            {{each commonData.spaceMap[commonData.treeMap.copyright.keyword].elements link}}
+            <p class="record-company">{{link.title}}</p>
+            <p>{{link.subTitle}}</p>
+            {{/each}}
         </div>
         <div class="f-company-link">
-
+            {{each commonData.treeMap.footer.subList footer}}
             <div class="about-us">
-                <span>关于我们</span>
+                <span>{{commonData.spaceMap[footer.keyword + '/title'].elements[0].name}}</span>
                 <ul class="about-us-ul">
-                    <li><a href="http://www.wutuojia.com/aboutus/about.html" rel="nofollow">关于艺考招生</a></li>
-                    <li><a href="http://www.wutuojia.com/aboutus/partner.html" rel="nofollow">战略合作</a></li>
-                    <!-- <li><a href="#">商务合作</a></li>-->
-                    <li><a href="http://www.wutuojia.com/aboutus/join.html" rel="nofollow">社会招聘</a></li>
+                    {{each commonData.spaceMap[footer.keyword + '/link'].elements link}}
+                    <li><a href="{{link.adsUrl}}" rel="nofollow">{{link.title}}</a></li>
+                    {{/each}}
                 </ul>
             </div>
-            <div class="help">
-                <span>帮助中心</span>
-                <ul class="help-ul">
-                    <li><a href="http://www.wutuojia.com/help/userguide/" rel="nofollow">用户指南</a></li>
-                    <!--           <li><a href="http://www.wutuojia.com/console">商家后台</a></li>
-                               <li><a href="#">资质审核</a></li>-->
-                    <li><a href="http://www.wutuojia.com/help/issue/" rel="nofollow">常见问题</a></li>
-                    <li><a href="javascript:void(0);" onclick="javascript:$('.floatingmenu-ico3').click();" rel="nofollow">意见反馈</a></li>
-                </ul>
+            {{/each}}
+            <div class="qrcode">
+                {{each commonData.spaceMap[commonData.treeMap.QRCode.keyword].elements link}}
+                <img src="{{link.adsImg | showImg}}" width="130" heigh="130" alt="{{link.title}}" />
+                <p>{{link.title}}</p>
+                {{/each}}
             </div>
-
-            <div class="about-us">
-                <span>配送安装</span>
-                <ul class="about-us-ul">
-                    <li><a href="http://www.wutuojia.com/helpguide/shoppingguide/deliveryservice/9.html" rel="nofollow">配送服务</a></li>
-                    <li><a href="http://www.wutuojia.com/helpguide/shoppingguide/deliveryservice/10.html" rel="nofollow">安装服务</a></li>
-                    <li><a href="http://www.wutuojia.com/helpguide/shoppingguide/deliveryservice/11.html" rel="nofollow">收货指南</a></li>
-                </ul>
-            </div>
-            <div class="about-us">
-                <span>售后保障</span>
-                <ul class="about-us-ul">
-                    <li><a href="http://www.wutuojia.com/helpguide/shoppingguide/salesupport/12.html" rel="nofollow">退货政策</a></li>
-                    <li><a href="http://www.wutuojia.com/helpguide/shoppingguide/salesupport/13.html" rel="nofollow">退货流程</a></li>
-                    <li><a href="http://www.wutuojia.com/aboutus/contact.html" rel="nofollow">联系我们</a></li>
-                </ul>
-            </div>
-
-            <div class="qrcode"><img src="http://www.wutuojia.com/images/qrcode.png" width="130" heigh="130" alt="乌托家家居网公众号" /><p>关注乌托家公众号</p></div>
         </div>
     </div>
     <div class=" w1200 clearfix links">
         <div class="links-l">
-            <a href="http://www.wutuojia.com/links.html" class="left" rel="nofollow">友情链接：</a>
+            <a href="javascript:;" class="left" rel="nofollow">友情链接：</a>
             <div class="links-centent">
-                <a href="http://www.wutuojia.com" target="_blank" title="家居网">家居</a>
-                <a href="http://www.wutuojia.com/zixun/baike/" target="_blank" title="家居知识百科">家居百科</a>
-                <a href="http://www.wutuojia.com/zixun/" target="_blank" title="家居资讯">家居资讯</a>
-                <a href="http://www.wutuojia.com/zixun/article/" target="_blank" title="家居文库">家居文库</a>
-                <a href="http://www.wutuojia.com/brand/" target="_blank" title="家具品牌">家具品牌</a>
-                <a href="http://www.wutuojia.com/idea/" target="_blank" title="家居图片">家居图片</a>
-                <a href="http://www.wutuojia.com/diy/" target="_blank" title="家具搭配">家具搭配</a>
-                <a href="http://www.wutuojia.com/item/" target="_blank" title="精品家具">精品家具</a>
-                <a href="http://www.juujuule.com" target="_blank" title="软装配饰">软装配饰</a>
-                <a href="http://www.1meiju.com" target="_blank" title="一美居网瓷砖">一美居网</a>
-                <a href="http://www.dingbangwh.com" target="_blank" title="软装设计公司">软装设计公司</a>
-                <a href="http://www.19dfq.com" target="_blank" title="依旧东方情">依旧东方情</a>
-                <a href="http://fz.591bm.com/" target="_blank" title="福州装修网">福州装修网</a>
-                <a href="http://www.wutuojia.com" target="_blank" title="家居O2O">家居O2O</a>
-                <a href="http://www.wutuojia.com/factory/" target="_blank" title="全国家具生产厂家企业名录">家具厂</a>
-                <a href="http://m.wutuojia.com" target="_blank" title="乌托家手机版">乌托家手机版</a>
-                <a href="http://www.jmgtc.com" target="_blank" title="瓷砖批发">瓷砖批发</a>
-                <a href="http://www.zhuangzhuanghui.com" target="_blank" title="装装汇装饰网">装装汇装饰网</a>
-                <a href="http://www.opvip.com/" target="_blank" title="家具网">家具网</a>
-                <a href="http://www.9tjj.com" target="_blank" title="谈家具">谈家具</a>
-                <a href="http://www.cqawing.com" target="_blank" title="定制家具">定制家具</a>
-                <a href="http://www.ssrjzs.com" target="_blank" title="武汉装饰公司">武汉装饰公司</a>
-                <a href="http://www.pingsofa.com" target="_blank" title="沙发品牌">沙发品牌</a>
-                <a href="http://home.suzhou.fang.com" target="_blank" title="苏州家居网">苏州家居网</a>
-                <a href="http://www.tumanyi.com/" target="_blank" title="装修网">装修网</a>
-                <a href="http://www.haofang5.com" target="_blank" title="好房网">好房网</a>
-                <a href="http://www.jbshouna.com" target="_blank" title="橱柜拉篮">橱柜拉篮</a>
-                <a href="http://www.jianadecor.com" target="_blank" title="上海佳纳软装修公司">上海佳纳软装修公司</a>
-                <a href="http://www.hongyaxuan.com" target="_blank" title="中式装修">中式装修</a>
-                <a href="http://www.wutuojia.com/zxdh/" target="_blank" title="资讯导航">资讯导航</a>
-                <a href="http://homebbs.gz.fang.com" target="_blank" title="广州装修">广州装修</a>
-                <a href="http://chifeng.focus.cn/" target="_blank" title="赤峰房地产">赤峰房地产</a>
-                <a href="http://www.mhouw.com" target="_blank" title="美猴网装修门户">美猴网装修门户</a>
-                <a href="http://www.bxg678.com" target="_blank" title="不锈钢屏风">不锈钢屏风</a>
-                <a href="http://www.hxxwzs.com" target="_blank" title="成都装饰公司">成都装饰公司</a>
-                <a href="http://cz.to8to.com" target="_blank" title="常州装修网">常州装修网</a>
-                <a href="http://www.eblzs.com" target="_blank" title="成都室内设计">成都室内设计</a>
-                <a href="http://www.yblcg.com" target="_blank" title="实木家具">实木家具</a>
-                <a href="http://www.lanhui88.com" target="_blank" title="电动桌">电动桌</a>
-                <a href="http://www.nb01.com.cn" target="_blank" title="甲醛清除">甲醛清除</a>
-                <a href="http://bt.zxdyw.com" target="_blank" title="包头装修 ">包头装修 </a>
-                <a href="http://www.tukunet.com" target="_blank" title="装修图库网">装修图库网</a>
-                <a href="http://www.chinadd.cn/" target="_blank" title="集成吊顶">集成吊顶</a>
-                <a href="http://www.wutuojia.com" target="_blank" title="家居电商">家居电商平台</a>
-                <a href="http://yigui.jiameng.com" target="_blank" title="整体衣柜加盟">整体衣柜加盟</a>
-                <a href="http://panzhihua.liebiao.com" target="_blank" title="攀枝花分类信息">攀枝花分类信息</a>
+                {{each commonData.spaceMap[commonData.treeMap.friendlyLink.keyword].elements link}}
+                    <a href="{{link.adsUrl}}" target="_blank" title="{{link.title}}">{{link.title}}</a>
+                {{/each}}
             </div>
         </div>
         <div class="move-link"><a href="javascript:;"><i></i></a></div>

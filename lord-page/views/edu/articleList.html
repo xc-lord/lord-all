@@ -25,7 +25,7 @@
                     {{if listData.parentCatIds.indexOf(catOne.id + ',') > -1}}
                     class="special-nav-on"
                     {{/if}}>
-                        <a href="{{articleUrl}}/{{catOne.id}}/" ><span  class="special-nav-name">{{catOne.name}} <i></i></span></a>
+                        <a href="{{articleUrl}}/{{catOne.id}}/" ><span  class="special-nav-name">{{catOne.name}}<i></i></span></a>
                         <ul class="special-nav-ul-t">
                             {{each catOne.children catTwo}}
                             <li>
@@ -42,106 +42,40 @@
 
             <h3>热门文章</h3>
             <ul class="clearfix ul-consultationdetails-r">
+                {{each listData.recommendArticles article}}
                 <li>
-                    <a href="http://www.wutuojia.com/zixun/article/8264.html" target="_blank">
+                    <a href="{{articleUrl}}/{{article.id}}.html" target="_blank">
                         <div class="about-info" >
-                            <img src="http://img2.wutuojia.com/pic/sq_small/cms/article/20160318/131151_739232.jpeg"  />
-                            <span></span></div>
+                            <img src="{{article.coverImg | showImg}}"/>
+                            <span></span>
+                        </div>
                         <div class="about-info-m">
-                            <h4>星空投影灯制作方法 如何自制星空投影灯</h4>
-                            <p>星星难以见到，特别是在放晴的日子没有几天的地方，所以只能自己动手做一个星空投影灯来满足一下自己了，方法不难，但是需要动手操作。</p>
+                            <h4>{{article.title}}</h4>
+                            <p>{{article.intro}}</p>
                         </div>
                     </a>
                 </li>
-                <li>
-                    <a href="http://www.wutuojia.com/zixun/article/7144.html" target="_blank">
-                        <div class="about-info" >
-                            <img src="http://img2.wutuojia.com/pic/sq_small/cms/article/20151202/002212_163297.jpg"  />
-                            <span></span></div>
-                        <div class="about-info-m">
-                            <h4>一体化氙气灯的优缺点</h4>
-                            <p>想要知道一体化氙气灯的优缺点是什么？小编告诉你！每款灯具除了自身的优点外，它们还存在着缺点，认真阅读文章，你会发现优点居多哦！</p>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="http://www.wutuojia.com/zixun/article/4679.html" target="_blank">
-                        <div class="about-info" >
-                            <img src="http://img2.wutuojia.com/pic/sq_small/cms/article/20150819/170904_619802.jpg"  />
-                            <span></span></div>
-                        <div class="about-info-m">
-                            <h4>小灯罩有大学问 灯罩材料PK</h4>
-                            <p>灯罩不仅仅是罩在灯上为了使光聚集在一起的作用，还可以防止触电，对保护眼睛也有作用，所以大多数灯上都会有灯罩。不同材料的灯罩透光和防尘效果都有所不一样。</p>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="http://www.wutuojia.com/zixun/article/8847.html" target="_blank">
-                        <div class="about-info" >
-                            <img src="http://img2.wutuojia.com/pic/sq_small/cms/article/20160527/173627_673334.jpg"  />
-                            <span></span></div>
-                        <div class="about-info-m">
-                            <h4>树脂灯罩和亚克力灯罩二选一 哪个比较好呢？</h4>
-                            <p>灯罩是灯具的一个重要的组成部分，外观好、质量优良的灯罩不仅能给家中增添一道美丽的风景，更能带给人舒适的视觉感受和长久的使用幸福感。那么在树脂灯罩和亚克力灯罩中，哪一种材质更加优良，更能凸显我们的生活品质和提高幸福感呢？</p>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="http://www.wutuojia.com/zixun/article/6079.html" target="_blank">
-                        <div class="about-info" >
-                            <img src="http://img2.wutuojia.com/pic/sq_small/cms/article/20150921/175344_257937.jpg"  />
-                            <span></span></div>
-                        <div class="about-info-m">
-                            <h4>吊灯清洗有技巧 3招教你轻松解决</h4>
-                            <p>吊灯可谓是现在家庭装修的必备之一，但吊灯用久了也会脏，挂在天花板上的吊灯一般比较难清洗，遇到这种问题的时候，想必大家肯定会头疼得不行，小编今天就为大家准备了吊灯清洗的详细教程。</p>
-                        </div>
-                    </a>
-                </li>
+                {{/each}}
             </ul>
 
             <h3>精选推荐</h3>
             <div class="clearfix recommend">
-                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6674.html" target="_blank">厨娘有三宝 人美艺高菜板还好</a></p>
-                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6731.html" target="_blank">想要湿意与远方 加湿器这么选</a></p>
-                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6591.html" target="_blank">一盏床头灯会让你拥有安全感</a></p>
-                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6711.html" target="_blank">他们的设计比你想象中更迷人</a></p>
-                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6406.html" target="_blank">原木色装修 雅致生活的空间</a></p>
-                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6544.html" target="_blank">实木家具窗帘搭配技巧大放送</a></p>
-                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6499.html" target="_blank">关于欧式床尾凳的几个小知识</a></p>
-                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6295.html" target="_blank">什么是玄关？ 家的第一印象</a></p>
-                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/5724.html" target="_blank">小窝扮靓神器 墙纸选购攻略</a></p>
-                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/5668.html" target="_blank">悠悠药香伴安眠 中药枕头功效佳</a></p>
+                {{each listData.recommendArticles article}}
+                <p><b>■</b><a href="{{articleUrl}}/{{article.id}}.html" target="_blank">{{article.title}}</a></p>
+                {{/each}}
             </div>
             <h3>猜你喜欢</h3>
             <div class="clearfix recommend">
-                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/9846.html" target="_blank">只要有创意，灯具也可以与众不同！</a></p>
-                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/9707.html" target="_blank">选一顶合适的灯，撩动无尽流淌的时光</a></p>
-                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/9809.html" target="_blank">听说现在都流行装这种餐厅灯，真想把家里的拆了重装！</a></p>
-                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/9698.html" target="_blank">能拉高你家颜值的，是灯是灯还是灯！</a></p>
-                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/9743.html" target="_blank">一盏灯，一本书，就是一个世界</a></p>
-                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/9657.html" target="_blank">一闪一闪亮晶晶 优雅灯具温暖黑夜</a></p>
-                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/9658.html" target="_blank">简约风格更百搭 家居灯具掀起极简热潮</a></p>
-                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/9636.html" target="_blank">温柔炙热的小黄灯 让你感受家的温度</a></p>
-                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/8847.html" target="_blank">树脂灯罩和亚克力灯罩二选一 哪个比较好呢？</a></p>
-                <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/8860.html" target="_blank">星空投影灯多少钱 星空投影灯原理</a></p>
+                {{each randomArticles article}}
+                <p><b>■</b><a href="{{articleUrl}}/{{article.id}}.html" target="_blank">{{article.title}}</a></p>
+                {{/each}}
             </div>
 
             <h3>相关专题</h3>
             <div class="clearfix about-special">
-                <a href="http://www.wutuojia.com/zixun/baike/87.html" target="_blank">墙纸</a>
-                <a href="http://www.wutuojia.com/zixun/baike/25.html" target="_blank">枕头</a>
-                <a href="http://www.wutuojia.com/zixun/baike/109.html" target="_blank">吊灯</a>
-                <a href="http://www.wutuojia.com/zixun/baike/26.html" target="_blank">被子</a>
-                <a href="http://www.wutuojia.com/zixun/baike/162.html" target="_blank">床垫</a>
-                <a href="http://www.wutuojia.com/zixun/baike/104.html" target="_blank">地毯</a>
-                <a href="http://www.wutuojia.com/zixun/baike/24.html" target="_blank">窗帘</a>
-                <a href="http://www.wutuojia.com/zixun/baike/101.html" target="_blank">被套</a>
-                <a href="http://www.wutuojia.com/zixun/baike/108.html" target="_blank">台灯</a>
-                <a href="http://www.wutuojia.com/zixun/baike/99.html" target="_blank">床单</a>
-                <a href="http://www.wutuojia.com/zixun/baike/163.html" target="_blank">室内植物</a>
-                <a href="http://www.wutuojia.com/zixun/baike/106.html" target="_blank">花瓶</a>
-                <a href="http://www.wutuojia.com/zixun/baike/88.html" target="_blank">灯具</a>
-                <a href="http://www.wutuojia.com/zixun/baike/107.html" target="_blank">仿真花</a>
+                {{each listData.tagsList tags}}
+                <a href="{{tagsUrl}}/{{tags.id}}/" target="_blank">{{tags.name}}</a>
+                {{/each}}
             </div>
         </div>
         <div class="consultation-content-r">
@@ -159,11 +93,7 @@
                 <li>
                     <div class="cnsul-concent-img">
                         <a target="_blank" href="{{articleUrl}}/{{article.id}}.html" target="_blank">
-                            {{if article.coverImg}}
-                            <img src="{{article.coverImg}}"/>
-                            {{else}}
-                            <img src="http://img2.wutuojia.com/pic/middle/cms/article/20170908/181030_782430.png"/>
-                            {{/if}}
+                            <img src="{{article.coverImg | showImg}}"/>
                         </a>
                         <span></span>
                     </div>

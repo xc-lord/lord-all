@@ -237,6 +237,19 @@ var routes = {
         pageParam = Object.assign({}, {id: id});//设置页面参数
         $("#showView").load("/mis/edu/eduSchool/eduSchoolEdit.html");
     },
+    //常见问题
+    '/commonQuestion/:entityCode/:entityId': function (entityCode, entityId) {
+        pageParam = Object.assign({}, {entityCode: entityCode, entityId:entityId});//设置页面参数
+        $("#showView").load("/mis/common/commonQuestion/commonQuestionList.html");
+    },
+    '/commonQuestion/:entityCode/:entityId/add': function (entityCode, entityId) {
+        pageParam = Object.assign({}, {entityCode: entityCode, entityId:entityId});//设置页面参数
+        $("#showView").load("/mis/common/commonQuestion/commonQuestionAdd.html");
+    },
+    '/commonQuestion/:entityCode/:entityId/edit/:id': function (entityCode, entityId, id) {
+        pageParam = Object.assign({}, {entityCode: entityCode, entityId:entityId, id: id});//设置页面参数
+        $("#showView").load("/mis/common/commonQuestion/commonQuestionEdit.html");
+    },
 };
 var router = Router(routes);
 router.init();

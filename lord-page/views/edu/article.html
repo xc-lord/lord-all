@@ -78,24 +78,26 @@
         <div class="consultationdetails-content-r ">
             <h3>相关专题</h3>
             <div class="about-special">
-                <a href="http://www.wutuojia.com/zixun/baike/88.html" target="_blank">灯具</a>
-                <a href="http://www.wutuojia.com/zixun/baike/109.html" target="_blank">吊灯</a>
-                <a href="http://www.wutuojia.com/zixun/baike/108.html" target="_blank">台灯</a>
+                {{each articleData.tagsList tags}}
+                <a href="{{tagsUrl}}/{{tags.id}}/" target="_blank">{{tags.name}}</a>
+                {{/each}}
             </div>
-
+            {{if articleData.refArticles}}
+            <div class="consultation-content-l" style="float:right;margin-right: 64%;padding-top: 25px;">
+                <h3>相关文章</h3>
+                <div class="clearfix recommend" style="width:250%;">
+                    {{each articleData.refArticles article}}
+                    <p><b>■</b><a href="{{articleUrl}}/{{article.id}}.html" target="_blank">{{article.title}}</a></p>
+                    {{/each}}
+                </div>
+            </div>
+            {{/if}}
             <div class="consultation-content-l" style="float:right;margin-right: 64%;padding-top: 25px;">
                 <h3>随机推荐</h3>
                 <div class="clearfix recommend" style="width:250%;">
-                    <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/5636.html" target="_blank">吊灯选购注意事项</a></p>
-                    <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/5637.html" target="_blank">吊灯的保养和清洁</a></p>
-                    <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/5639.html" target="_blank">台灯选购注意事项</a></p>
-                    <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/5640.html" target="_blank">台灯使用建议</a></p>
-                    <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/930.html" target="_blank">家居照明布置技巧</a></p>
-                    <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/931.html" target="_blank">居室灯光巧布置 不同分区光不同</a></p>
-                    <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/932.html" target="_blank">灯具消费误区和品牌建议</a></p>
-                    <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6087.html" target="_blank">吸顶灯和吊灯的区别 选吸顶灯还是吊灯</a></p>
-                    <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6086.html" target="_blank">带风扇的吊灯安全吗 风扇吊灯怎么样</a></p>
-                    <p><b>■</b><a href="http://www.wutuojia.com/zixun/article/6079.html" target="_blank">吊灯清洗有技巧 3招教你轻松解决</a></p>
+                    {{each randomArticles article}}
+                    <p><b>■</b><a href="{{articleUrl}}/{{article.id}}.html" target="_blank">{{article.title}}</a></p>
+                    {{/each}}
                 </div>
             </div>
 

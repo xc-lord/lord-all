@@ -6,6 +6,16 @@
     var moment = require('moment');//时间格式化
     var numeral = require('numeral');//数字格式
 
+    //随机的默认图片
+    const imageArr = [
+        "http://img2.wutuojia.com/pic/sq_middle/inspire/su18/20161130/174813_223126.jpg",
+        "http://img2.wutuojia.com/pic/sq_middle/inspire/su17/20160811/155807_754360.jpg",
+        "http://img2.wutuojia.com/pic/sq_middle/inspire/su17/20160706/174342_903596.jpg",
+        "http://img2.wutuojia.com/pic/sq_middle/inspire/su18/20160630/171620_410457.jpg",
+        "http://img2.wutuojia.com/pic/sq_middle/cms/send/20160104/155752_697085.jpg",
+        "http://img2.wutuojia.com/pic/sq_middle/cms/send/20151105/143207_468996.jpg"
+    ];
+
     var viewTemplate = {
         /** 腾讯的模板引擎初始化 */
         init: function (app) {
@@ -34,6 +44,18 @@
             helper.toJSON = function(obj) {
                 return JSON.stringify(obj);
             };
+            /*
+             * 显示图片
+             */
+            helper.showImg = function(obj) {
+                if(obj && obj.trim() != '')
+                    return global.imageSite + obj;
+                var num = Math.floor(Math.random()*(imageArr.length));
+                return imageArr[num];
+            };
+            /*
+             * 获取属性，自动判断是否为空
+             */
             helper.xv = function(obj, paramStr) {
                 if(!paramStr)
                     return '';
@@ -54,6 +76,13 @@
                     return val;
                 else
                     return '';
+            };
+            helper.showJson = function(jsonstr, paramStr) {
+                if(jsonstr && jsonstr.trim() != '') {
+                    var json = JSON.parse(jsonstr);
+                    return helper.xv(json, paramStr);
+                }
+                return "";
             };
             /*
              * 格式化时间，用法{{createTime | dateFormat:'YYYY/MM/DD HH:mm:ss'}}
