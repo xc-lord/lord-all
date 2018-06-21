@@ -1,11 +1,10 @@
 {{extend '../layout/eduPC.html'}}
 
-{{block 'title'}}学校详情{{/block}}
-{{block 'keywords'}}家居,家居网,家居官网,家居商城,乌托家,乌托家家居商城官网,电商平台,家居电商,家居电商平台,家居o2o{{/block}}
-{{block 'description'}}乌托家，一个家居O2O电商平台。我们致力于和用户一起打造一个理想的家、一种自己想要的生活方式。{{/block}}
+{{block 'title'}}{{schoolData.school.name}}{{/block}}
+{{block 'description'}}{{schoolData.school.intro}}{{/block}}
 {{block 'head'}}
-<link rel="stylesheet" type="text/css" href="/res/css/wtj/lrtk.css"/>
-<link rel="stylesheet" type="text/css" href="/res/css/wtj/schoolDetails.css"/>
+<link rel="stylesheet" type="text/css" href="{{resSite}}/css/wtj/lrtk.css"/>
+<link rel="stylesheet" type="text/css" href="{{resSite}}/css/wtj/schoolDetails.css"/>
 {{/block}}
 
 {{block 'content'}}
@@ -213,5 +212,5 @@
 {{/block}}
 
 {{block 'foot'}}
-<script type="text/javascript" src="/res/js/wtj/paydetail.js"></script>
+<script type="text/javascript" src="{{resSite}}/js/wtj/paydetail.js"></script>
 {{/block}}

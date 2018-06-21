@@ -61,5 +61,11 @@
                 </template>
             </children>
         </template>
+        <template>
+            <name>TDK</name>
+            <keyword>TDK</keyword>
+            <type>文字链接</type>
+            <count>1</count>
+        </template>
     </children>
 </page_template>

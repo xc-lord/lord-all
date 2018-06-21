@@ -14,7 +14,18 @@
 
     /* 首页 */
     router.get('/edu/', function (req, res, next) {
-        res.render('./edu/eduIndex', {});
+        var api = {
+            indexData:{
+                url: '/api/ads/getPage.do',
+                data:{pageCode:'eduPCIndex'}
+            }
+        };
+        dataUtils.getData(req, api, function (err, data) {
+            data.articleUrl = data.dynSite + articleUrl;
+            data.tagsUrl = data.dynSite + tagsUrl;
+            data.pageUrl = data.dynSite + articleUrl;
+            res.render('./edu/eduIndex', data);//渲染页面
+        });
     });
 
     /* 网站地图 */
@@ -36,7 +47,6 @@
             data.articleUrl = data.dynSite + articleUrl;
             data.schoolUrl = data.dynSite + schoolUrl;
             data.pageUrl = data.dynSite + siteMapUrl;
-            console.info(data);
             res.render('./edu/siteMap', data);//渲染页面
         });
     });
@@ -85,7 +95,6 @@
             data.articleUrl = data.dynSite + articleUrl;
             data.tagsUrl = data.dynSite + tagsUrl;
             data.pageUrl = data.dynSite + articleUrl;
-            console.info(data);
             res.render('./edu/articleList', data);//渲染页面
         });
     });

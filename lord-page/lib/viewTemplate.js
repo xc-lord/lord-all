@@ -13,6 +13,7 @@
         "http://img2.wutuojia.com/pic/sq_middle/inspire/su17/20160706/174342_903596.jpg",
         "http://img2.wutuojia.com/pic/sq_middle/inspire/su18/20160630/171620_410457.jpg",
         "http://img2.wutuojia.com/pic/sq_middle/cms/send/20160104/155752_697085.jpg",
+        "http://www.wutuojia.com/images/front/grey.png",
         "http://img2.wutuojia.com/pic/sq_middle/cms/send/20151105/143207_468996.jpg"
     ];
 

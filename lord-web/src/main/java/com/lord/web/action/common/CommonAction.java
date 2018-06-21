@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(description = "公共的前端API")
 public class CommonAction
 {
-    @ApiOperation(value="获取公共页头和页尾数据", notes="获取公共页头和页尾数据")
-    @RequestMapping(value = "/api/edu/getEduCommonData", method = RequestMethod.GET)
-    public Result getEduCommonData(Integer num, Long catId)
+    @ApiOperation(value="提建议的保存接口", notes="提建议的保存接口")
+    @RequestMapping(value = "/api/edu/advice", method = RequestMethod.POST)
+    public Result advice(String content, String phone)
     {
-        return Result.success("获取成功");
+        return Result.success("保存成功");
     }
 }

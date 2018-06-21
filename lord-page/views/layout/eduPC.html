@@ -10,9 +10,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=1200">
     <link rel="shortcut icon" type="image/x-icon" href="{{resSite}}/img/wtj/wtj_logo_s.ico" media="screen"/>
-    <title>{{block 'title'}}My Site{{/block}}</title>
-    <meta name="keywords" content="{{block 'keywords'}}My Site keywords{{/block}}"/>
-    <meta name="description" content="{{block 'description'}}My Site keywords{{/block}}"/>
+    {{set tdk = commonData.spaceMap[commonData.treeMap.TDK.keyword].elements[0]}}
+    <title>{{block 'title'}}{{tdk.name}}{{/block}}</title>
+    <meta name="description" content="{{block 'description'}}{{tdk.title}}{{/block}}"/>
+    <meta name="keywords" content="{{block 'keywords'}}{{tdk.subTitle}}{{/block}}"/>
 
     <script type="text/javascript" src="{{resSite}}/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="{{resSite}}/js/jquery.cookie.js"></script>
@@ -63,14 +64,14 @@
             <div class="view-floatingmenu">
                 <a  href="javascript:;" class="close-view"></a>
                 <div class="view-box" >
-                    <form action="http://www.wutuojia.com/advice.do" id="adviceFormId" method="post">
+                    <form action="{{dynSite}}/api/edu/advice.do" id="adviceFormId" method="post">
                         <div class="row-view">
                             <label>提议与建议</label>
                             <textarea name="content" cols="" rows="" placeholder="感谢您对我们的支持与关注，您的宝贵意见有助于我们不断改进"></textarea>
                         </div>
                         <div class="row-view">
-                            <label>请输入您的电子邮件地址</label>
-                            <input name="contact" type="text" placeholder="填不填随你">
+                            <label>请输入您的手机号</label>
+                            <input name="phone" type="text" placeholder="填不填随你">
                         </div>
                         <div class="btn-sbm-div"><a href="javascript:;" class="btn-sbm">提交</a></div>
                     </form>
@@ -91,13 +92,6 @@
 </div>
 <div class="clearfix wtj-footer">
     <div class="w1200 footer-main">
-        <!--<div class="footer-tag">
-            <ul>
-                <li><a href="http://www.wutuojia.com/item/"><i class="f-directsupply"></i><span>大厂直供</span><p>出厂价格出口品质</p></a></li>
-                <li><a href="http://www.wutuojia.com/idea/"><i class="f-inspiration"></i><span>家居灵感</span><p>海量家居美图发现梦想的家</p></a></li>
-                <li class="footer-tag-r"><a href="http://www.wutuojia.com/diy/"><i class="f-collocation"></i><span>私人搭配师</span><p>资深设计师免费帮你搭</p></a></li>
-            </ul>
-        </div>-->
         <div class="f-company">
             {{each commonData.spaceMap[commonData.treeMap.footerLogo.keyword].elements link}}
             <img src="{{link.adsImg | showImg}}" width="114" heigh="52" alt="{{link.title}}"  />
