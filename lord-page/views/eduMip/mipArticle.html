@@ -1,0 +1,76 @@
+{{extend '../layout/mipH5.html'}}
+
+{{block 'title'}}{{articleData.article.title}}{{/block}}
+{{block 'description'}}乌托家，一个家居O2O电商平台。我们致力于和用户一起打造一个理想的家、一种自己想要的生活方式。{{/block}}
+{{block 'keywords'}}家居,家居网,家居官网,家居商城,乌托家,乌托家家居商城官网,电商平台,家居电商,家居电商平台,家居o2o{{/block}}
+
+{{block 'content'}}
+<div class="w92 classfy textC font32">
+    <span>{{articleData.article.title}}</span>
+</div>
+<div class="textC grey font12">{{articleData.article.createTime}}</div>
+<p class="blank"></p>
+<div class="textC grey font12">
+    文章作者：{{articleData.article.authorName}}
+</div>
+<p class="blank"></p>
+<div class="grey w92">导语：{{articleData.article.intro}}</div>
+<p class="blank"></p>
+<div class="product-des">
+{{articleData.content.content}}
+</div>
+
+{{if articleData.refArticles && articleData.refArticles.length > 0}}
+<div class="w92 classfy textC font32 black">
+    <span>相关文章</span>
+</div>
+<ul class="articles">
+    {{each articleData.refArticles article}}
+    <li>
+        <a href="{{articleUrl}}/{{article.id}}.html" title="{{article.title}}">
+            <div>
+                <mip-img
+                        layout="responsive"
+                        width="414"
+                        height="320"
+                        src="{{article.coverImg | showImg}}">
+                </mip-img>
+            </div>
+            <div class="w92 artCont">
+                <h2 class="font32 ellipsis">{{article.title}}</h2>
+                <p class="h50">{{article.intro}}</p>
+                <p>{{article.createTime}}</p>
+            </div>
+        </a>
+    </li>
+    {{/each}}
+</ul>
+{{/if}}
+
+<div class="w92 classfy textC font32 black">
+    <span>推荐文章</span>
+    <a class="bg" href="{{articleUrl}}/"></a>
+</div>
+<ul class="articles">
+    {{each randomArticles article}}
+    <li>
+        <a href="{{articleUrl}}/{{article.id}}.html" title="{{article.title}}">
+            <div>
+                <mip-img
+                        layout="responsive"
+                        width="414"
+                        height="320"
+                        src="{{article.coverImg | showImg}}">
+                </mip-img>
+            </div>
+            <div class="w92 artCont">
+                <h2 class="font32 ellipsis">{{article.title}}</h2>
+                <p class="h50">{{article.intro}}</p>
+                <p>{{article.createTime}}</p>
+            </div>
+        </a>
+    </li>
+    {{/each}}
+</ul>
+
+{{/block}}

@@ -40,7 +40,7 @@ public class AdsElementSpecs extends BaseSpecification {
                     predicate = builder.and(predicate, builder.like(name, "%" + pageObj.getName() + "%"));
                 }
                 query.where(predicate);
-                query.orderBy(builder.desc(root.get("orderValue")), builder.desc(root.get("createTime")));
+                query.orderBy(builder.asc(root.get("orderValue")), builder.desc(root.get("createTime")));
                 return null;
             }
         };

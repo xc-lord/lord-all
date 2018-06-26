@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html mip>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="https://c.mipcdn.com/static/v1/mip.css">
+    <link rel="canonical" href="{{block 'canonicalUrl'}}http://www.lord.com/eduMip/{{/block}}">
+    <title>{{block 'title'}}首页{{/block}}</title>
+    <meta name="description" content="{{block 'description'}}首页{{/block}}"/>
+    <meta name="keywords" content="{{block 'keywords'}}首页{{/block}}"/>
+    <link rel="stylesheet" type="text/css" href="http://www.lord.com/res/css/mip/eduH5.css"/>
+    <!-- noscript 标签是为了在不支持 script 的环境下快速的展现 MIP 页面，推荐使用 -->
+    <noscript>
+        <style mip-officialrelease>
+            body {
+                -webkit-animation: none;
+                -moz-animation: none;
+                -ms-animation: none;
+                animation: none;
+            }
+        </style>
+    </noscript>
+</head>
+<body>
+
+<!-- 页头 start   -->
+<mip-sidebar
+        id="right-sidebar"
+        layout="nodisplay"
+        side="right"
+        class="mip-hidden">
+    <ul>
+        {{each commonData.spaceMap[commonData.treeMap.headerLink.keyword].elements link index}}
+        <li>
+            <a href="{{link.adsUrl}}">{{link.title}}</a>
+            {{if index == 0}}
+            <i class="sidebar-hot"></i>
+            {{/if}}
+        </li>
+        {{/each}}
+        <li><a on="tap:right-sidebar.close" href="#">x</a></li>
+    </ul>
+</mip-sidebar>
+<mip-fixed type="top">
+    <div class="header">
+        <header class="head">
+            <div class="drawer">
+                <!--<a class="bg" href="#"></a>-->
+            </div>
+            <div class="filter">
+                <a id="menuBtn" class="bg shop-cart" on="tap:right-sidebar.open" href="#"><em></em></a>
+            </div>
+            <a href="#"><i class="bg"></i></a>
+        </header>
+    </div>
+</mip-fixed>
+<!-- 页头 start   -->
+
+
+<!-- 内容 start   -->
+<div class="mContent">
+{{block 'content'}}{{/block}}
+</div>
+<!-- 内容 end     -->
+
+<!-- 页尾 start   -->
+<div class="foot textC">
+    <div class="weChat">
+        {{each commonData.spaceMap[commonData.treeMap.QRCode.keyword].elements link}}
+        <mip-img
+                layout="fixed"
+                width="110"
+                height="110"
+                src="{{link.adsImg | showImg}}">
+        </mip-img>
+        <p>{{link.title}}</p>
+        {{/each}}
+    </div>
+    <div class="fNav">
+        {{each commonData.spaceMap[commonData.treeMap.footerLink.keyword].elements link}}
+        <a class="font14" href="{{link.adsUrl}}">{{link.title}}</a>
+        {{/each}}
+        <a class="font14" href="http://www.wutuojia.com/">电脑版</a>
+    </div>
+    <div class="wCopy">
+        {{each commonData.spaceMap[commonData.treeMap.copyright.keyword].elements link}}
+        <p>{{link.title}}</p>
+        <p>{{link.subTitle}}</p>
+        {{/each}}
+    </div>
+</div>
+<!--快速回顶组件-->
+<mip-fixed type="gototop">
+    <mip-gototop threshold='600'></mip-gototop>
+</mip-fixed>
+<!-- 页尾 end   -->
+
+<!--百度统计组件，外链mip-stats-baidu.js TODO: 修改token值-->
+<mip-stats-baidu token="4e397f684261b9e4ff9d8"></mip-stats-baidu>
+<!--mip 运行环境-->
+<script src="https://c.mipcdn.com/static/v1/mip.js"></script>
+<!--分享组件-->
+<script src="https://c.mipcdn.com/static/v1/mip-share/mip-share.js"></script>
+<!--百度统计组件-->
+<script src="https://c.mipcdn.com/static/v1/mip-stats-baidu/mip-stats-baidu.js"></script>
+<!--侧边栏组件-->
+<script src="https://c.mipcdn.com/static/v1/mip-sidebar/mip-sidebar.js"></script>
+<!--快速回顶组件-->
+<script src="https://c.mipcdn.com/static/v1/mip-gototop/mip-gototop.js"></script>
+
+{{if apiUseTime}}
+<!-- apiUseTime = {{apiUseTime}} ms -->
+{{/if}}
+</body>
+</html>

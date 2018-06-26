@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page_template xmlns="http://www.xiaocheng.xyz"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://www.xiaocheng.xyz  ../page_template.xsd">
+    <page_name>H5公共页头页尾</page_name>
+    <page_code>eduH5CommonData</page_code>
+    <children>
+        <template>
+            <name>头部LOGO</name>
+            <keyword>headerLogo</keyword>
+            <type>图片链接</type>
+            <count>1</count>
+        </template>
+        <template>
+            <name>头部导航</name>
+            <keyword>headerLink</keyword>
+            <type>文字链接</type>
+            <count>6</count>
+        </template>
+        <template>
+            <name>底部链接</name>
+            <keyword>footerLink</keyword>
+            <type>文字链接</type>
+            <count>3</count>
+        </template>
+        <template>
+            <name>二维码</name>
+            <keyword>QRCode</keyword>
+            <type>图片链接</type>
+            <count>1</count>
+        </template>
+        <template>
+            <name>版权信息</name>
+            <keyword>copyright</keyword>
+            <type>文字链接</type>
+            <count>1</count>
+        </template>
+        <template>
+            <name>TDK</name>
+            <keyword>TDK</keyword>
+            <type>文字链接</type>
+            <count>1</count>
+        </template>
+    </children>
+</page_template>

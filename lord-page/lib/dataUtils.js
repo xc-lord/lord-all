@@ -22,6 +22,16 @@
             };
             return this.get(req, api, callback);
         },
+        /**
+         * 获取页面数据和页头页尾等公共数据
+         */
+        getH5Data: function (req, api, callback) {
+            api.commonData = {
+                url: '/api/ads/getPage.do',
+                data:{pageCode:'eduH5CommonData'}
+            };
+            return this.get(req, api, callback);
+        },
         /*
          * 调用API接口
          * @param req   用户的请求信息

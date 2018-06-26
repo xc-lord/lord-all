@@ -76,7 +76,7 @@
         dataUtils.getData(req, api, function (err, data) {
             data.schoolUrl = data.dynSite + schoolUrl;
             data.pageUrl = data.dynSite + schoolUrl;
-            res.render('./edu/schoolDetails', data);//渲染页面
+            res.render('./edu/school', data);//渲染页面
         });
     });
 

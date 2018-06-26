@@ -1,0 +1,209 @@
+body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td{margin:0;padding:0;}
+html{font-size:10px;}
+body{background: #fff;  font-size:1.4rem; font-family:Helvetica,sans-serif; color: #999; -webkit-text-size-adjust:none; -ms-text-size-adjust: none; text-size-adjust: none}
+ul,ol,li{list-style:none;}
+h1,h2,h3,h4,h5,h6{font-weight: normal;}
+input,textarea,a{-webkit-tap-highlight-color: rgba(0,0,0,0);}
+input:focus{outline: none;}
+a{text-decoration:none; color:inherit; }
+a:visited{text-decoration:none; color: inherit;}
+a:hover{text-decoration:none;}
+img{border:0; width: 100%;}
+
+/*the part of share*/
+textarea,input{border:1px solid #f0f0f0; padding: 10px; outline: none;-webkit-appearance: none; border-radius: 5px;}
+.bg{background:url(http://m.wutuojia.com/resource/images/bg.png) no-repeat; background-size: 118px 533px;}
+.textC{text-align: center;}
+.textL{text-align: left;}
+.w92{width:92%; margin: 0 auto;}
+.h50{max-height: 50px; overflow: hidden;text-overflow: ellipsis;  display: -webkit-box;  -webkit-line-clamp: 2;  -webkit-box-orient: vertical;}
+.font32{font-size:18px; font-size: 1.8rem;}
+.font14{font-size:14px; font-size: 1.4rem;}
+.font12{font-size:12px; font-size: 1.2rem;}
+.black{color: #333;}
+.grey{color: #999;}
+.hide{display:none !important;}
+.lineL span{display: inline-block; border-bottom: 1px solid #333; width: 40px; overflow: hidden;}
+.classfy{padding: 30px 0; position: relative;}
+.classfy a{display:inline-block; width:20px; height:20px; background-position: 0 -162px; position: absolute; right: 0;}
+.blank{height:20px;}
+.ellipsis{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.artContent{line-height: 24px;}
+
+/*the part of foot*/
+.foot{background:#f0f0f0; padding: 0 4%; margin-top:60px;}
+.weChat{padding: 20px 0;}
+.fNav{font-size: 0; border-bottom: 1px solid #ddd; padding: 0 0 20px 0;}
+.fNav a{ border-left: 1px solid #ddd; box-sizing: border-box; display: inline-block;width: 25%; text-align: center;}
+.fNav a:first-child{border-left:0;}
+.wCopy{ padding: 20px 0; line-height: 1.5rem; font-size: 1.2rem;}
+
+/*the part of dialog*/
+.menus{position: fixed; top:15px; left:4%; background: #000;color: #fff; z-index: 100; overflow: hidden; padding: 0 0 30px 0; border-radius: 3px;}
+.closed{height: 30px; position: relative;}
+.closed-btn{display:inline-block; position:absolute; right: 5px; width: 28px; height: 28px; background-position: 10px -185px;}
+.wtj{padding: 20px 0; }
+.wtj a{display: block;}
+.wtj i{width:100px; height:30px; display:inline-block; background-position: 0 -30px;}
+.wtj-menu a{display: block; font-size: 1.6rem; color: #fff; position: relative; border-top: 1px solid #333; padding: 20px 0; overflow: hidden;white-space:nowrap;}
+.wtj-menu a:first-child{border-top:none;}
+.wtj-menu a span{ position: relative;}
+.ui-icon-tag-hot{background:url(http://m.wutuojia.com/resource/images/hoticon.png) no-repeat 0 0;    background-size: 22px 15px;  width: 22px;  height: 15px;  display: inline-block;  position: absolute;  right: -20px;  top: -15px;}
+.sidebar-hot{background:url(http://m.wutuojia.com/resource/images/hoticon.png) no-repeat 0 0;    background-size: 22px 15px;  width: 22px;  height: 15px;  display: inline-block;  position: absolute; top: 10px;}
+
+#right-sidebar{
+    background: #000;color: #fff;
+    text-align:center;
+    width: 150px;
+    margin-top: 60px;
+}
+#right-sidebar li{display: block; font-size: 1.6rem; color: #fff; position: relative; border-top: 1px solid #333; padding: 20px 0; overflow: hidden;white-space:nowrap;margin-left: 10px;margin-right: 10px;}
+
+/*the part of head*/
+.header{background: #fff;}
+.mContent{margin-top: 60px}
+.head{height:60px; position: relative; overflow: hidden; box-sizing: border-box;display: -webkit-box;display:-ms-flexbox;display:-moz-box; font-size: 0; border-bottom: 1px solid #f0f0f0;}
+.head  i{display: inline-block; width: 70px; height: 25px; background-position: 0 0; position: absolute; left:0; right:0; bottom: 0; top:0; margin: 20px 0 0 20px;}
+.drawer, .filter{display: block; width: 50%; padding: 0 4%; box-sizing: border-box;}
+.drawer > a, .filter > a{display: inline-block;width: 25px; height: 25px; margin: 20px 0 0 0;}
+.drawer > a{background-position:0 -70px;}
+.filter > a{ float: right;}
+.filter  #open-right{background-position: 0 -103px;}
+.filter .login{background-position: 0 -307px; margin-right: 25px;}
+.filter .in-login{/*background-position: -35px -307px;*/ background: none; margin-right: 18px; position: relative; border-radius:90px; overflow: hidden;}
+.filter .in-login img{ max-width: 100%; max-height: 100%; width: inherit; position: absolute; left: 0px; top: 0px; min-height: 25px;}
+.filter .shop-cart{background-position:0 -70px; position: relative; }
+.filter .shop-cart em{ position: absolute; top: 0px; right:-3px; width: 10px; display: none; height: 10px; background-color: #ff4040; border-radius: 90px; -moz-border-radius: 90px;  -webkit-border-radius: 90px;  }
+.filter{text-align: right;}
+.snap-drawers {display:none;}
+
+/*the part of center*/
+#wrapper{transition: left .3s;}
+#snap-content .content{position:absolute; left:0; top:60px; width: 100%; bottom: 0;z-index: 1; overflow: auto;}
+.wtj-pic{position: relative; padding: 0 0 30px 0; overflow: hidden;}
+.picWrop{position:relative; border: 1px solid #f0f0f0; font-size: 0;display: block}
+.picWrop > img{position:absolute; top:0; left: 0; z-index: 1;}
+.picWrop:after{content: ' '; width: 0; height: 0; font-size: 0; position: absolute; top:50%; left:50%; margin: -55px 0 0 -25px;}
+.picWrop1:after{border-bottom: 43.3px solid #f0f0f0; border-left: 25px solid transparent; border-right: 25px solid transparent;}
+.picWrop2:after{border: 25px solid #f0f0f0; }
+.picWrop3:after{border: 25px solid #f0f0f0;border-radius: 25px;}
+.picWrop4:after,.picWrop5:after{content: '1'; font-size: 0; width: 50px; height: 50px;background:url(http://m.wutuojia.com/resource/images/icon.png); background-size: 50px 100px;}
+.picWrop5:after{background-position: bottom;}
+.figuerImg:after{margin: -25px 0 0 -25px;}
+.photo{border: 1px solid #f0f0f0; border-radius: 999px; background: #fff; background-clip: padding-box; display: inline-block; overflow: hidden;}
+.photo img{-webkit-border-radius: 999px; -ms-border-radius:999px; border-radius: 999px;}
+.wtj-pic .photo{width: 60px; height: 60px;  position: absolute; bottom: 0; left:50%; margin-left: -30px; z-index: 2;}
+.wtj-pic .photo img{min-height: 60px;}
+.anchor{position: relative; display: none;}
+.anchor em{background-color:#fff; width:6px; height:6px;  position:absolute; left:7px; top:7px;  border-radius: 4px; z-index:3;  overflow:hidden;}
+.anchor i{ background-color:#111111; width:20px; height:20px; position:absolute; left:0; top:0;border-radius: 90px; z-index:2; opacity: .6; transition:opacity .6s ease-in;}
+.wtj-name{padding: 20px 0 25px 0;}
+.prePhoto .card{display: inline-block; width: 28px; border-radius: .4rem; height: 15px;  vertical-align: -2px; margin-left: -44px;     background: url(http://m.wutuojia.com/resource/images/bg.png) no-repeat; background-position: 0 -246px; background-size: 118px 533px;}
+.plan-photo .card{display: inline-block; width: 28px; border-radius: .4rem; height: 15px;  vertical-align: -2px; margin-left: -24px;     background: url(http://m.wutuojia.com/resource/images/bg.png) no-repeat; background-position: 0 -246px; background-size: 118px 533px;}
+.wtj-name .plan-name{display:inline-block;background-color: black;color: white; padding: 1px 3px;}
+.wtj-title{ padding: 0 15% 15px 15%;}
+.wtj-title-gl{ text-align: center; margin-bottom: 20px; margin-top: 15px; line-height: 1.8rem;}
+.list .description{ margin-bottom: 1rem;}
+.description{line-height: 25px; text-align: justify;}
+/*.description img{width: 100% !important; height: auto !important;}*/
+.favorites{display:inline-block; padding: 10px 0; position: relative; margin-bottom: 30px;}
+.favorites i{display: inline-block; width: 20px; height: 20px; background-position: 0 -130px;}
+.selected i{background-position: -23px -130px;}
+.favorites .addOne{position: absolute;background-position: -23px -130px; left:0;top:10px; z-index: 2;-webkit-animation: heart .4s;animation: heart .4s;}
+@keyframes heart {
+    80% {top: -10px;}
+    100%{top: 10px;}
+}
+@-webkit-keyframes heart {
+    80% {top: -10px;}
+    100%{top: 10px;}
+}
+.aDetail{text-indent: 2em;}
+.brands{ width:92%; margin: 0 auto 15px auto; border-top: 1px solid #ddd; border-left: 1px solid #ddd; overflow: hidden;}
+.brands a{float: left; width:25%; position: relative; overflow: hidden; box-sizing: border-box; border-bottom: 1px solid #ddd; border-right: 1px solid #ddd;}
+.brands a img{width:70%; position: absolute; top:0; left:0; bottom: 0; right: 0; margin: auto;max-height: 70%; max-width: 70%; vertical-align: middle;}
+.brandList{font-size: 0; color:#333;}
+.brandList a{display: inline-block; width: 25%; box-sizing: border-box; margin:0 0 20px 0;}
+.brandList span{display: block;}
+.brandList .blBorder{border: 1px solid #f0f0f0; box-sizing: border-box; margin:0 0 10px -1px; font-size: 0; position: relative; padding-bottom: 100%;}
+.brandList .blBorder img{position: absolute; margin: auto; width: 70%; top:0; left:0; bottom: 0; right:0;max-height: 70%; max-width: 70%; vertical-align: middle;}
+.topics h2{color: #333; padding: 20px 0;}
+.detail{font-size: 0;}
+.topics a{ display: inline-block; width:25%; line-height: 25px;overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.articles li{padding: 0 0 20px 0;}
+.articles li:last-child{padding: 0;}
+.artCont h2{padding: 20px 0 0 0; color: #333; width: 75%;}
+.artCont p{ line-height: 25px; padding: 15px 0 0 0;}
+
+.more-btn-div .more-btn {display:block;  height: 40px;  line-height: 40px; text-align: center;  background: #f0f0f0;  color: #7e7e7e;   }
+.more-btn-div{ padding: 25px 15px; text-align: center; }
+
+.product{font-size: 0;}
+.product a{display: inline-block; width: 46%; padding: 10px 2%; vertical-align: top;}
+.product p{line-height: 2rem; max-height: 4rem; min-height: 2rem; overflow: hidden;text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;}
+.figuerImg{overflow: hidden;position: relative; border: none;}
+.product .figuerImg{margin-bottom: 20px;}
+.figuerImg img{position: absolute; top:0; left:0; right:0; bottom:0; margin:auto;  width: auto; max-height: 100%; max-width: 100%; vertical-align: middle;}
+.proTit{padding: 20px 40px; line-height: 26px;}
+
+/*资讯详情统一样式*/
+.infor-wrap h1{font-size: 2.2rem; display: inline-block; color: #fff; background: #000; line-height: 2.7rem;}
+.infor-tit{padding: 25px 40px 55px 40px; text-align: center;}
+.infor-tit h1{font-size: 2.2rem; display: inline-block; color: #fff; text-align: justify; background: #000; line-height: 2.7rem;}
+.lead-line{line-height: 2.8rem; color: #7e7e7e; margin-bottom: 50px; padding: 0 15px;}
+.infor-wrap h2{font-size: 2rem; color: #494C53; font-weight:bold;text-align: center; margin: 0 25px 50px 25px;}
+.infor-wrap h3,.product-tit{font-size: 1.8rem; position: relative; color: #494C53;font-weight:bold; margin: 0 15px 45px 15px; padding-left: 15px;}
+.infor-wrap h3:before, .product-tit:before{content: ' '; background: #000; display: inline-block; width: 5px;position: absolute; top:0; left:0; height: 100%;}
+.infor-wrap h4{color: #494C53;font-size: 1.6rem; margin: 0 15px; line-height:2rem; font-weight:bold; display: inline-block; padding-bottom: 10px;}
+.infor-wrap h4 strong{display: inline-block; font-weight: normal; margin-right: 5px; padding: 0 6px; background: #4d1a00; color: #fff;}
+.infor-wrap p{padding: 0 15px; color: #494C53; font-size: 1.6rem; line-height: 3.5rem; min-height: 2rem;}
+.infor-wrap p b{background: #e5e5e5; font-weight: normal; padding: 5px 0;}
+.infor-wrap a{color: #6190e2; font-size: 1.6rem;}
+.infor-wrap a:before{content: '·'; color: #494c53; font-weight: bolder; vertical-align: middle; font-size: 2rem; margin-right: 5px;}
+.infor-wrap .in-link{color: #494c53;}
+.infor-wrap .in-link:before{display: none;}
+.infor-wrap p img{margin-top: 10px;}
+
+/*商品详情*/
+.padding15{padding: 0 15px;}
+.series-tit{background: #000; color: #fff; font-size: 1.6rem; line-height: 25px; padding: 0 20px; position: relative; margin-bottom: 25px;}
+.series-tit:after{content: " ";position:absolute; bottom:-6px; left:50%; margin-left: -10px;border-top: 7px solid #000; border-right: 10px solid transparent; border-left: 10px solid transparent;}
+.more-btn{display: block; height: 40px; line-height: 40px; margin: 25px 15px; background: #f0f0f0; color: #7e7e7e; text-align: center;}
+.parameter dl{line-height: 25px;display: -webkit-box; display: -moz-box; display: -ms-flexbox; display: box;}
+.parameter dd{ color: #494C53;-webkit-box-flex: 1;-moz-box-flex: 1; -ms-flex: 1; -o-box-flex: 1; box-flex: 1;}
+.parameter dt{color: #7e7e7e; width: 95px;}
+.product-des{padding: 0 15px 70px 15px;}
+.product-title{padding: 50px 35px 15px 35px; text-align: center;}
+.product-title h1{font-size: 1.9rem; display: inline-block; color: #fff; text-align: justify; background: #000; line-height: 27px;}
+.btn-wrap{padding: 50px 35px; position: relative;}
+.btn-wrap a{display: inline-block;width: 44px; height: 44px;}
+.btn-wrap .like-btn{ background-position: -103px 0; margin-right: 7px;}
+.btn-wrap .share-btn{ background-position: -155px 0;}
+.btn-wrap .buy-btn{width: 95px; position: absolute; right: 35px; top:50px;}
+.btn-wrap .like-btn.cur{ background-position: -103px -48px;}
+.btn-wrap .share-btn.cur{ opacity: 0.5;}
+.btn-wrap .buy-btn.cur{background-position: 0 -48px;}
+.share-wrap{position:absolute; top:-15px; left:0;padding:0 35px;width:100%; box-sizing:border-box;height: 48px;}
+.share-wrap i{position: absolute; bottom:-6px; left:103px;border-top: 7px solid #000; border-right: 10px solid transparent; border-left: 10px solid transparent;}
+.share-wrap .item{text-align: center; background: #000; float: left; width: 75px;}
+.share-wrap a{display: inline-block; width: 40px; height: 40px; padding: 4px 0;}
+.btn-wrap .jiathis_style_32x32 .jtico{display: none !important;}
+#jiathis_weixin_modal{margin: -200px 0 0 -180px !important;}
+#jiathis_weixin_modal img{width: auto;}
+.share-wrap a:after{content: " "; display: inline-block; width: 20px; height: 17px; margin-top: 11px;}
+.share-wrap a.cur:after{ opacity: 0.5;}
+.share-wrap .sina-btn a:after{background-position: -179px -48px;}
+.share-wrap .wechat-btn a:after{background-position: -155px -72px;}
+.share-wrap .friend-btn a:after{background-position: -153px -48px;}
+.share-wrap .qq-btn a:after{background-position: -177px -71px;}
+.product-line{margin-top: 0;}
+.crumbs{text-align: center; margin: 100px 0 -15px 0;}
+.crumbs .home-btn, .crumbs i{display:inline-block; vertical-align:middle;background: url(http://m.wutuojia.com/resource/images/lead.png) no-repeat; background-size: 17px 28px;}
+.crumbs .home-btn{width: 17px; height: 15px;}
+.crumbs i{content: " "; padding: 0 15px; width: 8px; height: 14px; background-position: 15px -18px; }
+
+.comm-list{font-size: 0; padding: 0 7px;}
+.comm-list a{display: inline-block; width: 50%; padding: 10px 8px; box-sizing: border-box;}
+
+.question h2{padding: 20px 0 0 0;color: #333;width: 85%;}
+.question p{ line-height: 25px; padding: 15px 0 0 0;}

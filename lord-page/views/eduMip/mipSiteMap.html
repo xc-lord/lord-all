@@ -1,0 +1,45 @@
+{{extend '../layout/mipH5.html'}}
+
+{{block 'title'}}网站地图{{/block}}
+
+{{block 'content'}}
+<div class="w92 classfy textC font32 black">
+    <span>学校</span>
+    <a class="bg" href="{{schoolUrl}}/"></a>
+</div>
+<ul class="w92 res topics">
+    {{each districtList district index}}
+    {{if district.schools && district.schools.length > 0}}
+    <li>
+        <h2 class="font32">{{district.name}}</h2>
+        <div class="detail">
+            {{each district.schools school}}
+            <a class="font14" href="{{schoolUrl}}/{{school.id}}.html" title="{{school.name}}" target="_blank">{{school.name}}</a>
+            {{/each}}
+        </div>
+    </li>
+    {{/if}}
+    {{/each}}
+</ul>
+<p class="blank"></p>
+<p class="lineL textC"><span></span></p>
+<div class="w92 classfy textC font32 black">
+    <span>资讯</span>
+    <a class="bg" href="{{articleUrl}}/"></a>
+</div>
+<ul class="w92 res topics">
+    {{each categoryTree catOne}}
+    <li>
+        <h2 class="font32"><a href="{{articleUrl}}/{{catOne.id}}/">{{catOne.name}}</a></h2>
+        <div class="detail">
+            {{each catOne.children catTwo}}
+            <a class="font14" href="{{articleUrl}}/{{catTwo.id}}/" title="{{catTwo.name}}" target="_blank">{{catTwo.name}}</a>
+            {{/each}}
+        </div>
+    </li>
+    {{/each}}
+</ul>
+<p class="blank"></p>
+<p class="lineL textC"><span></span></p>
+
+{{/block}}
