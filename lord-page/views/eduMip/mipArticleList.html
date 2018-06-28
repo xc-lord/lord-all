@@ -1,0 +1,118 @@
+{{extend '../layout/mipH5.html'}}
+
+{{block 'title'}}文章列表{{/block}}
+{{block 'description'}}乌托家，一个家居O2O电商平台。我们致力于和用户一起打造一个理想的家、一种自己想要的生活方式。{{/block}}
+{{block 'keywords'}}家居,家居网,家居官网,家居商城,乌托家,乌托家家居商城官网,电商平台,家居电商,家居电商平台,家居o2o{{/block}}
+
+{{block 'content'}}
+<ul class="articles">
+    {{each listData.articleData.list article}}
+    <li>
+        <a href="{{articleUrl}}/{{article.id}}.html" title="{{article.title}}">
+            <div>
+                <mip-img
+                        layout="responsive"
+                        width="414"
+                        height="320"
+                        src="{{article.coverImg | showImg}}">
+                </mip-img>
+            </div>
+            <div class="w92 artCont">
+                <h2 class="font32 ellipsis">{{article.title}}</h2>
+                <p class="h50">{{article.intro}}</p>
+                <p>{{article.createTime}}</p>
+            </div>
+        </a>
+    </li>
+    {{/each}}
+</ul>
+
+{{set pager = listData.articleData}}
+{{if pager.needPaging}}
+<div id="pagerNav" class="page textC w92">
+    {{if pager.hasPrev}}
+    {{if pager.page-1 == 1}}
+    <a href="{{pageUrl}}/" class="bg prev"></a>
+    {{else}}
+    <a href="{{pageUrl}}/list{{pager.page - 1}}.html" class="bg prev"></a>
+    {{/if}}
+    {{/if}}
+
+    {{if pager.page-1 == 1 || pager.page == 1}}
+    <a class="" href="{{pageUrl}}/">1</a>
+    {{/if}}
+
+    {{if pager.page-1 > 1}}
+    <a class="" href="{{pageUrl}}/list{{pager.page - 1}}.html">{{pager.page-1}}</a>
+    {{/if}}
+
+    {{if pager.page != 1}}
+    <a class="black" href="{{pageUrl}}/list{{pager.page}}.html">{{pager.page}}</a>
+    {{/if}}
+
+    {{if pager.page+1 < pager.totalPage}}
+    <a href="{{pageUrl}}/list{{pager.page + 1}}.html">{{pager.page + 1}}</a>
+    {{/if}}
+
+    {{if pager.page+2 < pager.totalPage && pager.page == 1}}
+    <a href="{{pageUrl}}/list{{pager.page + 2}}.html">{{pager.page + 2}}</a>
+    {{/if}}
+
+    {{if pager.hasNext}}
+    <a href="{{pageUrl}}/list{{pager.page + 1}}.html" class="bg next"></a>
+    {{/if}}
+</div>
+{{/if}}
+
+<h3 class="product-tit">分类</h3>
+<ul class="w92 res topics">
+    {{each listData.categoryTree catOne}}
+    <li>
+        <h2 class="font32"><a href="{{articleUrl}}/{{catOne.id}}/">{{catOne.name}}</a></h2>
+        <div class="detail">
+            {{each catOne.children catTwo}}
+                <a class="font14" href="{{articleUrl}}/{{catTwo.id}}/"
+                   {{if listData.parentCatIds.indexOf(catTwo.id + ',') > -1}} class="special-t-on" {{/if}}
+                >{{catTwo.name}}</a>
+            {{/each}}
+        </div>
+    </li>
+    {{/each}}
+</ul>
+
+{{if listData.tagsList && listData.tagsList.length > 0}}
+<h3 class="product-tit">相关专题</h3>
+<ul class="w92 res topics">
+    <li>
+        <div class="detail">
+            {{each listData.tagsList tags}}
+            <a class="font14" href="{{tagsUrl}}/{{tags.id}}/" title="{{tags.name}}">{{tags.name}}</a>
+            {{/each}}
+        </div>
+    </li>
+</ul>
+{{/if}}
+
+<h3 class="product-tit">推荐文章</h3>
+<ul class="articles">
+    {{each randomArticles article}}
+    <li>
+        <a href="{{articleUrl}}/{{article.id}}.html" title="{{article.title}}">
+            <div>
+                <mip-img
+                        layout="responsive"
+                        width="414"
+                        height="320"
+                        src="{{article.coverImg | showImg}}">
+                </mip-img>
+            </div>
+            <div class="w92 artCont">
+                <h2 class="font32 ellipsis">{{article.title}}</h2>
+                <p class="h50">{{article.intro}}</p>
+                <p>{{article.createTime}}</p>
+            </div>
+        </a>
+    </li>
+    {{/each}}
+</ul>
+{{/block}}

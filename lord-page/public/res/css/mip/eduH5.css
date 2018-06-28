@@ -152,7 +152,7 @@ textarea,input{border:1px solid #f0f0f0; padding: 10px; outline: none;-webkit-ap
 .infor-tit h1{font-size: 2.2rem; display: inline-block; color: #fff; text-align: justify; background: #000; line-height: 2.7rem;}
 .lead-line{line-height: 2.8rem; color: #7e7e7e; margin-bottom: 50px; padding: 0 15px;}
 .infor-wrap h2{font-size: 2rem; color: #494C53; font-weight:bold;text-align: center; margin: 0 25px 50px 25px;}
-.infor-wrap h3,.product-tit{font-size: 1.8rem; position: relative; color: #494C53;font-weight:bold; margin: 0 15px 45px 15px; padding-left: 15px;}
+.infor-wrap h3,.product-tit{font-size: 1.8rem; position: relative; color: #494C53;font-weight:bold; margin: 20px 15px 20px 15px; padding-left: 15px;}
 .infor-wrap h3:before, .product-tit:before{content: ' '; background: #000; display: inline-block; width: 5px;position: absolute; top:0; left:0; height: 100%;}
 .infor-wrap h4{color: #494C53;font-size: 1.6rem; margin: 0 15px; line-height:2rem; font-weight:bold; display: inline-block; padding-bottom: 10px;}
 .infor-wrap h4 strong{display: inline-block; font-weight: normal; margin-right: 5px; padding: 0 6px; background: #4d1a00; color: #fff;}
@@ -172,7 +172,7 @@ textarea,input{border:1px solid #f0f0f0; padding: 10px; outline: none;-webkit-ap
 .parameter dl{line-height: 25px;display: -webkit-box; display: -moz-box; display: -ms-flexbox; display: box;}
 .parameter dd{ color: #494C53;-webkit-box-flex: 1;-moz-box-flex: 1; -ms-flex: 1; -o-box-flex: 1; box-flex: 1;}
 .parameter dt{color: #7e7e7e; width: 95px;}
-.product-des{padding: 0 15px 70px 15px;}
+.product-des{padding: 0 15px 25px 15px;}
 .product-title{padding: 50px 35px 15px 35px; text-align: center;}
 .product-title h1{font-size: 1.9rem; display: inline-block; color: #fff; text-align: justify; background: #000; line-height: 27px;}
 .btn-wrap{padding: 50px 35px; position: relative;}
@@ -207,3 +207,11 @@ textarea,input{border:1px solid #f0f0f0; padding: 10px; outline: none;-webkit-ap
 
 .question h2{padding: 20px 0 0 0;color: #333;width: 85%;}
 .question p{ line-height: 25px; padding: 15px 0 0 0;}
+
+/*the part of 分页*/
+.page{position: relative; padding: 20px 0;}
+.page a{display: inline-block; padding: 0 10px; line-height: 2.4rem; font-size: 1.6rem; }
+.page a.black{color: #333;}
+.page .prev,.page .next{  width:15px; height: 25px; vertical-align: -9px;}
+.page .prev{background-position: -20px -215px;}
+.page .next{ background-position: 15px -215px;}

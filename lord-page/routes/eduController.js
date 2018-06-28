@@ -99,7 +99,7 @@
         });
     });
 
-    /* 分类文章列表 */
+    /* 分页文章列表 */
     router.get(articleUrl + '/list:page.html', function (req, res, next) {
         var api = {
             listData: {

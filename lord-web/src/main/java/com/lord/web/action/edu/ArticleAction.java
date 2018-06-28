@@ -71,7 +71,7 @@ public class ArticleAction
         }
         //文章列表
         Pager<CmsArticle> articleData = cmsArticleService.pageByCategory(category, new PagerParam(page, pageSize));
-        //articleData = new Pager<>(9, 10, 180L, articleData.getList());
+        articleData = new Pager<>(18, 10, 180L, articleData.getList());
         //分页信息
         List<Integer> pageNavs = NavUtils.getPageNav(articleData.getPage(), articleData.getTotalPage());
         articleData.setPageNavs(pageNavs);

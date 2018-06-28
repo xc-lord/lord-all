@@ -106,19 +106,20 @@
                 {{/each}}
             </ul>
 
-            {{if listData.articleData.needPaging}}
+            {{set pager = listData.articleData}}
+            {{if pager.needPaging}}
             <div class=" clearfix page-div page-cms">
                 <div class="paging-div">
                     <div class="nav-num">
-                        {{if listData.articleData.hasPrev}}
-                        {{if listData.articleData.page-1 == 1}}
+                        {{if pager.hasPrev}}
+                        {{if pager.page-1 == 1}}
                         <a href="{{pageUrl}}/" class="nav-left"></a>
                         {{else}}
-                        <a href="{{pageUrl}}/list{{listData.articleData.page - 1}}.html" class="nav-left"></a>
+                        <a href="{{pageUrl}}/list{{pager.page - 1}}.html" class="nav-left"></a>
                         {{/if}}
                         {{/if}}
-                        {{each listData.articleData.pageNavs pageNum}}
-                        {{if pageNum == listData.articleData.page}}
+                        {{each pager.pageNavs pageNum}}
+                        {{if pageNum == pager.page}}
                         <a href="javascript:;" class="on-page">{{pageNum}}</a>
                         {{else if pageNum == 1}}
                         <a href="{{pageUrl}}/">{{pageNum}}</a>
@@ -128,8 +129,8 @@
                         <a href="javascript:;">...</a>
                         {{/if}}
                         {{/each}}
-                        {{if listData.articleData.hasNext}}
-                        <a href="{{pageUrl}}/list{{listData.articleData.page + 1}}.html" class="nav-right"></a>
+                        {{if pager.hasNext}}
+                        <a href="{{pageUrl}}/list{{pager.page + 1}}.html" class="nav-right"></a>
                         {{/if}}
                     </div>
                 </div>

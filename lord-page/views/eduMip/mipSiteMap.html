@@ -39,7 +39,27 @@
     </li>
     {{/each}}
 </ul>
-<p class="blank"></p>
-<p class="lineL textC"><span></span></p>
+<h3 class="product-tit">精选推荐</h3>
+<ul class="articles">
+    {{each randomArticles article}}
+    <li>
+        <a href="{{articleUrl}}/{{article.id}}.html" title="{{article.title}}">
+            <div>
+                <mip-img
+                        layout="responsive"
+                        width="414"
+                        height="320"
+                        src="{{article.coverImg | showImg}}">
+                </mip-img>
+            </div>
+            <div class="w92 artCont">
+                <h2 class="font32 ellipsis">{{article.title}}</h2>
+                <p class="h50">{{article.intro}}</p>
+                <p>{{article.createTime}}</p>
+            </div>
+        </a>
+    </li>
+    {{/each}}
+</ul>
 
 {{/block}}

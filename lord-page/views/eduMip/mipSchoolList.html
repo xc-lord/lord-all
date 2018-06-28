@@ -1,0 +1,49 @@
+{{extend '../layout/mipH5.html'}}
+
+{{block 'title'}}学校列表{{/block}}
+{{block 'description'}}乌托家，一个家居O2O电商平台。我们致力于和用户一起打造一个理想的家、一种自己想要的生活方式。{{/block}}
+{{block 'keywords'}}家居,家居网,家居官网,家居商城,乌托家,乌托家家居商城官网,电商平台,家居电商,家居电商平台,家居o2o{{/block}}
+
+{{block 'content'}}
+
+<div class="w92 classfy textC font32 black">
+    <span>学校</span>
+</div>
+<ul class="w92 res topics">
+    <li>
+        <h2 class="font32">地区：</h2>
+        <div class="detail">
+            {{each districtList district index}}
+            <a class="font14" href="#district{{district.id}}" title="{{district.name}}">{{district.name}}</a>
+            {{/each}}
+        </div>
+    </li>
+</ul>
+
+{{each districtList district index}}
+{{if district.schools && district.schools.length > 0}}
+<h3 class="product-tit" id="district{{district.id}}">{{district.name}}</h3>
+<div class="product w92">
+    {{each district.schools school}}
+    <a class="font14" href="{{schoolUrl}}/{{school.id}}.html" title="{{school.name}}">
+        <div class="figuerImg picWrop">
+            <mip-img
+                    layout="responsive"
+                    width="175"
+                    height="175"
+                    src="http://img2.wutuojia.com/pic/middle/product/t33/b42/20150908/173526_163109.png">
+            </mip-img>
+            <span></span>
+        </div>
+        <p class="ellipsis black">{{school.name}}</p>
+        <div class="ellipsis">学费：10000-20000元/年</div>
+        <div class="ellipsis">去年分数线：7121</div>
+        <div class="ellipsis">计划招生人数：724</div>
+        <div class="ellipsis">实际招生人数：724</div>
+    </a>
+    {{/each}}
+</div>
+{{/if}}
+{{/each}}
+
+{{/block}}
