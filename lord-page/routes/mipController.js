@@ -22,6 +22,8 @@
         };
         dataUtils.getH5Data(req, api, function (err, data) {
             data.articleUrl = data.dynSite + articleUrl;
+            data.schoolUrl = data.dynSite + schoolUrl;
+            data.siteMapUrl = data.dynSite + siteMapUrl;
             data.tagsUrl = data.dynSite + tagsUrl;
             data.pageUrl = data.dynSite + articleUrl;
             res.render('./eduMip/mipIndex', data);//渲染页面
