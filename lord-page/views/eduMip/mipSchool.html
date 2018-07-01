@@ -65,19 +65,19 @@
 </div>
 <h3 class="product-tit">招生计划</h3>
 <div class="product-des">
-    {{schoolData.schoolContent.eduSchoolRecruit.content}}
+    {{schoolData.schoolContent.eduSchoolRecruit.content  | showMip}}
 </div>
 <h3 class="product-tit">考试时间</h3>
 <div class="product-des">
-    {{schoolData.schoolContent.eduSchoolTestTime.content}}
+    {{schoolData.schoolContent.eduSchoolTestTime.content | showMip}}
 </div>
 <h3 class="product-tit">报考条件</h3>
 <div class="product-des">
-    {{schoolData.schoolContent.eduSchoolCondition.content}}
+    {{schoolData.schoolContent.eduSchoolCondition.content | showMip}}
 </div>
 <h3 class="product-tit">录取分数线</h3>
 <div class="product-des">
-    {{schoolData.schoolContent.eduSchoolScoreLine.content}}
+    {{schoolData.schoolContent.eduSchoolScoreLine.content | showMip}}
 </div>
 <h3 class="product-tit">常见问题</h3>
 {{each schoolData.questions question}}

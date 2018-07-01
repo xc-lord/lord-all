@@ -24526,8 +24526,15 @@ UE.plugin.register('simpleupload', function (){
                             loader = me.document.getElementById(loadingId);
                             loader.setAttribute('src', link);
                             loader.setAttribute('_src', link);
-                            loader.setAttribute('title', json.title || '');
-                            loader.setAttribute('alt', json.original || '');
+                            loader.setAttribute('title', '');
+                            if(json.width) {
+                                loader.setAttribute('d-width', json.width);
+                            }
+                            if(json.height) {
+                                loader.setAttribute('d-height', json.height);
+                            }
+                            //loader.setAttribute('title', json.title || '');
+                            //loader.setAttribute('alt', json.original || '');
                             loader.removeAttribute('id');
                             domUtils.removeClasses(loader, 'loadingclass');
                         } else {

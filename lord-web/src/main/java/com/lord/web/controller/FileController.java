@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,6 +56,7 @@ public class FileController {
         }
         ByteArrayOutputStream byteArrayOutputStream = null;
         FileOutputStream fileOutputStream = null;
+        InputStream fileInputStream = null;
         try {
             // 获取文件名
             String fileName = file.getOriginalFilename();
@@ -86,6 +88,13 @@ public class FileController {
             IOUtils.copy(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()), fileOutputStream);
 
             SysFile pageObj = new SysFile();
+            if(FileType.Image.toString().equals(fileType))
+            {
+                fileInputStream = new FileInputStream(dest);
+                BufferedImage src = javax.imageio.ImageIO.read(fileInputStream);
+                pageObj.setWidth(src.getWidth());//图片的宽
+                pageObj.setHeight(src.getHeight());//图片的高
+            }
             pageObj.setName(fileName);//上传前的文件名
             pageObj.setFileSize(fileSize);//文件大小，单位byte
             pageObj.setFileType(fileType);//文件类型
@@ -105,6 +114,9 @@ public class FileController {
                 }
                 if (byteArrayOutputStream != null) {
                     byteArrayOutputStream.close();
+                }
+                if(fileInputStream != null) {
+                    fileInputStream.close();
                 }
             } catch (IOException e) {
                 logger.error("上传文件关闭流失败：" + e.getMessage(), e);

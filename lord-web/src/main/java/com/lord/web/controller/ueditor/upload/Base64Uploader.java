@@ -32,6 +32,8 @@ public final class Base64Uploader {
 			state.putInfo("url", sysFile.getFilePath());
 			state.putInfo("type", sysFile.getFileSuffix());
 			state.putInfo("original", sysFile.getFilePath());
+			state.putInfo("width", sysFile.getWidth());
+			state.putInfo("height", sysFile.getHeight());
 			return state;
 		}
 		return new BaseState(false, AppInfo.IO_ERROR);

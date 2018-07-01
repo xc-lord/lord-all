@@ -17,7 +17,7 @@
 <div class="grey w92">导语：{{articleData.article.intro}}</div>
 <p class="blank"></p>
 <div class="product-des">
-{{articleData.content.content}}
+{{articleData.content.content | showMip}}
 </div>
 
 {{if articleData.tagsList && articleData.tagsList.length > 0}}

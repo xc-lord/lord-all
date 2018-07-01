@@ -23,5 +23,11 @@
     "express-art-template": "^1.0.0",
     "log4js": "^2.4.1",
     "request": "^2.83.0"
-  }
+  },
+  "main": "app.js",
+  "devDependencies": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }

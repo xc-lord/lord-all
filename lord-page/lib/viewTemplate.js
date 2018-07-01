@@ -5,6 +5,8 @@
     var artTemplate = require('art-template');//腾讯的模板引擎
     var moment = require('moment');//时间格式化
     var numeral = require('numeral');//数字格式
+    const cheerio = require('cheerio');//Html处理
+    const defaultImg = "http://www.wutuojia.com/images/front/grey.png";//默认图片
 
     //随机的默认图片
     const imageArr = [
@@ -13,7 +15,7 @@
         "http://img2.wutuojia.com/pic/sq_middle/inspire/su17/20160706/174342_903596.jpg",
         "http://img2.wutuojia.com/pic/sq_middle/inspire/su18/20160630/171620_410457.jpg",
         "http://img2.wutuojia.com/pic/sq_middle/cms/send/20160104/155752_697085.jpg",
-        //"http://www.wutuojia.com/images/front/grey.png",
+        //defaultImg,
         "http://img2.wutuojia.com/pic/sq_middle/cms/send/20151105/143207_468996.jpg"
     ];
 
@@ -53,6 +55,49 @@
                     return global.imageSite + obj;
                 var num = Math.floor(Math.random()*(imageArr.length));
                 return imageArr[num];
+            };
+            /*
+             * 显示PC内容
+             */
+            helper.showPC = function(obj) {
+                if(obj) {
+                    //加载内容为html，不转义为Soap编码
+                    var $ = cheerio.load(obj, {decodeEntities: false});
+                    $('img').each(function(i, elem) {
+                        //图片伪静态处理
+                        var src = $(this).attr("src");
+                        $(this).addClass("lazy");
+                        $(this).attr("data-original", src);
+                        $(this).attr("src", defaultImg);
+                    });
+                    return $("body").html();
+                }
+                return obj;
+            };
+            /*
+             * 显示MIP内容
+             */
+            helper.showMip = function(obj) {
+                if(obj) {
+                    //加载内容为html，不转义为Soap编码
+                    var $ = cheerio.load(obj, {decodeEntities: false});
+                    $('img').each(function(i, elem) {
+                        var src = $(this).attr("src");
+                        var width = $(this).attr("d-width");//图片原宽度
+                        var height = $(this).attr("d-height");//图片原高度
+                        if(!width) width = 412;
+                        if(!height) height = 412;
+
+                        //图片处理成MIP的图片格式
+                        $(this).replaceWith('<mip-img\
+                        layout="responsive"\
+                        width="' + width + '"\
+                        height="' + height + '"\
+                        src="' + src + '"></mip-img>');
+                    });
+                    return $("body").html();
+                }
+                return obj;
             };
             /*
              * 获取属性，自动判断是否为空

@@ -54,6 +54,18 @@ public class SysFile implements Serializable {
 	private String fileType;
 
 	/**
+	 * 图片宽度
+	 */
+	@Column(name = "width", nullable = true, length = 19)
+	private Integer width;
+
+	/**
+	 * 图片高度
+	 */
+	@Column(name = "height", nullable = true, length = 19)
+	private Integer height;
+
+	/**
 	 * 文件后缀名
 	 */
 	@Column(name = "file_suffix", nullable = true, length = 40)
@@ -147,6 +159,26 @@ public class SysFile implements Serializable {
 
 	public void setFileType(String fileType) {
 		this.fileType = fileType;
+	}
+
+	public Integer getWidth()
+	{
+		return width;
+	}
+
+	public void setWidth(Integer width)
+	{
+		this.width = width;
+	}
+
+	public Integer getHeight()
+	{
+		return height;
+	}
+
+	public void setHeight(Integer height)
+	{
+		this.height = height;
 	}
 
 	public String getFileSuffix() {
