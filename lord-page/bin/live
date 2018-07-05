@@ -20,7 +20,7 @@
 
   /** 全局配置 */
   global.serverPort = port;
-  global.imageSite = "//www.chexianzhishi.com";
+  global.imageSite = "//www.yikaozhaosheng.com";
 
   /**
    * Create HTTP server.
