@@ -10,7 +10,7 @@ var misRightMap = {};
 var commonUtils = {
     //判断字符串是否为空
     isEmpty:function(str) {
-        if (str == null || str == undefined || str == '' || str == false) {
+        if (str == null || str == undefined || str == '' || (str == false && str != '0')) {
             return true;
         }
         return false;
@@ -29,15 +29,18 @@ var commonUtils = {
     },
     //转换为时间戳
     toTimestamp:function(time) {
+        if(!time)
+            return time;
         if(typeof time == 'number') {
             return time;
         }
-        if(typeof time == 'string') {
+        if(typeof time == 'string' && this.isNotEmpty(time)){
             return moment(time).valueOf();
         }
         if(typeof time == 'object') {
             return Date.parse(time);
         }
+        return time;
     },
     /**
      * 获取当前Url的参数
