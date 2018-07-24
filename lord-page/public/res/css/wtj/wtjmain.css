@@ -24,10 +24,7 @@
 .wtj-banner .banner-menu ul .banner-menu-active{ background-color:#111111; color:#FFF;}
 .wtj-banner .banner-menu ul .banner-menu-hover .banner-menu-boxs{ margin:30px 50px; margin-right:0px;}
 
-
-
-
-.tv-slideBox{  height:548px; overflow:hidden;  position:relative;   } 
+.tv-slideBox{  height:548px; overflow:hidden;  position:relative;   }
 .tv-slideBox .hd{ display:none;  } 
 .tv-slideBox li{ overflow:hidden; position:relative; min-width:1200px;  } 
 .tv-slideBox .prev,.tv-slideBox .next{ position:absolute; z-index:1;width:42px; height:78px; overflow:hidden; cursor:pointer; left:10px; top:50%; margin-top:-35px; background:url(../../img/wtj/wtjicon.png) no-repeat -125px  -30px; } 

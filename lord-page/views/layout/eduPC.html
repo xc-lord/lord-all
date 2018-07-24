@@ -29,7 +29,8 @@
 <!-- 页头 start -->
 <div class="clearfix wtj-head  wtj-commodity-head">
     <div class="menu menu2016 fl">
-        <a href="http://www.wutuojia.com" class="logo fl" >
+        <a href="/" class="wtj-logo-text fl">
+            艺考招生信息网
         </a>
         <div class="menu-nav fl">
             <ul>
@@ -93,9 +94,12 @@
 <div class="clearfix wtj-footer">
     <div class="w1200 footer-main">
         <div class="f-company">
-            {{each commonData.spaceMap[commonData.treeMap.footerLogo.keyword].elements link}}
+            <!--{{each commonData.spaceMap[commonData.treeMap.footerLogo.keyword].elements link}}
             <img src="{{link.adsImg | showImg}}" width="114" heigh="52" alt="{{link.title}}"  />
-            {{/each}}
+            {{/each}}-->
+            <span class="wtj-logo-text fl">
+                艺考招生信息网
+            </span>
             {{each commonData.spaceMap[commonData.treeMap.copyright.keyword].elements link}}
             <p class="record-company">{{link.title}}</p>
             <p>{{link.subTitle}}</p>
