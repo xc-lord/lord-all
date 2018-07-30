@@ -2,18 +2,19 @@
     'use strict';
 
     var path = require('path');
-    var logger = require('../lib/logger')(path.basename(__filename));
-    var dataUtils = require('../lib/dataUtils');
+    var logger = require('../../lib/logger')(path.basename(__filename));
+    var dataUtils = require('../../lib/dataUtils');
+    var asyncUtils = require('../../lib/asyncUtils');
     var express = require('express');
     var router = express.Router();
 
-    const siteMapUrl = "/eduMip/siteMap";
-    const articleUrl = "/eduMip/article";
-    const tagsUrl = "/eduMip/tags";
-    const schoolUrl = "/eduMip/school";
+    const siteMapUrl = "/siteMap";
+    const articleUrl = "/article";
+    const tagsUrl = "/tags";
+    const schoolUrl = "/school";
 
     /* 首页 */
-    router.get('/eduMip/', function (req, res, next) {
+    router.get('/', function (req, res, next) {
         var api = {
             indexData:{
                 url: '/api/ads/getPage.do',
@@ -218,6 +219,19 @@
             data.pageUrl = data.dynSite + tagsUrl + "/" + req.params.tagsId;
             res.render('./eduMip/mipArticleTags', data);//渲染页面
         });
+    });
+
+    /* 检查服务是否可用 */
+    router.get('/health.do', function (req, res, next) {
+        asyncUtils.get({
+                url: '/api/health.do',
+                req: req
+            },
+            "json",
+            function (err, response) {
+                console.info(response);
+                res.json(response);
+            });
     });
 
     module.exports = router;

@@ -10,7 +10,14 @@
             /**
              * 加载 routes 目录下的所有路由文件
              */
-            var routerPath = path.join(__dirname, '../routes/'),
+            var routerDir = "mis/";
+            if(global.siteEvn == "eduPC") {
+                routerDir = "eduPC/";
+            } else if(global.siteEvn == "eduMip") {
+                routerDir = "eduMip/";
+            }
+
+            var routerPath = path.join(__dirname, '../routes/' + routerDir),
                 files = fs.readdirSync(routerPath),
                 router,
                 file;
@@ -19,10 +26,10 @@
                 file = files[i];
                 if(file.indexOf('.') === 0) continue;
 
+                logger.info('加载路由：'+routerPath+file);
+
                 router = require(routerPath+file);
                 app.use('', router);
-
-                logger.info('加载路由：'+routerPath+file);
             }
         },
         loadInterceptor:function(app) {
