@@ -9,17 +9,16 @@
   logger.level('debug');
 
   process.env.NODE_ENV = 'Local';
-
   /** 全局配置 */
-  global.imageSite = "//www.lord.com";
-  global.siteEvn = "eduPC";
+  global.imageSite = "//mip.yikaozhaosheng.com";
+  global.siteEvn = "eduMip";
 
   var app = require('../app');
 
   /**
    * Get port from environment and store in Express.
    */
-  var port = normalizePort(process.env.PORT || '3002');
+  var port = normalizePort(process.env.PORT || '3003');
   app.set('port', port);
 
   global.serverPort = port;

@@ -2,9 +2,9 @@
     'use strict';
 
     var path = require('path');
-    var logger = require('../lib/logger')(path.basename(__filename));
-    var dataUtils = require('../lib/dataUtils');
-    var asyncUtils = require('../lib/asyncUtils');
+    var logger = require('../../lib/logger')(path.basename(__filename));
+    var dataUtils = require('../../lib/dataUtils');
+    var asyncUtils = require('../../lib/asyncUtils');
     var express = require('express');
     var router = express.Router();
 

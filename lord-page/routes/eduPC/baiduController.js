@@ -4,7 +4,7 @@
     var express = require('express');
     var http_request = require('request');
     var logger = require('log4js').getLogger("normal");
-    var dataUtils = require('../lib/dataUtils');
+    var dataUtils = require('../../lib/dataUtils');
     var router = express.Router();
 
     //请求账号信息
